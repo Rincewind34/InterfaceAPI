@@ -1,0 +1,2 @@
+ElementFlicker:
+  In einem Slot wechselt das Icon immer mit einem Leeren slot. Also es 'blickt'. Einstellbar soll sein, ob die Hintergrundfarbe mit einbezogen wird. (Nach möglichkeit nur einen Scheduler)

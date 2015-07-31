@@ -1,0 +1,7 @@
+name: InterfaceAPI
+version: 2.1.2
+main: de.rincewind.plugin.InterfacePlugin
+
+commands:
+  test:
+    description: Test

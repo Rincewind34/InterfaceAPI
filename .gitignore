@@ -1,0 +1,39 @@
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+### Intellij ###
+*.iml
+/out/
+.idea/
+*.ipr
+*.iws
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.project
+.classpath
+
+### Maven ###
+target/
+
+### Temps ###
+.project~
+.classpath~
+.gitignore~
+plugin.yml~
+README.md~
