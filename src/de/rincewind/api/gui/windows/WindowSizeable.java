@@ -58,11 +58,11 @@ public class WindowSizeable extends WindowColorable implements Sizeable {
 			}
 		}
 		
+		super.createBackground(usedSlots);
+		
 		if (super.getUser() != null) {
 			super.getUser().updateInventory();
 		}
-		
-		super.createBackground(usedSlots);
 	}
 	
 	@Override
