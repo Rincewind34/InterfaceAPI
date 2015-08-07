@@ -94,6 +94,7 @@ public class ElementCounter extends ElementSwitcher {
 		}
 		
 		this.minCount = minCount;
+		
 		this.configurateItems();
 		this.setCount(this.count);
 	}
@@ -106,10 +107,12 @@ public class ElementCounter extends ElementSwitcher {
 	public void setCount(int count) {
 		if(count > this.maxCount) {
 			this.setCount(count - 1);
+			return;
 		}
 		
 		if(count < this.minCount) {
 			this.setCount(count + 1);
+			return;
 		}
 		
 		this.count = count;
