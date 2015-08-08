@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import de.rincewind.api.gui.components.Modifyable;
-import de.rincewind.api.listener.ElementActionListener;
+import de.rincewind.api.gui.elements.abstracts.Element;
 
 public class ElementBrick extends ElementButton {
 

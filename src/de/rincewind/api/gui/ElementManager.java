@@ -1,9 +1,11 @@
-package de.rincewind.api.gui.elements;
+package de.rincewind.api.gui;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
+
+import de.rincewind.api.gui.elements.abstracts.Element;
 
 public class ElementManager {
 	

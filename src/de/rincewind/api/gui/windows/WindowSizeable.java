@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.components.Sizeable;
 import de.rincewind.api.gui.windows.abstracts.WindowColorable;
+import de.rincewind.defaults.exceptions.InvalidSizeException;
 import de.rincewind.defaults.exceptions.InvalidSlotException;
 import de.rincewind.plugin.gui.components.CraftSizeable;
 
@@ -30,7 +31,7 @@ public class WindowSizeable extends WindowColorable implements Sizeable {
 	public WindowSizeable() {
 		super();
 		this.createBukkitInventory();
-		this.setSize(1, 1);
+		this.setSize(9, 3);
 	}
 	
 	@Override
@@ -40,12 +41,17 @@ public class WindowSizeable extends WindowColorable implements Sizeable {
 		List<Integer> usedSlots = new ArrayList<Integer>();
 		
 		for (int i = 0; i < this.getWidth(); i++) {
-			for (int j = 0; j < this.getHeigth(); j++) {
+			for (int j = 0; j < this.getHeight(); j++) {
 				if (super.hasSpaceAt(i, j)) {
 					continue;
 				}
 				
 				ItemStack item = super.getItemAt(i, j);
+				
+				if (item == null) {
+					continue;
+				}
+				
 				
 				int slot = this.getSlot(i, j);
 				
@@ -53,7 +59,7 @@ public class WindowSizeable extends WindowColorable implements Sizeable {
 					usedSlots.add(slot);
 				} else {
 					usedSlots.add(slot);
-					inv.setItem(slot, item);
+					this.inv.setItem(slot, item);
 				}
 			}
 		}
@@ -76,8 +82,8 @@ public class WindowSizeable extends WindowColorable implements Sizeable {
 	}
 
 	@Override
-	public int getHeigth() {
-		return sizeable.getHeigth();
+	public int getHeight() {
+		return sizeable.getHeight();
 	}
 	
 	@Override
@@ -99,17 +105,13 @@ public class WindowSizeable extends WindowColorable implements Sizeable {
 	}
 	
 	@Override
-	public boolean setSize(int width, int heigth) {
-		if (!this.checkSize(width, heigth)) {
-			return false;
+	public void setSize(int width, int height) {
+		if (!this.checkSize(width, height)) {
+			throw new InvalidSizeException(width, height, WindowSizeable.class);
 		}
 		
-		if (!this.sizeable.setSize(width, heigth)) {
-			return false;
-		}
-		
-		this.reconfigurate(false);
-		return true;
+		this.sizeable.setSize(width, height);
+		this.reconfigurate();
 	}
 	
 	@Override
@@ -119,18 +121,18 @@ public class WindowSizeable extends WindowColorable implements Sizeable {
 		} else if (this.getWidth() == 5) {
 			this.inv = Bukkit.createInventory(null, InventoryType.HOPPER, this.getName());
 		} else if (this.getWidth() == 9) {
-			this.inv = Bukkit.createInventory(null, this.getHeigth() * 9, this.getName()); //ChestInv
+			this.inv = Bukkit.createInventory(null, this.getHeight() * 9, this.getName()); //ChestInv
 		}
 	}
 	
-	private boolean checkSize(int width, int higth) {
-		if (width <= 0 || higth <= 0) {
+	private boolean checkSize(int width, int height) {
+		if (width <= 0 || height <= 0) {
 			return false;
-		} else if (width == 3 && higth == 3) {
+		} else if (width == 3 && height == 3) {
 			return true; //Inventar eines Droppers oder Dispensers
-		} else if (width == 5 && higth == 1) {
+		} else if (width == 5 && height == 1) {
 			return true; //Inventar eines Hoppers
-		} else if (width == 9 && width*higth <= 54) {
+		} else if (width == 9 && width * height <= 54) {
 			return true; //CustomInventar einer Kiste (1, 2, 3, 4, 5 oder 6 Reihen)
 		}
 		

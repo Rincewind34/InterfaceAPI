@@ -18,7 +18,7 @@ public abstract class WindowContainer extends WindowNameable {
 	@Override
 	public void maximize() {
 		super.maximize();
-		this.reconfigurate(false);
+		this.reconfigurate();
 	}
 	
 	@Override
@@ -26,7 +26,7 @@ public abstract class WindowContainer extends WindowNameable {
 		if (!super.setName(name)) {
 			return false;
 		} else {
-			this.reconfigurate(false);
+			this.reconfigurate();
 			return true;
 		}
 	}
@@ -38,13 +38,13 @@ public abstract class WindowContainer extends WindowNameable {
 	/**
 	 * Opens the BukkitInventory
 	 */
-	public void openBukkitInventory(boolean flag) {
+	public void openBukkitInventory() {
 		if (getUser() == null) {
 			return;
 		}
 		
 		CraftWindowManager.sendClosePacket(getUser());
-		this.getUser().openInventory(inv);
+		this.getUser().openInventory(this.inv);
 	}
 	
 	/**
@@ -57,10 +57,10 @@ public abstract class WindowContainer extends WindowNameable {
 	
 	protected abstract void createBukkitInventory();
 	
-	protected void reconfigurate(boolean flag) {
+	protected void reconfigurate() {
 		this.createBukkitInventory();
 		this.updateBukkitInventory();
-		this.openBukkitInventory(flag);
+		this.openBukkitInventory();
 	}
 	
 }

@@ -1,5 +1,5 @@
 name: InterfaceAPI
-version: 2.1.2
+version: 2.2.0
 main: de.rincewind.plugin.InterfacePlugin
 
 commands:

@@ -12,7 +12,7 @@ public interface Sizeable {
 	 * 
 	 * @return the heigth
 	 */
-	public abstract int getHeigth();
+	public abstract int getHeight();
 	
 	/**
 	 * 
@@ -29,6 +29,6 @@ public interface Sizeable {
 	 * @param width The target width
 	 * @param higth The target heigth
 	 */
-	public abstract boolean setSize(int width, int higth);
+	public abstract void setSize(int width, int higth);
 	
 }

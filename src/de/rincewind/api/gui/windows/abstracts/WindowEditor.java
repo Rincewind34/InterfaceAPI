@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.components.Modifyable;
-import de.rincewind.api.gui.elements.Element;
+import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.plugin.gui.components.CraftModifyable;
 
 public abstract class WindowEditor extends WindowContainer implements Modifyable {

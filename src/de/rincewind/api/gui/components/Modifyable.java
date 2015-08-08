@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import de.rincewind.api.gui.elements.Element;
+import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.util.item.ItemLibary;
 
 public abstract interface Modifyable {

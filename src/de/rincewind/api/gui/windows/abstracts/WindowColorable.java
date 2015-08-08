@@ -24,13 +24,9 @@ public abstract class WindowColorable extends WindowEditor implements Colorable 
 	}
 	
 	@Override
-	public boolean setColor(Color color) {
-		if (!colorable.setColor(color)) {
-			return false;
-		}
-		
+	public void setColor(Color color) {
+		this.colorable.setColor(color);
 		this.updateBukkitInventory();
-		return true;
 	}
 	
 	/**

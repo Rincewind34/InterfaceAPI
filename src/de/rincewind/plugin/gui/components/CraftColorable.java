@@ -12,18 +12,16 @@ public final class CraftColorable implements Colorable {
 	}
 	
 	@Override
-	public boolean setColor(Color color) {
+	public void setColor(Color color) {
 		if (color == null) {
-			return false;
+			return;
 		}
 		
 		if (this.color == color) {
-			return false;
+			return;
 		}
 		
 		this.color = color;
-		
-		return true;
 	}
 
 	@Override

@@ -2,19 +2,12 @@ package de.rincewind.plugin;
 
 import lib.securebit.ReflectionUtil;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.rincewind.api.gui.WindowManager;
-import de.rincewind.api.gui.elements.Element;
-import de.rincewind.api.gui.elements.ElementBrick;
-import de.rincewind.api.gui.elements.ElementButton;
-import de.rincewind.api.gui.elements.ElementCounter;
-import de.rincewind.api.gui.elements.ElementList;
-import de.rincewind.api.gui.elements.ElementManager;
-import de.rincewind.api.gui.elements.ElementManager.ElementActivation;
-import de.rincewind.api.gui.elements.ElementSwitcher;
 import de.rincewind.api.recipes.RecipeManager;
 import de.rincewind.api.recipes.RecipePacket;
 import de.rincewind.defaults.listener.InventoryClickListener;
@@ -37,29 +30,41 @@ public class InterfacePlugin extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
 		this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
 		
-		ElementManager.registerElement(ElementButton.class, new ElementActivation() {
-			
-			@Override
-			public boolean run(Element element, InventoryClickEvent event) {
-				ElementButton button = (ElementButton) element;
-				if(!element.isEnabled()) return event.isCancelled();
-				else { 
-					button.press(event);
-					return event.isCancelled();
-				}
-			}
-		});
-		
-		ElementManager.registerElement(ElementSwitcher.class, ElementManager.getActivation(ElementButton.class));
-		ElementManager.registerElement(ElementCounter.class, ElementManager.getActivation(ElementSwitcher.class));
-		ElementManager.registerElement(ElementList.class, ElementManager.getActivation(ElementButton.class));
-		ElementManager.registerElement(ElementBrick.class, ElementManager.getActivation(ElementButton.class));
+//		ElementManager.registerElement(ElementButton.class, new ElementActivation() {
+//			
+//			@Override
+//			public boolean run(Element element, InventoryClickEvent event) {
+//				ElementButton button = (ElementButton) element;
+//				if(!element.isEnabled()) return event.isCancelled();
+//				else { 
+//					button.press(event);
+//					return event.isCancelled();
+//				}
+//			}
+//		});
+//		
+//		ElementManager.registerElement(ElementSwitcher.class, ElementManager.getActivation(ElementButton.class));
+//		ElementManager.registerElement(ElementCounter.class, ElementManager.getActivation(ElementSwitcher.class));
+//		ElementManager.registerElement(ElementList.class, ElementManager.getActivation(ElementButton.class));
+//		ElementManager.registerElement(ElementBrick.class, ElementManager.getActivation(ElementButton.class));
 	}
 	
 	@Override
 	public void onDisable() {
 		
 	}
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (command.getName().equals("test")) {
+			windowManager.open((Player) sender, new TestWindow());
+		}
+			
+			
+		return true;
+	}
+	
+	
 	
 	public static final class InterfaceAPI {
 		

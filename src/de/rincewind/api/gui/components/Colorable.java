@@ -10,7 +10,7 @@ public abstract interface Colorable {
 	 * 
 	 * @param color The color for the glasspanes
 	 */
-	public abstract boolean setColor(Color color);
+	public abstract void setColor(Color color);
 	
 	/**
 	 * @return The color of the glasspanes to fill

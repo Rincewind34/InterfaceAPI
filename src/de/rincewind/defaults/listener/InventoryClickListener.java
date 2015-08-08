@@ -3,16 +3,17 @@ package de.rincewind.defaults.listener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import de.rincewind.api.gui.elements.Element;
-import de.rincewind.api.gui.elements.ElementManager;
+import de.rincewind.api.gui.ClickAction;
+import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.windows.Window;
 import de.rincewind.api.gui.windows.abstracts.WindowColorable;
 import de.rincewind.api.gui.windows.abstracts.WindowContainer;
 import de.rincewind.api.gui.windows.abstracts.WindowEditor;
-import de.rincewind.api.gui.windows.abstracts.WindowNameable;
 import de.rincewind.plugin.InterfacePlugin.InterfaceAPI;
+import de.rincewind.plugin.gui.elements.abstracts.CraftElement;
 
 public class InventoryClickListener implements Listener {
 	
@@ -24,50 +25,64 @@ public class InventoryClickListener implements Listener {
 			int slot = e.getRawSlot();
 			
 			if (InterfaceAPI.getWindowManager().hasMaximizedWindow(player)) {
+				if (e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+					e.setCancelled(true);
+				}
+				
 				Window window = InterfaceAPI.getWindowManager().getMaximizedWindow(player);
 				
-				if (window instanceof WindowNameable) {
-					if (window instanceof WindowContainer) {
-						WindowContainer containerWindow = (WindowContainer) window;
+				if (window instanceof WindowContainer) {
+					WindowContainer containerWindow = (WindowContainer) window;
+					
+					if (!(containerWindow.getInventory().getSize() > slot)) {
+						return;
+					}
+					
+					if (containerWindow instanceof WindowEditor) {
 						
-						int size = containerWindow.getInventory().getSize();
-						if(!(size > slot)) return;
+						WindowEditor editor = (WindowEditor) window;
 						
-						if (containerWindow instanceof WindowEditor) {
+						int windowX = editor.getPositionX(slot);
+						int windowY = editor.getPositionY(slot);
+						
+						if (!editor.hasSpaceAt(windowX, windowY)) {
+						
+							Element element = editor.getElementAt(windowX, windowY);
 							
-							WindowEditor editor = (WindowEditor) window;
-							
-							int windowX = editor.getPositionX(slot);
-							int windowY = editor.getPositionY(slot);
-							
-							if(!editor.hasSpaceAt(windowX, windowY)) {
-							
-								Element element = editor.getElementAt(windowX, windowY);
-								
-								if(element == null) return;
-								
-								int elementX = windowX - element.getX();
-								int elementY = windowY - element.getY();;
-								
-								if(element.isPointBlocked(elementX, elementY, e.getAction())) e.setCancelled(true);
-								
-								if(ElementManager.containsElement(element.getClass())) {
-									e.setCancelled(ElementManager.runElementActivation(element.getClass(),
-											element,
-											e));
-								}
-								
+							if (element == null) {
 								return;
 							}
 							
-							if(editor instanceof WindowColorable) {
-								
-								WindowColorable colorableWindow = (WindowColorable) editor;
-								
-								if(e.getCurrentItem() != null && e.getCurrentItem().equals(colorableWindow.getColor().asItem())) {
-									e.setCancelled(true);
-									return;
+							// ==== ClickBlocker ==== //
+							
+							if (!ClickAction.getBlockableActions().contains(e.getAction())) {
+								e.setCancelled(true);
+							}
+							
+							if (element.getBlocker().isLocked()) {
+								e.setCancelled(true);
+							} else {
+								for (ClickAction action : element.getBlocker().getBlocked()) {
+									if (action.getActions().contains(e.getAction())) {
+										e.setCancelled(true);
+										break;
+									}
 								}
+							}
+							
+							// ==== ClickBlocker ==== //
+							
+							if (element.isEnabled()) {
+								((CraftElement) element).getRunnable(e).run();
+							}
+						}
+						
+						if (editor instanceof WindowColorable) {
+							WindowColorable colorableWindow = (WindowColorable) editor;
+							
+							if (e.getCurrentItem() != null && e.getCurrentItem().equals(colorableWindow.getColor().asItem())) {
+								e.setCancelled(true);
+								return;
 							}
 						}
 					}

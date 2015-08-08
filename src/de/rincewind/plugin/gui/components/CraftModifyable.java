@@ -7,10 +7,10 @@ import java.util.Map;
 
 import org.bukkit.inventory.ItemStack;
 
+import de.rincewind.api.gui.components.Locatable.Point;
 import de.rincewind.api.gui.components.Modifyable;
-import de.rincewind.api.gui.elements.Element;
-import de.rincewind.api.gui.elements.ElementSizeable;
-import de.rincewind.plugin.gui.CraftElement;
+import de.rincewind.api.gui.elements.abstracts.Element;
+import de.rincewind.plugin.gui.elements.abstracts.CraftElement;
 
 public final class CraftModifyable implements Modifyable {
 	
@@ -52,7 +52,7 @@ public final class CraftModifyable implements Modifyable {
 		}
 		
 		this.elements.put(id, element);
-		element.onAdd();
+		((CraftElement) element).onAdd();
 		this.updateItemMap(element);
 		
 		((CraftElement) element).setId(id);
@@ -65,7 +65,7 @@ public final class CraftModifyable implements Modifyable {
 		if (!this.hasItem(x, y)) {
 			return null;
 		} else{
-			return items.get(x).get(y);
+			return this.items.get(x).get(y);
 		}
 	}
 	
@@ -76,8 +76,8 @@ public final class CraftModifyable implements Modifyable {
 		}
 		
 		for (Element element : this.elements.values()) {
-			if (element.getX() <= x && x < element.getX() + (element instanceof ElementSizeable ? ((ElementSizeable) element).getWidth() : 1)) {
-				if (element.getY() <= y && y < element.getY() + (element instanceof ElementSizeable ? ((ElementSizeable) element).getHeigth() : 1)){
+			if (element.getPoint().getX() <= x && x < element.getPoint().getX() + element.getWidth()) {
+				if (element.getPoint().getY() <= y && y < element.getPoint().getY() + element.getHeight()){
 					return element;
 				}
 			}
@@ -103,25 +103,21 @@ public final class CraftModifyable implements Modifyable {
 			return;
 		}
 		
-		for (int x = element.getX(); x < element.getX() + (element instanceof ElementSizeable ? ((ElementSizeable) element).getWidth() : 1); x++) {
-			for (int y = element.getY(); y < element.getY() + (element instanceof ElementSizeable ? ((ElementSizeable) element).getHeigth() : 1); y++) {
+		CraftElement craftElement = (CraftElement) element;
+		craftElement.updateItemMap();
+		
+		for (int x = craftElement.getPoint().getX(); x < craftElement.getPoint().getX() + element.getWidth(); x++) {
+			for (int y = craftElement.getPoint().getY(); y < craftElement.getPoint().getY() + element.getHeight(); y++) {
 				if (this.hasItem(x, y) && this.getElementAt(x, y) != null && !this.getElementAt(x, y).equals(element)){
 					continue;
 				}
 				
-				int transx = x - element.getX();
-				int transy = y - element.getY();
+				int transx = x - craftElement.getPoint().getX();
+				int transy = y - craftElement.getPoint().getY();
 				
-				if (element.getItemAt(transx, transy) != null) {
-					this.setItem(x, y, element.isVisible() ? element.getItemAt(transx, transy) : Modifyable.INVISIBLE_ELEMENT);
-				} else {
-					if (element.isEnabled()) {
-						this.setItem(x, y, element.isVisible() ? element.getIcon() : Modifyable.INVISIBLE_ELEMENT);
-					} else {
-						if(element.getDisabledIcon() != null) this.setItem(x, y, element.isVisible() ? element.getDisabledIcon() : Modifyable.INVISIBLE_ELEMENT);
-						else this.setItem(x, y, element.isVisible() ? element.getIcon() : Modifyable.INVISIBLE_ELEMENT);
-					}
-				}
+				Point trans = new Point(transx, transy);
+				
+				this.setItem(x, y, craftElement.getItemAt(trans));
 			}
 		}
 	}
@@ -137,11 +133,11 @@ public final class CraftModifyable implements Modifyable {
 	}
 	
 	public boolean hasItem(int x, int y) {
-		if (!items.containsKey(x)) {
+		if (!this.items.containsKey(x)) {
 			return false;
 		}
 		
-		if (!items.get(x).containsKey(y)) {
+		if (!this.items.get(x).containsKey(y)) {
 			return false;
 		} else {
 			return true;
@@ -149,7 +145,7 @@ public final class CraftModifyable implements Modifyable {
 	}
 	
 	public void setItem(int x, int y, ItemStack item) {
-		if (!items.containsKey(x)) {
+		if (!this.items.containsKey(x)) {
 			this.items.put(x, new HashMap<Integer, ItemStack>());
 		}
 		
