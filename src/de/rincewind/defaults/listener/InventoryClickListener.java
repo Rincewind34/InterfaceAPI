@@ -7,13 +7,14 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import de.rincewind.api.gui.ClickAction;
+import de.rincewind.api.gui.components.Locatable.Point;
 import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.windows.Window;
 import de.rincewind.api.gui.windows.abstracts.WindowColorable;
-import de.rincewind.api.gui.windows.abstracts.WindowContainer;
-import de.rincewind.api.gui.windows.abstracts.WindowEditor;
 import de.rincewind.plugin.InterfacePlugin.InterfaceAPI;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElement;
+import de.rincewind.plugin.gui.windows.abstracts.CraftWindowContainer;
+import de.rincewind.plugin.gui.windows.abstracts.CraftWindowEditor;
 
 public class InventoryClickListener implements Listener {
 	
@@ -31,23 +32,30 @@ public class InventoryClickListener implements Listener {
 				
 				Window window = InterfaceAPI.getWindowManager().getMaximizedWindow(player);
 				
-				if (window instanceof WindowContainer) {
-					WindowContainer containerWindow = (WindowContainer) window;
+				if (window instanceof CraftWindowContainer) {
 					
-					if (!(containerWindow.getInventory().getSize() > slot)) {
+					CraftWindowContainer containerWindow = (CraftWindowContainer) window;
+					
+					if (!(containerWindow.getBukkitSize() > slot)) {
 						return;
 					}
 					
-					if (containerWindow instanceof WindowEditor) {
+					if (containerWindow instanceof CraftWindowEditor) {
+						CraftWindowEditor editor = (CraftWindowEditor) window;
 						
-						WindowEditor editor = (WindowEditor) window;
+						if (editor instanceof WindowColorable) {
+							WindowColorable colorableWindow = (WindowColorable) editor;
+							
+							if (e.getCurrentItem() != null && e.getCurrentItem().equals(colorableWindow.getColor().asItem())) {
+								e.setCancelled(true);
+								return;
+							}
+						}
 						
-						int windowX = editor.getPositionX(slot);
-						int windowY = editor.getPositionY(slot);
+						Point point = editor.getPoint(slot);
 						
-						if (!editor.hasSpaceAt(windowX, windowY)) {
-						
-							Element element = editor.getElementAt(windowX, windowY);
+						if (!editor.hasSpaceAt(point)) {
+							Element element = editor.getElementAt(point);
 							
 							if (element == null) {
 								return;
@@ -74,15 +82,7 @@ public class InventoryClickListener implements Listener {
 							
 							if (element.isEnabled()) {
 								((CraftElement) element).getRunnable(e).run();
-							}
-						}
-						
-						if (editor instanceof WindowColorable) {
-							WindowColorable colorableWindow = (WindowColorable) editor;
-							
-							if (e.getCurrentItem() != null && e.getCurrentItem().equals(colorableWindow.getColor().asItem())) {
-								e.setCancelled(true);
-								return;
+								editor.readItemsFrom(element);
 							}
 						}
 					}

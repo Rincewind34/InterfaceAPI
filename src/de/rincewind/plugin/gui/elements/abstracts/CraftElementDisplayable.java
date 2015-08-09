@@ -1,7 +1,6 @@
 package de.rincewind.plugin.gui.elements.abstracts;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.components.Modifyable;
@@ -15,7 +14,7 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 	public CraftElementDisplayable(Modifyable handle) {
 		super(handle);
 		
-		this.icon = new ItemStack(Material.STONE);
+		this.icon = Modifyable.INVISIBLE_ELEMENT;
 		this.disabledIcon = this.getIcon();
 	}
 	
@@ -34,13 +33,13 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 		Validate.notNull(icon, "The icon cannot be null!");
 		
 		this.icon = icon;
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 	}
 	
 	@Override
 	public void setDisabledIcon(ItemStack icon) {
 		this.disabledIcon = icon;
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 	}
 	
 	@Override

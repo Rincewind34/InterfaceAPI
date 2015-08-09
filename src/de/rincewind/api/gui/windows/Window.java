@@ -8,16 +8,8 @@ import de.rincewind.plugin.gui.CraftWindow;
 
 public abstract interface Window extends Openable {
 	
-	/**
-	 * 
-	 * @return The current state of this window
-	 */
 	public abstract Status getStatus();
 	
-	/**
-	 * 
-	 * @return The user of this user
-	 */
 	public abstract Player getUser();
 	
 	public abstract static class WindowExtendable extends CraftWindow {

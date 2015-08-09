@@ -18,4 +18,6 @@ public abstract interface ElementCounter extends ElementButton {
 	
 	public abstract void countdown();
 	
+	public abstract void addIncrementer(ElementButton btn, int value);
+	
 }

@@ -5,68 +5,29 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import de.rincewind.api.gui.components.Locatable.Point;
 import de.rincewind.api.gui.elements.abstracts.Element;
+import de.rincewind.api.gui.elements.util.ElementCreator;
 import de.rincewind.util.item.ItemLibary;
 
 public abstract interface Modifyable {
 	
-	public static final ItemStack EMPTY_USED_SLOT = ItemLibary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "�0EMPTY_USED_ITEM");
-	public static final ItemStack INVISIBLE_ELEMENT = ItemLibary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "�0INVISIBLE_ELEMENT");
+	public static final ItemStack EMPTY_USED_SLOT = ItemLibary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "§0EMPTY_USED_ITEM");
+	public static final ItemStack INVISIBLE_ELEMENT = ItemLibary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "§0INVISIBLE_ELEMENT");
 	
-	/**
-	 * @return All elements of this GUI
-	 */
+	
 	public abstract List<Element> getElements();
 	
-	/**
-	 * 
-	 * @param x The x-coordinate
-	 * @param y The y-coordinate
-	 * @return If the slot at the given point P(x|y) is free (Color.TRANSLUCENT)
-	 */
-	public abstract boolean hasSpaceAt(int x, int y);
+	public abstract Element getElementAt(Point point);
 	
-	/**
-	 * 
-	 * Adds an new element to the window
-	 * 
-	 * @param element The new element
-	 * @return The id of the new element in the window
-	 */
-	public abstract int addElement(Element element);
+	public abstract ElementCreator elementCreator();
 	
-	/**
-	 * @param x The x-coordinate
-	 * @param y The y-coordinate
-	 * @return The itemstack at the given point P(x|y) in the window
-	 */
-	public abstract ItemStack getItemAt(int x, int y);
+	public abstract void readItemsFromAll();
 	
-	/**
-	 * 
-	 * @param x The y-coordinate
-	 * @param y The z-coordinate
-	 * @return The element at the given Point(x|y) in the window
-	 */
-	public abstract Element getElementAt(int x, int y);
+	public abstract void readItemsFrom(Element element);
 	
-	/**
-	 * Updates all itemstacks in the window
-	 */
-	public abstract void updateItemMap();
+	public abstract void clearItemsFrom(Element element);
 	
-	/**
-	 * Updates the itemstack for the given element
-	 *
-	 * @param element The elememt to update
-	 */
-	public abstract void updateItemMap(Element element);
-	
-	/**
-	 * Updates the itemstack for an element by a given id
-	 *
-	 * @param id The id of the element to update
-	 */
-	public abstract void updateItemMap(int id);
+	public abstract void addElement(Element element);
 	
 }

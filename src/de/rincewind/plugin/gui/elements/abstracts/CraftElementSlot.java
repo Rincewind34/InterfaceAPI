@@ -43,6 +43,8 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 				event.getWhoClicked().setItemOnCursor(this.content);
 				this.setContent(Modifyable.EMPTY_USED_SLOT);
 			}
+			
+			System.out.println("DEBUG: (ElementSlot) Content: " + this.getContent() + ", Item: " + this.getItemAt(Point.atNull()));
 		};
 	}
 
@@ -52,7 +54,7 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 	
 	public void setContent(ItemStack item) {
 		this.content = item;
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 	}
 	
 }

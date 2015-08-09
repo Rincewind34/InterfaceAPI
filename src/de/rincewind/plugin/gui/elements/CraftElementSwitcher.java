@@ -22,21 +22,6 @@ public class CraftElementSwitcher extends CraftElementButton implements ElementS
 		this.registerListener();
 	}
 	
-//	@Override
-//	public void disable() {
-//		super.disable();
-//		
-//		for (int x = 0; x < super.getWidth(); x++) {
-//			for (int y = 0; y < super.getHeight(); y++) {
-//				if (super.getDisabledIcon() == null) {
-//					super.setItemAt(x, y, super.getIcon());
-//				} else {
-//					super.setItemAt(x, y, super.getDisabledIcon());
-//				}
-//			}
-//		}
-//	}
-	
 	@Override
 	public void setIcon(ItemStack icon) {
 		super.setIcon(icon);
@@ -75,8 +60,7 @@ public class CraftElementSwitcher extends CraftElementButton implements ElementS
 		if (this.items.size() == this.switchid) {
 			this.switchid = 0;
 		}
-		
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 	}
 	
 	@Override
@@ -87,7 +71,7 @@ public class CraftElementSwitcher extends CraftElementButton implements ElementS
 	@Override
 	public void addSwitch(ItemStack item) {
 		this.items.put(this.items.size(), item);
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 	}
 	
 	@Override

@@ -1,5 +1,7 @@
 package de.rincewind.plugin.gui.elements.abstracts;
 
+import java.util.function.Consumer;
+
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,9 +19,9 @@ public abstract class CraftElement implements Element {
 	private boolean visible;
 	private boolean enable;
 	
-	protected ItemStack[][] items;
+	private ItemStack[][] items;
 	
-	protected ClickBlocker blocker;
+	private ClickBlocker blocker;
 	
 	public CraftElement(Modifyable handle) {
 		this.handle = handle;
@@ -34,6 +36,8 @@ public abstract class CraftElement implements Element {
 		
 		this.blocker = new ClickBlocker();
 		this.blocker.lock();
+		
+		this.getHandle().readItemsFrom(this);
 	}
 	
 	@Override
@@ -79,19 +83,20 @@ public abstract class CraftElement implements Element {
 	@Override
 	public void setEnabled(boolean enable) {
 		this.enable = enable;
-		this.handle.updateItemMap(this);
+		this.handle.readItemsFrom(this);
 	}
 	
 	@Override
 	public void setPoint(Point point) {
+		this.handle.clearItemsFrom(this);
 		this.point = point;
-		this.handle.updateItemMap(this);
+		this.handle.readItemsFrom(this);
 	}
 
 	@Override
 	public void setVisible(boolean visible) {
 		this.visible = visible;
-		this.handle.updateItemMap(this);
+		this.handle.readItemsFrom(this);
 	}
 	
 	@Override
@@ -100,10 +105,14 @@ public abstract class CraftElement implements Element {
 	}
 	
 	public void setItemAt(Point point, ItemStack item) {
-		if(this.hasItemAt(point)) {
+		if (this.hasItemAt(point)) {
 			this.items[point.getX()][point.getY()] = item;
 		}
  	}
+	
+	public void createArray() {
+		this.items = this.getNewArray();
+	}
 	
 	public void updateItemMap() {
 		this.setItemAt(new Point(0, 0), Modifyable.EMPTY_USED_SLOT);
@@ -135,6 +144,10 @@ public abstract class CraftElement implements Element {
 		}
 	}
 	
+	public ItemStack[][] getNewArray() {
+		return new ItemStack[][] {{ null }};
+	}
+	
 	public Modifyable getHandle() {
 		return this.handle;
 	}
@@ -142,6 +155,14 @@ public abstract class CraftElement implements Element {
 	public abstract Runnable getRunnable(InventoryClickEvent event);
 	
 	public abstract void onAdd();
+	
+	public void iterate(Consumer<Point> action) {
+		for (int x = 0; x < this.getWidth(); x++) {
+			for (int y = 0; y < this.getHeight(); y++) {
+				action.accept(new Point(x, y));
+			}
+		}
+	}
 	
 	@Override
 	@Deprecated

@@ -25,6 +25,8 @@ public abstract interface ElementList extends ElementSizeable, Colorable, EventB
 	
 	public abstract void setSelectModifyer(SelectModifyer modifyer);
 	
+	public abstract void addScroler(ElementButton btn, int value);
+	
 	public abstract int getStartIndex();
 	
 	public abstract int getSelected();

@@ -1,6 +1,6 @@
 package de.rincewind.plugin.gui.elements.abstracts;
 
-import java.util.function.Consumer;
+import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.abstracts.ElementSizeable;
@@ -28,6 +28,11 @@ public abstract class CraftElementSizeable extends CraftElementDisplayable imple
 	}
 	
 	@Override
+	public ItemStack[][] getNewArray() {
+		return new ItemStack[this.width][this.height];
+	}
+	
+	@Override
 	public int getWidth() {
 		return this.width;
 	}
@@ -45,29 +50,23 @@ public abstract class CraftElementSizeable extends CraftElementDisplayable imple
 		
 		this.width = width;
 		this.height = height;
+		this.createArray();
+		this.getHandle().readItemsFrom(this);
 	}
 	
 	@Override
-	public boolean isInside(int x, int y) {
-		if (x < this.width && y < this.height) {
+	public boolean isInside(Point point) {
+		if (point.getX() < this.width && point.getY() < this.height) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	protected final void updateItemMap(boolean withIcon) {
+	public final void updateItemMap(boolean withIcon) {
 		this.iterate((point) -> {
 			this.updateItemMap(point, withIcon);
 		});
 	}
 	
-	protected final void iterate(Consumer<Point> action) {
-		for (int x = 0; x < super.getWidth(); x++) {
-			for (int y = 0; y < super.getHeight(); y++) {
-				action.accept(new Point(x, y));
-			}
-		}
-	}
-
 }

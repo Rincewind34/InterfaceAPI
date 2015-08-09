@@ -10,13 +10,16 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
+import de.rincewind.api.events.ButtonPressEvent;
 import de.rincewind.api.events.ListSelectEvent;
 import de.rincewind.api.events.ListUnselectEvent;
 import de.rincewind.api.gui.Color;
 import de.rincewind.api.gui.Directionality;
 import de.rincewind.api.gui.EventManager;
 import de.rincewind.api.gui.components.Modifyable;
+import de.rincewind.api.gui.elements.ElementButton;
 import de.rincewind.api.gui.elements.ElementList;
+import de.rincewind.api.listener.ButtonPressListener;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementSizeable;
 import de.rincewind.util.item.ItemLibary;
 
@@ -122,7 +125,7 @@ public class CraftElementList extends CraftElementSizeable implements ElementLis
 		Validate.notNull(item, "The item cannot be null!");
 		
 		this.items.add(item);
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 	}
 
 	@Override
@@ -130,13 +133,13 @@ public class CraftElementList extends CraftElementSizeable implements ElementLis
 		Validate.notNull(item, "The item cannot be null!");
 		
 		this.items.remove(item);
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 	}
 
 	@Override
 	public void setType(Directionality type) {
 		this.type = type;
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 	}
 
 	@Override
@@ -146,7 +149,7 @@ public class CraftElementList extends CraftElementSizeable implements ElementLis
 		}
 		
 		this.startIndex = index;
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 	}
 
 	@Override
@@ -163,7 +166,7 @@ public class CraftElementList extends CraftElementSizeable implements ElementLis
 	public void select(int index) {
 		if (0 <= index && index < this.items.size()) {
 			this.selected = index + this.startIndex;
-			this.getHandle().updateItemMap(this);
+			this.getHandle().readItemsFrom(this);
 			this.eventManager.callEvent(new ListSelectEvent(this));
 		}
 	}
@@ -171,7 +174,7 @@ public class CraftElementList extends CraftElementSizeable implements ElementLis
 	@Override
 	public void unselect() {
 		this.selected = -1;
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 		this.eventManager.callEvent(new ListUnselectEvent(this));
 	}
 
@@ -188,7 +191,7 @@ public class CraftElementList extends CraftElementSizeable implements ElementLis
 	@Override
 	public Runnable getRunnable(InventoryClickEvent event) {
 		return () -> {
-			if (event.getCurrentItem().equals(getColor().asItem())) {
+			if (event.getCurrentItem().equals(this.getColor().asItem())) {
 				return;
 			}
 			
@@ -203,12 +206,33 @@ public class CraftElementList extends CraftElementSizeable implements ElementLis
 				select((int) ((double) slot / (double) invWidth) - this.getPoint().getY());
 			}
 			
-			this.getHandle().updateItemMap(this);
+			this.getHandle().readItemsFrom(this);
 		};
 	}
 
 	@Override
 	public void onAdd() {
+		
+	}
+
+	@Override
+	public void addScroler(ElementButton btn, int value) {
+		btn.getEventManager().addListener(new ActionHandler(value));
+	}
+	
+	
+	private class ActionHandler extends ButtonPressListener {
+
+		private int value;
+		
+		private ActionHandler(int value) {
+			this.value = value;
+		}
+		
+		@Override
+		public void onFire(ButtonPressEvent event) {
+			CraftElementList.this.setStartIndex(CraftElementList.this.getStartIndex() + (this.value * (event.isShiftClick() ? 2 : 1)));
+		}
 		
 	}
 

@@ -2,8 +2,11 @@ package de.rincewind.plugin.gui.elements;
 
 import org.bukkit.inventory.ItemStack;
 
+import de.rincewind.api.events.ButtonPressEvent;
 import de.rincewind.api.gui.components.Modifyable;
+import de.rincewind.api.gui.elements.ElementButton;
 import de.rincewind.api.gui.elements.ElementCounter;
+import de.rincewind.api.listener.ButtonPressListener;
 
 public class CraftElementCounter extends CraftElementButton implements ElementCounter {
 
@@ -79,7 +82,7 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 		}
 		
 		this.count = count;
-		this.getHandle().updateItemMap(this);
+		this.getHandle().readItemsFrom(this);
 	}
 	
 	@Override
@@ -90,6 +93,27 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 	@Override
 	public void countdown() {
 		this.setCount(this.count - 1);
+	}
+
+	@Override
+	public void addIncrementer(ElementButton btn, int value) {
+		btn.getEventManager().addListener(new ActionHandler(value));
+	}
+	
+	
+	private class ActionHandler extends ButtonPressListener {
+
+		private int value;
+		
+		private ActionHandler(int value) {
+			this.value = value;
+		}
+		
+		@Override
+		public void onFire(ButtonPressEvent event) {
+			CraftElementCounter.this.setCount(CraftElementCounter.this.getCount() + this.value * (event.isShiftClick() ? 2 : 1));
+		}
+		
 	}
 
 }

@@ -1,5 +1,7 @@
 package de.rincewind.api.gui.components;
 
+import de.rincewind.api.gui.components.Locatable.Point;
+
 public interface Sizeable {
 	
 	/**
@@ -20,7 +22,7 @@ public interface Sizeable {
 	 * @param y The y-coordinate
 	 * @return If the Location P(x;y) is inside of the sizeable component
 	 */
-	public abstract boolean isInside(int x, int y);
+	public abstract boolean isInside(Point point);
 	
 	/**
 	 * 
