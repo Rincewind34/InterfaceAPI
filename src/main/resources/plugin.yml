@@ -1,0 +1,5 @@
+name: InterfaceAPI
+version: 2.0.0
+main: de.rincewind.plugin.InterfacePlugin
+
+author: Rincewind
