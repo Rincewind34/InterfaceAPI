@@ -34,7 +34,7 @@ public class InventoryClickListener implements Listener {
 				if (window instanceof CraftWindowContainer) {
 					CraftWindowContainer containerWindow = (CraftWindowContainer) window;
 					
-					WindowClickEvent event = new WindowClickEvent(containerWindow, slot, e.getCurrentItem());
+					WindowClickEvent event = new WindowClickEvent(containerWindow, slot, e.getCurrentItem(), e.isLeftClick(), e.isShiftClick());
 					containerWindow.getEventManager().callEvent(event);
 					
 					if (event.isCancelled()) {
@@ -42,7 +42,7 @@ public class InventoryClickListener implements Listener {
 					}
 					
 					if (event.removeItem() && !event.isInInterface()) {
-						player.getInventory().setItem(slot, null);
+						player.getInventory().setItem(e.getSlot(), null);
 					}
 					
 					if (!(containerWindow.getBukkitSize() > slot)) {

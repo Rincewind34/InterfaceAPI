@@ -22,27 +22,41 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 	
 	@Override
 	public Icon getIcon() {
-		return new Icon(this.icon);
+		if (this.icon == null) {
+			return null;
+		} else {
+			return new Icon(this.icon);
+		}
 	}
 
 	@Override
 	public Icon getDisabledIcon() {
-		return new Icon(this.disabledIcon);
+		if (this.disabledIcon == null) {
+			return null;
+		} else {
+			return new Icon(this.disabledIcon);
+		}
 	}
 	
 	@Override
 	public void setIcon(Icon icon) {
-		Validate.notNull(icon, "The icon cannot be null!");
+		if (icon != null) {
+			this.icon = icon.toItem();
+		} else {
+			this.icon = null;
+		}
 		
-		this.icon = icon.toItem();
 		this.getHandle().readItemsFrom(this);
 	}
 	
 	@Override
 	public void setDisabledIcon(Icon icon) {
-		Validate.notNull(icon, "The icon cannot be null!");
+		if (icon != null) {
+			this.disabledIcon = icon.toItem();
+		} else {
+			this.icon = null;
+		}
 		
-		this.disabledIcon = icon.toItem();
 		this.getHandle().readItemsFrom(this);
 	}
 	
@@ -75,10 +89,18 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 			return;
 		}
 		
-		if (!this.isEnabled() && this.disabledIcon != null) {
-			this.setItemAt(point, this.disabledIcon);
+		if (!this.isEnabled()) {
+			if (this.disabledIcon == null) {
+				this.setItemAt(point, Modifyable.EMPTY_USED_SLOT);
+			} else {
+				this.setItemAt(point, this.disabledIcon);
+			}
 		} else if (withIcon) {
-			this.setItemAt(point, this.icon);
+			if (this.icon == null) {
+				this.setItemAt(point, Modifyable.EMPTY_USED_SLOT);
+			} else {
+				this.setItemAt(point, this.icon);
+			}
 		}
 	}
 
