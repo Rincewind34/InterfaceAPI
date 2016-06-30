@@ -77,6 +77,8 @@ public abstract interface Element extends EventBased {
 	 */
 	public abstract void setPoint(Point point);
 	
+	public abstract void priorize();
+	
 	/**
 	 * Returns the width of this element. In this class, you cannot
 	 * change the size so the width is 1.

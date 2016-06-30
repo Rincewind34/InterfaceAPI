@@ -52,6 +52,11 @@ public abstract class CraftElement implements Element {
 	}
 	
 	@Override
+	public void priorize() {
+		this.handle.priorize(this);
+	}
+	
+	@Override
 	public Point getPoint() {
 		return this.point;
 	}
@@ -93,6 +98,10 @@ public abstract class CraftElement implements Element {
 	
 	@Override
 	public void setEnabled(boolean enable) {
+		if (this.enable == enable) {
+			return;
+		}
+		
 		this.enable = enable;
 		this.handle.readItemsFrom(this);
 	}
@@ -101,6 +110,10 @@ public abstract class CraftElement implements Element {
 	public void setPoint(Point point) {
 		Validate.notNull(point, "The point cannot be null!");
 		
+		if (this.point.equals(point)) {
+			return;
+		}
+		
 		this.handle.clearItemsFrom(this);
 		this.point = point;
 		this.handle.readItemsFrom(this);
@@ -108,6 +121,10 @@ public abstract class CraftElement implements Element {
 
 	@Override
 	public void setVisible(boolean visible) {
+		if (this.visible == visible) {
+			return;
+		}
+		
 		this.visible = visible;
 		this.handle.readItemsFrom(this);
 	}

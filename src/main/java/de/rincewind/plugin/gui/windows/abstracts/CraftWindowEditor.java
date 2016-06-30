@@ -150,6 +150,13 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		craftElement.iterate((point) -> {
 			Point trans = point.add(craftElement.getPoint().getX(), craftElement.getPoint().getY());
 			
+			if (!craftElement.isVisible()) {
+				if (this.hasVisibleElementAt(trans)) {
+					this.readItemsFrom(this.getVisibleElementAt(trans));
+					return;
+				}
+			}
+			
 			if (!this.hasVisibleElementAt(trans) || this.getVisibleElementAt(trans).equals(craftElement)) { /* Vlt überlappen sich Elemente */
 				this.setItem(trans, craftElement.getItemAt(point));
 			}
