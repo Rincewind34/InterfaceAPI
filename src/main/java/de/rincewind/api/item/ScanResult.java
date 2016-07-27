@@ -1,11 +1,10 @@
 package de.rincewind.api.item;
 
-import lib.securebit.ReflectionUtil;
-
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.item.categorys.Categorys;
 import de.rincewind.plugin.APIReflection;
+import lib.securebit.ReflectionUtil;
 
 public class ScanResult {
 	
@@ -18,10 +17,9 @@ public class ScanResult {
 		
 		this.nbtTagCompound = ReflectionUtil.createObject(APIReflection.METHOD_GETTAG, ReflectionUtil.createStaticObject(APIReflection.METHOD_NMSCOPY, this.item));
 		
-		if(this.nbtTagCompound == null) {
+		if (this.nbtTagCompound == null) {
 			this.nbtTagCompound = ReflectionUtil.createObject(APIReflection.CLASS_NBTTAG);
 		}
-
 	}
 	
 	public ItemStack getResult() {
@@ -71,6 +69,5 @@ public class ScanResult {
 	public long getLong(String key) {
 		return (long) ReflectionUtil.createObject(APIReflection.METHOD_NBT_GETLONG, this.nbtTagCompound, key);
 	}
-
 	
 }
