@@ -48,6 +48,9 @@ public abstract interface Element extends EventBased {
 	/**
 	 * Sets the position of this element.
 	 * 
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * 
 	 * @deprecated because of the new class {@link Point} summarizing
 	 * 				the x and y coordinate.
 	 * 

@@ -1,8 +1,7 @@
 package de.rincewind.api.gui.windows.util;
 
-import org.bukkit.entity.Player;
-
 import de.rincewind.api.gui.windows.abstracts.Window;
+import de.rincewind.api.setup.Setup;
 
 /**
  * This enum is used by {@link Window} to save the current window-state
@@ -10,7 +9,7 @@ import de.rincewind.api.gui.windows.abstracts.Window;
  * @author Rincewind34
  * @since 2.3.3
  * 
- * @see WindowManager
+ * @see Setup
  */
 public enum Status {
 	
@@ -21,7 +20,7 @@ public enum Status {
 	MAXIMIZED,
 	
 	/**
-	 * @see WindowManager#minimize(Player)
+	 * @see Setup#minimize()
 	 */
 	BACKGROUND,
 	
@@ -29,8 +28,8 @@ public enum Status {
 	 * If the window is in this state, the window is only opened and
 	 * you can close maximize it
 	 * 
-	 * @see WindowManager#close(Player, Window)
-	 * @see WindowManager#maximize(Player, Window)
+	 * @see Setup#close(Window)
+	 * @see Setup#maximize(Window)
 	 */
 	MINIMIZED;
 	

@@ -2,7 +2,6 @@ package de.rincewind.api.gui.windows.abstracts;
 
 import de.rincewind.api.gui.util.Color;
 import de.rincewind.api.gui.windows.WindowSizeable;
-import de.rincewind.api.gui.windows.util.WindowDefaults;
 
 /**
  * In this window you can set a background color, witch replaces
@@ -19,7 +18,7 @@ public abstract interface WindowColorable extends WindowEditor {
 	
 	/**
 	 * Returns the current set color. The default color is
-	 * {@value WindowDefaults#COLOR}.
+	 * <code>WindowDefaults#COLOR</code>.
 	 * 
 	 * @return the current set color
 	 */

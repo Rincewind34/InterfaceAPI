@@ -98,7 +98,7 @@ public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListI
 	 * Sets the color to a specified value. This method does not update the color
 	 * by its self to the handler ({@link Modifyable}).
 	 * 
-	 * @param color
+	 * @param color The color to set
 	 */
 	public abstract void setColor(Color color);
 	
@@ -151,7 +151,7 @@ public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListI
 	/**
 	 * Sets the {@link ItemModifier} used to modify the entry, witch is selected.
 	 * 
-	 * @param modifyer to set
+	 * @param modifier The modifier to set
 	 * 
 	 * @throws NullPointerException if the modifier is <code>null</code>
 	 */
@@ -203,7 +203,7 @@ public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListI
 	 * The value is only for you something to save in each entry.
 	 * 
 	 * @param <K> specifying value type. It is automaticly the same, you set in the root
-	 * 				class {@link ElementList} as the parameter <T>.
+	 * 				class {@link ElementList} as the parameter <code>T</code>.
 	 * 
 	 * @author Rincewind34
 	 * @since 2.3.3

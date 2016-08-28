@@ -167,7 +167,7 @@ public abstract interface Modifyable {
 	 * this object handles the element as an element added before all other
 	 * elements.
 	 * 
-	 * To reconfigure the items in the cache this method calls {@link Modifyable#clearItemsFromAll}
+	 * To reconfigure the items in the cache this method calls {@link Modifyable#clearItemsFrom(Element)}
 	 * and {@link Modifyable#readItemsFromAll()}.
 	 * 
 	 * @param element to priorize

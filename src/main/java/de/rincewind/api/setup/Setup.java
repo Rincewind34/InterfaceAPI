@@ -27,8 +27,6 @@ public interface Setup {
 	 * Returns all open windows of a player. If the player has not any open
 	 * windows this method will return an empty List.
 	 * 
-	 * @param player to get the open windows
-	 * 
 	 * @return all open windows of a player
 	 * 
 	 * @throws NullPointerException if the player is <b>null</b>
@@ -39,8 +37,6 @@ public interface Setup {
 	 * Returns the maximized window of a player. If the player does not 
 	 * have a maximized window this method will return <b>null</b>.
 	 * 
-	 * @param player to get the maximized window from
-	 * 
 	 * @return the maximized window
 	 * 
 	 * @throws NullPointerException if the player is <b>null</b>
@@ -50,7 +46,6 @@ public interface Setup {
 	/**
 	 * Returns the window-instance stored with the specified index.
 	 * 
-	 * @param player using the window
 	 * @param index to get the window
 	 * 
 	 * @return the window-instance stored with the specified index
@@ -65,8 +60,6 @@ public interface Setup {
 	 * Returns <b>true</b> if the player has a maximized window and
 	 * <b>false</b> if not.
 	 * 
-	 * @param player who has a maximized window
-	 * 
 	 * @return <b>true</b> if the player has a maximized window and
 	 * 			<b>false</b> is not
 	 * 
@@ -78,7 +71,7 @@ public interface Setup {
 	 * Returns <b>true</b> if the player has a opened a specified window-
 	 * instance and <b>false</b> if not.
 	 * 
-	 * @param player to check for a open window
+	 * @param window The window instance to check
 	 * 
 	 * @return <b>true</b> if the player has a maximized window and
 	 * 			<b>false</b> is not
@@ -93,15 +86,14 @@ public interface Setup {
 	 * window will be minimized. The current window will be maximized, if the player closes the new
 	 * window. The window, witch will be minimized, will get the {@link Status#BACKGROUND}.
 	 * If you do not want, that the current window will be maximized on 
-	 * closing the new window, invoke {@link Setup#minimize(Player)}
+	 * closing the new window, invoke {@link Setup#minimize()}
 	 * before opening the new window.
 	 * 
 	 * The {@link WindowOpenEvent} will be called in the {@link EventManager}.
 	 * 
 	 * To maximize the new window, the method 
-	 * {@link Setup#maximize(Player, Window)} will be called.
+	 * {@link Setup#maximize(Window)} will be called.
 	 * 
-	 * @param player open the window to
 	 * @param window to open
 	 * 
 	 * @throws NullPointerException if the player or the window is <b>null</b>.
@@ -114,11 +106,10 @@ public interface Setup {
 	 * in the state {@link Status#MAXIMIZED}. All other states are possible too and 
 	 * the window will be closed.
 	 * If the closing window is the maximized window of the given player
-	 * the method {@link Setup#minimize(Player)} will be called.
+	 * the method {@link Setup#minimize()} will be called.
 	 * 
 	 * The {@link WindowCloseEvent} will be called in the {@link EventManager}.
 	 * 
-	 * @param player close the window to
 	 * @param window to close
 	 * 
 	 * @throws NullPointerException if the player or the window is <b>null</b>
@@ -128,24 +119,21 @@ public interface Setup {
 	
 	/**
 	 * Closes the window stored with the given index, calling 
-	 * {@link Setup#close(Player, Window)}. To get the window to close 
-	 * the method {@link Setup#getWindow(Player, int)} will be used.
+	 * {@link Setup#close(Window)}. To get the window to close 
+	 * the method {@link Setup#getWindow(int)} will be used.
 	 * 
-	 * @param player close the window to
 	 * @param index to get the window to close.
 	 * 
-	 * @see Setup#getWindow(Player, int)
-	 * @see Setup#close(Player, Window)
+	 * @see Setup#getWindow(int)
+	 * @see Setup#close(Window)
 	 */
 	public abstract void close(int index);
 	
 	/**
 	 * Closes all open windows from a specified player, 
-	 * calling {@link Setup#close(Player, Window)}
+	 * calling {@link Setup#close(Window)}
 	 * 
-	 * @param player owing the windows to close
-	 * 
-	 * @see Setup#close(Player, Window)
+	 * @see Setup#close(Window)
 	 */
 	public abstract void closeAll();
 	
@@ -157,7 +145,6 @@ public interface Setup {
 	 * 
 	 * The {@link WindowMaximizeEvent} will be called in the {@link EventManager}.
 	 * 
-	 * @param player maximize the window to
 	 * @param window to maximize
 	 * 
 	 * @throws NullPointerException if the player or the window is <b>null</b>
@@ -168,14 +155,13 @@ public interface Setup {
 	
 	/**
 	 * Maximizes the window saved with a given index, calling 
-	 * {@link Setup#maximize(Player, Window)}. To get the window to maximize 
-	 * the method {@link Setup#getWindow(Player, int)} will be used.
+	 * {@link Setup#maximize(Window)}. To get the window to maximize 
+	 * the method {@link Setup#getWindow(int)} will be used.
 	 * 
-	 * @param player maximize the window to
 	 * @param index to get the window to maximize
 	 * 
-	 * @see Setup#getWindow(Player, int)
-	 * @see Setup#maximize(Player, Window)
+	 * @see Setup#getWindow(int)
+	 * @see Setup#maximize(Window)
 	 */
 	public abstract void maximize(int index);
 	
@@ -187,8 +173,6 @@ public interface Setup {
 	 * the first window with this state will be maximized with a little delay of one tick.
 	 * 
 	 * The {@link WindowMinimizeEvent} will be called in the {@link EventManager}.
-	 * 
-	 * @param player minimize the window to
 	 * 
 	 * @throws NullPointerException if the player is <b>null</b>
 	 */

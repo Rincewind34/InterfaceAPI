@@ -79,28 +79,15 @@ public class RefactorBook {
 			this(Arrays.asList(array));
 		}
 		
-		/**
-		 * Adds an string to this lore
-		 */
 		public Lore addElement(String element) {
 			this.pages.add(element);
 			return new Lore(this.pages);
 		}
 		
-		/**
-		 * Convert this lore into a List
-		 * 
-		 * @return The list
-		 */
 		public List<String> asList() {
 			return pages;
 		}
 		
-		/**
-		 * Convert this lore into an array
-		 * 
-		 * @return The array
-		 */
 		public String[] asArray() {
 			return this.pages.toArray(new String[this.pages.size()]);
 		}

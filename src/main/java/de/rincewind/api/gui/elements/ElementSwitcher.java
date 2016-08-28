@@ -78,7 +78,7 @@ public interface ElementSwitcher<T> extends ElementButton, Iterable<ElementSwitc
 	 * Removes a {@link SwitchItem} from this element. If that was the last added
 	 * entry, this element will not be longer displayed.
 	 * 
-	 * @param item
+	 * @param item The switch item to remove
 	 */
 	public abstract void removeSwitch(SwitchItem<T> item);
 	
@@ -111,7 +111,7 @@ public interface ElementSwitcher<T> extends ElementButton, Iterable<ElementSwitc
 	 * The value is only for you something to save in each entry.
 	 * 
 	 * @param <S> specifying value type. It is automaticly the same, you set in the root
-	 * 				class {@link ElementSwitcher} as the parameter <T>.
+	 * 				class {@link ElementSwitcher} as the parameter <code>T</code>.
 	 * 
 	 * @author Rincewind34
 	 * @since 2.3.3

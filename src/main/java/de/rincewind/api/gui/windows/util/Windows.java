@@ -56,7 +56,7 @@ public abstract class Windows {
 		
 	}
 	
-	public static abstract class WindowEnchatnerExtendable extends CraftWindowEnchanter {
+	public static abstract class WindowEnchanterExtendable extends CraftWindowEnchanter {
 		
 	}
 	

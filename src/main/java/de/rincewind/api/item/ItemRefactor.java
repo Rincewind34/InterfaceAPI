@@ -184,28 +184,15 @@ public class ItemRefactor {
 			this(Arrays.asList(array));
 		}
 		
-		/**
-		 * Adds an string to this lore
-		 */
 		public Lore addElement(String element) {
 			this.lore.add(element);
 			return new Lore(this.lore);
 		}
 		
-		/**
-		 * Convert this lore into a List
-		 * 
-		 * @return The list
-		 */
 		public List<String> asList() {
 			return this.lore;
 		}
 		
-		/**
-		 * Convert this lore into an array
-		 * 
-		 * @return The array
-		 */
 		public String[] asArray() {
 			return this.lore.toArray(new String[this.lore.size()]);
 		}

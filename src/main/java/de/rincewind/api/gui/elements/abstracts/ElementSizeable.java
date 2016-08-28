@@ -8,8 +8,6 @@ import de.rincewind.api.gui.components.Sizeable;
  * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see 
  */
 public interface ElementSizeable extends ElementDisplayable, Sizeable {
 	

@@ -2,7 +2,7 @@ package de.rincewind.api.gui.windows;
 
 import de.rincewind.api.exceptions.InvalidSlotException;
 import de.rincewind.api.gui.windows.abstracts.WindowEditor;
-import de.rincewind.api.gui.windows.util.Windows;
+import de.rincewind.api.gui.windows.util.Windows.WindowEnchanterExtendable;
 
 /**
  * This window is a BrewingInventory. To set elements in this window, you
@@ -20,7 +20,7 @@ import de.rincewind.api.gui.windows.util.Windows;
  * @author Rincewind34
  * @since 2.3.3
  * 
- * @see Windows.WindowEnchanterExtendable
+ * @see WindowEnchanterExtendable
  */
 public abstract interface WindowEnchanter extends WindowEditor {
 	
