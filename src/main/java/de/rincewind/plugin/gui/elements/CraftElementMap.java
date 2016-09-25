@@ -77,6 +77,18 @@ public class CraftElementMap<T> extends CraftElementSizeable implements ElementM
 	}
 	
 	@Override
+	public void removeItem(int index) {
+		this.items.remove(index);
+		this.getHandle().readItemsFrom(this);
+	}
+	
+	@Override
+	public void removeItem(MapItem<T> item) {
+		this.items.remove(item);
+		this.getHandle().readItemsFrom(this);
+	}
+	
+	@Override
 	public void sortItems(Comparator<T> comperator) {
 		this.items.sort((value1, value2) -> {
 			return comperator.compare(value1.getSave(), value2.getSave());

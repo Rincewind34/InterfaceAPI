@@ -18,6 +18,10 @@ public interface ElementMap<T> extends ElementSizeable {
 	
 	public abstract void addItem(MapItem<T> item);
 	
+	public abstract void removeItem(MapItem<T> item);
+	
+	public abstract void removeItem(int index);
+	
 	public abstract void sortItems(Comparator<T> comperator);
 	
 	public abstract void reverse();
