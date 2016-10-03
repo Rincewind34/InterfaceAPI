@@ -1,7 +1,7 @@
 package de.rincewind.api.gui.windows;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
 import org.bukkit.inventory.Inventory;
 
 import de.rincewind.api.gui.elements.util.Icon;
@@ -10,12 +10,12 @@ import de.rincewind.api.handling.events.WindowMinimizeEvent;
 import de.rincewind.api.handling.listener.WindowMaximizeListener;
 import de.rincewind.api.handling.listener.WindowMinimizeListener;
 import de.rincewind.plugin.gui.windows.abstracts.CraftWindow;
-import net.minecraft.server.v1_9_R2.BlockPosition;
-import net.minecraft.server.v1_9_R2.ChatMessage;
-import net.minecraft.server.v1_9_R2.ContainerAnvil;
-import net.minecraft.server.v1_9_R2.EntityHuman;
-import net.minecraft.server.v1_9_R2.EntityPlayer;
-import net.minecraft.server.v1_9_R2.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_10_R1.BlockPosition;
+import net.minecraft.server.v1_10_R1.ChatMessage;
+import net.minecraft.server.v1_10_R1.ContainerAnvil;
+import net.minecraft.server.v1_10_R1.EntityHuman;
+import net.minecraft.server.v1_10_R1.EntityPlayer;
+import net.minecraft.server.v1_10_R1.PacketPlayOutOpenWindow;
 
 public class WindowAnvil extends CraftWindow {
 	

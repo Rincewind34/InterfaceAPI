@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-aerion</artifactId>
-			<version>1.9.4</version>
+			<version>1.10.2</version>
 		</dependency>
 	</dependencies>
 
