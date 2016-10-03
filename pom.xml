@@ -3,16 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.rincewind</groupId>
 	<artifactId>interfaceapi</artifactId>
-	<version>2.0.3</version>
+	<version>2.0.4</version>
 
 	<repositories>
 		<repository>
-			<id>aerion</id>
-			<url>http://51.254.160.224:8081/nexus/content/repositories/aerion</url>
-		</repository>
-		<repository>
-			<id>aerion-thirdparty</id>
-			<url>http://51.254.160.224:8081/nexus/content/repositories/aerion-thirdparty</url>
+			<id>aerion-group</id>
+			<url>http://dev.thejourneyofaerion.net:8081/repository/aerion-group/</url>
 		</repository>
 	</repositories>
 
@@ -20,7 +16,7 @@
 		<repository>
 			<id>aerion</id>
 			<name>Aerion Internal Repository</name>
-			<url>http://51.254.160.224:8081/nexus/content/repositories/aerion</url>
+			<url>http://dev.thejourneyofaerion.net:8081/repository/aerion</url>
 		</repository>
 	</distributionManagement>
 
