@@ -96,6 +96,11 @@ public class Icon {
 		return this;
 	}
 	
+	public Icon count(int amount) {
+		this.item.setAmount(amount);
+		return this;
+	}
+	
 	public ItemStack toItem() {
 		return this.item;
 	}
