@@ -57,9 +57,9 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 			
 			for (int i = 0; i < this.size(); i++) {
 				if (i == this.switchid) {
-					lore.addElement(String.format(this.selectFormat, this.list.get(i)));
+					lore.add(String.format(this.selectFormat, this.list.get(i)));
 				} else {
-					lore.addElement(String.format(this.defaultFormat, this.list.get(i)));
+					lore.add(String.format(this.defaultFormat, this.list.get(i)));
 				}
 			}
 			

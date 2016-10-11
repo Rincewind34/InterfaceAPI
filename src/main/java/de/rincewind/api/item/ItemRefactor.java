@@ -184,9 +184,19 @@ public class ItemRefactor {
 			this(Arrays.asList(array));
 		}
 		
+		public Lore add(String element) {
+			this.lore.add(element);
+			return this;
+		}
+		
+		@Deprecated
 		public Lore addElement(String element) {
 			this.lore.add(element);
 			return new Lore(this.lore);
+		}
+		
+		public String getLine(int i) {
+			return this.lore.get(i);
 		}
 		
 		public List<String> asList() {

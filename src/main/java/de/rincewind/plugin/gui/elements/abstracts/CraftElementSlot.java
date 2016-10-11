@@ -53,6 +53,11 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 	}
 	
 	@Override
+	public ItemStack getCurrentContent() {
+		return this.getContent().clone();
+	}
+	
+	@Override
 	public void setEnabled(boolean enable) {
 		super.setEnabled(enable);
 		

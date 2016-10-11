@@ -45,13 +45,13 @@ public class CraftElementInfo extends CraftElementDisplayable implements Element
 	
 	protected Lore createLore(List<String> info) {
 		Lore lore = new Lore();
-		lore.addElement("§8====================");
+		lore.add("§8====================");
 		
 		for (String element : info) {
-			lore.addElement("  " + element);
+			lore.add("  " + element);
 		}
 		
-		lore.addElement("§8====================");
+		lore.add("§8====================");
 		return lore;
 	}
 	

@@ -1,7 +1,5 @@
 package de.rincewind.api.gui.elements.util;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -57,11 +55,6 @@ public class Icon {
 		return this;
 	}
 	
-	@Deprecated
-	public Icon describe(List<String> lore) {
-		return this.describe(new Lore(lore));
-	}
-	
 	public Icon showInfo(boolean info) {
 		if (info) {
 			this.item = ItemLibary.refactor().removeAllFlags(this.item);
@@ -84,6 +77,14 @@ public class Icon {
 	
 	public String getName() {
 		return this.item.getItemMeta().getDisplayName();
+	}
+	
+	public Lore getLore() {
+		if (this.item.getItemMeta().hasLore()) {
+			return null;
+		} else {
+			return new Lore(this.item.getItemMeta().getLore());
+		}
 	}
 	
 	public Icon unenchant() {

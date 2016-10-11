@@ -1,5 +1,7 @@
 package de.rincewind.api.gui.elements.abstracts;
 
+import org.bukkit.inventory.ItemStack;
+
 import de.rincewind.api.gui.elements.ElementInput;
 import de.rincewind.api.gui.elements.ElementOutput;
 import de.rincewind.api.gui.elements.ElementScanner;
@@ -27,5 +29,7 @@ public abstract interface ElementSlot extends Element {
 	 * 			if not
 	 */
 	public abstract boolean isEmpty();
-
+	
+	public abstract ItemStack getCurrentContent();
+	
 }

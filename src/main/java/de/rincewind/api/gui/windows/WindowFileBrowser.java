@@ -216,10 +216,10 @@ public class WindowFileBrowser extends WindowSizeableExtendable {
 		this.renderToolbar();
 		
 		Lore lore = new Lore()
-				.addElement("§8====================")
-				.addElement("  §7Current Dir: §6" + this.browser.getMatchingDirectory().getName())
-				.addElement("  §7Filecount: §6" + this.browser.getMatchingDirectory().listFiles().length)
-				.addElement("§8====================");
+				.add("§8====================")
+				.add("  §7Current Dir: §6" + this.browser.getMatchingDirectory().getName())
+				.add("  §7Filecount: §6" + this.browser.getMatchingDirectory().listFiles().length)
+				.add("§8====================");
 		
 		this.itemInfo.setIcon(this.itemInfo.getIcon().describe(lore));
 	}
