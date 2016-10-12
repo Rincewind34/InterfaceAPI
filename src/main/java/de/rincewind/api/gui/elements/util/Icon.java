@@ -80,7 +80,7 @@ public class Icon {
 	}
 	
 	public Lore getLore() {
-		if (this.item.getItemMeta().hasLore()) {
+		if (!this.item.getItemMeta().hasLore()) {
 			return null;
 		} else {
 			return new Lore(this.item.getItemMeta().getLore());
