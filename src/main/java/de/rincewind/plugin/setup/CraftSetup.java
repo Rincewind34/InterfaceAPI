@@ -124,6 +124,7 @@ public class CraftSetup implements Setup {
 		}
 		
 		window.getEventManager().callEvent(new WindowCloseEvent(window));
+		((CraftWindow) window).setUser(null);
 		this.windows.remove(window);
 	}
 

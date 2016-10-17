@@ -1,6 +1,5 @@
 package de.rincewind.plugin.gui.windows.abstracts;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 
 import de.rincewind.api.gui.util.EventManager;
@@ -75,8 +74,6 @@ public abstract class CraftWindow implements Window {
 	}
 	
 	public void setUser(Player player) {
-		Validate.notNull(player);
-		
 		this.player = player;
 	}
 	
