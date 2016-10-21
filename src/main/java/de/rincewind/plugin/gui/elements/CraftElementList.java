@@ -102,6 +102,8 @@ public class CraftElementList<T> extends CraftElementSizeable implements Element
 				}
 			}
 		}
+		
+		this.updateItemMap(false);
 	}
 
 	@Override
