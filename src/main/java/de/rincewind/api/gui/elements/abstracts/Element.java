@@ -24,42 +24,6 @@ import de.rincewind.api.gui.windows.abstracts.WindowColorable;
 public abstract interface Element extends EventBased {
 	
 	/**
-	 * Returns the x-coordinate of this element.
-	 * 
-	 * @return the x-coordinate of this element.
-	 * 
-	 * @deprecated because of the new class {@link Point} summarizing
-	 * 				the x and y coordinate.
-	 */
-	@Deprecated
-	public abstract int getX();
-	
-	/**
-	 * Returns the y-coordinate of this element.
-	 * 
-	 * @return the y-coordinate of this element.
-	 * 
-	 * @deprecated because of the new class {@link Point} summarizing
-	 * 				the x and y coordinate.
-	 */
-	@Deprecated
-	public abstract int getY();
-	
-	/**
-	 * Sets the position of this element.
-	 * 
-	 * @param x The x coordinate
-	 * @param y The y coordinate
-	 * 
-	 * @deprecated because of the new class {@link Point} summarizing
-	 * 				the x and y coordinate.
-	 * 
-	 * @see Element#setPoint(Point)
-	 */
-	@Deprecated
-	public abstract void setPosition(int x, int y);
-	
-	/**
 	 * Returns the position of this element.
 	 * 
 	 * @return the position of this element

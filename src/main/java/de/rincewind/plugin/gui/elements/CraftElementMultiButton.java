@@ -70,12 +70,6 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 	}
 
 	@Override
-	@Deprecated
-	public void setIcon(ItemStack item) {
-		this.setIcon(new Icon(item));
-	}
-
-	@Override
 	public String next() {
 		this.setSwitchId(this.switchid + 1); // TODO check, if this element is
 												// selected

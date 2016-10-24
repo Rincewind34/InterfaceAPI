@@ -1,6 +1,5 @@
 package de.rincewind.plugin.gui.elements.abstracts;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.components.Modifyable;
@@ -63,24 +62,6 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 	@Override
 	public void updateItemMap() {
 		this.updateItemMap(Point.atNull(), true);
-	}
-	
-	@Override
-	@Deprecated
-	public void setIcon(ItemStack item) {
-		Validate.notNull(item, "The item cannot be null!");
-		
-		this.icon = item;
-		this.getHandle().readItemsFrom(this);
-	}
-	
-	@Override
-	@Deprecated
-	public void setDisabledIcon(ItemStack item) {
-		Validate.notNull(item, "The item cannot be null!");
-		
-		this.disabledIcon = item;
-		this.getHandle().readItemsFrom(this);
 	}
 	
 	protected final void updateItemMap(Point point, boolean withIcon) {

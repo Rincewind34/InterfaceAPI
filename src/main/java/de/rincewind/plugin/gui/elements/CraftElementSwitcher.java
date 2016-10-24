@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.bukkit.inventory.ItemStack;
-
 import de.rincewind.api.exceptions.APIException;
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementSwitcher;
@@ -29,12 +27,6 @@ public class CraftElementSwitcher<T> extends CraftElementButton implements Eleme
 	@Override
 	public void setIcon(Icon icon) {
 		throw new APIException("Cannot set icon of elementswitch!");
-	}
-
-	@Override
-	@Deprecated
-	public void setIcon(ItemStack item) {
-		this.setIcon(new Icon(item));
 	}
 
 	@Override
