@@ -184,15 +184,64 @@ public class ItemRefactor {
 			this(Arrays.asList(array));
 		}
 		
-		public Lore add(String element) {
-			this.lore.add(element);
+		public Lore split() {
+			return this.split("\\n");
+		}
+		
+		public Lore split(String spliter) {
+			List<String> result = new ArrayList<>();
+			
+			for (String element : this.lore) {
+				result.addAll(Arrays.asList(element.split(spliter))); // TODO escape regex
+			}
+			
+			this.lore = result;
 			return this;
 		}
 		
-		@Deprecated
-		public Lore addElement(String element) {
+		public Lore color(String color) {
+			return this.color(color, this.lore.size() - 1);
+		}
+		
+		public Lore color(String color, int end) {
+			return this.color(color, 0, end);
+		}
+		
+		public Lore color(String color, int begin, int end) {
+			for (int i = begin; i <= end; i++) {
+				this.lore.set(i, color + this.lore.get(i));
+			}
+			
+			return this;
+		}
+		
+		public Lore moveIn(int amount) {
+			return this.moveIn(amount, this.lore.size() - 1);
+		}
+		
+		public Lore moveIn(int amount, int end) {
+			return this.moveIn(amount, 0, end);
+		}
+		
+		public Lore moveIn(int amount, int begin, int end) {
+			StringBuilder builder = new StringBuilder();
+			
+			for (int i = 0; i < amount; i++) {
+				builder.append(" ");
+			}
+			
+			String movement = builder.toString();
+			
+			for (int i = begin; i <= end; i++) {
+				this.lore.set(i, movement + this.lore.get(i));
+			}
+			
+			return this;
+		}
+		
+		public Lore add(String element) {
 			this.lore.add(element);
-			return new Lore(this.lore);
+			return this;
 		}
 		
 		public String getLine(int i) {
