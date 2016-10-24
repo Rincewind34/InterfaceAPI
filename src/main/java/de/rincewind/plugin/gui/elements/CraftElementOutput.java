@@ -44,7 +44,7 @@ public class CraftElementOutput extends CraftElementSlot implements ElementOutpu
 		super.handleClick(event);
 		
 		if (!empty && this.isEmpty()) {
-			this.getEventManager().callEvent(new OutputConsumeEvent(this, (Player) event.getWhoClicked()));
+			this.getEventManager().callEvent(OutputConsumeEvent.class, new OutputConsumeEvent(this, (Player) event.getWhoClicked()));
 		}
 	}
 	

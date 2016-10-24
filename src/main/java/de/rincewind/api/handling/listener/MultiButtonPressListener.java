@@ -2,6 +2,7 @@ package de.rincewind.api.handling.listener;
 
 import de.rincewind.api.handling.events.MultiButtonPressEvent;
 
+@Deprecated
 public abstract class MultiButtonPressListener implements ElementListener<MultiButtonPressEvent> {
 
 	@Override

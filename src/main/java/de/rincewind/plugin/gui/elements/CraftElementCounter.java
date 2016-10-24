@@ -1,7 +1,5 @@
 package de.rincewind.plugin.gui.elements;
 
-import lib.securebit.Validate;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -11,8 +9,9 @@ import de.rincewind.api.gui.elements.ElementCounter;
 import de.rincewind.api.gui.elements.util.ElementDefaults;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
+import de.rincewind.api.handling.InterfaceListener;
 import de.rincewind.api.handling.events.ButtonPressEvent;
-import de.rincewind.api.handling.listener.ButtonPressListener;
+import lib.securebit.Validate;
 
 public class CraftElementCounter extends CraftElementButton implements ElementCounter {
 
@@ -110,9 +109,9 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 	public void addIncrementer(ElementButton btn, int value) {
 		Validate.notNull(btn, "The button cannot be null!");
 		
-		//TODO Exception if value is 0
+		// TODO Exception if value is 0
 		
-		btn.getEventManager().registerListener(new ActionHandler(value)).addAfter();
+		btn.getEventManager().registerListener(ButtonPressEvent.class, new ActionHandler(value)).addAfter();
 	}
 	
 	@Override
@@ -124,7 +123,7 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 	}
 	
 	
-	private class ActionHandler extends ButtonPressListener {
+	private class ActionHandler implements InterfaceListener<ButtonPressEvent> {
 
 		private int value;
 		
@@ -133,7 +132,7 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 		}
 		
 		@Override
-		public void onFire(ButtonPressEvent event) {
+		public void onAction(ButtonPressEvent event) {
 			CraftElementCounter.this.setCount(CraftElementCounter.this.getCount() + this.value * (event.isShiftClick() ? 2 : 1));
 		}
 		

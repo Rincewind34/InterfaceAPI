@@ -8,7 +8,6 @@ import de.rincewind.api.InterfaceAPI;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.abstracts.WindowContainer;
 import de.rincewind.api.handling.events.WindowMaximizeEvent;
-import de.rincewind.api.handling.listener.WindowMaximizeListener;
 import de.rincewind.plugin.setup.CraftSetup;
 
 public abstract class CraftWindowContainer extends CraftWindowNameable implements WindowContainer {
@@ -18,12 +17,8 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 	public CraftWindowContainer() {
 		super();
 		
-		this.getEventManager().registerListener(new WindowMaximizeListener() {
-			
-			@Override
-			public void onFire(WindowMaximizeEvent event) {
-				CraftWindowContainer.this.reconfigurate();
-			}
+		this.getEventManager().registerListener(WindowMaximizeEvent.class, (event) -> {
+			this.reconfigurate();
 		}).addAfter();
 	}
 	

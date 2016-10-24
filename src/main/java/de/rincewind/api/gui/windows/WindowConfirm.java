@@ -10,16 +10,13 @@ import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.util.Color;
 import de.rincewind.api.gui.windows.util.Windows.WindowSizeableExtendable;
+import de.rincewind.api.handling.InterfaceListener;
 import de.rincewind.api.handling.events.ButtonPressEvent;
-import de.rincewind.api.handling.listener.ButtonPressListener;
 import de.rincewind.api.item.IconCreator;
 
 public class WindowConfirm extends WindowSizeableExtendable {
 	
 	private Consumer<Boolean> action;
-	
-	private ElementButton btnDeny;
-	private ElementButton btnConfirm;
 	
 	public WindowConfirm(String name, Consumer<Boolean> action) {
 		this(name, action, 5);
@@ -36,37 +33,39 @@ public class WindowConfirm extends WindowSizeableExtendable {
 	}
 	
 	public WindowConfirm(String name, Consumer<Boolean> action, int width, Icon iconConfirm, Icon iconDeny) {
-		super.setName(name);
-		super.setSize(width, 1);
-		super.setColor(Color.BLACK);
+		this.setName(name);
+		this.setSize(width, 1);
+		this.setColor(Color.BLACK);
 		
 		this.action = action;
 		
-		this.btnConfirm = this.elementCreator().newButton();
-		this.btnConfirm.setIcon(iconConfirm);
-		this.btnConfirm.setPoint(new Point(0, 0));
-		this.btnConfirm.getEventManager().registerListener(new ActionHandler()).addAfter();
+		ElementButton btnConfirm = this.elementCreator().newButton();
+		btnConfirm.setIcon(iconConfirm);
+		btnConfirm.setPoint(new Point(0, 0));
+		btnConfirm.getEventManager().registerListener(ButtonPressEvent.class, this.new ActionHandler(true)).addAfter();
 	
-		this.btnDeny = this.elementCreator().newButton();
-		this.btnDeny.setIcon(iconDeny);
-		this.btnDeny.setPoint(new Point(width - 1, 0));
-		this.btnDeny.getEventManager().registerListener(new ActionHandler()).addAfter();
+		ElementButton btnDeny = this.elementCreator().newButton();
+		btnDeny.setIcon(iconDeny);
+		btnDeny.setPoint(new Point(width - 1, 0));
+		btnDeny.getEventManager().registerListener(ButtonPressEvent.class, this.new ActionHandler(true)).addAfter();
 	}
 	
 	public Consumer<Boolean> getAction() {
 		return this.action;
 	}
 	
-	private class ActionHandler extends ButtonPressListener {
-
+	
+	private class ActionHandler implements InterfaceListener<ButtonPressEvent> {
+		
+		private boolean accept;
+		
+		private ActionHandler(boolean accept) {
+			this.accept = accept;
+		}
+		
 		@Override
-		public void onFire(ButtonPressEvent event) {
-			if (event.getElement() == WindowConfirm.this.btnConfirm) {
-				WindowConfirm.this.action.accept(true);
-			} else if (event.getElement() == WindowConfirm.this.btnDeny) {
-				WindowConfirm.this.action.accept(false);
-			}
-			
+		public void onAction(ButtonPressEvent event) {
+			WindowConfirm.this.action.accept(this.accept);
 			InterfaceAPI.getSetup(WindowConfirm.this.getUser()).close(WindowConfirm.this);
 		}
 		

@@ -6,6 +6,7 @@ import de.rincewind.api.exceptions.APIException;
 import de.rincewind.api.gui.components.EventBased;
 import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.windows.abstracts.Window;
+import de.rincewind.api.handling.InterfaceListener;
 import de.rincewind.api.handling.events.Event;
 import de.rincewind.api.handling.listener.Listener;
 import de.rincewind.plugin.gui.util.CraftEventManager;
@@ -24,6 +25,7 @@ import lib.securebit.Validate;
  * 
  * @see EventBased
  */
+@SuppressWarnings("deprecation")
 public interface EventManager {
 	
 	/**
@@ -34,6 +36,7 @@ public interface EventManager {
 	 * 
 	 * @return all registered listeners
 	 */
+	@Deprecated
 	public abstract List<Listener<?>> getListeners();
 	
 	/**
@@ -48,7 +51,10 @@ public interface EventManager {
 	 * 
 	 * @throws NullPointerException if the event-class is <b>null</b>
 	 */
+	@Deprecated
 	public abstract List<Listener<?>> getListeners(Class<? extends Event<?>> eventClass);
+	
+	public abstract <E extends Event<?>> List<InterfaceListener<E>> getRegisteredListeners(Class<E> eventClass);
 	
 	/**
 	 * Returns a created ListenerBase-instance to register a given listener.
@@ -59,7 +65,10 @@ public interface EventManager {
 	 * 
 	 * @throws NullPointerException if the listener is <b>null</b>
 	 */
-	public abstract ListenerBase registerListener(Listener<?> listener);
+	@Deprecated
+	public abstract <E extends Event<?>> ListenerBase<E> registerListener(Listener<E> listener);
+	
+	public abstract <E extends Event<?>> ListenerBase<E> registerListener(Class<E> eventCls, InterfaceListener<E> listener);
 	
 	/**
 	 * Executing all registered listeners matching to the fired event.
@@ -68,18 +77,10 @@ public interface EventManager {
 	 * 
 	 * @throws NullPointerException if the event is <b>null</b>
 	 */
-	public abstract <E extends Event<?>> void callEvent(E event);
-	
-	/**
-	 * Registers a listener.
-	 * 
-	 * @param listener to register
-	 * 
-	 * @deprecated because of the new {@link ListenerBase}. It is recommended
-	 * 				to use {@link EventManager#registerListener(Listener)} 
-	 */
 	@Deprecated
-	public abstract void addListener(Listener<?> listener);
+	public abstract void callEvent(Object event);
+	
+	public abstract <E extends Event<?>> void callEvent(Class<E> eventCls, E event);
 	
 	/**
 	 * This class is a dummy to let the user decide if the listener to register has to
@@ -93,18 +94,20 @@ public interface EventManager {
 	 * 
 	 * @see EventManager#registerListener(Listener)
 	 */
-	public static class ListenerBase {
+	public static class ListenerBase<E extends Event<?>> {
 		
-		private Listener<?> listener;
+		private Class<E> eventCls;
+		private InterfaceListener<E> listener;
 		
 		private CraftEventManager manager;
 		
 		private boolean added;
 		
-		public ListenerBase(Listener<?> listener, CraftEventManager manager) {
+		public ListenerBase(Class<E> eventCls, InterfaceListener<E> listener, CraftEventManager manager) {
 			Validate.notNull(listener, "The listener cannot be null!");
 			Validate.notNull(manager, "The eventManager cannot be null!");
 			
+			this.eventCls = eventCls;
 			this.listener = listener;
 			this.manager = manager;
 			this.added = false;
@@ -118,7 +121,7 @@ public interface EventManager {
 				throw new APIException("The listenerbase was already added!");
 			}
 			
-			this.manager.addListenerAfter(this.listener);
+			this.manager.addListenerAfter(this.eventCls, this.listener);
 			this.added = true;
 		}
 		
@@ -130,7 +133,7 @@ public interface EventManager {
 				throw new APIException("The listenerbase was already added!");
 			}
 			
-			this.manager.addListenerBefore(this.listener);
+			this.manager.addListenerBefore(this.eventCls, this.listener);
 			this.added = true;
 		}
 		

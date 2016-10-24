@@ -14,6 +14,7 @@ import de.rincewind.api.setup.FileType;
 import de.rincewind.api.setup.Program;
 import de.rincewind.api.setup.Setup;
 
+@Deprecated
 public class CraftFileBrowser implements FileBrowser {
 	
 	private Setup setup;

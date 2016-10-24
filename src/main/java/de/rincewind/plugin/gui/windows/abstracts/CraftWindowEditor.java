@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lib.securebit.ReflectionUtil;
-import lib.securebit.Validate;
-
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.exceptions.APIException;
@@ -17,8 +14,9 @@ import de.rincewind.api.gui.elements.util.ElementCreator;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.abstracts.WindowEditor;
 import de.rincewind.api.handling.events.WindowMaximizeEvent;
-import de.rincewind.api.handling.listener.WindowMaximizeListener;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElement;
+import lib.securebit.ReflectionUtil;
+import lib.securebit.Validate;
 
 public abstract class CraftWindowEditor extends CraftWindowContainer implements WindowEditor {
 
@@ -35,12 +33,8 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		this.items = new HashMap<Integer, Map<Integer,ItemStack>>();
 		this.creator = new ElementCreator(this);
 		
-		this.getEventManager().registerListener(new WindowMaximizeListener() {
-			
-			@Override
-			public void onFire(WindowMaximizeEvent event) {
-				CraftWindowEditor.this.readItemsFromAll();
-			}
+		this.getEventManager().registerListener(WindowMaximizeEvent.class, (event) -> {
+			this.readItemsFromAll();
 		}).addBefore();
 	}
 	

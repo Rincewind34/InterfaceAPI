@@ -50,7 +50,7 @@ public class CraftElementMap<T> extends CraftElementSizeable implements ElementM
 		MapItem<?> item = this.getItem(point);
 		
 		if (item != null) {
-			this.getEventManager().callEvent(new MapClickEvent(this, point, this.getItem(point)));
+			this.getEventManager().callEvent(MapClickEvent.class, new MapClickEvent(this, point, this.getItem(point)));
 		}
 	}
 	

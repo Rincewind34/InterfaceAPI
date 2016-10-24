@@ -12,8 +12,8 @@ import de.rincewind.api.gui.elements.ElementItem;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.WindowPointer;
+import de.rincewind.api.handling.InterfaceListener;
 import de.rincewind.api.handling.events.ButtonPressEvent;
-import de.rincewind.api.handling.listener.ButtonPressListener;
 
 public class CraftWindowPointer extends CraftWindowSizeable implements WindowPointer {
 
@@ -35,10 +35,10 @@ public class CraftWindowPointer extends CraftWindowSizeable implements WindowPoi
 		return this.action;
 	}
 
-	private class ActionHandler extends ButtonPressListener {
+	private class ActionHandler implements InterfaceListener<ButtonPressEvent> {
 		
 		@Override
-		public void onFire(ButtonPressEvent event) {
+		public void onAction(ButtonPressEvent event) {
 			CraftWindowPointer.this.action.accept(event.getElement().getPoint());
 			InterfaceAPI.getSetup(getUser()).close(CraftWindowPointer.this);
 		}
@@ -77,7 +77,7 @@ public class CraftWindowPointer extends CraftWindowSizeable implements WindowPoi
 			ElementButton element = this.elementCreator().newButton();
 			element.setPoint(point);
 			element.setIcon(new Icon(Material.STAINED_GLASS_PANE, 13));
-			element.getEventManager().registerListener(new ActionHandler()).addAfter();
+			element.getEventManager().registerListener(ButtonPressEvent.class, new ActionHandler()).addAfter();
 		});
 	}
 	

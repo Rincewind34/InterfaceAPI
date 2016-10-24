@@ -19,6 +19,7 @@ public interface Setup {
 	
 	public abstract void setClipBoard(String clipBoard);
 	
+	@Deprecated
 	public abstract FileBrowser getFileBrowser();
 	
 	public abstract Player getOwner();

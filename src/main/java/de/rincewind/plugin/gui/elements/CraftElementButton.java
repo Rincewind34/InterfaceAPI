@@ -9,17 +9,15 @@ import de.rincewind.api.handling.events.ButtonPressEvent;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementSizeable;
 
 public class CraftElementButton extends CraftElementSizeable implements ElementButton {
-	
+
 	public CraftElementButton(Modifyable handle) {
 		super(handle);
 	}
-	
+
 	@Override
 	public void handleClick(InventoryClickEvent event) {
-		this.getEventManager().callEvent(new ButtonPressEvent(
-				(Player) event.getWhoClicked(),
-				this, event.isRightClick(),
-				event.isShiftClick()));
+		this.getEventManager().callEvent(ButtonPressEvent.class,
+				new ButtonPressEvent((Player) event.getWhoClicked(), this, event.isRightClick(), event.isShiftClick()));
 	}
 
 }

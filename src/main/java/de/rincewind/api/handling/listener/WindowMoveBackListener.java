@@ -2,6 +2,7 @@ package de.rincewind.api.handling.listener;
 
 import de.rincewind.api.handling.events.WindowMoveBackEvent;
 
+@Deprecated
 public abstract class WindowMoveBackListener implements WindowListener<WindowMoveBackEvent> {
 
 	@Override

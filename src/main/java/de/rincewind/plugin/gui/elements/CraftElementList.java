@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import lib.securebit.Validate;
-
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -19,13 +17,14 @@ import de.rincewind.api.gui.elements.ElementList;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.util.Color;
 import de.rincewind.api.gui.util.Directionality;
+import de.rincewind.api.handling.InterfaceListener;
 import de.rincewind.api.handling.events.ButtonPressEvent;
 import de.rincewind.api.handling.events.ListSelectEvent;
 import de.rincewind.api.handling.events.ListUnselectEvent;
-import de.rincewind.api.handling.listener.ButtonPressListener;
 import de.rincewind.api.item.ItemLibary;
 import de.rincewind.api.item.ItemModifier;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementSizeable;
+import lib.securebit.Validate;
 
 public class CraftElementList<T> extends CraftElementSizeable implements ElementList<T> {
 
@@ -188,7 +187,7 @@ public class CraftElementList<T> extends CraftElementSizeable implements Element
 		if (0 <= index && index < this.getSize()) {
 			this.selected = index + this.startIndex;
 			this.getHandle().readItemsFrom(this);
-			this.getEventManager().callEvent(new ListSelectEvent<T>(this));
+			this.getEventManager().callEvent(ListSelectEvent.class, new ListSelectEvent<T>(this));
 		}
 	}
 
@@ -196,7 +195,7 @@ public class CraftElementList<T> extends CraftElementSizeable implements Element
 	public void unselect() {
 		this.selected = -1;
 		this.getHandle().readItemsFrom(this);
-		this.getEventManager().callEvent(new ListUnselectEvent<T>(this));
+		this.getEventManager().callEvent(ListUnselectEvent.class, new ListUnselectEvent<T>(this));
 	}
 
 	@Override
@@ -236,7 +235,7 @@ public class CraftElementList<T> extends CraftElementSizeable implements Element
 		//TODO exception if the value is 0
 		Validate.notNull(btn, "The button cannot be null!");
 		
-		btn.getEventManager().registerListener(new ActionHandler(value)).addAfter();
+		btn.getEventManager().registerListener(ButtonPressEvent.class, new ActionHandler(value)).addAfter();
 	}
 	
 	@Override
@@ -244,23 +243,6 @@ public class CraftElementList<T> extends CraftElementSizeable implements Element
 		return this.selected >= 0;
 	}
 	
-	
-	private class ActionHandler extends ButtonPressListener {
-
-		private int value;
-		
-		private ActionHandler(int value) {
-			this.value = value;
-		}
-		
-		@Override
-		public void onFire(ButtonPressEvent event) {
-			CraftElementList.this.setStartIndex(CraftElementList.this.getStartIndex() + (this.value * (event.isShiftClick() ? 2 : 1)));
-		}
-		
-	}
-
-
 	@Override
 	public Iterator<ListItem<T>> iterator() {
 		return this.items.iterator();
@@ -278,6 +260,21 @@ public class CraftElementList<T> extends CraftElementSizeable implements Element
 	@Override
 	public int getSize() {
 		return this.items.size();
+	}
+	
+	private class ActionHandler implements InterfaceListener<ButtonPressEvent> {
+
+		private int value;
+		
+		private ActionHandler(int value) {
+			this.value = value;
+		}
+		
+		@Override
+		public void onAction(ButtonPressEvent event) {
+			CraftElementList.this.setStartIndex(CraftElementList.this.getStartIndex() + (this.value * (event.isShiftClick() ? 2 : 1)));
+		}
+		
 	}
 
 }

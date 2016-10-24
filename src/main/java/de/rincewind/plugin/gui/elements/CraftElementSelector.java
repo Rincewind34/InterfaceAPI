@@ -10,25 +10,24 @@ import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.abstracts.Window;
 import de.rincewind.api.handling.events.ItemSelectEvent;
 import de.rincewind.api.handling.events.WindowClickEvent;
-import de.rincewind.api.handling.listener.WindowClickListener;
 import de.rincewind.api.item.ItemSelector;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementDisplayable;
 
 public class CraftElementSelector extends CraftElementDisplayable implements ElementSelector {
-	
+
 	private boolean emptySlot;
-	
+
 	private boolean isSelecting;
 	private boolean canUnselect;
 	private boolean isPullingOnlyOne;
-	
+
 	private ItemStack selected;
-	
+
 	private ItemSelector selector;
-	
+
 	public CraftElementSelector(Modifyable handle) {
 		super(handle);
-		
+
 		this.emptySlot = false;
 		this.isSelecting = false;
 		this.canUnselect = false;
@@ -58,12 +57,12 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	public void canUnselect(boolean value) {
 		this.canUnselect = value;
 	}
-	
+
 	@Override
 	public void setSelected(ItemStack item) {
 		this.setSelected(item, true);
 	}
-	
+
 	@Override
 	public void setSelected(ItemStack item, boolean fireEvent) {
 		if (item != null && this.isPullingOnlyOne && item.getAmount() > 1) {
@@ -71,32 +70,27 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 			select.setAmount(1);
 			this.setSelected(select);
 		}
-		
+
 		this.selected = item;
 		this.getHandle().readItemsFrom(this);
-		
+
 		if (fireEvent) {
-			this.getEventManager().callEvent(new ItemSelectEvent(this));
+			this.getEventManager().callEvent(ItemSelectEvent.class, new ItemSelectEvent(this));
 		}
 	}
 
 	@Override
 	public void registerTarget(Window window) {
-		window.getEventManager().registerListener(new WindowClickListener() {
-			
-			@Override
-			public void onFire(WindowClickEvent event) {
-				if (CraftElementSelector.this.isSelecting) {
-					if (!event.isInInterface() && event.getItem() != null && CraftElementSelector.this.selector.isMatching(event.getItem())) {
-						CraftElementSelector.this.setSelected(event.getItem());
-						event.cancleInteraction();
-					}
+		window.getEventManager().registerListener(WindowClickEvent.class, (event) -> {
+			if (CraftElementSelector.this.isSelecting) {
+				if (!event.isInInterface() && event.getItem() != null && CraftElementSelector.this.selector.isMatching(event.getItem())) {
+					CraftElementSelector.this.setSelected(event.getItem());
+					event.cancleInteraction();
 				}
 			}
-			
 		}).addAfter();
 	}
-	
+
 	@Override
 	public void setSelector(ItemSelector selector) {
 		this.selector = selector;
@@ -128,7 +122,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 			this.setSelected(null);
 		}
 	}
-	
+
 	@Override
 	public void updateItemMap() {
 		if (this.selected == null) {
@@ -143,7 +137,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 			this.updateItemMap(Point.atNull(), false);
 		}
 	}
-	
+
 	@Override
 	public void setIcon(Icon icon) {
 		if (icon == null) {
@@ -154,5 +148,5 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 			super.setIcon(icon);
 		}
 	}
-	
+
 }

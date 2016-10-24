@@ -6,7 +6,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import de.rincewind.api.gui.windows.abstracts.WindowActivatable;
 import de.rincewind.api.handling.events.WindowCloseEvent;
-import de.rincewind.api.handling.listener.WindowCloseListener;
 
 public abstract class CraftWindowActivatable extends CraftWindowColorable implements WindowActivatable {
 	
@@ -22,13 +21,9 @@ public abstract class CraftWindowActivatable extends CraftWindowColorable implem
 		this.plugin = plugin;
 		this.progress = 0;
 		
-		this.getEventManager().registerListener(new WindowCloseListener() {
-			
-			@Override
-			public void onFire(WindowCloseEvent event) {
-				CraftWindowActivatable.this.stop();
-			}
-		}).addAfter();;
+		this.getEventManager().registerListener(WindowCloseEvent.class, (event) -> {
+			this.stop();
+		}).addAfter();
 	}
 	
 	@Override

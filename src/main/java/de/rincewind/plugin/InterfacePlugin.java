@@ -3,12 +3,9 @@ package de.rincewind.plugin;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.rincewind.api.InterfaceAPI;
 import de.rincewind.api.item.categorys.Categorys;
 import de.rincewind.api.setup.Setup;
 import de.rincewind.plugin.listener.InventoryClickListener;
@@ -38,15 +35,6 @@ public class InterfacePlugin extends JavaPlugin {
 		for (Setup setup : InterfacePlugin.setups.values()) {
 			setup.closeAll();
 		}
-	}
-	
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (command.getName().equals("test")) {
-			InterfaceAPI.getSetup((Player) sender).getFileBrowser().openWindow();
-		}
-		
-		return true;
 	}
 	
 }

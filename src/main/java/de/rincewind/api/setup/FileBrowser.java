@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.rincewind.api.gui.windows.WindowFileBrowser;
 
+@Deprecated
 public interface FileBrowser {
 	
 	public abstract Setup getSetup();

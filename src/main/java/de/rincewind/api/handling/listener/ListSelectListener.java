@@ -2,6 +2,7 @@ package de.rincewind.api.handling.listener;
 
 import de.rincewind.api.handling.events.ListSelectEvent;
 
+@Deprecated
 public abstract class ListSelectListener<T> implements ElementListener<ListSelectEvent<T>> {
 
 	@Override

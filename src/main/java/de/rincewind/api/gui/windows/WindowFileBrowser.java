@@ -31,6 +31,7 @@ import de.rincewind.api.setup.FileBrowser;
 import de.rincewind.api.setup.FileType;
 import de.rincewind.api.setup.Program;
 
+@Deprecated
 public class WindowFileBrowser extends WindowSizeableExtendable {
 	
 	private DebugScene cache;
