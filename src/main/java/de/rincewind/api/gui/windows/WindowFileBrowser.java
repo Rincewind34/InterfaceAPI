@@ -184,7 +184,7 @@ public class WindowFileBrowser extends WindowSizeableExtendable {
 				
 				for (FileType type : this.browser.getTypes()) {
 					if (type.isMatching(target)) {
-						Icon icon = type.getIconCreator().createIcon();
+						Icon icon = type.getIconCreator().get();
 						icon = icon.rename(icon.getName().replace("${name}", target.getName())).unenchant();
 						
 						btn.setIcon(icon);

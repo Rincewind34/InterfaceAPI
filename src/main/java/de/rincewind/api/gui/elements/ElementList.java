@@ -1,6 +1,7 @@
 package de.rincewind.api.gui.elements;
 
 import java.util.List;
+import java.util.function.Function;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -15,7 +16,6 @@ import de.rincewind.api.gui.util.Color;
 import de.rincewind.api.gui.util.Directionality;
 import de.rincewind.api.handling.events.ListSelectEvent;
 import de.rincewind.api.handling.events.ListUnselectEvent;
-import de.rincewind.api.item.ItemModifier;
 
 /**
  * With this element you can create a list of entries and you are able to scroll through
@@ -155,7 +155,7 @@ public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListI
 	 * 
 	 * @throws NullPointerException if the modifier is <code>null</code>
 	 */
-	public abstract void setSelectModifyer(ItemModifier modifier);
+	public abstract void setSelectModifyer(Function<ItemStack, ItemStack> modifier);
 	
 	/**
 	 * Adds to an {@link ElementButton} a listener to scroll through this element. The value to

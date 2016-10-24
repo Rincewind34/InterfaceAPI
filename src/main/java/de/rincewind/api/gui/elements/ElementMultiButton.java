@@ -1,11 +1,12 @@
 package de.rincewind.api.gui.elements;
 
+import java.util.function.Function;
+
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.components.Selectable;
 import de.rincewind.api.gui.elements.util.ElementDefaults;
 import de.rincewind.api.handling.events.MultiButtonPressEvent;
-import de.rincewind.api.item.ItemModifier;
 
 /**
  * In this button, you can run multiple action on one button.
@@ -118,7 +119,7 @@ public interface ElementMultiButton extends ElementButton, Selectable, Iterable<
 	 * 
 	 * @throws NullPointerException if the modifier is <code>null</code>
 	 */
-	public abstract void setSelectModifier(ItemModifier modifier);
+	public abstract void setSelectModifier(Function<ItemStack, ItemStack> modifier);
 	
 	/**
 	 * Modifies an item like the button, when it gets selected.

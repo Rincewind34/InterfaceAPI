@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -22,7 +23,6 @@ import de.rincewind.api.handling.events.ButtonPressEvent;
 import de.rincewind.api.handling.events.ListSelectEvent;
 import de.rincewind.api.handling.events.ListUnselectEvent;
 import de.rincewind.api.item.ItemLibary;
-import de.rincewind.api.item.ItemModifier;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementSizeable;
 import lib.securebit.Validate;
 
@@ -37,7 +37,7 @@ public class CraftElementList<T> extends CraftElementSizeable implements Element
 	
 	private Directionality type;
 	
-	private ItemModifier modifier;
+	private Function<ItemStack, ItemStack> modifier;
 	
 	public CraftElementList(Modifyable handle) {
 		super(handle);
@@ -111,7 +111,7 @@ public class CraftElementList<T> extends CraftElementSizeable implements Element
 	}
 	
 	@Override
-	public void setSelectModifyer(ItemModifier modifier) {
+	public void setSelectModifyer(Function<ItemStack, ItemStack> modifier) {
 		Validate.notNull(modifier, "The mnodifier cannot be null!");
 		
 		this.modifier = modifier;
@@ -121,7 +121,7 @@ public class CraftElementList<T> extends CraftElementSizeable implements Element
 	public ItemStack modifyToSelect(ItemStack item) {
 		Validate.notNull(item, "The item cannot be null!");
 		
-		return this.modifier.modifyItem(item);
+		return this.modifier.apply(item);
 	}
 
 	@Override

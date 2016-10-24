@@ -1,9 +1,10 @@
 package de.rincewind.api.gui.elements;
 
+import java.util.function.Supplier;
+
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.elements.util.Elements.ElementBrickExtendable;
-import de.rincewind.api.item.ItemCreator;
 
 /**
  * If the user clicks on this element, on the cursor an item will be set.
@@ -30,6 +31,6 @@ public interface ElementBrick extends ElementButton {
 	 * 
 	 * @throws NullPointerException if the creator is <code>null</code>
 	 */
-	public abstract void setCreator(ItemCreator creator);
+	public abstract void setCreator(Supplier<ItemStack> creator);
 	
 }

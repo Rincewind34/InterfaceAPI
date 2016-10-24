@@ -1,10 +1,11 @@
 package de.rincewind.api.gui.elements;
 
+import java.util.function.Predicate;
+
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.api.gui.windows.abstracts.Window;
-import de.rincewind.api.item.ItemSelector;
 
 public interface ElementSelector extends ElementDisplayable {
 	
@@ -22,7 +23,7 @@ public interface ElementSelector extends ElementDisplayable {
 	
 	public abstract void registerTarget(Window window);
 	
-	public abstract void setSelector(ItemSelector selector);
+	public abstract void setSelector(Predicate<ItemStack> selector);
 	
 	public abstract boolean isPullingOnlyOne();
 	

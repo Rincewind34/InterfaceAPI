@@ -1,5 +1,7 @@
 package de.rincewind.plugin.gui.elements;
 
+import java.util.function.Predicate;
+
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -10,7 +12,6 @@ import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.abstracts.Window;
 import de.rincewind.api.handling.events.ItemSelectEvent;
 import de.rincewind.api.handling.events.WindowClickEvent;
-import de.rincewind.api.item.ItemSelector;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementDisplayable;
 
 public class CraftElementSelector extends CraftElementDisplayable implements ElementSelector {
@@ -23,7 +24,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 
 	private ItemStack selected;
 
-	private ItemSelector selector;
+	private Predicate<ItemStack> selector;
 
 	public CraftElementSelector(Modifyable handle) {
 		super(handle);
@@ -83,7 +84,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	public void registerTarget(Window window) {
 		window.getEventManager().registerListener(WindowClickEvent.class, (event) -> {
 			if (CraftElementSelector.this.isSelecting) {
-				if (!event.isInInterface() && event.getItem() != null && CraftElementSelector.this.selector.isMatching(event.getItem())) {
+				if (!event.isInInterface() && event.getItem() != null && CraftElementSelector.this.selector.test(event.getItem())) {
 					CraftElementSelector.this.setSelected(event.getItem());
 					event.cancleInteraction();
 				}
@@ -92,7 +93,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	}
 
 	@Override
-	public void setSelector(ItemSelector selector) {
+	public void setSelector(Predicate<ItemStack> selector) {
 		this.selector = selector;
 	}
 

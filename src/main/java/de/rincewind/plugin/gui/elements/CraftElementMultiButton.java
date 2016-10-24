@@ -3,6 +3,7 @@ package de.rincewind.plugin.gui.elements;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -14,7 +15,6 @@ import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.handling.events.ButtonPressEvent;
 import de.rincewind.api.handling.events.MultiButtonPressEvent;
 import de.rincewind.api.item.ItemLibary;
-import de.rincewind.api.item.ItemModifier;
 import de.rincewind.api.item.ItemRefactor.Lore;
 import lib.securebit.Validate;
 
@@ -23,7 +23,7 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 	private String defaultFormat;
 	private String selectFormat;
 
-	private ItemModifier selectModifier;
+	private Function<ItemStack, ItemStack> selectModifier;
 
 	private List<String> list;
 
@@ -181,7 +181,7 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 	}
 
 	@Override
-	public void setSelectModifier(ItemModifier modifier) {
+	public void setSelectModifier(Function<ItemStack, ItemStack> modifier) {
 		Validate.notNull(modifier, "The modifier cannot be null!");
 
 		this.selectModifier = modifier;
@@ -191,7 +191,7 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 	public ItemStack modify(ItemStack item) {
 		Validate.notNull(item, "The item cannot be null!");
 
-		return this.selectModifier.modifyItem(item);
+		return this.selectModifier.apply(item);
 	}
 
 	protected void registerListener() {

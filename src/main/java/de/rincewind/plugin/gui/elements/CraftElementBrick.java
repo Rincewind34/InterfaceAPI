@@ -1,17 +1,17 @@
 package de.rincewind.plugin.gui.elements;
 
-import lib.securebit.Validate;
+import java.util.function.Supplier;
 
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementBrick;
 import de.rincewind.api.handling.events.ButtonPressEvent;
-import de.rincewind.api.item.ItemCreator;
+import lib.securebit.Validate;
 
 public class CraftElementBrick extends CraftElementButton implements ElementBrick {
 
-	private ItemCreator creator;
+	private Supplier<ItemStack> creator;
 
 	public CraftElementBrick(Modifyable handle) {
 		super(handle);
@@ -22,7 +22,7 @@ public class CraftElementBrick extends CraftElementButton implements ElementBric
 	}
 
 	@Override
-	public void setCreator(ItemCreator creator) {
+	public void setCreator(Supplier<ItemStack> creator) {
 		Validate.notNull(creator, "The creator cannot be null!");
 
 		this.creator = creator;
@@ -30,7 +30,7 @@ public class CraftElementBrick extends CraftElementButton implements ElementBric
 
 	@Override
 	public ItemStack createItem() {
-		return this.creator.createItem();
+		return this.creator.get();
 	}
 
 	public void registerListener() {

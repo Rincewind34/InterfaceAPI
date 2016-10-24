@@ -60,6 +60,14 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 		return this.rawSlot;
 	}
 	
+	public int getSlot() {
+		if (this.isInInterface()) {
+			return this.getRawSlot();
+		} else {
+			return this.getRawSlot() - this.getWindow().getBukkitSize();
+		}
+	}
+	
 	public ItemStack getItem() {
 		return this.item;
 	}
