@@ -31,6 +31,8 @@ public enum Status {
 	 * @see Setup#close(Window)
 	 * @see Setup#maximize(Window)
 	 */
-	MINIMIZED;
+	MINIMIZED,
+	
+	CLOSED;
 	
 }

@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import de.rincewind.api.gui.util.EventManager;
 import de.rincewind.api.gui.windows.abstracts.Window;
 import de.rincewind.api.gui.windows.util.Status;
-import de.rincewind.api.gui.windows.util.WindowDefaults;
 import de.rincewind.api.handling.events.WindowCloseEvent;
 import de.rincewind.api.handling.events.WindowMaximizeEvent;
 import de.rincewind.api.handling.events.WindowMinimizeEvent;
@@ -22,11 +21,11 @@ public abstract class CraftWindow implements Window {
 	private EventManager eventManager;
 
 	public CraftWindow() {
-		this.status = WindowDefaults.STATE;
-
+		this.status = Status.CLOSED;
 		this.eventManager = new CraftEventManager();
 		
 		this.eventManager.registerListener(WindowOpenEvent.class, (event) -> {
+			this.status = Status.MINIMIZED;
 			this.player = event.getPlayer();
 		}).addAfter();
 		
@@ -43,6 +42,7 @@ public abstract class CraftWindow implements Window {
 		}).addAfter();
 		
 		this.eventManager.registerListener(WindowCloseEvent.class, (event) -> {
+			this.status = Status.CLOSED;
 			this.player = null;
 		});
 	}
@@ -64,7 +64,7 @@ public abstract class CraftWindow implements Window {
 
 	@Override
 	public boolean isOpened() {
-		return this.player != null;
+		return this.status != Status.CLOSED;
 	}
 
 }
