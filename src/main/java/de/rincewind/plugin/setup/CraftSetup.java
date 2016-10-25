@@ -21,7 +21,6 @@ import de.rincewind.api.handling.events.WindowOpenEvent;
 import de.rincewind.api.setup.FileBrowser;
 import de.rincewind.api.setup.Setup;
 import de.rincewind.plugin.InterfacePlugin;
-import de.rincewind.plugin.gui.windows.abstracts.CraftWindow;
 import de.rincewind.plugin.listener.InventoryCloseListener;
 import lib.securebit.Validate;
 
@@ -104,8 +103,7 @@ public class CraftSetup implements Setup {
 			throw new APIException("The window is already opend!");
 		}
 		
-		((CraftWindow) window).setUser(this.owner);
-		window.getEventManager().callEvent(WindowOpenEvent.class, new WindowOpenEvent(window));
+		window.getEventManager().callEvent(WindowOpenEvent.class, new WindowOpenEvent(this.owner, window));
 		this.windows.add(window);
 		
 		this.maximize(window);
@@ -124,7 +122,6 @@ public class CraftSetup implements Setup {
 		}
 		
 		window.getEventManager().callEvent(WindowCloseEvent.class, new WindowCloseEvent(window));
-		((CraftWindow) window).setUser(null);
 		this.windows.remove(window);
 	}
 
