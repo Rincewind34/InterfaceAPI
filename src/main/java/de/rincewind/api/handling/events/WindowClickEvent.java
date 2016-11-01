@@ -11,13 +11,15 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 	private boolean leftClick;
 	private boolean shiftClick;
 	
+	private int slot;
 	private int rawSlot;
 	
 	private ItemStack item;
 	
-	public WindowClickEvent(WindowContainer window, int rawSlot, ItemStack item, boolean leftClick, boolean shiftClick) {
+	public WindowClickEvent(WindowContainer window, int rawSlot, int slot, ItemStack item, boolean leftClick, boolean shiftClick) {
 		super(window);
 		
+		this.slot = slot;
 		this.rawSlot = rawSlot;
 		this.item = item;
 		this.leftClick = leftClick;
@@ -53,7 +55,7 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 	}
 	
 	public boolean isInInterface() {
-		return this.getWindow().getBukkitSize() > this.rawSlot;
+		return this.rawSlot == this.slot;
 	}
 	
 	public int getRawSlot() {
@@ -61,11 +63,7 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 	}
 	
 	public int getSlot() {
-		if (this.isInInterface()) {
-			return this.getRawSlot();
-		} else {
-			return this.getRawSlot() - this.getWindow().getBukkitSize();
-		}
+		return this.slot;
 	}
 	
 	public ItemStack getItem() {

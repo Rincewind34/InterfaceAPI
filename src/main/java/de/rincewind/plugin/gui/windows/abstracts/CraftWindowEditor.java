@@ -156,7 +156,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			}
 		});
 		
-		this.updateBukkitInventory();
+		this.update();
 	}
 	
 	@Override
@@ -178,7 +178,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			}
 		});
 		
-		this.updateBukkitInventory();
+		this.update();
 	}
 	
 	@Override

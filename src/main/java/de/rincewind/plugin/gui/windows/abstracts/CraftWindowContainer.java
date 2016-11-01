@@ -1,18 +1,18 @@
 package de.rincewind.plugin.gui.windows.abstracts;
 
-import java.util.function.Consumer;
-
 import org.bukkit.inventory.Inventory;
 
 import de.rincewind.api.InterfaceAPI;
+import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.abstracts.WindowContainer;
+import de.rincewind.api.gui.windows.util.Status;
 import de.rincewind.api.handling.events.WindowMaximizeEvent;
 import de.rincewind.plugin.setup.CraftSetup;
 
 public abstract class CraftWindowContainer extends CraftWindowNameable implements WindowContainer {
 	
-	private Inventory inv;
+	private Inventory inventory;
 	
 	public CraftWindowContainer() {
 		super();
@@ -28,46 +28,49 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 		this.reconfigurate();
 	}
 	
-	@Override
-	public void updateBukkitInventory() {
-		this.inv.clear();
+	protected abstract int getSlot(Point point);
+	
+	protected abstract Point getPoint(int bukkitSlot);
+	
+	protected abstract Icon getIcon(Point point);
+	
+	protected abstract Inventory newInventory();
+	
+	public void createBukkitInventory() {
+		this.inventory = this.newInventory();
 	}
 	
-	@Override
-	public int getBukkitSize() {
-		return this.inv.getSize();
+	protected void update() {
+		this.inventory.clear();
+		
+		this.iterate((point) -> {
+			this.update(point);
+		});
 	}
 	
-	public void openBukkitInventory() {
-		if (getUser() == null) {
+	protected void update(Point point) {
+		this.inventory.setItem(this.getSlot(point), this.getIcon(point).toItem());
+	}
+	
+	protected void update(Iterable<Point> points) {
+		for (Point point : points) {
+			this.update(point);
+		}
+	}
+	
+	protected void reconfigurate() {
+		this.createBukkitInventory();
+		this.update();
+		this.openBukkitInventory();
+	}
+	
+	private void openBukkitInventory() {
+		if (this.getStatus() == Status.CLOSED) {
 			return;
 		}
 		
 		((CraftSetup) InterfaceAPI.getSetup(this.getUser())).sendClosePacket();
-		this.getUser().openInventory(this.inv);
+		this.getUser().openInventory(this.inventory);
 	}
-	
-	public Inventory getBukkitInventory() {
-		return this.inv;
-	}
-	
-	public void createBukkitInventory() {
-		this.inv = this.newInventory();
-	}
-	
-	public abstract void iterate(Consumer<Point> action);
-	
-	public abstract int getSlot(Point point);
-	
-	public abstract Point getPoint(int bukkitSlot);
-	
-	public abstract Inventory newInventory();
-	
-	public void reconfigurate() {
-		this.createBukkitInventory();
-		this.updateBukkitInventory();
-		this.openBukkitInventory();
-	}
-
 	
 }

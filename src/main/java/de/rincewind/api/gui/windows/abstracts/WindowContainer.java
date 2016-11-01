@@ -1,5 +1,9 @@
 package de.rincewind.api.gui.windows.abstracts;
 
+import java.util.function.Consumer;
+
+import de.rincewind.api.gui.elements.util.Point;
+
 /**
  * This window is InventoryGUI. If you change the name or 
  * something like this, the inventory will be automatically
@@ -13,17 +17,6 @@ package de.rincewind.api.gui.windows.abstracts;
  */
 public abstract interface WindowContainer extends WindowNameable {
 	
-	/**
-	 * This method updates the bukkit-inventory with all inserted
-	 * items.
-	 */
-	public abstract void updateBukkitInventory();
-	
-	/**
-	 * Returns the bukkit-size of this window.
-	 * 
-	 * @return the bukkit-size of this window.
-	 */
-	public abstract int getBukkitSize();
+	public abstract void iterate(Consumer<Point> action);
 	
 }
