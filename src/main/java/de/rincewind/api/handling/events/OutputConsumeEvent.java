@@ -4,18 +4,10 @@ import org.bukkit.entity.Player;
 
 import de.rincewind.api.gui.elements.ElementOutput;
 
-public class OutputConsumeEvent extends ElementEvent<ElementOutput> {
-	
-	private Player clicker;
+public class OutputConsumeEvent extends PlayerElementEvent<ElementOutput> {
 	
 	public OutputConsumeEvent(ElementOutput element, Player clicker) {
-		super(element);
-		
-		this.clicker = clicker;
-	}
-	
-	public Player getPlayer() {
-		return this.clicker;
+		super(element, clicker);
 	}
 	
 }

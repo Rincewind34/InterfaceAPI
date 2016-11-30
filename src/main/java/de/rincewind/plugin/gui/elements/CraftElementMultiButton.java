@@ -232,7 +232,7 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 				}
 
 				if (event.isLeftClick()) {
-					this.getEventManager().callEvent(MultiButtonPressEvent.class, new MultiButtonPressEvent(this));
+					this.getEventManager().callEvent(MultiButtonPressEvent.class, new MultiButtonPressEvent(this, event.getPlayer()));
 				} else {
 					this.next();
 				}
