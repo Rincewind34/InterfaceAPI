@@ -1,8 +1,7 @@
 package de.rincewind.plugin.gui.windows.abstracts;
 
-import lib.securebit.Validate;
 import de.rincewind.api.gui.windows.abstracts.WindowNameable;
-import de.rincewind.api.gui.windows.util.WindowDefaults;
+import lib.securebit.Validate;
 
 public class CraftWindowNameable extends CraftWindow implements WindowNameable {
 	
@@ -10,7 +9,7 @@ public class CraftWindowNameable extends CraftWindow implements WindowNameable {
 	
 	public CraftWindowNameable() {
 		super();
-		this.name = WindowDefaults.NAME;
+		this.name = "GUI";
 	}
 	
 	@Override

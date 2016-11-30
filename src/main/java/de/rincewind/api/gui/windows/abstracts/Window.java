@@ -3,7 +3,7 @@ package de.rincewind.api.gui.windows.abstracts;
 import org.bukkit.entity.Player;
 
 import de.rincewind.api.gui.components.EventBased;
-import de.rincewind.api.gui.windows.util.Status;
+import de.rincewind.api.gui.windows.util.WindowState;
 import de.rincewind.api.setup.Setup;
 
 /**
@@ -27,7 +27,7 @@ public abstract interface Window extends EventBased {
 	 * 
 	 * @see Setup
 	 */
-	public abstract Status getStatus();
+	public abstract WindowState getState();
 	
 	/**
 	 * Returns the user of this window. If the

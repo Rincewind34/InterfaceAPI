@@ -11,7 +11,8 @@ import de.rincewind.api.InterfaceAPI;
 import de.rincewind.api.exceptions.InvalidSlotException;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.WindowEnchanter;
-import de.rincewind.api.handling.events.WindowMaximizeEvent;
+import de.rincewind.api.gui.windows.util.WindowState;
+import de.rincewind.api.handling.events.WindowChangeStateEvent;
 import de.rincewind.plugin.APIReflection;
 import de.rincewind.plugin.gui.windows.abstracts.CraftWindowEditor;
 import lib.securebit.ReflectionUtil;
@@ -23,8 +24,10 @@ public class CraftWindowEnchanter extends CraftWindowEditor implements WindowEnc
 	public CraftWindowEnchanter() {
 		this.lvls = new int[] { 0, 0, 0 };
 
-		this.getEventManager().registerListener(WindowMaximizeEvent.class, (event) -> {
-			this.update();
+		this.getEventManager().registerListener(WindowChangeStateEvent.class, (event) -> {
+			if (event.getNewState() == WindowState.MAXIMIZED) {
+				this.update();
+			}
 		}).addAfter();
 	}
 

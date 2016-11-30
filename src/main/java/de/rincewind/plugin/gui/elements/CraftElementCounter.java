@@ -6,7 +6,6 @@ import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementButton;
 import de.rincewind.api.gui.elements.ElementCounter;
 import de.rincewind.api.gui.elements.abstracts.Element;
-import de.rincewind.api.gui.elements.util.ElementDefaults;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.handling.InterfaceListener;
@@ -25,8 +24,8 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 	public CraftElementCounter(Modifyable handle) {
 		super(handle);
 		
-		this.minCount = ElementDefaults.COUNTER_MINIMUM;
-		this.maxCount = ElementDefaults.COUNTER_MAXIMUM;
+		this.minCount = ElementCounter.MINIMUM_COUNT;
+		this.maxCount = ElementCounter.MAXIMUM_COUNT;
 		
 		this.getComponent(Element.WIDTH).setEnabled(true);
 		this.getComponent(Element.HEIGHT).setEnabled(true);

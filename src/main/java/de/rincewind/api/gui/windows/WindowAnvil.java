@@ -5,8 +5,8 @@ import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
 import org.bukkit.inventory.Inventory;
 
 import de.rincewind.api.gui.elements.util.Icon;
-import de.rincewind.api.handling.events.WindowMaximizeEvent;
-import de.rincewind.api.handling.events.WindowMinimizeEvent;
+import de.rincewind.api.gui.windows.util.WindowState;
+import de.rincewind.api.handling.events.WindowChangeStateEvent;
 import de.rincewind.plugin.gui.windows.abstracts.CraftWindow;
 import net.minecraft.server.v1_10_R1.BlockPosition;
 import net.minecraft.server.v1_10_R1.ChatMessage;
@@ -24,25 +24,25 @@ public class WindowAnvil extends CraftWindow {
 	public WindowAnvil() {
 		this.display = new Icon(Material.STONE).rename(">");
 
-		this.getEventManager().registerListener(WindowMaximizeEvent.class, (event) -> {
-			EntityPlayer nmsPlayer = ((CraftPlayer) event.getWindow().getUser()).getHandle();
-
-			AnvilContainer container = new AnvilContainer(nmsPlayer);
-
-			WindowAnvil.this.inventory = container.getBukkitView().getTopInventory();
-			WindowAnvil.this.inventory.setItem(0, WindowAnvil.this.display.toItem());
-
-			int containerId = nmsPlayer.nextContainerCounter();
-
-			nmsPlayer.playerConnection.sendPacket(new PacketPlayOutOpenWindow(containerId, "minecraft:anvil", new ChatMessage("Repairing", new Object[0]), 0));
-			nmsPlayer.activeContainer = container;
-			nmsPlayer.activeContainer.windowId = containerId;
-			nmsPlayer.activeContainer.addSlotListener(nmsPlayer);
-		}).addAfter();
-		
-		this.getEventManager().registerListener(WindowMinimizeEvent.class, (event) -> {
-			WindowAnvil.this.inventory.clear();
-		});
+		this.getEventManager().registerListener(WindowChangeStateEvent.class, (event) -> {
+			if (event.getNewState() == WindowState.MAXIMIZED) {
+				EntityPlayer nmsPlayer = ((CraftPlayer) event.getWindow().getUser()).getHandle();
+	
+				AnvilContainer container = new AnvilContainer(nmsPlayer);
+	
+				WindowAnvil.this.inventory = container.getBukkitView().getTopInventory();
+				WindowAnvil.this.inventory.setItem(0, WindowAnvil.this.display.toItem());
+	
+				int containerId = nmsPlayer.nextContainerCounter();
+	
+				nmsPlayer.playerConnection.sendPacket(new PacketPlayOutOpenWindow(containerId, "minecraft:anvil", new ChatMessage("Repairing", new Object[0]), 0));
+				nmsPlayer.activeContainer = container;
+				nmsPlayer.activeContainer.windowId = containerId;
+				nmsPlayer.activeContainer.addSlotListener(nmsPlayer);
+			} else if (event.getNewState() == WindowState.MINIMIZED) {
+				WindowAnvil.this.inventory.clear();
+			}
+		}).addBefore();
 	}
 
 	public void setDisplay(Icon display) {

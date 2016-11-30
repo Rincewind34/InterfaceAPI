@@ -12,11 +12,8 @@ import de.rincewind.api.exceptions.APIException;
 import de.rincewind.api.gui.windows.WindowAnvil;
 import de.rincewind.api.gui.windows.abstracts.Window;
 import de.rincewind.api.gui.windows.abstracts.WindowContainer;
-import de.rincewind.api.gui.windows.util.Status;
-import de.rincewind.api.handling.events.WindowCloseEvent;
-import de.rincewind.api.handling.events.WindowMaximizeEvent;
-import de.rincewind.api.handling.events.WindowMinimizeEvent;
-import de.rincewind.api.handling.events.WindowMoveBackEvent;
+import de.rincewind.api.gui.windows.util.WindowState;
+import de.rincewind.api.handling.events.WindowChangeStateEvent;
 import de.rincewind.api.handling.events.WindowOpenEvent;
 import de.rincewind.api.setup.FileBrowser;
 import de.rincewind.api.setup.Setup;
@@ -62,7 +59,7 @@ public class CraftSetup implements Setup {
 	@Override
 	public Window getMaximizedWindow() {
 		for (Window window : this.windows) {
-			if(window.getStatus() == Status.MAXIMIZED) {
+			if(window.getState() == WindowState.MAXIMIZED) {
 				return window;
 			}
 		}
@@ -103,7 +100,7 @@ public class CraftSetup implements Setup {
 			throw new APIException("The window is already opend!");
 		}
 		
-		window.getEventManager().callEvent(WindowOpenEvent.class, new WindowOpenEvent(this.owner, window));
+		window.getEventManager().callEvent(WindowOpenEvent.class, new WindowOpenEvent(window, this.owner));
 		this.windows.add(window);
 		
 		this.maximize(window);
@@ -117,11 +114,11 @@ public class CraftSetup implements Setup {
 			throw new APIException("The window is not opend by this player!");
 		}
 		
-		if (window.getStatus() == Status.MAXIMIZED) {
+		if (window.getState() == WindowState.MAXIMIZED) {
 			this.minimize();
 		}
 		
-		window.getEventManager().callEvent(WindowCloseEvent.class, new WindowCloseEvent(window));
+		window.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.CLOSED));
 		this.windows.remove(window);
 	}
 
@@ -156,14 +153,14 @@ public class CraftSetup implements Setup {
 			
 			Window maximized = this.getMaximizedWindow();
 			
-			maximized.getEventManager().callEvent(WindowMoveBackEvent.class, new WindowMoveBackEvent(window));
+			maximized.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.BACKGROUND));
 			
 			if (maximized instanceof WindowContainer) {
 				this.sendClosePacket();
 			}
 		}
 		
-		window.getEventManager().callEvent(WindowMaximizeEvent.class, new WindowMaximizeEvent(window));
+		window.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.MAXIMIZED));
 	}
 
 	@Override
@@ -182,7 +179,7 @@ public class CraftSetup implements Setup {
 		}
 		
 		Window window = this.getMaximizedWindow();
-		window.getEventManager().callEvent(WindowMinimizeEvent.class, new WindowMinimizeEvent(window));
+		window.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.MINIMIZED));
 		
 		if (window instanceof WindowContainer || window instanceof WindowAnvil) {
 			this.sendClosePacket();
@@ -192,7 +189,7 @@ public class CraftSetup implements Setup {
 		Collections.reverse(reverse);
 		
 		for (Window background : reverse) {
-			if (background.getStatus() == Status.BACKGROUND) {
+			if (background.getState() == WindowState.BACKGROUND) {
 				
 				Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, () -> {
 					this.maximize(background);

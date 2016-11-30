@@ -1,6 +1,5 @@
 package de.rincewind.api.gui.elements;
 
-import de.rincewind.api.gui.elements.util.ElementDefaults;
 import de.rincewind.api.gui.elements.util.Point;
 
 /**

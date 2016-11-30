@@ -4,52 +4,40 @@ import org.bukkit.entity.Player;
 
 import de.rincewind.api.gui.util.EventManager;
 import de.rincewind.api.gui.windows.abstracts.Window;
-import de.rincewind.api.gui.windows.util.Status;
-import de.rincewind.api.handling.events.WindowCloseEvent;
-import de.rincewind.api.handling.events.WindowMaximizeEvent;
-import de.rincewind.api.handling.events.WindowMinimizeEvent;
-import de.rincewind.api.handling.events.WindowMoveBackEvent;
+import de.rincewind.api.gui.windows.util.WindowState;
+import de.rincewind.api.handling.events.WindowChangeStateEvent;
 import de.rincewind.api.handling.events.WindowOpenEvent;
 import de.rincewind.plugin.gui.util.CraftEventManager;
 
 public abstract class CraftWindow implements Window {
 
-	private Status status;
+	private WindowState state;
 
 	private Player player;
 
 	private EventManager eventManager;
 
 	public CraftWindow() {
-		this.status = Status.CLOSED;
+		this.state = WindowState.CLOSED;
 		this.eventManager = new CraftEventManager();
 		
 		this.eventManager.registerListener(WindowOpenEvent.class, (event) -> {
-			this.status = Status.MINIMIZED;
-			this.player = event.getPlayer();
+			this.state = WindowState.MINIMIZED;
+			this.player = event.getOwner();
 		}).addAfter();
 		
-		this.eventManager.registerListener(WindowMinimizeEvent.class, (event) -> {
-			this.status = Status.MINIMIZED;
+		this.eventManager.registerListener(WindowChangeStateEvent.class, (event) -> {
+			this.state = event.getNewState();
+			
+			if (this.state == WindowState.CLOSED) {
+				this.player = null;
+			}
 		}).addAfter();
-
-		this.eventManager.registerListener(WindowMaximizeEvent.class, (event) -> {
-			this.status = Status.MAXIMIZED;
-		}).addAfter();
-
-		this.eventManager.registerListener(WindowMoveBackEvent.class, (event) -> {
-			this.status = Status.BACKGROUND;
-		}).addAfter();
-		
-		this.eventManager.registerListener(WindowCloseEvent.class, (event) -> {
-			this.status = Status.CLOSED;
-			this.player = null;
-		});
 	}
 
 	@Override
-	public Status getStatus() {
-		return this.status;
+	public WindowState getState() {
+		return this.state;
 	}
 
 	@Override
@@ -64,7 +52,7 @@ public abstract class CraftWindow implements Window {
 
 	@Override
 	public boolean isOpened() {
-		return this.status != Status.CLOSED;
+		return this.state != WindowState.CLOSED;
 	}
 
 }

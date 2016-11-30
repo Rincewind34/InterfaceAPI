@@ -7,10 +7,7 @@ import org.bukkit.entity.Player;
 import de.rincewind.api.exceptions.APIException;
 import de.rincewind.api.gui.util.EventManager;
 import de.rincewind.api.gui.windows.abstracts.Window;
-import de.rincewind.api.gui.windows.util.Status;
-import de.rincewind.api.handling.events.WindowCloseEvent;
-import de.rincewind.api.handling.events.WindowMaximizeEvent;
-import de.rincewind.api.handling.events.WindowMinimizeEvent;
+import de.rincewind.api.gui.windows.util.WindowState;
 import de.rincewind.api.handling.events.WindowOpenEvent;
 
 public interface Setup {
@@ -85,7 +82,7 @@ public interface Setup {
 	 * Opens a window to a player. This window will be automatically
 	 * maximized and if the player already has a maximized window, the current
 	 * window will be minimized. The current window will be maximized, if the player closes the new
-	 * window. The window, witch will be minimized, will get the {@link Status#BACKGROUND}.
+	 * window. The window, witch will be minimized, will get the {@link WindowState#BACKGROUND}.
 	 * If you do not want, that the current window will be maximized on 
 	 * closing the new window, invoke {@link Setup#minimize()}
 	 * before opening the new window.
@@ -104,7 +101,7 @@ public interface Setup {
 	
 	/**
 	 * Closes an open window to a player. The window to close does not has to be
-	 * in the state {@link Status#MAXIMIZED}. All other states are possible too and 
+	 * in the state {@link WindowState#MAXIMIZED}. All other states are possible too and 
 	 * the window will be closed.
 	 * If the closing window is the maximized window of the given player
 	 * the method {@link Setup#minimize()} will be called.
@@ -140,9 +137,9 @@ public interface Setup {
 	
 	/**
 	 * Maximizes a window to a player. If a window is currently maximized
-	 * the current window will get the state {@link Status#BACKGROUND}. If the new 
+	 * the current window will get the state {@link WindowState#BACKGROUND}. If the new 
 	 * maximized window gets minimized the first window with the state 
-	 * {@link Status#BACKGROUND} will be automatically maximized.
+	 * {@link WindowState#BACKGROUND} will be automatically maximized.
 	 * 
 	 * The {@link WindowMaximizeEvent} will be called in the {@link EventManager}.
 	 * 
@@ -170,7 +167,7 @@ public interface Setup {
 	 * Minimizes the currently maximized window. If the player does not have a
 	 * maximized window this method will do nothing.
 	 * 
-	 * If the player has any other opened windows with the state {@link Status#BACKGROUND}
+	 * If the player has any other opened windows with the state {@link WindowState#BACKGROUND}
 	 * the first window with this state will be maximized with a little delay of one tick.
 	 * 
 	 * The {@link WindowMinimizeEvent} will be called in the {@link EventManager}.

@@ -11,7 +11,7 @@ import de.rincewind.api.setup.Setup;
  * 
  * @see Setup
  */
-public enum Status {
+public enum WindowState {
 	
 	/**
 	 * If the window is in this state, to the owing player ({@link Window#getUser()}

@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import de.rincewind.api.gui.components.Selectable;
 import de.rincewind.api.gui.elements.abstracts.ElementDisplayable;
-import de.rincewind.api.gui.elements.util.ElementDefaults;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.handling.events.MultiButtonPressEvent;
 

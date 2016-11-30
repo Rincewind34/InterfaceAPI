@@ -7,8 +7,8 @@ import de.rincewind.api.InterfaceAPI;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.abstracts.WindowContainer;
-import de.rincewind.api.gui.windows.util.Status;
-import de.rincewind.api.handling.events.WindowMaximizeEvent;
+import de.rincewind.api.gui.windows.util.WindowState;
+import de.rincewind.api.handling.events.WindowChangeStateEvent;
 import de.rincewind.plugin.setup.CraftSetup;
 
 public abstract class CraftWindowContainer extends CraftWindowNameable implements WindowContainer {
@@ -18,9 +18,11 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 	public CraftWindowContainer() {
 		super();
 		
-		this.getEventManager().registerListener(WindowMaximizeEvent.class, (event) -> {
-			this.reconfigurate();
-		}).addAfter();
+		this.getEventManager().registerListener(WindowChangeStateEvent.class, (event) -> {
+			if (event.getNewState() == WindowState.MAXIMIZED) {
+				this.reconfigurate();
+			}
+		}).addBefore();
 	}
 	
 	@Override
@@ -76,7 +78,7 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 	}
 	
 	private void openBukkitInventory() {
-		if (this.getStatus() != Status.MAXIMIZED) { // TODO changed from '== Status.CLOSED'
+		if (this.getState() != WindowState.MAXIMIZED) {
 			return;
 		}
 		

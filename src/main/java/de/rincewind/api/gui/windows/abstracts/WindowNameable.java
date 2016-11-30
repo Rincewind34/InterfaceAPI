@@ -1,7 +1,5 @@
 package de.rincewind.api.gui.windows.abstracts;
 
-import de.rincewind.api.gui.windows.util.WindowDefaults;
-
 /**
  * In this window you are able to set the name of this window.
  * 

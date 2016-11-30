@@ -6,16 +6,16 @@ import de.rincewind.api.gui.windows.abstracts.Window;
 
 public class WindowOpenEvent extends WindowEvent<Window> {
 	
-	private Player player;
+	private Player owner;
 	
-	public WindowOpenEvent(Player player, Window window) {
+	public WindowOpenEvent(Window window, Player owner) {
 		super(window);
 		
-		this.player = player;
+		this.owner = owner;
 	}
 	
-	public Player getPlayer() {
-		return this.player;
+	public Player getOwner() {
+		return this.owner;
 	}
-	
+
 }

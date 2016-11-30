@@ -9,7 +9,6 @@ import org.bukkit.Material;
 
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementMultiButton;
-import de.rincewind.api.gui.elements.util.ElementDefaults;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.handling.events.ElementInteractEvent;
@@ -33,8 +32,8 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 	public CraftElementMultiButton(Modifyable handle) {
 		super(handle);
 
-		this.defaultFormat = ElementDefaults.MULTI_BUTTON_DEFAULT_FORMAT;
-		this.selectFormat = ElementDefaults.MULTI_BUTTON_SELECTED_FORMAT;
+		this.defaultFormat = "§f%s";
+		this.selectFormat = "§5%s";
 		this.selected = false;
 		this.list = new ArrayList<>();
 
