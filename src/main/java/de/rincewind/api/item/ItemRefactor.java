@@ -3,6 +3,7 @@ package de.rincewind.api.item;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -192,7 +193,7 @@ public class ItemRefactor {
 			List<String> result = new ArrayList<>();
 			
 			for (String element : this.lore) {
-				result.addAll(Arrays.asList(element.split(spliter))); // TODO escape regex
+				result.addAll(Arrays.asList(element.split(Pattern.quote(spliter))));
 			}
 			
 			this.lore = result;
