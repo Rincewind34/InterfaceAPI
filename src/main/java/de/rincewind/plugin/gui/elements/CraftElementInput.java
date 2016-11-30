@@ -1,6 +1,7 @@
 package de.rincewind.plugin.gui.elements;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
@@ -20,12 +21,14 @@ public class CraftElementInput extends CraftElementSlot implements ElementInput 
 		this.items = new ArrayList<>();
 	}
 	
-	public boolean canInject() {
-		return this.isEmpty();
+	@Override
+	public void clearMemory() {
+		this.items.clear();
 	}
 	
+	@Override
 	public ItemStack inject() {
-		if (!this.canInject()) {
+		if (!this.isEmpty()) {
 			return null;
 		} else {
 			ItemStack input = this.getContent();
@@ -36,21 +39,10 @@ public class CraftElementInput extends CraftElementSlot implements ElementInput 
 			return input;
 		}
 	}
-	
-	public ItemStack fromMemory(int index) {
-		if (index < 0 || index >= this.items.size()) {
-			throw new ArrayIndexOutOfBoundsException();
-		} else {
-			return this.items.get(index);
-		}
-	}
-	
-	public void clearMemory() {
-		this.items.clear();
-	}
-	
-	public int lastIndex() {
-		return this.items.size() - 1;
-	}
 
+	@Override
+	public List<ItemStack> getMemory() {
+		return Collections.unmodifiableList(this.items);
+	}
+	
 }
