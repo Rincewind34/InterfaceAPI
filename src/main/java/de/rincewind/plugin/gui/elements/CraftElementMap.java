@@ -168,6 +168,11 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
+	public boolean canSelect() {
+		return this.items.size() > 0;
+	}
+	
+	@Override
 	public Color getColor() {
 		return this.color;
 	}

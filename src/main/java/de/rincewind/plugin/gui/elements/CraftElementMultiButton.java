@@ -122,6 +122,11 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 		
 		this.list.clear();
 	}
+	
+	@Override
+	public boolean canSelect() {
+		return this.list.size() > 0;
+	}
 
 	@Override
 	public int size() {

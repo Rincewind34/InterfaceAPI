@@ -141,7 +141,12 @@ public class CraftElementList extends CraftElement implements ElementList {
 		this.startIndex = index;
 		this.update();
 	}
-
+	
+	@Override
+	public boolean canSelect() {
+		return this.getSize() > 0;
+	}
+	
 	@Override
 	public int getStartIndex() {
 		return this.startIndex;

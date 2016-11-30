@@ -33,6 +33,6 @@ public interface Selectable {
 	 */
 	public abstract boolean isSelected();
 	
-	// TODO public abstract boolean canSelect();
+	public abstract boolean canSelect();
 	
 }

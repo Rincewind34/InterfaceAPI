@@ -77,8 +77,6 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 */
 	public abstract Color getColor();
 	
-	//TODO boolean canSelect(int index)
-	
 	/**
 	 * Sets the color to a specified value. This method does not update the color
 	 * by its self to the handler ({@link Modifyable}).
