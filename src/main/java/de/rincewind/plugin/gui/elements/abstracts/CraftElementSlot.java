@@ -9,7 +9,7 @@ import de.rincewind.api.gui.elements.abstracts.ElementSlot;
 import de.rincewind.api.gui.elements.util.ClickAction;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
-import de.rincewind.api.handling.events.ElementInteractEvent;
+import de.rincewind.api.handling.element.ElementInteractEvent;
 
 public abstract class CraftElementSlot extends CraftElement implements ElementSlot {
 

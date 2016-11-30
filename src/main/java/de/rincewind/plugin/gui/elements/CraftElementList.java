@@ -17,9 +17,9 @@ import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.util.Color;
 import de.rincewind.api.gui.util.Directionality;
 import de.rincewind.api.handling.InterfaceListener;
-import de.rincewind.api.handling.events.ButtonPressEvent;
-import de.rincewind.api.handling.events.ElementInteractEvent;
-import de.rincewind.api.handling.events.ListChangeSelectEvent;
+import de.rincewind.api.handling.element.ButtonPressEvent;
+import de.rincewind.api.handling.element.ElementInteractEvent;
+import de.rincewind.api.handling.element.ListChangeSelectEvent;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElement;
 import lib.securebit.Validate;
 

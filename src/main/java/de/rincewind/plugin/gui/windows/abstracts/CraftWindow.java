@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import de.rincewind.api.gui.util.EventManager;
 import de.rincewind.api.gui.windows.abstracts.Window;
 import de.rincewind.api.gui.windows.util.WindowState;
-import de.rincewind.api.handling.events.WindowChangeStateEvent;
-import de.rincewind.api.handling.events.WindowOpenEvent;
+import de.rincewind.api.handling.window.WindowChangeStateEvent;
+import de.rincewind.api.handling.window.WindowOpenEvent;
 import de.rincewind.plugin.gui.util.CraftEventManager;
 
 public abstract class CraftWindow implements Window {

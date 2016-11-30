@@ -10,8 +10,8 @@ import de.rincewind.api.gui.elements.ElementSwitcher;
 import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
-import de.rincewind.api.handling.events.ButtonPressEvent;
-import de.rincewind.api.handling.events.SwitchChangeEvent;
+import de.rincewind.api.handling.element.ButtonPressEvent;
+import de.rincewind.api.handling.element.SwitchChangeEvent;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElement;
 import lib.securebit.Validate;
 

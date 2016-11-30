@@ -1,4 +1,4 @@
-package de.rincewind.api.handling.events;
+package de.rincewind.api.handling.element;
 
 import de.rincewind.api.gui.components.Displayable;
 import de.rincewind.api.gui.elements.ElementList;

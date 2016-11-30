@@ -5,8 +5,8 @@ import org.bukkit.inventory.ItemStack;
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementOutput;
 import de.rincewind.api.gui.elements.util.ClickAction;
-import de.rincewind.api.handling.events.ElementInteractEvent;
-import de.rincewind.api.handling.events.OutputConsumeEvent;
+import de.rincewind.api.handling.element.ElementInteractEvent;
+import de.rincewind.api.handling.element.OutputConsumeEvent;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementSlot;
 import lib.securebit.Validate;
 

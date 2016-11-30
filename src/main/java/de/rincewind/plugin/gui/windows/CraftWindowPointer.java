@@ -13,7 +13,7 @@ import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.WindowPointer;
 import de.rincewind.api.handling.InterfaceListener;
-import de.rincewind.api.handling.events.ButtonPressEvent;
+import de.rincewind.api.handling.element.ButtonPressEvent;
 
 public class CraftWindowPointer extends CraftWindowSizeable implements WindowPointer {
 

@@ -4,7 +4,7 @@ import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.util.Color;
 import de.rincewind.api.gui.windows.abstracts.WindowColorable;
-import de.rincewind.api.handling.events.WindowClickEvent;
+import de.rincewind.api.handling.window.WindowClickEvent;
 import lib.securebit.Validate;
 
 public abstract class CraftWindowColorable extends CraftWindowEditor implements WindowColorable {

@@ -1,6 +1,7 @@
-package de.rincewind.api.handling.events;
+package de.rincewind.api.handling.element;
 
 import de.rincewind.api.gui.elements.abstracts.Element;
+import de.rincewind.api.handling.Event;
 
 public class ElementEvent<T extends Element> extends Event<T> {
 	

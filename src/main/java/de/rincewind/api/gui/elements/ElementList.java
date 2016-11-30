@@ -15,7 +15,7 @@ import de.rincewind.api.gui.elements.util.Elements.ElementListExtendable;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.util.Color;
 import de.rincewind.api.gui.util.Directionality;
-import de.rincewind.api.handling.events.ListChangeSelectEvent;
+import de.rincewind.api.handling.element.ListChangeSelectEvent;
 
 /**
  * With this element you can create a list of entries and you are able to scroll through

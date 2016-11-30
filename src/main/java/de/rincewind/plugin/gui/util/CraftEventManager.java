@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.rincewind.api.gui.util.EventManager;
+import de.rincewind.api.handling.Event;
 import de.rincewind.api.handling.InterfaceListener;
-import de.rincewind.api.handling.events.Event;
 
 public class CraftEventManager implements EventManager {
 	

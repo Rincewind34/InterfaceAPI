@@ -6,7 +6,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import de.rincewind.api.gui.windows.abstracts.WindowActivatable;
 import de.rincewind.api.gui.windows.util.WindowState;
-import de.rincewind.api.handling.events.WindowChangeStateEvent;
+import de.rincewind.api.handling.window.WindowChangeStateEvent;
 
 public abstract class CraftWindowActivatable extends CraftWindowColorable implements WindowActivatable {
 	

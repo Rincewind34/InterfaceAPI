@@ -8,7 +8,7 @@ import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.abstracts.WindowContainer;
 import de.rincewind.api.gui.windows.util.WindowState;
-import de.rincewind.api.handling.events.WindowChangeStateEvent;
+import de.rincewind.api.handling.window.WindowChangeStateEvent;
 import de.rincewind.plugin.setup.CraftSetup;
 
 public abstract class CraftWindowContainer extends CraftWindowNameable implements WindowContainer {

@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementBrick;
-import de.rincewind.api.handling.events.ButtonPressEvent;
+import de.rincewind.api.handling.element.ButtonPressEvent;
 import lib.securebit.Validate;
 
 public class CraftElementBrick extends CraftElementButton implements ElementBrick {

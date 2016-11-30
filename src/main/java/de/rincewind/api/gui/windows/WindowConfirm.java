@@ -12,7 +12,7 @@ import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.util.Color;
 import de.rincewind.api.gui.windows.util.Windows.WindowSizeableExtendable;
 import de.rincewind.api.handling.InterfaceListener;
-import de.rincewind.api.handling.events.ButtonPressEvent;
+import de.rincewind.api.handling.element.ButtonPressEvent;
 
 public class WindowConfirm extends WindowSizeableExtendable {
 

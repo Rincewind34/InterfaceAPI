@@ -1,4 +1,4 @@
-package de.rincewind.api.handling.events;
+package de.rincewind.api.handling.element;
 
 import org.bukkit.entity.Player;
 

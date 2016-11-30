@@ -11,8 +11,8 @@ import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementMultiButton;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
-import de.rincewind.api.handling.events.ElementInteractEvent;
-import de.rincewind.api.handling.events.MultiButtonPressEvent;
+import de.rincewind.api.handling.element.ElementInteractEvent;
+import de.rincewind.api.handling.element.MultiButtonPressEvent;
 import de.rincewind.api.item.ItemRefactor.Lore;
 import lib.securebit.Validate;
 

@@ -8,7 +8,7 @@ import de.rincewind.api.exceptions.APIException;
 import de.rincewind.api.gui.util.EventManager;
 import de.rincewind.api.gui.windows.abstracts.Window;
 import de.rincewind.api.gui.windows.util.WindowState;
-import de.rincewind.api.handling.events.WindowOpenEvent;
+import de.rincewind.api.handling.window.WindowOpenEvent;
 
 public interface Setup {
 	

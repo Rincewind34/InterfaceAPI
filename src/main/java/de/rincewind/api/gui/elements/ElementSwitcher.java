@@ -9,7 +9,7 @@ import de.rincewind.api.gui.components.DisplayableDisabled;
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.elements.util.Elements.ElementSwitcherExtendable;
-import de.rincewind.api.handling.events.SwitchChangeEvent;
+import de.rincewind.api.handling.element.SwitchChangeEvent;
 
 /**
  * This element allows the suer to switch through items, added to this element.

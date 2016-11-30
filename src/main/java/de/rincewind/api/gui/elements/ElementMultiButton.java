@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import de.rincewind.api.gui.components.Selectable;
 import de.rincewind.api.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.api.gui.elements.util.Icon;
-import de.rincewind.api.handling.events.MultiButtonPressEvent;
+import de.rincewind.api.handling.element.MultiButtonPressEvent;
 
 /**
  * In this button, you can run multiple action on one button.

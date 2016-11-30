@@ -1,4 +1,4 @@
-package de.rincewind.api.handling.events;
+package de.rincewind.api.handling.window;
 
 import org.bukkit.inventory.ItemStack;
 

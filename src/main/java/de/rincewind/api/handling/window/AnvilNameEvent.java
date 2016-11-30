@@ -1,4 +1,4 @@
-package de.rincewind.api.handling.events;
+package de.rincewind.api.handling.window;
 
 import de.rincewind.api.gui.windows.WindowAnvil;
 

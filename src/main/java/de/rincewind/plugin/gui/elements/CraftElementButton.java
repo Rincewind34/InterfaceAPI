@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementButton;
 import de.rincewind.api.gui.elements.abstracts.Element;
-import de.rincewind.api.handling.events.ButtonPressEvent;
-import de.rincewind.api.handling.events.ElementInteractEvent;
+import de.rincewind.api.handling.element.ButtonPressEvent;
+import de.rincewind.api.handling.element.ElementInteractEvent;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementDisplayable;
 
 public class CraftElementButton extends CraftElementDisplayable implements ElementButton {

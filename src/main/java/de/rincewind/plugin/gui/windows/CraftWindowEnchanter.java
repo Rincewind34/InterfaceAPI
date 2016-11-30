@@ -12,7 +12,7 @@ import de.rincewind.api.exceptions.InvalidSlotException;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.WindowEnchanter;
 import de.rincewind.api.gui.windows.util.WindowState;
-import de.rincewind.api.handling.events.WindowChangeStateEvent;
+import de.rincewind.api.handling.window.WindowChangeStateEvent;
 import de.rincewind.plugin.APIReflection;
 import de.rincewind.plugin.gui.windows.abstracts.CraftWindowEditor;
 import lib.securebit.ReflectionUtil;

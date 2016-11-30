@@ -13,8 +13,8 @@ import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.util.Color;
-import de.rincewind.api.handling.events.ElementInteractEvent;
-import de.rincewind.api.handling.events.MapChangeSelectEvent;
+import de.rincewind.api.handling.element.ElementInteractEvent;
+import de.rincewind.api.handling.element.MapChangeSelectEvent;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElement;
 
 public class CraftElementMap extends CraftElement implements ElementMap {

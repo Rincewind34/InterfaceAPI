@@ -2,7 +2,7 @@ package de.rincewind.api.gui.elements;
 
 import de.rincewind.api.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.api.gui.elements.util.Elements.ElementButtonExtendable;
-import de.rincewind.api.handling.events.ButtonPressEvent;
+import de.rincewind.api.handling.element.ButtonPressEvent;
 
 /**
  * In this element you can add a listener to run an action on

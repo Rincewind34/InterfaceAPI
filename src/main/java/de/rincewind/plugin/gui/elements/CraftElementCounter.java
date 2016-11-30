@@ -9,8 +9,8 @@ import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.handling.InterfaceListener;
-import de.rincewind.api.handling.events.ButtonPressEvent;
-import de.rincewind.api.handling.events.ElementInteractEvent;
+import de.rincewind.api.handling.element.ButtonPressEvent;
+import de.rincewind.api.handling.element.ElementInteractEvent;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementDisplayable;
 import lib.securebit.Validate;
 

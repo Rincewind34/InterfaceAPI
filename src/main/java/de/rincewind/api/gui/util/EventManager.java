@@ -6,8 +6,8 @@ import de.rincewind.api.exceptions.APIException;
 import de.rincewind.api.gui.components.EventBased;
 import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.windows.abstracts.Window;
+import de.rincewind.api.handling.Event;
 import de.rincewind.api.handling.InterfaceListener;
-import de.rincewind.api.handling.events.Event;
 import de.rincewind.plugin.gui.util.CraftEventManager;
 import lib.securebit.Validate;
 

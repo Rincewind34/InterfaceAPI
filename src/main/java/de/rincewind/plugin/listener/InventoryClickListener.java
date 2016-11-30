@@ -11,8 +11,8 @@ import de.rincewind.api.gui.elements.util.ClickAction;
 import de.rincewind.api.gui.windows.WindowAnvil;
 import de.rincewind.api.gui.windows.abstracts.Window;
 import de.rincewind.api.gui.windows.abstracts.WindowContainer;
-import de.rincewind.api.handling.events.AnvilNameEvent;
-import de.rincewind.api.handling.events.WindowClickEvent;
+import de.rincewind.api.handling.window.AnvilNameEvent;
+import de.rincewind.api.handling.window.WindowClickEvent;
 
 public class InventoryClickListener implements Listener {
 

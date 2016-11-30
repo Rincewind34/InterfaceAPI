@@ -6,7 +6,7 @@ import org.bukkit.inventory.Inventory;
 
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.windows.util.WindowState;
-import de.rincewind.api.handling.events.WindowChangeStateEvent;
+import de.rincewind.api.handling.window.WindowChangeStateEvent;
 import de.rincewind.plugin.gui.windows.abstracts.CraftWindow;
 import net.minecraft.server.v1_10_R1.BlockPosition;
 import net.minecraft.server.v1_10_R1.ChatMessage;
