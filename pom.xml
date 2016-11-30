@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.rincewind</groupId>
 	<artifactId>interfaceapi</artifactId>
-	<version>2.0.10</version>
+	<version>3.0.0</version>
 
 	<repositories>
 		<repository>
@@ -36,6 +36,7 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -43,6 +44,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<outputDirectory>${output}</outputDirectory>
+					<finalName>InterfaceAPI-${version}</finalName>
 				</configuration>
 			</plugin>
 		</plugins>
