@@ -186,10 +186,6 @@ public abstract class CraftElement implements Element {
 		return null;
 	}
 
-	public void onCreate() { // TODO remove?
-		
-	}
-	
 	public int getId() {
 		return this.id;
 	}

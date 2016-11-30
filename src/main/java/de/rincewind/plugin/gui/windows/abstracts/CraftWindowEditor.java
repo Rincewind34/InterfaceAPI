@@ -80,7 +80,6 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		this.elements.add(element);
 		this.injectId(element, id);
 
-		((CraftElement) element).onCreate();
 		this.renderElement(element);
 	}
 
