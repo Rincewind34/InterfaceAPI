@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
+import de.rincewind.api.gui.components.Displayable;
 import de.rincewind.api.item.ItemLibary;
 import de.rincewind.api.item.ItemRefactor.Lore;
 
@@ -13,9 +14,16 @@ import de.rincewind.api.item.ItemRefactor.Lore;
  * @author Rincewind34
  * @since 2.3.3
  */
-public class Icon {
+public class Icon implements Displayable, Cloneable {
+	
+	public static final Icon AIR = new Icon(Material.AIR);
+	
 	
 	private ItemStack item;
+	
+	private Icon() {
+		
+	}
 	
 	public Icon(Material type) {
 		this(type, 0);
@@ -29,21 +37,27 @@ public class Icon {
 		this(ItemLibary.refactor().renameItem(new ItemStack(type, 1, (short) data), name));
 	}
 	
-	@Deprecated
-	public Icon(Material type, short data) {
-		this(type, (int) data);
-	}
-	
-	@Deprecated
-	public Icon(Material type, short data, String name) {
-		this(type, (int) data, name);
-	}
-	
 	public Icon(ItemStack item) {
 		this.item = item;
 		this.item = ItemLibary.refactor().addAllFlags(this.item);
 	}
 	
+	@Override
+	public void setIcon(Icon icon) {
+		this.item = icon.item;
+	}
+	
+	@Override
+	public Icon getIcon() {
+		return this;
+	}
+	
+	@Override
+	public Icon clone() {
+		Icon icon = new Icon();
+		icon.item = this.item.clone();
+		return icon;
+	}
 	
 	public Icon rename(String name) {
 		this.item = ItemLibary.refactor().renameItem(this.item, name);

@@ -1,11 +1,14 @@
 package de.rincewind.api.gui.elements;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.function.Function;
-
-import org.bukkit.inventory.ItemStack;
+import java.util.stream.Collectors;
 
 import de.rincewind.api.gui.components.Selectable;
+import de.rincewind.api.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.api.gui.elements.util.ElementDefaults;
+import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.handling.events.MultiButtonPressEvent;
 
 /**
@@ -21,53 +24,30 @@ import de.rincewind.api.handling.events.MultiButtonPressEvent;
  * @author Rincewind34
  * @since 2.3.3
  */
-public interface ElementMultiButton extends ElementButton, Selectable, Iterable<String> {
+public interface ElementMultiButton extends ElementDisplayable, Selectable, Iterable<Object> {
 	
 	/**
-	 * Selects the next added entry in the lore. If the currently selected
-	 * entry is the last one in the lore, the first entry will be selected.
-	 * 
-	 * @return the new selected entry
-	 */
-	public abstract String next();
-	
-	/**
-	 * Selects the added entry before the currently selected in the lore. If the currently selected
-	 * entry is the first one in the lore, the last entry will be selected.
-	 * 
-	 * @return the new selected entry
-	 */
-	public abstract String back();
-	
-	/**
-	 * Returns the currently selected entry.
-	 * 
-	 * @return the currently selected entry
-	 */
-	public abstract String getSwitch();
-	
-	/**
-	 * Sets the selected index of the entrylist.
+	 * Sets the selected index of the entry list.
 	 * If the new index is equals or greater than the size of the added entries
 	 * the index will be set to 0.
 	 * 
 	 * @param index change to
 	 */
-	public abstract void setSwitchId(int index); //TODO refact to setSwitchIndex(int)
+	public abstract void setSelectedIndex(int index);
 	
 	/**
 	 * Adds an entry to the list.
 	 * 
 	 * @param entry adding to the list
 	 */
-	public abstract void addSwitch(String entry);
+	public abstract void addSwitch(Object entry);
 	
 	/**
 	 * Removes an entry from the list.
 	 * 
 	 * @param entry removing from the list.
 	 */
-	public abstract void removeSwitch(String entry);
+	public abstract void removeSwitch(Object entry);
 	
 	/**
 	 * Clears the entrylist of this element.
@@ -86,7 +66,7 @@ public interface ElementMultiButton extends ElementButton, Selectable, Iterable<
 	 * 
 	 * @return the currently selected index from the list
 	 */
-	public abstract int getSwitchId(); //TODO refact to getSwitchIndex()
+	public abstract int getSelectedIndex();
 	
 	/**
 	 * Sets the format witch is important for the regular lines in the lore.
@@ -119,7 +99,7 @@ public interface ElementMultiButton extends ElementButton, Selectable, Iterable<
 	 * 
 	 * @throws NullPointerException if the modifier is <code>null</code>
 	 */
-	public abstract void setSelectModifier(Function<ItemStack, ItemStack> modifier);
+	public abstract void setSelectModifier(Function<Icon, Icon> modifier);
 	
 	/**
 	 * Modifies an item like the button, when it gets selected.
@@ -130,6 +110,29 @@ public interface ElementMultiButton extends ElementButton, Selectable, Iterable<
 	 * 
 	 * @throws NullPointerException if the item is <code>null</code>
 	 */
-	public abstract ItemStack modify(ItemStack item);
+	public abstract Icon modify(Icon item);
+	
+	public abstract <T> T next();
+	
+	public abstract <T> T back();
+	
+	public abstract <T> T getSelected();
+	
+	public abstract <T> List<T> getSwitches();
+	
+	@Override
+	public default Iterator<Object> iterator() {
+		return this.getSwitches().iterator();
+	}
+	
+	public default <T> T getSelected(Class<T> cls) {
+		return cls.cast(this.getSelected());
+	}
+	
+	public default <T> List<T> getSwitches(Class<T> cls) {
+		return this.getSwitches().stream().map((entry) -> {
+			return cls.cast(entry);
+		}).collect(Collectors.toList());
+	}
 	
 }

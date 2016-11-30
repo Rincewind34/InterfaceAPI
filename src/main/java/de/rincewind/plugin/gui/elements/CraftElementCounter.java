@@ -1,19 +1,21 @@
 package de.rincewind.plugin.gui.elements;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementButton;
 import de.rincewind.api.gui.elements.ElementCounter;
+import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.elements.util.ElementDefaults;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.handling.InterfaceListener;
 import de.rincewind.api.handling.events.ButtonPressEvent;
+import de.rincewind.api.handling.events.ElementInteractEvent;
+import de.rincewind.plugin.gui.elements.abstracts.CraftElementDisplayable;
 import lib.securebit.Validate;
 
-public class CraftElementCounter extends CraftElementButton implements ElementCounter {
+public class CraftElementCounter extends CraftElementDisplayable implements ElementCounter {
 
 	private int count;
 	
@@ -25,20 +27,15 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 		
 		this.minCount = ElementDefaults.COUNTER_MINIMUM;
 		this.maxCount = ElementDefaults.COUNTER_MAXIMUM;
+		
+		this.getComponent(Element.WIDTH).setEnabled(true);
+		this.getComponent(Element.HEIGHT).setEnabled(true);
+		
+		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
+			this.setCount((int) (this.minCount + (this.maxCount - this.minCount) / 2.0D));
+		}).addAfter();
 	}
 	
-	@Override
-	public void updateItemMap() {
-		ItemStack item = this.getIcon().toItem();
-		item.setAmount(this.count);
-		
-		this.iterate((point) -> {
-			this.setItemAt(point, item);
-		});
-		
-		this.updateItemMap(false);
-	}
-
 	@Override
 	public int getCount() {
 		return this.count;
@@ -56,12 +53,17 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 
 	@Override
 	public void setMaxCount(int maxCount) {
-		if (maxCount > 64) {
-			this.setMaxCount(64);
+		if (maxCount > ElementCounter.MAXIMUM_COUNT) {
+			this.setMaxCount(ElementCounter.MAXIMUM_COUNT);
 		}
 		
-		//TODO use ElementCounter.MAXIMUM_COUNT
-		//TODO check for smaller than 0
+		if (maxCount < ElementCounter.MINIMUM_COUNT) {
+			this.setMaxCount(ElementCounter.MINIMUM_COUNT);
+		}
+		
+		if (maxCount < this.minCount) {
+			throw new RuntimeException("The maximal count is smaller than the current minimal count!");
+		}
 		
 		this.maxCount = maxCount;
 		this.setCount(this.count);
@@ -69,11 +71,17 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 
 	@Override
 	public void setMinCount(int minCount) {
-		if (minCount < 1) {
-			this.setMinCount(1);
+		if (minCount > ElementCounter.MAXIMUM_COUNT) {
+			this.setMinCount(ElementCounter.MAXIMUM_COUNT);
 		}
 		
-		//TODO check for bigger than 64
+		if (minCount < ElementCounter.MINIMUM_COUNT) {
+			this.setMinCount(ElementCounter.MINIMUM_COUNT);
+		}
+		
+		if (minCount > this.maxCount) {
+			throw new RuntimeException("The minimal count is bigger than the current maximal count!");
+		}
 		
 		this.minCount = minCount;
 		this.setCount(this.count);
@@ -91,8 +99,10 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 			return;
 		}
 		
-		this.count = count;
-		this.getHandle().readItemsFrom(this);
+		if (count != this.count) {
+			this.count = count;
+			this.update();
+		}
 	}
 	
 	@Override
@@ -101,7 +111,7 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 	}
 
 	@Override
-	public void countdown() {
+	public void decrement() {
 		this.setCount(this.count - 1);
 	}
 
@@ -109,17 +119,32 @@ public class CraftElementCounter extends CraftElementButton implements ElementCo
 	public void addIncrementer(ElementButton btn, int value) {
 		Validate.notNull(btn, "The button cannot be null!");
 		
-		// TODO Exception if value is 0
+		if (value == 0) {
+			throw new RuntimeException("The value cannot be zero!");
+		}
 		
 		btn.getEventManager().registerListener(ButtonPressEvent.class, new ActionHandler(value)).addAfter();
 	}
 	
 	@Override
 	public void addIncrementer(ElementButton btn, int value, Point point) {
+		Validate.notNull(point, "The point cannot be null!");
+		
 		btn.setIcon(new Icon(Material.ARROW, 0, (value < 0 ? "§c- " : "§a+ ") + "§7" + Math.abs(value) + " " + this.getIcon().getName()));
 		btn.setPoint(point);
 		
 		this.addIncrementer(btn, value);
+	}
+	
+	@Override
+	public Icon getIcon(Point point) {
+		Icon icon = super.getIcon(point);
+		
+		if (this.isEnabled() && icon != null) {
+			return icon.count(this.count);
+		} else {
+			return icon;
+		}
 	}
 	
 	

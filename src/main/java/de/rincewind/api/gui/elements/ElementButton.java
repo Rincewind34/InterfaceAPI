@@ -1,6 +1,6 @@
 package de.rincewind.api.gui.elements;
 
-import de.rincewind.api.gui.elements.abstracts.ElementSizeable;
+import de.rincewind.api.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.api.gui.elements.util.Elements.ElementButtonExtendable;
 import de.rincewind.api.handling.events.ButtonPressEvent;
 
@@ -17,6 +17,6 @@ import de.rincewind.api.handling.events.ButtonPressEvent;
  * @see ElementCounter
  * @see ElementSwitcher
  */
-public interface ElementButton extends ElementSizeable {
+public interface ElementButton extends ElementDisplayable {
 	
 }

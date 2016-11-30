@@ -1,23 +1,26 @@
 package de.rincewind.plugin.gui.elements;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementButton;
+import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.handling.events.ButtonPressEvent;
-import de.rincewind.plugin.gui.elements.abstracts.CraftElementSizeable;
+import de.rincewind.api.handling.events.ElementInteractEvent;
+import de.rincewind.plugin.gui.elements.abstracts.CraftElementDisplayable;
 
-public class CraftElementButton extends CraftElementSizeable implements ElementButton {
-
+public class CraftElementButton extends CraftElementDisplayable implements ElementButton {
+	
 	public CraftElementButton(Modifyable handle) {
 		super(handle);
+		
+		this.getComponent(Element.WIDTH).setEnabled(true);
+		this.getComponent(Element.HEIGHT).setEnabled(true);
+		
+		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
+			this.getEventManager().callEvent(ButtonPressEvent.class,
+					new ButtonPressEvent((Player) event.getPlayer(), this, !event.isLeftClick(), event.isShiftClick()));
+		}).addAfter();
 	}
-
-	@Override
-	public void handleClick(InventoryClickEvent event) {
-		this.getEventManager().callEvent(ButtonPressEvent.class,
-				new ButtonPressEvent((Player) event.getWhoClicked(), this, event.isRightClick(), event.isShiftClick()));
-	}
-
+	
 }

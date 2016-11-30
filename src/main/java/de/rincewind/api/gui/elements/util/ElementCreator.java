@@ -61,8 +61,8 @@ public class ElementCreator {
 		return element;
 	}
 	
-	public <T> ElementList<T> newList(Class<T> saveClass) {
-		ElementList<T> element = new CraftElementList<T>(this.handle);
+	public ElementList newList() {
+		ElementList element = new CraftElementList(this.handle);
 		this.handle.addElement(element);
 		return element;
 	}
@@ -79,14 +79,8 @@ public class ElementCreator {
 		return element;
 	}
 	
-	public <T> ElementSwitcher<T> newSwitcher() {
-		ElementSwitcher<T> element = new CraftElementSwitcher<T>(this.handle);
-		this.handle.addElement(element);
-		return element;
-	}
-	
-	public <T> ElementSwitcher<T> newSwitcher(Class<T> saveClazz) {
-		ElementSwitcher<T> element = new CraftElementSwitcher<T>(this.handle);
+	public  ElementSwitcher newSwitcher() {
+		ElementSwitcher element = new CraftElementSwitcher(this.handle);
 		this.handle.addElement(element);
 		return element;
 	}
@@ -115,8 +109,8 @@ public class ElementCreator {
 		return element;
 	}
 	
-	public <T> ElementMap<T> newMap(Class<T> saveClass) {
-		ElementMap<T> map = new CraftElementMap<>(this.handle);
+	public ElementMap newMap() {
+		ElementMap map = new CraftElementMap(this.handle);
 		this.handle.addElement(map);
 		return map;
 	}

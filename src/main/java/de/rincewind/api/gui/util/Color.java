@@ -1,8 +1,8 @@
 package de.rincewind.api.gui.util;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+
+import de.rincewind.api.gui.elements.util.Icon;
 
 public enum Color {
 	
@@ -25,25 +25,18 @@ public enum Color {
 	
 	TRANSLUCENT(-1);
 	
-	private byte data;
+	private int data;
 	
 	private Color(int data) {
-		this.data = (byte) data;
+		this.data = data;
 	}
 	
-	public ItemStack asItem() {
+	public Icon asIcon() {
 		if (this.data == -1) {
-			return new ItemStack(Material.AIR);
+			return new Icon(Material.AIR);
 		} else {
-			return this.rename(new ItemStack(Material.STAINED_GLASS_PANE, 1, this.data));
+			return new Icon(Material.STAINED_GLASS_PANE, this.data).rename("§7");
 		}
-	}
-	
-	private ItemStack rename(ItemStack item) {
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(" ");
-		item.setItemMeta(meta);
-		return item;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package de.rincewind.plugin.gui.windows;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
@@ -20,48 +21,8 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 	public CraftWindowSizeable() {
 		super();
 		
-		this.createBukkitInventory();
-		this.setSize(9, 3);
-	}
-	
-	@Override
-	public void updateBukkitInventory() {
-		super.updateBukkitInventory();
-		
-		if (super.getUser() != null) {
-			super.getUser().updateInventory(); //TODO
-		}
-	}
-	
-	@Override
-	public boolean isInside(Point point) {
-		if (point.getX() < this.width && point.getY() < this.height) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
-	public int getWidth() {
-		return this.width;
-	}
-
-	@Override
-	public int getHeight() {
-		return this.height;
-	}
-	
-	@Override
-	public Point getPoint(int bukkitSlot) {
-		if (super.getBukkitSize() < bukkitSlot) {
-			throw new InvalidSlotException(bukkitSlot, WindowSizeable.class);
-		}
-		
-		int y = (int) ((double) bukkitSlot / (double) this.getWidth());
-		int x = bukkitSlot - (y * this.getWidth());
-		
-		return new Point(x, y);
+		this.width = 9;
+		this.height = 3;
 	}
 	
 	@Override
@@ -76,18 +37,16 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 	}
 	
 	@Override
-	public Inventory newInventory() {
-		if (this.getWidth() == 3) {
-			return Bukkit.createInventory(null, InventoryType.DISPENSER, this.getName());
-		} else if (this.getWidth() == 5) {
-			return Bukkit.createInventory(null, InventoryType.HOPPER, this.getName());
-		} else if (this.getWidth() == 9) {
-			return Bukkit.createInventory(null, this.getHeight() * 9, this.getName()); //ChestInv
-		} else {
-			return null;
-		}
+	public int getWidth() {
+		return this.width;
+	}
+
+	@Override
+	public int getHeight() {
+		return this.height;
 	}
 	
+	@Override
 	public boolean checkSize(int width, int height) {
 		if (width <= 0 || height <= 0) {
 			return false;
@@ -103,12 +62,16 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 	}
 
 	@Override
-	public void iterate(Consumer<Point> action) {
-		for (int x = 0; x < this.getWidth(); x++) {
-			for (int y = 0; y < this.getHeight(); y++) {
-				action.accept(new Point(x, y));
+	public List<Point> getPoints() {
+		List<Point> result = new ArrayList<>();
+		
+		for (int x = 0; x < this.width; x++) {
+			for (int y = 0; y < this.height; y++) {
+				result.add(new Point(x, y));
 			}
 		}
+		
+		return result;
 	}
 
 	@Override
@@ -117,7 +80,32 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 			return -1;
 		}
 		
-		return point.getX() + (this.getWidth() * point.getY());
+		return point.getX() + (this.width * point.getY());
 	}
-
+	
+	@Override
+	public Point getPoint(int bukkitSlot) {
+		if (this.getWidth() * this.getHeight() <= bukkitSlot) {
+			throw new InvalidSlotException(bukkitSlot, WindowSizeable.class);
+		}
+		
+		int y = (int) ((double) bukkitSlot / (double) this.getWidth());
+		int x = bukkitSlot - (y * this.getWidth());
+		
+		return new Point(x, y);
+	}
+	
+	@Override
+	public Inventory newInventory() {
+		if (this.getWidth() == 3) {
+			return Bukkit.createInventory(null, InventoryType.DISPENSER, this.getName());
+		} else if (this.getWidth() == 5) {
+			return Bukkit.createInventory(null, InventoryType.HOPPER, this.getName());
+		} else if (this.getWidth() == 9) {
+			return Bukkit.createInventory(null, this.getHeight() * 9, this.getName()); //ChestInv
+		} else {
+			return null;
+		}
+	}
+	
 }

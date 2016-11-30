@@ -1,21 +1,21 @@
 package de.rincewind.api.gui.elements;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
-
-import org.bukkit.inventory.ItemStack;
+import java.util.stream.Collectors;
 
 import de.rincewind.api.exceptions.APIException;
+import de.rincewind.api.gui.components.Displayable;
+import de.rincewind.api.gui.components.DisplayableDisabled;
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.components.Selectable;
-import de.rincewind.api.gui.elements.ElementList.ListItem;
-import de.rincewind.api.gui.elements.abstracts.ElementSizeable;
+import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.elements.util.Elements.ElementListExtendable;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.util.Color;
 import de.rincewind.api.gui.util.Directionality;
-import de.rincewind.api.handling.events.ListSelectEvent;
-import de.rincewind.api.handling.events.ListUnselectEvent;
+import de.rincewind.api.handling.events.ListChangeSelectEvent;
 
 /**
  * With this element you can create a list of entries and you are able to scroll through
@@ -44,7 +44,7 @@ import de.rincewind.api.handling.events.ListUnselectEvent;
  * as <code>this.select(0)</code> with a little check if the size is not 0. If it is 0 the {@link APIException}
  * will be thrown.
  * 
- * The {@link ListSelectEvent} will be called, when the user selects an entry or you calls the method
+ * The {@link ListChangeSelectEvent} will be called, when the user selects an entry or you calls the method
  * {@link ElementList#select(int)}.
  * 
  * The {@link ListUnselectEvent} will be called, when the user unselects the selected entry or you calls the method
@@ -57,22 +57,7 @@ import de.rincewind.api.handling.events.ListUnselectEvent;
  * 
  * @see ElementListExtendable
  */
-public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListItem<T>>, Selectable {
-	
-	/**
-	 * Returns all the added entries as an unmodifiable list.
-	 * 
-	 * @return all the added entries
-	 */
-	public abstract List<ListItem<T>> getItems();
-	
-	/**
-	 * Returns the selected entry. If there is no selected entry, this method
-	 * will return <code>null</code>.
-	 * 
-	 * @return the selected entry
-	 */
-	public abstract ListItem<T> getSelected();
+public abstract interface ElementList extends Element, Selectable, DisplayableDisabled, Iterable<Displayable> {
 	
 	/**
 	 * Modifies an item like the selected one and returns the modified item.
@@ -83,7 +68,7 @@ public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListI
 	 * 
 	 * @throws NullPointerException if the item is <code>null</code>
 	 */
-	public abstract ItemStack modifyToSelect(ItemStack item);
+	public abstract Icon modifyToSelect(Icon item);
 	
 	/**
 	 * Returns the color of this element. By the default, it is {@link Color#TRANSLUCENT}
@@ -110,7 +95,7 @@ public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListI
 	 * 
 	 * @throws NullPointerException if the item is <code>null</code>
 	 */
-	public abstract void addItem(ListItem<T> item);
+	public abstract void addItem(Displayable item);
 	
 	/**
 	 * Removes an entry from this list. The list will be automaticly updated
@@ -120,7 +105,7 @@ public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListI
 	 * 
 	 * @throws NullPointerException if the item is <code>null</code>
 	 */
-	public abstract void removeItem(ListItem<T> item);
+	public abstract void removeItem(Displayable item);
 	
 	/**
 	 * Changes the type of this list. By the default it is {@link Directionality#VERTICAL}.
@@ -148,6 +133,10 @@ public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListI
 	 */
 	public abstract void select(int index);
 	
+	public abstract void select(int index, boolean fireEvent);
+	
+	public abstract void unselect(boolean fireEvent);
+	
 	/**
 	 * Sets the {@link ItemModifier} used to modify the entry, witch is selected.
 	 * 
@@ -155,7 +144,7 @@ public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListI
 	 * 
 	 * @throws NullPointerException if the modifier is <code>null</code>
 	 */
-	public abstract void setSelectModifyer(Function<ItemStack, ItemStack> modifier);
+	public abstract void setSelectModifyer(Function<Icon, Icon> modifier);
 	
 	/**
 	 * Adds to an {@link ElementButton} a listener to scroll through this element. The value to
@@ -187,51 +176,43 @@ public abstract interface ElementList<T> extends ElementSizeable, Iterable<ListI
 	 */
 	public abstract int getSelectedIndex();
 	
-	/**
-	 * Returns the size of the entrylist.
-	 * 
-	 * @return the size of the entrylist
-	 */
-	public abstract int getSize();
+	public abstract List<Displayable> getItems();
 	
+	public abstract <T extends Displayable> T getSelected();
 	
-	/**
-	 * This is the class, you can add to the {@link ElementList}. You have to
-	 * add an {@link ItemStack} / {@link Icon}, witch will be displayed, when this
-	 * instance is selected, and a value with an specified type.
-	 * 
-	 * The value is only for you something to save in each entry.
-	 * 
-	 * @param <K> specifying value type. It is automaticly the same, you set in the root
-	 * 				class {@link ElementList} as the parameter <code>T</code>.
-	 * 
-	 * @author Rincewind34
-	 * @since 2.3.3
-	 * 
-	 * @see ElementList
-	 */
-	public static class ListItem<K> {
-		
-		private ItemStack item;
-		private K save;
-		
-		public ListItem(ItemStack item, K save) {
-			this.item = item;
-			this.save = save;
+	public abstract <T extends Displayable> T getItem(int index);
+	
+	@Override
+	public default void select() {
+		if (this.getSize() != 0) {
+			this.select(0);
+		} else {
+			throw new APIException("Cannot select an item in this list!");
 		}
-		
-		public ListItem(Icon icon, K save) {
-			this(icon.toItem(), save);
-		}
-		
-		public ItemStack getItem() {
-			return this.item;
-		}
-		
-		public K getSave() {
-			return this.save;
-		}
-		
 	}
+	
+	@Override
+	public default Iterator<Displayable> iterator() {
+		return this.getItems().iterator();
+	}
+	
+	public default int getSize() {
+		return this.getItems().size();
+	}
+	
+	public default <T extends Displayable> T getSelected(Class<T> cls) {
+		return cls.cast(this.getSelected());
+	}
+	
+	public default <T extends Displayable> T getItem(Class<T> cls, int index) {
+		return cls.cast(this.getItem(index));
+	}
+	
+	public default <T extends Displayable> List<T> getItems(Class<T> cls) {
+		return this.getItems().stream().map((entry) -> {
+			return cls.cast(entry);
+		}).collect(Collectors.toList());
+	}
+	
 	
 }

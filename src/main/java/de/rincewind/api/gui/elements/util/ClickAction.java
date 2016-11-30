@@ -61,6 +61,16 @@ public enum ClickAction {
 		return Collections.unmodifiableList(this.actions);
 	}
 	
+	public static ClickAction getAction(InventoryAction action) {
+		for (ClickAction target : ClickAction.values()) {
+			if (target.actions.contains(action)) {
+				return target;
+			}
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Returns a list of all {@link InventoryAction}'s contained by the enum-fields. 
 	 * 
@@ -70,7 +80,7 @@ public enum ClickAction {
 		List<InventoryAction> actions = new ArrayList<>();
 		
 		for (ClickAction action : ClickAction.values()) {
-			for (InventoryAction invAction : action.getActions()) {
+			for (InventoryAction invAction : action.actions) {
 				if (!actions.contains(invAction)) {
 					actions.add(invAction);
 				}

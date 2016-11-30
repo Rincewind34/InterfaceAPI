@@ -1,6 +1,7 @@
 package de.rincewind.plugin.gui.windows;
 
-import java.util.function.Consumer;
+import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
@@ -28,16 +29,6 @@ public class CraftWindowEnchanter extends CraftWindowEditor implements WindowEnc
 	}
 
 	@Override
-	public int getSlot(Point point) {
-		return point.getX();
-	}
-
-	@Override
-	public Point getPoint(int bukkitSlot) {
-		return new Point(bukkitSlot, 0);
-	}
-
-	@Override
 	public void setOffer(int slot, int lvl) {
 		if (0 > slot || slot > 2) {
 			throw new InvalidSlotException(slot, WindowEnchanter.class);
@@ -47,7 +38,7 @@ public class CraftWindowEnchanter extends CraftWindowEditor implements WindowEnc
 	}
 
 	@Override
-	public void update() {
+	public void updateLevels() {
 		for (int i = 0; i < 3; i++) {
 			this.sendUpdatePacket(i, this.lvls[i]);
 		}
@@ -61,12 +52,12 @@ public class CraftWindowEnchanter extends CraftWindowEditor implements WindowEnc
 			return this.lvls[slot];
 		}
 	}
-
+	
 	@Override
-	public Inventory newInventory() {
-		return Bukkit.createInventory(null, InventoryType.ENCHANTING, this.getName());
+	public List<Point> getPoints() {
+		return Arrays.asList(new Point(0, 0), new Point(1, 0));
 	}
-
+	
 	public void sendUpdatePacket(int slot, int lvl) {
 		if (this.getUser() == null) {
 			return;
@@ -78,9 +69,18 @@ public class CraftWindowEnchanter extends CraftWindowEditor implements WindowEnc
 	}
 
 	@Override
-	public void iterate(Consumer<Point> action) {
-		action.accept(new Point(0, 0));
-		action.accept(new Point(1, 0));
+	public int getSlot(Point point) {
+		return point.getX();
+	}
+
+	@Override
+	public Point getPoint(int bukkitSlot) {
+		return new Point(bukkitSlot, 0);
+	}
+
+	@Override
+	public Inventory newInventory() {
+		return Bukkit.createInventory(null, InventoryType.ENCHANTING, this.getName());
 	}
 
 }

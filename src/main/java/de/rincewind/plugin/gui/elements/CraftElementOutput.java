@@ -1,24 +1,33 @@
 package de.rincewind.plugin.gui.elements;
 
-import lib.securebit.Validate;
-
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementOutput;
 import de.rincewind.api.gui.elements.util.ClickAction;
+import de.rincewind.api.handling.events.ElementInteractEvent;
 import de.rincewind.api.handling.events.OutputConsumeEvent;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementSlot;
+import lib.securebit.Validate;
 
 public class CraftElementOutput extends CraftElementSlot implements ElementOutput {
-
+	
+	private boolean empty;
+	
 	public CraftElementOutput(Modifyable handle) {
 		super(handle);
 		
+		this.empty = true;
+		
 		this.getBlocker().unlock();
 		this.getBlocker().addAction(ClickAction.PLACE);
+		
+		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
+			if (!this.empty && this.isEmpty()) {
+				this.empty = true;
+				this.getEventManager().callEvent(OutputConsumeEvent.class, new OutputConsumeEvent(this, event.getPlayer()));
+			}
+		}).addAfter();
 	}
 	
 	@Override
@@ -34,17 +43,7 @@ public class CraftElementOutput extends CraftElementSlot implements ElementOutpu
 			return;
 		} else {
 			this.setContent(item);
-		}
-	}
-	
-	@Override
-	public void handleClick(InventoryClickEvent event) {
-		boolean empty = this.isEmpty();
-		
-		super.handleClick(event);
-		
-		if (!empty && this.isEmpty()) {
-			this.getEventManager().callEvent(OutputConsumeEvent.class, new OutputConsumeEvent(this, (Player) event.getWhoClicked()));
+			this.empty = false;
 		}
 	}
 	

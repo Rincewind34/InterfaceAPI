@@ -12,7 +12,6 @@ import de.rincewind.plugin.gui.elements.CraftElementScanner;
 import de.rincewind.plugin.gui.elements.CraftElementSwitcher;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElement;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementDisplayable;
-import de.rincewind.plugin.gui.elements.abstracts.CraftElementSizeable;
 import de.rincewind.plugin.gui.elements.abstracts.CraftElementSlot;
 
 public abstract class Elements {
@@ -28,14 +27,6 @@ public abstract class Elements {
 	public abstract static class ElementDisplayExtendable extends CraftElementDisplayable {
 
 		public ElementDisplayExtendable(Modifyable handle) {
-			super(handle);
-		}
-		
-	}
-	
-	public abstract static class ElementSizeableExtendable extends CraftElementSizeable {
-
-		public ElementSizeableExtendable(Modifyable handle) {
 			super(handle);
 		}
 		
@@ -89,7 +80,7 @@ public abstract class Elements {
 		
 	}
 	
-	public abstract static class ElementListExtendable<T> extends CraftElementList<T> {
+	public abstract static class ElementListExtendable extends CraftElementList {
 
 		public ElementListExtendable(Modifyable handle) {
 			super(handle);
@@ -113,7 +104,7 @@ public abstract class Elements {
 		
 	}
 	
-	public abstract static class ElementSwitcherExtendable<T> extends CraftElementSwitcher<T> {
+	public abstract static class ElementSwitcherExtendable extends CraftElementSwitcher {
 
 		public ElementSwitcherExtendable(Modifyable handle) {
 			super(handle);

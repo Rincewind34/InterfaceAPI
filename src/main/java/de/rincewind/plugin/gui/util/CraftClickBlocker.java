@@ -51,5 +51,14 @@ public class CraftClickBlocker implements ClickBlocker {
 	public boolean isLocked() {
 		return this.lock;
 	}
+
+	@Override
+	public boolean allows(ClickAction action) {
+		if (this.isLocked()) {
+			return false;
+		} else {
+			return !this.blocked.contains(action);
+		}
+	}
 	
 }

@@ -73,7 +73,7 @@ public abstract interface ElementCounter extends ElementButton {
 	 * Subtracts 1 of the current count. To set the new count {@link ElementCounter#setCount(int)}
 	 * will be used.
 	 */
-	public abstract void countdown();
+	public abstract void decrement();
 	
 	/**
 	 * Adds to an {@link ElementButton} a listener to increment this element. The value to

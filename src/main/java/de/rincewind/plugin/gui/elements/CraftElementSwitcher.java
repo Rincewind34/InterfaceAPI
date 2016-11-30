@@ -1,137 +1,178 @@
 package de.rincewind.plugin.gui.elements;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
-import de.rincewind.api.exceptions.APIException;
+import de.rincewind.api.gui.components.Displayable;
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementSwitcher;
+import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.elements.util.Icon;
+import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.handling.events.ButtonPressEvent;
-import de.rincewind.api.handling.events.SwitchEvent;
+import de.rincewind.api.handling.events.SwitchChangeEvent;
+import de.rincewind.plugin.gui.elements.abstracts.CraftElement;
 import lib.securebit.Validate;
 
-public class CraftElementSwitcher<T> extends CraftElementButton implements ElementSwitcher<T> {
-
-	private List<SwitchItem<T>> items;
-	private int switchid;
-
+public class CraftElementSwitcher extends CraftElement implements ElementSwitcher {
+	
+	private int switchIndex;
+	
+	private Icon disabledIcon;
+	
+	private List<Displayable> items;
+	
 	public CraftElementSwitcher(Modifyable handle) {
 		super(handle);
-
+		
+		this.switchIndex = -1;
+		this.disabledIcon = Icon.AIR;
 		this.items = new ArrayList<>();
+		
+		this.getComponent(Element.ENABLED).setEnabled(true);
+		
 		this.registerListener();
 	}
-
+	
 	@Override
-	public void setIcon(Icon icon) {
-		throw new APIException("Cannot set icon of elementswitch!");
-	}
-
-	@Override
-	public void updateItemMap() {
-		this.iterate((point) -> {
-			if (this.items != null && this.getSwitch() != null) {
-				this.setItemAt(point, this.getSwitch().getItem());
-			}
-		});
-
-		this.updateItemMap(false);
-	}
-
-	@Override
-	public SwitchItem<T> next() {
-		this.setSwitchId(this.switchid + 1);
-		return this.getSwitch();
-	}
-
-	@Override
-	public SwitchItem<T> back() {
-		this.setSwitchId(this.switchid - 1);
-		return this.getSwitch();
-	}
-
-	@Override
-	public void setSwitchId(int index) {
-		this.setSwitchId(index, true);
-	}
-
-	@Override
-	public void setSwitchId(int index, boolean fireEvent) {
-		this.switchid = index;
-
-		if (this.switchid < 0) {
-			this.switchid = this.size() - 1;
-		} else if (this.size() == this.switchid) {
-			this.switchid = 0;
+	public void setDisabledIcon(Icon icon) {
+		if (icon != null) {
+			this.disabledIcon = icon;
+		} else {
+			this.disabledIcon = Icon.AIR;
 		}
+	}
 
+	@Override
+	public Displayable next() {
+		this.setSwitchIndex(this.switchIndex + 1);
+		return this.getCurrentSwitch();
+	}
+
+	@Override
+	public Displayable back() {
+		this.setSwitchIndex(this.switchIndex - 1);
+		return this.getCurrentSwitch();
+	}
+
+	@Override
+	public void setSwitchIndex(int index) {
+		this.setSwitchIndex(index, true);
+	}
+
+	@Override
+	public void setSwitchIndex(int index, boolean fireEvent) {
+		if (this.size() == 0) {
+			index = -1;
+		}
+		
 		if (fireEvent) {
-			this.getEventManager().callEvent(SwitchEvent.class, new SwitchEvent(this));
+			this.getEventManager().callEvent(SwitchChangeEvent.class, new SwitchChangeEvent(this, index));
+		}
+		
+		this.switchIndex = index;
+		
+		if (this.size() != 0) {
+			if (this.switchIndex < 0) {
+				this.switchIndex = this.size() - 1;
+			} else if (this.size() >= this.switchIndex) {
+				this.switchIndex = 0;
+			}
 		}
 
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 
 	@Override
 	public int getSwitchIndex() {
-		return this.switchid;
+		return this.switchIndex;
 	}
 
 	@Override
-	public void addSwitch(SwitchItem<T> item) {
+	public void addSwitch(Displayable item) {
 		Validate.notNull(item, "The switchitem cannot be null!");
 
 		this.items.add(item);
-		this.getHandle().readItemsFrom(this);
+		
+		if (this.switchIndex == -1) {
+			this.setSwitchIndex(0);
+		}
 	}
 
 	@Override
-	public void removeSwitch(SwitchItem<T> item) {
+	public void removeSwitch(Displayable item) {
 		Validate.notNull(item, "The switchitem cannot be null!");
 
 		this.items.remove(item);
-		this.setSwitchId(this.switchid);
+		this.setSwitchIndex(this.switchIndex);
 	}
 
 	@Override
 	public void clear() {
 		this.items.clear();
+		this.update();
 	}
 
 	@Override
 	public int size() {
 		return this.items.size();
 	}
+	
+	@Override
+	public Icon getDisabledIcon() {
+		return this.disabledIcon;
+	}
 
 	@Override
-	public SwitchItem<T> getSwitch() {
+	@SuppressWarnings(value = "unchecked")
+	public <T extends Displayable> T getCurrentSwitch() {
 		if (this.size() == 0) {
 			return null;
 		} else {
-			return this.items.get(this.switchid);
+			return (T) this.items.get(this.switchIndex);
 		}
 	}
 
 	@Override
-	public Iterator<SwitchItem<T>> iterator() {
-		return this.items.iterator();
+	@SuppressWarnings(value = "unchecked")
+	public <T extends Displayable> T getSwitch(int index) {
+		return (T) this.items.get(index);
 	}
 	
+	@Override
+	public List<Displayable> getSwitches() {
+		return Collections.unmodifiableList(this.items);
+	}
+	
+	@Override
+	public Icon getIcon(Point point) {
+		super.getIcon(point);
+		
+		if (this.isEnabled()) {
+			if (this.switchIndex != -1) {
+				return this.items.get(this.switchIndex).getIcon();
+			} else {
+				return null;
+			}
+		} else {
+			return this.disabledIcon;
+		}
+	}
+
 	protected void registerListener() {
 		this.getEventManager().registerListener(ButtonPressEvent.class, (event) -> {
 			if (event.isRightClick()) {
-				back();
+				this.back();
 
 				if (event.isShiftClick()) {
-					back();
+					this.back();
 				}
 			} else {
-				next();
+				this.next();
 
 				if (event.isShiftClick()) {
-					next();
+					this.next();
 				}
 			}
 		}).addAfter();

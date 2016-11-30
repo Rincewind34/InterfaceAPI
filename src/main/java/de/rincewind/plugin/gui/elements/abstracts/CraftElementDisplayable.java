@@ -1,88 +1,68 @@
 package de.rincewind.plugin.gui.elements.abstracts;
 
-import org.bukkit.inventory.ItemStack;
-
 import de.rincewind.api.gui.components.Modifyable;
+import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 
 public abstract class CraftElementDisplayable extends CraftElement implements ElementDisplayable {
 	
-	private ItemStack icon;
-	private ItemStack disabledIcon;
+	private Icon icon;
+	private Icon disabledIcon;
 	
 	public CraftElementDisplayable(Modifyable handle) {
 		super(handle);
 		
-		this.icon = Modifyable.INVISIBLE_ELEMENT;
-		this.disabledIcon = this.getIcon().toItem();
-	}
-	
-	@Override
-	public Icon getIcon() {
-		if (this.icon == null) {
-			return null;
-		} else {
-			return new Icon(this.icon);
-		}
-	}
-
-	@Override
-	public Icon getDisabledIcon() {
-		if (this.disabledIcon == null) {
-			return null;
-		} else {
-			return new Icon(this.disabledIcon);
-		}
+		this.icon = Icon.AIR;
+		this.disabledIcon = Icon.AIR;
+		
+		this.getComponent(Element.ENABLED).setEnabled(true);
 	}
 	
 	@Override
 	public void setIcon(Icon icon) {
 		if (icon != null) {
-			this.icon = icon.toItem();
+			this.icon = icon;
 		} else {
-			this.icon = null;
+			this.icon = Icon.AIR;
 		}
 		
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 	
 	@Override
 	public void setDisabledIcon(Icon icon) {
 		if (icon != null) {
-			this.disabledIcon = icon.toItem();
+			this.disabledIcon = icon;
 		} else {
-			this.icon = null;
+			this.disabledIcon = Icon.AIR;
 		}
 		
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 	
 	@Override
-	public void updateItemMap() {
-		this.updateItemMap(Point.atNull(), true);
-	}
-	
-	protected final void updateItemMap(Point point, boolean withIcon) {
-		if (!this.isVisible()) {
-			this.setItemAt(point, Modifyable.INVISIBLE_ELEMENT);
-			return;
-		}
-		
-		if (!this.isEnabled()) {
-			if (this.disabledIcon == null) {
-				this.setItemAt(point, Modifyable.EMPTY_USED_SLOT);
-			} else {
-				this.setItemAt(point, this.disabledIcon);
-			}
-		} else if (withIcon) {
-			if (this.icon == null) {
-				this.setItemAt(point, Modifyable.EMPTY_USED_SLOT);
-			} else {
-				this.setItemAt(point, this.icon);
-			}
-		}
+	public Icon getIcon() {
+		return this.icon;
 	}
 
+	@Override
+	public Icon getDisabledIcon() {
+		return this.disabledIcon;
+	}
+	
+	@Override
+	public Icon getIcon(Point point) {
+		super.getIcon(point);
+		
+		boolean enabled = this.getComponent(Element.ENABLED).isEnabled() ? this.getComponentValue(Element.ENABLED) : true;
+		
+		if (enabled) {
+			return this.getIcon();
+		} else {
+			return this.getDisabledIcon();
+		}
+	}
+	
 }

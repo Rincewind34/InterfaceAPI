@@ -1,6 +1,6 @@
 package de.rincewind.api.gui.elements;
 
-import de.rincewind.api.gui.elements.abstracts.ElementSizeable;
+import de.rincewind.api.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.api.gui.elements.util.Elements.ElementItemExtendable;
 
 /**
@@ -12,6 +12,6 @@ import de.rincewind.api.gui.elements.util.Elements.ElementItemExtendable;
  * 
  * @see ElementItemExtendable
  */
-public interface ElementItem extends ElementSizeable {
+public interface ElementItem extends ElementDisplayable {
 	
 }

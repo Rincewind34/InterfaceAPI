@@ -1,12 +1,17 @@
 package de.rincewind.api.gui.elements.abstracts;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.bukkit.event.inventory.InventoryAction;
 
 import de.rincewind.api.gui.components.EventBased;
 import de.rincewind.api.gui.components.Modifyable;
+import de.rincewind.api.gui.components.UserMemory;
 import de.rincewind.api.gui.elements.util.ClickBlocker;
+import de.rincewind.api.gui.elements.util.ElementComponent;
+import de.rincewind.api.gui.elements.util.ElementComponentType;
+import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.abstracts.WindowColorable;
 
@@ -21,14 +26,13 @@ import de.rincewind.api.gui.windows.abstracts.WindowColorable;
  * @see ElementDisplayable
  * @see ElementSlot
  */
-public abstract interface Element extends EventBased {
+public abstract interface Element extends EventBased, UserMemory {
 	
-	/**
-	 * Returns the position of this element.
-	 * 
-	 * @return the position of this element
-	 */
-	public abstract Point getPoint();
+	public static final ElementComponentType<Boolean> ENABLED = new ElementComponentType<>(boolean.class, "enabled");
+	
+	public static final ElementComponentType<Integer> WIDTH = new ElementComponentType<>(int.class, "width");
+	
+	public static final ElementComponentType<Integer> HEIGHT = new ElementComponentType<>(int.class, "height");
 	
 	/**
 	 * Sets the position of this element. Before changing the position,
@@ -44,23 +48,9 @@ public abstract interface Element extends EventBased {
 	 */
 	public abstract void setPoint(Point point);
 	
+	public abstract void update();
+	
 	public abstract void priorize();
-	
-	/**
-	 * Returns the width of this element. In this class, you cannot
-	 * change the size so the width is 1.
-	 * 
-	 * @return the width of this element
-	 */
-	public abstract int getWidth();
-	
-	/**
-	 * Returns the height of this element. In this class, you cannot
-	 * change the size so the height is 1.
-	 * 
-	 * @return the height of this element
-	 */
-	public abstract int getHeight();
 	
 	/**
 	 * Sets the {@link ClickBlocker} for this element. The blocker blocks some
@@ -84,44 +74,6 @@ public abstract interface Element extends EventBased {
 	public abstract void setVisible(boolean visible);
 	
 	/**
-	 * Runs a consumer for each point locatable in this element.
-	 * 
-	 * @param action to run.
-	 * 
-	 * @throws NullPointerException if the action is null
-	 */
-	public abstract void iterate(Consumer<Point> action);
-	
-	/**
-	 * Calls {@link Element#setEnabled(boolean)} to set this element
-	 * enabled.
-	 */
-	public abstract void enable();
-	
-	/**
-	 * Calls {@link Element#setEnabled(boolean)} to set this element
-	 * disabled.
-	 */
-	public abstract void disable();
-	
-	/**
-	 * Disables or enables this element. If an element many actions like
-	 * pressing a button will be blocked.
-	 * 
-	 * @param value to set
-	 */
-	public abstract void setEnabled(boolean value);
-	
-	/**
-	 * Returns <code>true</code> if this element is enabled and 
-	 * <code>false</code> if not.
-	 * 
-	 * @return <code>true</code> if this element is enabled and 
-	 * 			<code>false</code> if not
-	 */
-	public abstract boolean isEnabled();
-	
-	/**
 	 * Returns <code>true</code> if this element is visible and 
 	 * <code>false</code> if not.
 	 * 
@@ -130,11 +82,38 @@ public abstract interface Element extends EventBased {
 	 */
 	public abstract boolean isVisible();
 	
+	public abstract boolean isEnabled();
+	
+	/**
+	 * Returns the position of this element.
+	 * 
+	 * @return the position of this element
+	 */
+	public abstract Point getPoint();
+	
+	public abstract Icon getIcon(Point point);
+	
 	/**
 	 * Returns the {@link ClickBlocker} set to this element.
 	 * 
 	 * @return the {@link ClickBlocker} set to this element
 	 */
 	public abstract ClickBlocker getBlocker();
+	
+	public abstract List<Point> getPoints();
+	
+	public abstract <T> void setComponentValue(ElementComponentType<T> type, T value);
+	
+	public abstract <T> T getComponentValue(ElementComponentType<T> type);
+	
+	public abstract <T> ElementComponent<T> getComponent(ElementComponentType<T> type);
+	
+	public default void iterate(Consumer<Point> action) {
+		this.getPoints().forEach(action);
+	}
+	
+	public default boolean isInside(Point point) {
+		return this.getPoints().contains(point);
+	}
 	
 }

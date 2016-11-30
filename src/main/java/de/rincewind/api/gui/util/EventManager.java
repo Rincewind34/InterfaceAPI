@@ -8,7 +8,6 @@ import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.windows.abstracts.Window;
 import de.rincewind.api.handling.InterfaceListener;
 import de.rincewind.api.handling.events.Event;
-import de.rincewind.api.handling.listener.Listener;
 import de.rincewind.plugin.gui.util.CraftEventManager;
 import lib.securebit.Validate;
 
@@ -25,60 +24,11 @@ import lib.securebit.Validate;
  * 
  * @see EventBased
  */
-@SuppressWarnings("deprecation")
 public interface EventManager {
-	
-	/**
-	 * Returns all registered listeners in the order they
-	 * may executed on an incoming event.
-	 * If there is no listener registered, this method will return
-	 * an empty List.
-	 * 
-	 * @return all registered listeners
-	 */
-	@Deprecated
-	public abstract List<Listener<?>> getListeners();
-	
-	/**
-	 * Returns all registered listeners matching to a given event-class in 
-	 * the order they may executed on the incoming event.
-	 * If there is no registered listener matching to the given event-class,
-	 * this method will return an empty List.
-	 * 
-	 * @param eventClass to get the matching listeners
-	 * 
-	 * @return all registered listeners matching to a given event-class
-	 * 
-	 * @throws NullPointerException if the event-class is <b>null</b>
-	 */
-	@Deprecated
-	public abstract List<Listener<?>> getListeners(Class<? extends Event<?>> eventClass);
 	
 	public abstract <E extends Event<?>> List<InterfaceListener<E>> getRegisteredListeners(Class<E> eventClass);
 	
-	/**
-	 * Returns a created ListenerBase-instance to register a given listener.
-	 * 
-	 * @param listener to register
-	 * 
-	 * @return a created ListenerBase-instance to register a given listener
-	 * 
-	 * @throws NullPointerException if the listener is <b>null</b>
-	 */
-	@Deprecated
-	public abstract <E extends Event<?>> ListenerBase<E> registerListener(Listener<E> listener);
-	
 	public abstract <E extends Event<?>> ListenerBase<E> registerListener(Class<E> eventCls, InterfaceListener<E> listener);
-	
-	/**
-	 * Executing all registered listeners matching to the fired event.
-	 * 
-	 * @param event fired
-	 * 
-	 * @throws NullPointerException if the event is <b>null</b>
-	 */
-	@Deprecated
-	public abstract void callEvent(Object event);
 	
 	public abstract <E extends Event<?>> void callEvent(Class<E> eventCls, E event);
 	

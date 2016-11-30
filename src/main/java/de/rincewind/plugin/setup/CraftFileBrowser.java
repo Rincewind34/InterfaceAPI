@@ -41,9 +41,11 @@ public class CraftFileBrowser implements FileBrowser {
 	
 	@Override
 	public WindowFileBrowser openWindow() {
-		WindowFileBrowser window = new WindowFileBrowser(this);
-		this.setup.open(window);
-		return window;
+//		WindowFileBrowser window = new WindowFileBrowser(this);
+//		this.setup.open(window);
+//		return window;
+		
+		return null;
 	}
 	
 	@Override

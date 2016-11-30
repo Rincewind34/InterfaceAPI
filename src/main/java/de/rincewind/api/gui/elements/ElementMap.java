@@ -1,34 +1,42 @@
 package de.rincewind.api.gui.elements;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.bukkit.inventory.ItemStack;
-
-import de.rincewind.api.gui.elements.abstracts.ElementSizeable;
-import de.rincewind.api.gui.elements.util.Icon;
+import de.rincewind.api.gui.components.Displayable;
+import de.rincewind.api.gui.components.DisplayableDisabled;
+import de.rincewind.api.gui.components.Selectable;
+import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.util.Color;
 
-public interface ElementMap<T> extends ElementSizeable {
+public interface ElementMap extends Element, DisplayableDisabled, Selectable, Iterable<Displayable> {
 	
 	public abstract void setColor(Color color);
 	
 	public abstract void setPage(int page);
 	
-	public abstract void addItem(MapItem<T> item);
+	public abstract void addItem(Displayable item);
 	
-	public abstract void removeItem(MapItem<T> item);
+	public abstract void removeItem(Displayable item);
 	
 	public abstract void removeItem(int index);
 	
-	public abstract void sortItems(Comparator<T> comperator);
+	public abstract void sortItems(Comparator<Displayable> comperator);
 	
 	public abstract void reverse();
 	
 	public abstract void nextPage();
 	
 	public abstract void previousPage();
+	
+	public abstract void select(int index);
+	
+	public abstract void select(int index, boolean fireEvent);
+	
+	public abstract void unselect(boolean fireEvent);
 	
 	public abstract boolean isFirstPage();
 	
@@ -44,35 +52,43 @@ public interface ElementMap<T> extends ElementSizeable {
 	
 	public abstract int getFirstIndex(int page);
 	
-	public abstract MapItem<T> getItem(Point point);
+	public abstract Point getPoint(int index);
 	
-	public abstract MapItem<T> getItem(Point point, int page);
+	public abstract List<Displayable> getItems();
 	
-	public abstract MapItem<T> getItem(int index);
+	public abstract <T extends Displayable> T getItem(Point point);
 	
-	public abstract MapItem<T> getItem(int index, int page);
+	public abstract <T extends Displayable> T getItem(Point point, int page);
 	
-	public abstract List<MapItem<T>> getItems();
+	public abstract <T extends Displayable> T getItem(int index);
 	
+	public abstract <T extends Displayable> T getItem(int index, int page);
 	
-	public static class MapItem<K> {
-		
-		private ItemStack item;
-		private K save;
-		
-		public MapItem(Icon icon, K save) {
-			this.item = icon.toItem();
-			this.save = save;
-		}
-		
-		public ItemStack getItem() {
-			return this.item;
-		}
-		
-		public K getSave() {
-			return this.save;
-		}
-
+	@Override
+	public default Iterator<Displayable> iterator() {
+		return this.getItems().iterator();
+	}
+	
+	public default <T extends Displayable> T getItem(Class<T> cls, Point point) {
+		return cls.cast(this.getItem(point));
+	}
+	
+	public default <T extends Displayable> T getItem(Class<T> cls, Point point, int page) {
+		return cls.cast(this.getItem(point, page));
+	}
+	
+	public default <T extends Displayable> T getItem(Class<T> cls, int index) {
+		return cls.cast(this.getItem(index));
+	}
+	
+	public default <T extends Displayable> T getItem(Class<T> cls, int index, int page) {
+		return cls.cast(this.getItem(index, page));
+	}
+	
+	public default <T extends Displayable> List<T> getItem(Class<T> cls) {
+		return this.getItems().stream().map((entry) -> {
+			return cls.cast(entry);
+		}).collect(Collectors.toList());
 	}
 	
 }

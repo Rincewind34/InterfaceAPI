@@ -1,17 +1,12 @@
 package de.rincewind.plugin.gui.windows.abstracts;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import lib.securebit.Validate;
-
-import org.bukkit.inventory.ItemStack;
-
-import de.rincewind.api.gui.components.Modifyable;
+import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.util.Color;
 import de.rincewind.api.gui.windows.abstracts.WindowColorable;
 import de.rincewind.api.gui.windows.util.WindowDefaults;
+import de.rincewind.api.handling.events.WindowClickEvent;
+import lib.securebit.Validate;
 
 public abstract class CraftWindowColorable extends CraftWindowEditor implements WindowColorable {
 	
@@ -21,34 +16,40 @@ public abstract class CraftWindowColorable extends CraftWindowEditor implements 
 		super();
 		
 		this.color = WindowDefaults.COLOR;
+		
+		this.getEventManager().registerListener(WindowClickEvent.class, (event) -> {
+			if (!this.hasVisibleElementAt(event.getInterfacePoint())) {
+				event.cancleInteraction();
+			}
+		}).addAfter();
 	}
 	
-	@Override
-	public void updateBukkitInventory() {
-		super.updateBukkitInventory();
-		
-		List<Point> usedPoints = new ArrayList<>();
-		
-		this.iterate((point) -> {
-			if (this.hasSpaceAt(point)) {
-				return;
-			}
-			
-			ItemStack item = this.getItemAt(point);
-			
-			if (item.equals(Modifyable.EMPTY_USED_SLOT)) {
-				usedPoints.add(point);
-			} else if (item.equals(Modifyable.INVISIBLE_ELEMENT)) {
-				return;
-			} else {
-				usedPoints.add(point);
-				this.getBukkitInventory().setItem(this.getSlot(point), item);
-			}
-		});
-		
-		
-		this.createBackground(usedPoints);
-	}
+//	@Override
+//	public void updateBukkitInventory() {
+//		super.updateBukkitInventory();
+//		
+//		List<Point> usedPoints = new ArrayList<>();
+//		
+//		this.iterate((point) -> {
+//			if (this.hasSpaceAt(point)) {
+//				return;
+//			}
+//			
+//			ItemStack item = this.getItemAt(point);
+//			
+//			if (item.equals(Modifyable.EMPTY_USED_SLOT)) {
+//				usedPoints.add(point);
+//			} else if (item.equals(Modifyable.INVISIBLE_ELEMENT)) {
+//				return;
+//			} else {
+//				usedPoints.add(point);
+//				this.getBukkitInventory().setItem(this.getSlot(point), item);
+//			}
+//		});
+//		
+//		
+//		this.createBackground(usedPoints);
+//	}
 	
 	@Override
 	public Color getColor() {
@@ -60,19 +61,30 @@ public abstract class CraftWindowColorable extends CraftWindowEditor implements 
 		Validate.notNull(color, "The color cannot be null!");
 		
 		this.color = color;
-		this.updateBukkitInventory();
+		this.update();
 	}
 	
-	public void createBackground(List<Point> usedPoints) {
-		this.iterate((point) -> {
-			for (Point target : usedPoints) {
-				if (target.isSimilar(point)) {
-					return;
-				}
-			}
-			
-			this.getBukkitInventory().setItem(this.getSlot(point), this.color.asItem());
-		});
+	@Override
+	public Icon getIcon(Point point) {
+		Icon icon = super.getIcon(point);
+		
+		if (icon == null) {
+			return this.color.asIcon();
+		} else {
+			return icon;
+		}
 	}
+	
+//	public void createBackground(List<Point> usedPoints) {
+//		this.iterate((point) -> {
+//			for (Point target : usedPoints) {
+//				if (target.isSimilar(point)) {
+//					return;
+//				}
+//			}
+//			
+//			this.getBukkitInventory().setItem(this.getSlot(point), this.color.asItem());
+//		});
+//	}
 	
 }

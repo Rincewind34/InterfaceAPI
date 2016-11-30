@@ -1,109 +1,72 @@
 package de.rincewind.plugin.gui.elements.abstracts;
 
-import java.util.function.Consumer;
-
-import lib.securebit.Validate;
-
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.abstracts.Element;
 import de.rincewind.api.gui.elements.util.ClickBlocker;
-import de.rincewind.api.gui.elements.util.ElementDefaults;
+import de.rincewind.api.gui.elements.util.ElementComponent;
+import de.rincewind.api.gui.elements.util.ElementComponentType;
+import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.util.EventManager;
 import de.rincewind.plugin.gui.util.CraftClickBlocker;
 import de.rincewind.plugin.gui.util.CraftEventManager;
+import lib.securebit.Validate;
 
 public abstract class CraftElement implements Element {
-
+	
 	private int id;
-	private Point point;
-
 	private Modifyable handle;
-
+	
 	private boolean visible;
-	private boolean enable;
-
-	private ItemStack[][] items;
-
+	private Point point;
+	
+	private Object userObject;
+	
 	private ClickBlocker blocker;
-
 	private EventManager eventManager;
-
+	
+	private Map<ElementComponentType<?>, ElementComponent<?>> components;
+	
 	public CraftElement(Modifyable handle) {
 		this.handle = handle;
-
 		this.id = -1;
-		this.point = Point.atNull();
-
-		this.visible = ElementDefaults.VISIBLE;
-		this.enable = ElementDefaults.ENABLED;
-
-		this.items = new ItemStack[][] { { null } };
-
+		this.visible = true;
+		this.point = Point.NULL;
+		this.components = new HashMap<>();
 		this.eventManager = new CraftEventManager();
-
+		
 		this.blocker = new CraftClickBlocker();
 		this.blocker.lock();
+		
+		this.registerComponent(Element.ENABLED, true, () -> {
+			this.update();
+		});
+		
+		this.registerComponent(Element.WIDTH, 1, () -> {
+			this.update();
+		});
+		
+		this.registerComponent(Element.HEIGHT, 1, () -> {
+			this.update();
+		});
 
-		this.getHandle().readItemsFrom(this);
+		this.getComponent(Element.ENABLED).setEnabled(false);
+		this.getComponent(Element.WIDTH).setEnabled(false);
+		this.getComponent(Element.HEIGHT).setEnabled(false);
 	}
 
+	@Override
+	public void update() {
+		this.getHandle().renderElement(this);
+	}
+	
 	@Override
 	public void priorize() {
 		this.handle.priorize(this);
-	}
-
-	@Override
-	public Point getPoint() {
-		return this.point;
-	}
-
-	@Override
-	public int getWidth() {
-		return 1;
-	}
-
-	@Override
-	public int getHeight() {
-		return 1;
-	}
-
-	@Override
-	public boolean isVisible() {
-		return visible;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return this.enable;
-	}
-
-	@Override
-	public ClickBlocker getBlocker() {
-		return this.blocker;
-	}
-
-	@Override
-	public void enable() {
-		this.setEnabled(true);
-	}
-
-	@Override
-	public void disable() {
-		this.setEnabled(false);
-	}
-
-	@Override
-	public void setEnabled(boolean enable) {
-		if (this.enable == enable) {
-			return;
-		}
-
-		this.enable = enable;
-		this.handle.readItemsFrom(this);
 	}
 
 	@Override
@@ -114,9 +77,8 @@ public abstract class CraftElement implements Element {
 			return;
 		}
 
-		this.handle.clearItemsFrom(this);
 		this.point = point;
-		this.handle.readItemsFrom(this);
+		this.update();
 	}
 
 	@Override
@@ -126,7 +88,7 @@ public abstract class CraftElement implements Element {
 		}
 
 		this.visible = visible;
-		this.handle.readItemsFrom(this);
+		this.update();
 	}
 
 	@Override
@@ -135,76 +97,109 @@ public abstract class CraftElement implements Element {
 
 		this.blocker = blocker;
 	}
+	
+	@Override
+	public void setUserObject(Object obj) {
+		this.userObject = obj;
+	}
+
+	@Override
+	public boolean isVisible() {
+		return this.visible;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return this.getComponent(Element.ENABLED).isEnabled() ? this.getComponentValue(Element.ENABLED) : true;
+	}
+	
+	@Override
+	public Point getPoint() {
+		return this.point;
+	}
+	
+	@Override
+	public Icon getIcon(Point point) {
+		if (!this.isInside(point)) {
+			throw new RuntimeException("The point is not in this element!");
+		}
+		
+		return Icon.AIR;
+	}
+
+	@Override
+	public ClickBlocker getBlocker() {
+		return this.blocker;
+	}
 
 	@Override
 	public EventManager getEventManager() {
 		return this.eventManager;
 	}
-
+	
 	@Override
-	public void iterate(Consumer<Point> action) {
-		for (int x = 0; x < this.getWidth(); x++) {
-			for (int y = 0; y < this.getHeight(); y++) {
-				action.accept(new Point(x, y));
+	public List<Point> getPoints() {
+		int width = this.getComponent(Element.WIDTH).isEnabled() ? this.getComponentValue(Element.WIDTH) : 1;
+		int height = this.getComponent(Element.HEIGHT).isEnabled() ? this.getComponentValue(Element.HEIGHT) : 1;
+		
+		if (width <= 0) {
+			throw new RuntimeException("The width cannot be smaller than one!");
+		}
+		
+		if (height <= 0) {
+			throw new RuntimeException("The width cannot be smaller than one!");
+		}
+		
+		return this.getPoint().square(width, height);
+	}
+	
+	@Override
+	public <T> void setComponentValue(ElementComponentType<T> type, T value) {
+		this.getComponent(type).setValue(value);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T getUserObject() {
+		return (T) this.userObject;
+	}
+	
+	@Override
+	public <T> T getUserObject(Class<T> cls) {
+		return cls.cast(this.userObject);
+	}
+	
+	@Override
+	public <T> T getComponentValue(ElementComponentType<T> type) {
+		return this.getComponent(type).getValue();
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> ElementComponent<T> getComponent(ElementComponentType<T> type) {
+		for (ElementComponentType<?> target : this.components.keySet()) {
+			if (target == type) {
+				return (ElementComponent<T>) this.components.get(target);
 			}
 		}
+		
+		return null;
 	}
 
-	public void setItemAt(Point point, ItemStack item) {
-		Validate.notNull(point, "The point cannot be null!");
-		Validate.notNull(item, "The item cannot be null!");
-
-		if (this.hasItemAt(point)) {
-			this.items[point.getX()][point.getY()] = item;
-		}
+	public void onCreate() { // TODO remove?
+		
 	}
-
-	public void createArray() {
-		this.items = this.getNewArray();
-	}
-
-	public void updateItemMap() {
-		this.setItemAt(new Point(0, 0), Modifyable.EMPTY_USED_SLOT);
-	}
-
+	
 	public int getId() {
 		return this.id;
-	}
-
-	public boolean hasItemAt(Point point) {
-		Validate.notNull(point, "The point cannot be null!");
-
-		if (0 <= point.getX() && point.getX() < this.items.length) {
-			if (0 <= point.getY() && point.getY() < this.items[point.getX()].length) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public ItemStack getItemAt(Point point) {
-		Validate.notNull(point, "The point cannot be null!");
-
-		if (this.hasItemAt(point)) {
-			return this.items[point.getX()][point.getY()];
-		} else {
-			return null;
-		}
-	}
-
-	public ItemStack[][] getNewArray() {
-		return new ItemStack[][] { { null } };
 	}
 
 	public Modifyable getHandle() {
 		return this.handle;
 	}
-
-	public abstract void handleClick(InventoryClickEvent event);
-
-	public void onCreate() {
-
+	
+	protected <T> void registerComponent(ElementComponentType<T> type, T defaultValue, Runnable onChange) {
+		this.components.put(type, new ElementComponent<T>(type.getType(), defaultValue, onChange));
 	}
-
+	
 }

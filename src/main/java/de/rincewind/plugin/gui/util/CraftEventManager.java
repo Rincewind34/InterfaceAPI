@@ -6,27 +6,13 @@ import java.util.List;
 import de.rincewind.api.gui.util.EventManager;
 import de.rincewind.api.handling.InterfaceListener;
 import de.rincewind.api.handling.events.Event;
-import de.rincewind.api.handling.listener.Listener;
 
-@SuppressWarnings("deprecation")
 public class CraftEventManager implements EventManager {
 	
 	private List<Entry<?>> entries;
 	
 	public CraftEventManager() {
 		this.entries = new ArrayList<>();
-	}
-	
-	@Override
-	@Deprecated
-	public List<Listener<?>> getListeners() {
-		return new ArrayList<>();
-	}
-	
-	@Override
-	@Deprecated
-	public void callEvent(Object event) {
-		throw new UnsupportedOperationException();
 	}
 	
 	@Override
@@ -49,12 +35,6 @@ public class CraftEventManager implements EventManager {
 	}
 
 	@Override
-	@Deprecated
-	public <E extends Event<?>> ListenerBase<E> registerListener(Listener<E> listener) {
-		return this.registerListener(listener.getEventClass(), listener);
-	}
-	
-	@Override
 	public <E extends Event<?>> ListenerBase<E> registerListener(Class<E> eventCls, InterfaceListener<E> listener) {
 		return new ListenerBase<>(eventCls, listener, this);
 	}
@@ -69,20 +49,6 @@ public class CraftEventManager implements EventManager {
 		}
 		
 		return new ArrayList<>();
-	}
-	
-	@Override
-	@Deprecated
-	public List<Listener<?>> getListeners(Class<? extends Event<?>> eventClass) {
-		List<Listener<?>> listeners = new ArrayList<>();
-
-		for (Listener<?> listener : this.getListeners()) {
-			if (listener.getEventClass().equals(eventClass)) {
-				listeners.add(listener);
-			}
-		}
-		
-		return listeners;
 	}
 	
 	@SuppressWarnings("unchecked")

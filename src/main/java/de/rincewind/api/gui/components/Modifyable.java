@@ -50,70 +50,11 @@ public abstract interface Modifyable {
 	public static final ItemStack INVISIBLE_ELEMENT = ItemLibary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "§0INVISIBLE_ELEMENT");
 	
 	/**
-	 * Returns all added elements. If there is no element
-	 * present, this method will return an empty list.
-	 * 
-	 * @return all added elements.
-	 */
-	public abstract List<Element> getElements();
-	
-	/**
-	 * Returns all elements laying on a specified point. Never mind, if
-	 * the elements set position is equals to the specified point or if
-	 * the element lays on this slot because of its size.
-	 * If there is no element on this point, this method will return an
-	 * empty list.
-	 * 
-	 * @param point specified
-	 * 
-	 * @return all elements laying on a specified point.
-	 * 
-	 * @throws NullPointerException if the point is <code>null</code>.
-	 */
-	public abstract List<Element> getElementsAt(Point point);
-	
-	/**
-	 * Returns the first added element laying on a point never mind,
-	 * if the element is visible or not. If there are no element
-	 * laying on this point, this method will return <code>null</code>.
-	 * 
-	 * @param point to check
-	 * 
-	 * @return the first added element laying on a point
-	 * 
-	 * @throws NullPointerException if the point is <code>null</code>
-	 * 
-	 * @deprecated because of the new method {@link Modifyable#getVisibleElementAt(Point)}
-	 */
-	@Deprecated
-	public abstract Element getElementAt(Point point);
-	
-	/**
-	 * Returns the first added visible element laying on a point.
-	 * If there are no element laying on this point, this method
-	 * will return <code>null</code>.
-	 * 
-	 * @param point to get an element.
-	 * 
-	 * @return the first added visible element laying on a point
-	 * 
-	 * @throws NullPointerException if the point is <code>null</code>
-	 */
-	public abstract Element getVisibleElementAt(Point point);
-	
-	/**
-	 * Returns the {@link ElementCreator} of this object.
-	 * 
-	 * @return the {@link ElementCreator} of this object
-	 */
-	public abstract ElementCreator elementCreator();
-	
-	/**
 	 * Reads all set items from all elements into the cache.
 	 * This method calls {@link Modifyable#readItemsFrom(Element)}
 	 * to read the items.
 	 */
-	public abstract void readItemsFromAll();
+	public abstract void renderAll();
 	
 	/**
 	 * Reads all set items from a specified element. The {@link WindowEditor}
@@ -124,16 +65,7 @@ public abstract interface Modifyable {
 	 * 
 	 * @throws NullPointerException if the element is <code>null</code>
 	 */
-	public abstract void readItemsFrom(Element element);
-	
-	/**
-	 * Removes all set items from an element out of the cache.
-	 * 
-	 * @param element to get the items from
-	 * 
-	 * @throws NullPointerException if the element is <code>null</code>
-	 */
-	public abstract void clearItemsFrom(Element element);
+	public abstract void renderElement(Element element);
 	
 	/**
 	 * Adds an element to this object. To create a new element use
@@ -195,5 +127,48 @@ public abstract interface Modifyable {
 	 * @throws NullPointerException if the point is <code>null</code>
 	 */
 	public abstract boolean hasVisibleElementAt(Point point);
+	
+	/**
+	 * Returns the first added visible element laying on a point.
+	 * If there are no element laying on this point, this method
+	 * will return <code>null</code>.
+	 * 
+	 * @param point to get an element.
+	 * 
+	 * @return the first added visible element laying on a point
+	 * 
+	 * @throws NullPointerException if the point is <code>null</code>
+	 */
+	public abstract Element getVisibleElementAt(Point point);
+	
+	/**
+	 * Returns the {@link ElementCreator} of this object.
+	 * 
+	 * @return the {@link ElementCreator} of this object
+	 */
+	public abstract ElementCreator elementCreator();
+	
+	/**
+	 * Returns all added elements. If there is no element
+	 * present, this method will return an empty list.
+	 * 
+	 * @return all added elements.
+	 */
+	public abstract List<Element> getElements();
+	
+	/**
+	 * Returns all elements laying on a specified point. Never mind, if
+	 * the elements set position is equals to the specified point or if
+	 * the element lays on this slot because of its size.
+	 * If there is no element on this point, this method will return an
+	 * empty list.
+	 * 
+	 * @param point specified
+	 * 
+	 * @return all elements laying on a specified point.
+	 * 
+	 * @throws NullPointerException if the point is <code>null</code>.
+	 */
+	public abstract List<Element> getElementsAt(Point point);
 	
 }

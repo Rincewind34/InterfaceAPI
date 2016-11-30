@@ -5,59 +5,60 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-
 import de.rincewind.api.exceptions.APIException;
+import de.rincewind.api.gui.components.Displayable;
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementMap;
+import de.rincewind.api.gui.elements.abstracts.Element;
+import de.rincewind.api.gui.elements.util.Icon;
 import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.util.Color;
-import de.rincewind.api.handling.events.MapClickEvent;
-import de.rincewind.plugin.gui.elements.abstracts.CraftElementSizeable;
+import de.rincewind.api.handling.events.ElementInteractEvent;
+import de.rincewind.api.handling.events.MapChangeSelectEvent;
+import de.rincewind.plugin.gui.elements.abstracts.CraftElement;
 
-public class CraftElementMap<T> extends CraftElementSizeable implements ElementMap<T> {
+public class CraftElementMap extends CraftElement implements ElementMap {
 	
 	private Color color;
 	
 	private int page;
+	private int selected;
 	
-	private List<MapItem<T>> items;
+	private Icon disabledIcon;
+	
+	private List<Displayable> items;
 	
 	public CraftElementMap(Modifyable handle) {
 		super(handle);
 		
-		this.items = new ArrayList<>();
-		this.color = Color.TRANSLUCENT;
 		this.page = 1;
+		this.selected = -1;
+		this.color = Color.TRANSLUCENT;
+		this.disabledIcon = Icon.AIR;
+		this.items = new ArrayList<>();
+		
+		this.getComponent(Element.ENABLED).setEnabled(true);
+		this.getComponent(Element.WIDTH).setEnabled(true);
+		this.getComponent(Element.HEIGHT).setEnabled(true);
+		
+		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
+			this.select(this.convert(event.getPoint()));
+		}).addAfter();
 	}
 	
 	@Override
-	public void handleClick(InventoryClickEvent event) {
-		if (event.getCurrentItem().equals(this.color.asItem())) {
-			return;
-		}
-		
-		InventoryType invType = event.getInventory().getType();
-		
-		int slot = event.getRawSlot();
-		int invWidth = invType == InventoryType.DISPENSER ? 3 : (invType == InventoryType.HOPPER ? 5 : 9);
-		
-		int y = (int) ((double) slot / (double) invWidth);
-		int x = slot - (y * invWidth);
-		
-		Point point = new Point(x - this.getPoint().getX(), y - this.getPoint().getY());
-		MapItem<?> item = this.getItem(point);
-		
-		if (item != null) {
-			this.getEventManager().callEvent(MapClickEvent.class, new MapClickEvent(this, point, this.getItem(point)));
+	public void setDisabledIcon(Icon icon) {
+		if (icon != null) {
+			this.disabledIcon = icon;
+		} else {
+			this.disabledIcon = Icon.AIR;
 		}
 	}
 	
 	@Override
 	public void setColor(Color color) {
 		this.color = color;
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 
 	@Override
@@ -67,41 +68,40 @@ public class CraftElementMap<T> extends CraftElementSizeable implements ElementM
 		}
 		
 		this.page = page;
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 
 	@Override
-	public void addItem(MapItem<T> item) {
+	public void addItem(Displayable item) {
 		this.items.add(item);
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 	
 	@Override
 	public void removeItem(int index) {
 		this.items.remove(index);
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 	
 	@Override
-	public void removeItem(MapItem<T> item) {
+	public void removeItem(Displayable item) {
 		this.items.remove(item);
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 	
 	@Override
-	public void sortItems(Comparator<T> comperator) {
+	public void sortItems(Comparator<Displayable> comperator) {
 		this.items.sort((value1, value2) -> {
-			return comperator.compare(value1.getSave(), value2.getSave());
+			return comperator.compare(value1, value2);
 		});
 		
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 	
 	@Override
 	public void reverse() {
 		Collections.reverse(this.items);
-		
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 	
 	@Override
@@ -115,6 +115,44 @@ public class CraftElementMap<T> extends CraftElementSizeable implements ElementM
 	}
 	
 	@Override
+	public void select() {
+		this.select(0);
+	}
+	
+	@Override
+	public void select(int index) {
+		this.select(index, true);
+	}
+	
+	@Override
+	public void select(int index, boolean fireEvent) {
+		if (this.isSelected()) {
+			throw new RuntimeException("This element is selected!");
+		}
+		
+		if (this.items.isEmpty()) {
+			throw new RuntimeException("The items are empty!");
+		}
+		
+		if (fireEvent) {
+			this.getEventManager().callEvent(MapChangeSelectEvent.class, new MapChangeSelectEvent(this, index));
+		}
+		
+		this.selected = index;
+		this.update();
+	}
+	
+	@Override
+	public void unselect() {
+		this.unselect(true);
+	}
+	
+	@Override
+	public void unselect(boolean fireEvent) {
+		this.select(-1, fireEvent);
+	}
+	
+	@Override
 	public boolean isFirstPage() {
 		return this.page == 1;
 	}
@@ -122,6 +160,11 @@ public class CraftElementMap<T> extends CraftElementSizeable implements ElementM
 	@Override
 	public boolean isLastPage() {
 		return this.page == this.getMaxPage();
+	}
+	
+	@Override
+	public boolean isSelected() {
+		return this.selected != -1;
 	}
 	
 	@Override
@@ -136,7 +179,7 @@ public class CraftElementMap<T> extends CraftElementSizeable implements ElementM
 	
 	@Override
 	public int getCountPerPage() {
-		return this.getWidth() * this.getHeight();
+		return this.getComponentValue(Element.WIDTH) * this.getComponentValue(Element.HEIGHT);
 	}
 	
 	@Override
@@ -156,65 +199,67 @@ public class CraftElementMap<T> extends CraftElementSizeable implements ElementM
 	}
 	
 	@Override
-	public MapItem<T> getItem(Point point) {
+	public Point getPoint(int index) {
+		int solved = index;
+		
+		while (solved % this.getComponentValue(Element.WIDTH) != 0) {
+			solved = solved - 1;
+		}
+		
+		return new Point(index - solved, solved / this.getComponentValue(Element.WIDTH));
+	}
+	
+	@Override
+	public Icon getDisabledIcon() {
+		return this.disabledIcon;
+	}
+	
+	@Override
+	public <T extends Displayable> T getItem(Point point) {
 		return this.getItem(point, this.page);
 	}
 	
 	@Override
-	public MapItem<T> getItem(Point point, int page) {
-		int index = point.getY() * this.getWidth() + point.getX();
+	public <T extends Displayable> T getItem(Point point, int page) {
+		int index = point.getY() * this.getComponentValue(Element.WIDTH) + point.getX();
 		return this.getItem(index, this.page);
 	}
 	
 	@Override
-	public MapItem<T> getItem(int index) {
-		if (index >= this.items.size()) {
-			return null;
-		}
-		
-		return this.items.get(index);
+	@SuppressWarnings("unchecked")
+	public <T extends Displayable> T getItem(int index) {
+		return (T) this.items.get(index);
 	}
 	
 	@Override
-	public MapItem<T> getItem(int index, int page) {
+	public <T extends Displayable> T getItem(int index, int page) {
 		return this.getItem(index + this.getFirstIndex(page));
 	}
 	
 	@Override
-	public List<MapItem<T>> getItems() {
+	public List<Displayable> getItems() {
 		return Collections.unmodifiableList(this.items);
 	}
 	
 	@Override
-	public void updateItemMap() {
-		int index = this.getFirstIndex(this.page);
+	public Icon getIcon(Point point) {
+		super.getIcon(point);
 		
-		int x = 0;
-		int y = 0;
-		
-		while (index < this.items.size()) {
-			this.setItemAt(new Point(x, y), this.items.get(index).getItem());
+		if (this.isEnabled()) {
+			int index = this.convert(point);
 			
-			index = index + 1;
-			x = x + 1;
-			
-			if (x == this.getWidth()) {
-				x = 0;
-				y = y + 1;
+			if (index < this.items.size()) {
+				return this.items.get(index).getIcon();
+			} else {
+				return this.color.asIcon();
 			}
-			
-			if (y == this.getHeight()) {
-				break;
-			}
+		} else {
+			return this.disabledIcon;
 		}
-		
-		for (; y < this.getHeight(); y++) {
-			for (; x < this.getWidth(); x++) {
-				this.setItemAt(new Point(x, y), this.color.asItem());
-			}
-			
-			x = 0;
-		}
+	}
+	
+	private int convert(Point point) {
+		return this.getComponentValue(Element.HEIGHT) * point.getY() + point.getX();
 	}
 	
 }

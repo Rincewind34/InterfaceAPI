@@ -39,7 +39,7 @@ public abstract interface WindowEnchanter extends WindowEditor {
 	 * Updates the offers to the user. If the window does not have an
 	 * user, this method will do nothing.
 	 */
-	public abstract void update();
+	public abstract void updateLevels();
 	
 	/**
 	 * Returns the currently set offer. The default-offer for all slots

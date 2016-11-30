@@ -9,10 +9,6 @@ import de.rincewind.api.gui.windows.abstracts.Window;
 
 public interface ElementSelector extends ElementDisplayable {
 	
-	public abstract void startSelecting();
-	
-	public abstract void stopSelecting();
-	
 	public abstract void pullOnlyOne(boolean value);
 	
 	public abstract void canUnselect(boolean value);
@@ -28,8 +24,6 @@ public interface ElementSelector extends ElementDisplayable {
 	public abstract boolean isPullingOnlyOne();
 	
 	public abstract boolean canUnselect();
-	
-	public abstract boolean isSelecting();
 	
 	public abstract ItemStack getSelected();
 	

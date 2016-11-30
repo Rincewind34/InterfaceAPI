@@ -1,6 +1,6 @@
 package de.rincewind.api.gui.windows;
 
-import de.rincewind.api.gui.components.Sizeable;
+import de.rincewind.api.exceptions.InvalidSizeException;
 import de.rincewind.api.gui.windows.abstracts.WindowColorable;
 import de.rincewind.api.gui.windows.util.Windows;
 
@@ -20,7 +20,7 @@ import de.rincewind.api.gui.windows.util.Windows;
  * 
  * @see Windows.WindowSizeableExtendable
  */
-public interface WindowSizeable extends WindowColorable, Sizeable {
+public interface WindowSizeable extends WindowColorable {
 	
 	/**
 	 * Returns <code>true</code> if the size is valid and <code>false</code> if not.
@@ -31,5 +31,29 @@ public interface WindowSizeable extends WindowColorable, Sizeable {
 	 * @return <code>true</code> if the size is valid and <code>false</code> if not
 	 */
 	public abstract boolean checkSize(int width, int height);
+	
+	/**
+	 * Returns the width of this object.
+	 * 
+	 * @return the width of this object
+	 */
+	public abstract int getWidth();
+	
+	/**
+	 * Returns the height of this object.
+	 * 
+	 * @return the height of this object
+	 */
+	public abstract int getHeight();
+	
+	/**
+	 * Sets the size of this element.
+	 * 
+	 * @param width to set
+	 * @param higth to set
+	 * 
+	 * @throws InvalidSizeException if the size is invalid for this object
+	 */
+	public abstract void setSize(int width, int higth);
 	
 }

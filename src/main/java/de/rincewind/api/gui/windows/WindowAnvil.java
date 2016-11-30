@@ -60,7 +60,8 @@ public class WindowAnvil extends CraftWindow {
 			return this.display.getName();
 		}
 	}
-
+	
+	
 	private static class AnvilContainer extends ContainerAnvil {
 
 		public AnvilContainer(EntityHuman entity) {

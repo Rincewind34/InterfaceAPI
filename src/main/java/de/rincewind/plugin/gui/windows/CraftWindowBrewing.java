@@ -1,8 +1,7 @@
 package de.rincewind.plugin.gui.windows;
 
-import java.util.function.Consumer;
-
-import lib.securebit.ReflectionUtil;
+import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
@@ -15,50 +14,14 @@ import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.WindowBrewing;
 import de.rincewind.plugin.APIReflection;
 import de.rincewind.plugin.gui.windows.abstracts.CraftWindowActivatable;
+import lib.securebit.ReflectionUtil;
 
 public class CraftWindowBrewing extends CraftWindowActivatable implements WindowBrewing {
 	
 	public CraftWindowBrewing(Plugin plugin) {
 		super(plugin);
-		super.setProgress(6);
-	}
-	
-	@Override
-	public int getSlot(Point point) {
-		if (point.getY() == 0) {
-			if (point.getX() == 1) {
-				return 3;
-			}
-		} else if (point.getY() == 1) {
-			if (0 <= point.getX() && point.getX() <= 2) {
-				return point.getX();
-			}
-		}
 		
-		throw new APIException("Invalid point!");
-	}
-	
-	@Override
-	public Point getPoint(int bukkitSlot) {
-		if (0 <= bukkitSlot && bukkitSlot <= 2) {
-			return new Point(bukkitSlot, 1);
-		} else if (bukkitSlot == 3) {
-			return new Point(1, 0);
-		} else {
-			throw new APIException("Invalid slot!");
-		}
-	}
-	
-	@Override
-	public void iterate(Consumer<Point> action) {
-		for (int slot = 0; slot < 4; slot++) {
-			action.accept(this.getPoint(slot));
-		}
-	}
-	
-	@Override
-	public Inventory newInventory() {
-		return Bukkit.createInventory(null, InventoryType.BREWING, this.getName());
+		this.setProgress(6);
 	}
 	
 	@Override
@@ -95,9 +58,37 @@ public class CraftWindowBrewing extends CraftWindowActivatable implements Window
 			this.setProgress(6);
 		}
 	}
+
+	@Override
+	public List<Point> getPoints() {
+		return Arrays.asList(new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(1, 0));
+	}
 	
-//	private int convertProgress(int input) {
-//		return 0;
-//	}
+	@Override
+	public int getSlot(Point point) {
+		if (point.getY() == 0 && point.getX() == 1) {
+			return 3;
+		} else if (point.getY() == 1 && 0 <= point.getX() && point.getX() <= 2) {
+			return point.getX();
+		}
+		
+		throw new APIException("Invalid point!");
+	}
 	
+	@Override
+	public Point getPoint(int bukkitSlot) {
+		if (0 <= bukkitSlot && bukkitSlot <= 2) {
+			return new Point(bukkitSlot, 1);
+		} else if (bukkitSlot == 3) {
+			return new Point(1, 0);
+		} else {
+			throw new APIException("Invalid slot!");
+		}
+	}
+	
+	@Override
+	public Inventory newInventory() {
+		return Bukkit.createInventory(null, InventoryType.BREWING, this.getName());
+	}
+
 }

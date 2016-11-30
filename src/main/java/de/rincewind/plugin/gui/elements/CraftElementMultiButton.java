@@ -1,37 +1,34 @@
 package de.rincewind.plugin.gui.elements;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
 
 import de.rincewind.api.gui.components.Modifyable;
 import de.rincewind.api.gui.elements.ElementMultiButton;
 import de.rincewind.api.gui.elements.util.ElementDefaults;
 import de.rincewind.api.gui.elements.util.Icon;
-import de.rincewind.api.handling.events.ButtonPressEvent;
+import de.rincewind.api.gui.elements.util.Point;
+import de.rincewind.api.handling.events.ElementInteractEvent;
 import de.rincewind.api.handling.events.MultiButtonPressEvent;
-import de.rincewind.api.item.ItemLibary;
 import de.rincewind.api.item.ItemRefactor.Lore;
 import lib.securebit.Validate;
 
 public class CraftElementMultiButton extends CraftElementButton implements ElementMultiButton {
 
+	private boolean selected;
+
+	private int selectedIndex;
+
 	private String defaultFormat;
 	private String selectFormat;
 
-	private Function<ItemStack, ItemStack> selectModifier;
+	private List<Object> list;
 
-	private List<String> list;
-
-	private int switchid;
-
-	private boolean selected;
-
-	private Icon iconSave;
+	private Function<Icon, Icon> selectModifier;
 
 	public CraftElementMultiButton(Modifyable handle) {
 		super(handle);
@@ -41,95 +38,89 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 		this.selected = false;
 		this.list = new ArrayList<>();
 
-		this.selectModifier = (item) -> {
-			return ItemLibary.refactor().enchantItem(item, Enchantment.WATER_WORKER, 1, false);
+		this.selectModifier = (icon) -> {
+			return icon.typecast(Material.STAINED_GLASS).damage(2);
 		};
 
 		this.registerListener();
 	}
 
 	@Override
-	public void setIcon(Icon icon) {
-		if (this.isSelected()) {
-			Lore lore = new Lore();
-
-			for (int i = 0; i < this.size(); i++) {
-				if (i == this.switchid) {
-					lore.add(String.format(this.selectFormat, this.list.get(i)));
-				} else {
-					lore.add(String.format(this.defaultFormat, this.list.get(i)));
-				}
-			}
-
-			icon.describe(lore);
-		} else {
-			this.iconSave = icon;
+	@SuppressWarnings("unchecked")
+	public <T> T next() {
+		if (!this.isSelected()) {
+			throw new RuntimeException("This element is not selected!");
 		}
-
-		super.setIcon(icon);
+		
+		this.setSelectedIndex(this.selectedIndex + 1);
+		return (T) this.getSelected();
 	}
 
 	@Override
-	public String next() {
-		this.setSwitchId(this.switchid + 1); // TODO check, if this element is
-												// selected
-		return this.getSwitch();
+	@SuppressWarnings("unchecked")
+	public <T> T back() {
+		if (!this.isSelected()) {
+			throw new RuntimeException("This element is not selected!");
+		}
+		
+		this.setSelectedIndex(this.selectedIndex - 1);
+		return (T) this.getSelected();
 	}
 
 	@Override
-	public String back() {
-		this.setSwitchId(this.switchid - 1); // TODO check, if this element is
-												// selected
-		return this.getSwitch();
+	@SuppressWarnings("unchecked")
+	public <T> T getSelected() {
+		if (!this.isSelected()) {
+			throw new RuntimeException("This element is not selected!");
+		}
+		
+		return (T) this.list.get(this.selectedIndex);
 	}
 
 	@Override
-	public String getSwitch() {
-		return this.list.get(this.switchid); // TODO check, if this element is
-												// selected
-	}
+	public void setSelectedIndex(int index) {
+		if (!this.isSelected()) {
+			throw new RuntimeException("This element is not selected!");
+		}
+		
+		this.selectedIndex = index;
 
-	@Override
-	public void setSwitchId(int id) {
-		this.switchid = id; // TODO check, if this element is selected
-
-		if (this.switchid == -2) {
-			if (this.isSelected()) {
-				this.unselect();
-			}
+		if (this.selectedIndex == -2 && this.isSelected()) {
+			this.unselect();
 		} else {
 			if (!this.isSelected()) {
 				this.select();
 			}
 
-			if (this.switchid < 0) {
-				this.switchid = this.size() - 1; // TODO check the frame at both
-													// ends
-			} else if (this.size() == this.switchid) {
-				this.switchid = 0;
+			if (this.selectedIndex < 0) {
+				this.selectedIndex = this.size() - 1;
+			} else if (this.size() >= this.selectedIndex) {
+				this.selectedIndex = 0;
 			}
-
-			this.setIcon(this.getIcon());
 		}
 
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 
 	@Override
-	public void addSwitch(String item) {
+	public void addSwitch(Object item) {
 		this.list.add(item);
-		this.getHandle().readItemsFrom(this);
+		this.update();
 	}
 
 	@Override
-	public void removeSwitch(String item) {
+	public void removeSwitch(Object item) {
 		this.list.remove(item);
-		this.setSwitchId(this.switchid);
+		this.setSelectedIndex(this.selectedIndex);
 	}
 
 	@Override
 	public void clear() {
-		this.list.clear(); // TODO throw exception if the element is selected
+		if (this.isSelected()) {
+			throw new RuntimeException("This element is selected!");
+		}
+		
+		this.list.clear();
 	}
 
 	@Override
@@ -138,27 +129,34 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 	}
 
 	@Override
-	public int getSwitchId() {
-		return this.switchid;
-	}
-
-	@Override
-	public Iterator<String> iterator() {
-		return this.list.iterator();
+	public int getSelectedIndex() {
+		return this.selectedIndex;
 	}
 
 	@Override
 	public void select() {
-		this.selected = true; // TODO throw exception is the entrylist is empty
-		this.setSwitchId(0);
-		this.setIcon(new Icon(this.modify(this.getIcon().toItem())));
+		if (this.isSelected()) {
+			throw new RuntimeException("This element is selected!");
+		}
+		
+		if (this.list.isEmpty()) {
+			throw new RuntimeException("The switch list is empty!");
+		}
+		
+		this.selected = true;
+		this.setSelectedIndex(0);
+		this.update();
 	}
 
 	@Override
 	public void unselect() {
-		this.selected = false; // TODO check, if this element is selected
-		this.setSwitchId(-2);
-		this.setIcon(this.iconSave);
+		if (!this.isSelected()) {
+			throw new RuntimeException("This element is not selected!");
+		}
+		
+		this.selected = false;
+		this.setSelectedIndex(-2);
+		this.update();
 	}
 
 	@Override
@@ -181,29 +179,62 @@ public class CraftElementMultiButton extends CraftElementButton implements Eleme
 	}
 
 	@Override
-	public void setSelectModifier(Function<ItemStack, ItemStack> modifier) {
+	public void setSelectModifier(Function<Icon, Icon> modifier) {
 		Validate.notNull(modifier, "The modifier cannot be null!");
 
 		this.selectModifier = modifier;
 	}
 
 	@Override
-	public ItemStack modify(ItemStack item) {
-		Validate.notNull(item, "The item cannot be null!");
+	public Icon modify(Icon icon) {
+		Validate.notNull(icon, "The icon cannot be null!");
 
-		return this.selectModifier.apply(item);
+		return this.selectModifier.apply(icon);
+	}
+	
+	@Override
+	public List<Object> getSwitches() {
+		return Collections.unmodifiableList(this.list);
+	}
+
+	@Override
+	public Icon getIcon(Point point) {
+		Icon icon = super.getIcon(point).clone();
+
+		if (this.isEnabled() && this.isSelected()) {
+			Lore lore = new Lore();
+
+			for (int i = 0; i < this.size(); i++) {
+				if (i == this.selectedIndex) {
+					lore.add(String.format(this.selectFormat, this.list.get(i).toString()));
+				} else {
+					lore.add(String.format(this.defaultFormat, this.list.get(i).toString()));
+				}
+			}
+
+			icon.describe(lore);
+			return icon;
+		} else {
+			return icon;
+		}
 	}
 
 	protected void registerListener() {
-		this.getEventManager().registerListener(ButtonPressEvent.class, (event) -> {
-			if (event.isRightClick()) {
-				next();
-			} else {
-				if (!CraftElementMultiButton.this.isSelected()) {
-					CraftElementMultiButton.this.select();
+		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
+			if (!event.isShiftClick()) {
+				if (!this.isSelected()) {
+					this.select();
+					return;
+				}
+
+				if (event.isLeftClick()) {
+					this.getEventManager().callEvent(MultiButtonPressEvent.class, new MultiButtonPressEvent(this));
 				} else {
-					CraftElementMultiButton.this.getEventManager().callEvent(MultiButtonPressEvent.class,
-							new MultiButtonPressEvent(CraftElementMultiButton.this));
+					this.next();
+				}
+			} else {
+				if (this.isSelected()) {
+					this.unselect();
 				}
 			}
 		}).addAfter();

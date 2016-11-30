@@ -73,5 +73,7 @@ public interface ClickBlocker {
 	 * 			if not
 	 */
 	public abstract boolean isLocked();
+	
+	public abstract boolean allows(ClickAction action);
 
 }

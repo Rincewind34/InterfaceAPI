@@ -1,5 +1,6 @@
 package de.rincewind.plugin.gui.windows.abstracts;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 
 import de.rincewind.api.InterfaceAPI;
@@ -28,13 +29,13 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 		this.reconfigurate();
 	}
 	
-	protected abstract int getSlot(Point point);
+	public abstract int getSlot(Point point);
 	
-	protected abstract Point getPoint(int bukkitSlot);
+	public abstract Point getPoint(int bukkitSlot);
 	
-	protected abstract Icon getIcon(Point point);
+	public abstract Icon getIcon(Point point);
 	
-	protected abstract Inventory newInventory();
+	public abstract Inventory newInventory();
 	
 	public void createBukkitInventory() {
 		this.inventory = this.newInventory();
@@ -49,7 +50,17 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 	}
 	
 	protected void update(Point point) {
-		this.inventory.setItem(this.getSlot(point), this.getIcon(point).toItem());
+		Icon icon = this.getIcon(point);
+		
+		if (icon == null) {
+			icon = new Icon(Material.AIR);
+		}
+		
+		this.inventory.setItem(this.getSlot(point), icon.toItem());
+		
+		if (this.getUser() != null) {
+			this.getUser().updateInventory(); // TODO remove?
+		}
 	}
 	
 	protected void update(Iterable<Point> points) {
@@ -65,7 +76,7 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 	}
 	
 	private void openBukkitInventory() {
-		if (this.getStatus() == Status.CLOSED) {
+		if (this.getStatus() != Status.MAXIMIZED) { // TODO changed from '== Status.CLOSED'
 			return;
 		}
 		

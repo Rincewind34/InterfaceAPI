@@ -35,16 +35,6 @@ public class CraftWindowPointer extends CraftWindowSizeable implements WindowPoi
 		return this.action;
 	}
 
-	private class ActionHandler implements InterfaceListener<ButtonPressEvent> {
-		
-		@Override
-		public void onAction(ButtonPressEvent event) {
-			CraftWindowPointer.this.action.accept(event.getElement().getPoint());
-			InterfaceAPI.getSetup(getUser()).close(CraftWindowPointer.this);
-		}
-		
-	}
-
 	@Override
 	public void invert() {
 		List<Point> inverted = new ArrayList<>();
@@ -79,6 +69,17 @@ public class CraftWindowPointer extends CraftWindowSizeable implements WindowPoi
 			element.setIcon(new Icon(Material.STAINED_GLASS_PANE, 13));
 			element.getEventManager().registerListener(ButtonPressEvent.class, new ActionHandler()).addAfter();
 		});
+	}
+	
+	
+	private class ActionHandler implements InterfaceListener<ButtonPressEvent> {
+		
+		@Override
+		public void onAction(ButtonPressEvent event) {
+			CraftWindowPointer.this.action.accept(event.getElement().getPoint());
+			InterfaceAPI.getSetup(getUser()).close(CraftWindowPointer.this);
+		}
+		
 	}
 	
 }

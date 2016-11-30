@@ -1,5 +1,6 @@
 package de.rincewind.api.gui.windows.abstracts;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import de.rincewind.api.gui.elements.util.Point;
@@ -17,6 +18,14 @@ import de.rincewind.api.gui.elements.util.Point;
  */
 public abstract interface WindowContainer extends WindowNameable {
 	
-	public abstract void iterate(Consumer<Point> action);
+	public abstract List<Point> getPoints();
+	
+	public default void iterate(Consumer<Point> action) {
+		this.getPoints().forEach(action);
+	}
+	
+	public default boolean isInside(Point point) {
+		return this.getPoints().contains(point);
+	}
 	
 }

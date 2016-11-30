@@ -1,8 +1,7 @@
 package de.rincewind.plugin.gui.windows;
 
-import java.util.function.Consumer;
-
-import lib.securebit.ReflectionUtil;
+import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
@@ -15,11 +14,33 @@ import de.rincewind.api.gui.elements.util.Point;
 import de.rincewind.api.gui.windows.WindowFurnace;
 import de.rincewind.plugin.APIReflection;
 import de.rincewind.plugin.gui.windows.abstracts.CraftWindowActivatable;
+import lib.securebit.ReflectionUtil;
 
 public class CraftWindowFurnace extends CraftWindowActivatable implements WindowFurnace {
 
 	public CraftWindowFurnace(Plugin plugin) {
 		super(plugin);
+	}
+	
+	@Override
+	public Runnable getRunnable() {
+		return () -> {
+			if (!this.isRunning()) {
+				return;
+			} else {
+				this.sendUpdatePacket(this.getProgress());
+				this.setProgress(this.getProgress() + 1);
+				
+				if (0 > this.getProgress() || this.getProgress() > 13) {
+					this.setProgress(0);
+				}
+			}
+		};
+	}
+	
+	@Override
+	public List<Point> getPoints() {
+		return Arrays.asList(new Point(0, 0), new Point(0, 2), new Point(1, 1));
 	}
 	
 	@Override
@@ -50,29 +71,6 @@ public class CraftWindowFurnace extends CraftWindowActivatable implements Window
 		}
 		
 		return -1;
-	}
-	
-	@Override
-	public void iterate(Consumer<Point> action) {
-		action.accept(new Point(0, 0));
-		action.accept(new Point(0, 2));
-		action.accept(new Point(1, 1));
-	}
-	
-	@Override
-	public Runnable getRunnable() {
-		return () -> {
-			if (!this.isRunning()) {
-				return;
-			} else {
-				this.sendUpdatePacket(this.getProgress());
-				this.setProgress(this.getProgress() + 1);
-				
-				if (0 > this.getProgress() || this.getProgress() > 13) {
-					this.setProgress(0);
-				}
-			}
-		};
 	}
 	
 	@Override
