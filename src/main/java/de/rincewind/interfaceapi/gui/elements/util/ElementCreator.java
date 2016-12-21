@@ -2,6 +2,7 @@ package de.rincewind.interfaceapi.gui.elements.util;
 
 import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementButton;
+import de.rincewind.interfaceapi.gui.elements.ElementContentSlot;
 import de.rincewind.interfaceapi.gui.elements.ElementCounter;
 import de.rincewind.interfaceapi.gui.elements.ElementInfo;
 import de.rincewind.interfaceapi.gui.elements.ElementInput;
@@ -14,6 +15,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementScanner;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementButton;
+import de.rincewind.interfaceplugin.gui.elements.CraftElementContentSlot;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementCounter;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementInfo;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementInput;
@@ -113,6 +115,12 @@ public class ElementCreator {
 		ElementMap map = new CraftElementMap(this.handle);
 		this.handle.addElement(map);
 		return map;
+	}
+	
+	public ElementContentSlot newContentSlot() {
+		ElementContentSlot slot = new CraftElementContentSlot(this.handle);
+		this.handle.addElement(slot);
+		return slot;
 	}
 	
 }
