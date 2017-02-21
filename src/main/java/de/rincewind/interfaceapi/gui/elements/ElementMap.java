@@ -24,6 +24,8 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	
 	public abstract void removeItem(int index);
 	
+	public abstract void clear();
+	
 	public abstract void sortItems(Comparator<Displayable> comperator);
 	
 	public abstract void reverse();

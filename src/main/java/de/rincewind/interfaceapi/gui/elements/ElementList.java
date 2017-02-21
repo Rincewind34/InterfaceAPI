@@ -11,8 +11,8 @@ import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.components.Selectable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Elements.ElementListExtendable;
+import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.util.Color;
 import de.rincewind.interfaceapi.gui.util.Directionality;
 import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
@@ -60,24 +60,6 @@ import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
 public abstract interface ElementList extends Element, Selectable, DisplayableDisabled, Iterable<Displayable> {
 	
 	/**
-	 * Modifies an item like the selected one and returns the modified item.
-	 * 
-	 * @param item to modify
-	 * 
-	 * @return the modified item.
-	 * 
-	 * @throws NullPointerException if the item is <code>null</code>
-	 */
-	public abstract Icon modifyToSelect(Icon item);
-	
-	/**
-	 * Returns the color of this element. By the default, it is {@link Color#TRANSLUCENT}
-	 * 
-	 * @return the color of this element
-	 */
-	public abstract Color getColor();
-	
-	/**
 	 * Sets the color to a specified value. This method does not update the color
 	 * by its self to the handler ({@link Modifyable}).
 	 * 
@@ -95,6 +77,10 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 */
 	public abstract void addItem(Displayable item);
 	
+	public abstract void addItem(int index, Displayable item);
+	
+	public abstract <T extends Enum<?> & Displayable> void addItems(Class<T> cls);
+	
 	/**
 	 * Removes an entry from this list. The list will be automaticly updated
 	 * in the {@link Modifyable}.
@@ -104,6 +90,8 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 * @throws NullPointerException if the item is <code>null</code>
 	 */
 	public abstract void removeItem(Displayable item);
+	
+	public abstract void clear();
 	
 	/**
 	 * Changes the type of this list. By the default it is {@link Directionality#VERTICAL}.
@@ -173,6 +161,24 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 * @return the currently selected index of this element
 	 */
 	public abstract int getSelectedIndex();
+	
+	/**
+	 * Returns the color of this element. By the default, it is {@link Color#TRANSLUCENT}
+	 * 
+	 * @return the color of this element
+	 */
+	public abstract Color getColor();
+	
+	/**
+	 * Modifies an item like the selected one and returns the modified item.
+	 * 
+	 * @param item to modify
+	 * 
+	 * @return the modified item.
+	 * 
+	 * @throws NullPointerException if the item is <code>null</code>
+	 */
+	public abstract Icon modifyToSelect(Icon item);
 	
 	public abstract List<Displayable> getItems();
 	

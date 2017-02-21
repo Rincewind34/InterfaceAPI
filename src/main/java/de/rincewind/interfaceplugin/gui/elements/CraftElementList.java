@@ -115,12 +115,35 @@ public class CraftElementList extends CraftElement implements ElementList {
 		this.items.add(item);
 		this.update();
 	}
+	
+	@Override
+	public void addItem(int index, Displayable item) {
+		Validate.notNull(item, "The item cannot be null!");
+		
+		this.items.add(index, item);
+		this.update();
+	}
+	
+	@Override
+	public <T extends Enum<?> & Displayable> void addItems(Class<T> cls) {
+		for (T enumInstance : cls.getEnumConstants()) {
+			this.items.add(enumInstance);
+		}
+		
+		this.update();
+	}
 
 	@Override
 	public void removeItem(Displayable item) {
 		Validate.notNull(item, "The item cannot be null!");
 		
 		this.items.remove(item);
+		this.update();
+	}
+	
+	@Override
+	public void clear() {
+		this.items.clear();
 		this.update();
 	}
 

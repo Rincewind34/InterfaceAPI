@@ -90,6 +90,12 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
+	public void clear() {
+		this.items.clear();
+		this.update();
+	}
+	
+	@Override
 	public void sortItems(Comparator<Displayable> comperator) {
 		this.items.sort((value1, value2) -> {
 			return comperator.compare(value1, value2);
