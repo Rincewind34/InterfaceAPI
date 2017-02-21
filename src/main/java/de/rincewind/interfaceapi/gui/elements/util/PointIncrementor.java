@@ -1,5 +1,7 @@
 package de.rincewind.interfaceapi.gui.elements.util;
 
+import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
+
 public class PointIncrementor {
 
 	public static Point calculate(int minX, int minY, int maxX, int maxY, int currentIndex) {
@@ -34,7 +36,11 @@ public class PointIncrementor {
 	private int maxY;
 
 	private int currentIndex;
-
+	
+	public PointIncrementor(WindowSizeable window) {
+		this(0, 0, window.getWidth() - 1, window.getHeight() - 1);
+	}
+	
 	public PointIncrementor(int maxX, int maxY) {
 		this(0, 0, maxX, maxY);
 	}

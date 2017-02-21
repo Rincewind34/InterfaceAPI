@@ -105,6 +105,12 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
+	public void shuffle() {
+		Collections.shuffle(this.items);
+		this.update();
+	}
+	
+	@Override
 	public void nextPage() {
 		this.setPage(this.page + 1);
 	}

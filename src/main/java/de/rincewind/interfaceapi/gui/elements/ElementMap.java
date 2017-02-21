@@ -28,6 +28,8 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	
 	public abstract void reverse();
 	
+	public abstract void shuffle();
+	
 	public abstract void nextPage();
 	
 	public abstract void previousPage();
