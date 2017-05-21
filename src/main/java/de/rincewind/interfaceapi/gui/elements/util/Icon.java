@@ -38,13 +38,12 @@ public class Icon implements Displayable, Cloneable {
 	}
 	
 	public Icon(ItemStack item) {
+		if (item == null) {
+			item = new ItemStack(Material.AIR);
+		}
+		
 		this.item = item;
 		this.item = ItemLibary.refactor().addAllFlags(this.item);
-	}
-	
-	@Override
-	public void setIcon(Icon icon) {
-		this.item = icon.item;
 	}
 	
 	@Override
@@ -53,10 +52,27 @@ public class Icon implements Displayable, Cloneable {
 	}
 	
 	@Override
+	public void setIcon(Icon icon) {
+		this.item = icon.item;
+	}
+	
+	@Override
 	public Icon clone() {
 		Icon icon = new Icon();
 		icon.item = this.item.clone();
 		return icon;
+	}
+	
+	public String getName() {
+		return this.item.getItemMeta().getDisplayName();
+	}
+	
+	public Lore getLore() {
+		if (!this.item.getItemMeta().hasLore()) {
+			return null;
+		} else {
+			return new Lore(this.item.getItemMeta().getLore());
+		}
 	}
 	
 	public Icon rename(String name) {
@@ -87,18 +103,6 @@ public class Icon implements Displayable, Cloneable {
 	public Icon damage(int damage) {
 		this.item.setDurability((short) damage);
 		return this;
-	}
-	
-	public String getName() {
-		return this.item.getItemMeta().getDisplayName();
-	}
-	
-	public Lore getLore() {
-		if (!this.item.getItemMeta().hasLore()) {
-			return null;
-		} else {
-			return new Lore(this.item.getItemMeta().getLore());
-		}
 	}
 	
 	public Icon unenchant() {

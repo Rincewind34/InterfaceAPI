@@ -44,6 +44,10 @@ public class PointIncrementor {
 	public PointIncrementor(int maxX, int maxY) {
 		this(0, 0, maxX, maxY);
 	}
+	
+	public PointIncrementor(Point minPoint, Point maxPoint) {
+		this(minPoint.getX(), minPoint.getY(), maxPoint.getX(), maxPoint.getY());
+	}
 
 	public PointIncrementor(int minX, int minY, int maxX, int maxY) {
 		this.minX = minX;
