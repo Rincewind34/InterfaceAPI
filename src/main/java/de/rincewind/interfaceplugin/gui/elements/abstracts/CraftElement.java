@@ -1,5 +1,6 @@
 package de.rincewind.interfaceplugin.gui.elements.abstracts;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -110,7 +111,17 @@ public abstract class CraftElement implements Element {
 
 	@Override
 	public boolean isEnabled() {
-		return this.getComponent(Element.ENABLED).isEnabled() ? this.getComponentValue(Element.ENABLED) : true;
+		return this.getComponent(Element.ENABLED).getValue();
+	}
+	
+	@Override
+	public int getWidth() {
+		return this.getComponent(Element.WIDTH).getValue();
+	}
+	
+	@Override
+	public int getHeight() {
+		return this.getComponent(Element.HEIGHT).getValue();
 	}
 	
 	@Override
@@ -139,18 +150,7 @@ public abstract class CraftElement implements Element {
 	
 	@Override
 	public Set<Point> getPoints() {
-		int width = this.getComponent(Element.WIDTH).isEnabled() ? this.getComponentValue(Element.WIDTH) : 1;
-		int height = this.getComponent(Element.HEIGHT).isEnabled() ? this.getComponentValue(Element.HEIGHT) : 1;
-		
-		if (width <= 0) {
-			throw new RuntimeException("The width cannot be smaller than one!");
-		}
-		
-		if (height <= 0) {
-			throw new RuntimeException("The width cannot be smaller than one!");
-		}
-		
-		return this.getPoint().square(width, height);
+		return Collections.unmodifiableSet(this.getPoint().square(this.getWidth(), this.getHeight()));
 	}
 	
 	@Override
@@ -168,13 +168,15 @@ public abstract class CraftElement implements Element {
 	public <T> T getUserObject(Class<T> cls) {
 		return cls.cast(this.userObject);
 	}
-	
-	@Override
-	public <T> T getComponentValue(ElementComponentType<T> type) {
-		return this.getComponent(type).getValue();
+
+	public int getId() {
+		return this.id;
+	}
+
+	public Modifyable getHandle() {
+		return this.handle;
 	}
 	
-	@Override
 	@SuppressWarnings("unchecked")
 	public <T> ElementComponent<T> getComponent(ElementComponentType<T> type) {
 		for (ElementComponentType<?> target : this.components.keySet()) {
@@ -184,14 +186,6 @@ public abstract class CraftElement implements Element {
 		}
 		
 		return null;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public Modifyable getHandle() {
-		return this.handle;
 	}
 	
 	protected <T> void registerComponent(ElementComponentType<T> type, T defaultValue, Runnable onChange) {

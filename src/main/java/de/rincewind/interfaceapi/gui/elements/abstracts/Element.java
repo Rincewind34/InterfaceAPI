@@ -9,7 +9,6 @@ import de.rincewind.interfaceapi.gui.components.EventBased;
 import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.components.UserMemory;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
-import de.rincewind.interfaceapi.gui.elements.util.ElementComponent;
 import de.rincewind.interfaceapi.gui.elements.util.ElementComponentType;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
@@ -84,6 +83,10 @@ public abstract interface Element extends EventBased, UserMemory {
 	
 	public abstract boolean isEnabled();
 	
+	public abstract int getWidth();
+	
+	public abstract int getHeight();
+	
 	/**
 	 * Returns the position of this element.
 	 * 
@@ -103,10 +106,6 @@ public abstract interface Element extends EventBased, UserMemory {
 	public abstract Set<Point> getPoints();
 	
 	public abstract <T> void setComponentValue(ElementComponentType<T> type, T value);
-	
-	public abstract <T> T getComponentValue(ElementComponentType<T> type);
-	
-	public abstract <T> ElementComponent<T> getComponent(ElementComponentType<T> type);
 	
 	public default void iterate(Consumer<Point> action) {
 		this.getPoints().forEach(action);

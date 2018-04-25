@@ -34,7 +34,7 @@ public class CraftElementInput extends CraftElementSlot implements ElementInput 
 			ItemStack input = this.getContent();
 			
 			this.items.add(input);
-			this.setContent(Modifyable.EMPTY_USED_SLOT);
+			this.setContent(null);
 			
 			return input;
 		}

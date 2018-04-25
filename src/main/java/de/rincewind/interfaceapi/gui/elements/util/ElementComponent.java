@@ -3,6 +3,7 @@ package de.rincewind.interfaceapi.gui.elements.util;
 public class ElementComponent<T> {
 	
 	private boolean enabled;
+	private boolean allowNull;
 	
 	private Runnable onChange;
 	
@@ -17,6 +18,7 @@ public class ElementComponent<T> {
 		this.onChange = onChange;
 		this.cls = cls;
 		this.enabled = true;
+		this.allowNull = this.defaultValue == null;
 	}
 	
 	public void reset() {
@@ -25,6 +27,10 @@ public class ElementComponent<T> {
 	
 	public void setValue(T value) {
 		this.validateEnabled();
+		
+		if (value == null && !this.allowNull) {
+			throw new IllegalArgumentException("Null is not allowed as value");
+		}
 		
 		if (this.value != value) {
 			this.value = value;
@@ -36,6 +42,10 @@ public class ElementComponent<T> {
 		this.enabled = enabled;
 	}
 	
+	public void setAllowNull(boolean allowNull) {
+		this.allowNull = allowNull;
+	}
+	
 	public boolean isEnabled() {
 		return this.enabled;
 	}
@@ -43,7 +53,7 @@ public class ElementComponent<T> {
 	public T getValue() {
 		this.validateEnabled();
 		
-		return this.value;
+		return this.enabled ? this.value : this.defaultValue;
 	}
 	
 	public T getDefaultValue() {

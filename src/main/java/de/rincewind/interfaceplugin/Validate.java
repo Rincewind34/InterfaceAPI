@@ -13,7 +13,7 @@ public class Validate {
 	
 	public static void notNull(Object object, String error) {
 		if (object == null) {
-			throw new NullPointerException(error);
+			throw new IllegalArgumentException(error);
 		}
 	}
 }

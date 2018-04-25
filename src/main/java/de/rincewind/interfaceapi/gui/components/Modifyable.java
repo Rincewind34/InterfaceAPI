@@ -2,16 +2,11 @@ package de.rincewind.interfaceapi.gui.components;
 
 import java.util.List;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.ElementCreator;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
-import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
-import de.rincewind.interfaceapi.item.ItemLibrary;
 
 /**
  * If a class implements this methods, you are able to add elements
@@ -36,35 +31,8 @@ import de.rincewind.interfaceapi.item.ItemLibrary;
  */
 public abstract interface Modifyable {
 	
-	/**
-	 * If an element adds this item to the cache, this object will not replace the
-	 * item with something else and the slot in the inventory remains empty.
-	 */
-	public static final ItemStack EMPTY_USED_SLOT = ItemLibrary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "§0EMPTY_USED_ITEM");
-	
-	/**
-	 * If an element adds this item to the cache, this object know about, that there is the element
-	 * present, but for example the {@link WindowColorable} will set the background color into
-	 * this slot.
-	 */
-	public static final ItemStack INVISIBLE_ELEMENT = ItemLibrary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "§0INVISIBLE_ELEMENT");
-	
-	/**
-	 * Reads all set items from all elements into the cache.
-	 * This method calls {@link Modifyable#readItemsFrom(Element)}
-	 * to read the items.
-	 */
 	public abstract void renderAll();
 	
-	/**
-	 * Reads all set items from a specified element. The {@link WindowEditor}
-	 * for example will add the new read items immediately into the
-	 * bukkit-inventory.
-	 * 
-	 * @param element to get the items from
-	 * 
-	 * @throws NullPointerException if the element is <code>null</code>
-	 */
 	public abstract void renderElement(Element element);
 	
 	/**

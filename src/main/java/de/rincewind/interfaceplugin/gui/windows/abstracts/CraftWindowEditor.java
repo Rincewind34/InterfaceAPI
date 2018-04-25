@@ -3,11 +3,9 @@ package de.rincewind.interfaceplugin.gui.windows.abstracts;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
@@ -23,17 +21,12 @@ import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
 public abstract class CraftWindowEditor extends CraftWindowContainer implements WindowEditor {
 
-	private List<Element> elements;
-
-	private Map<Element, Set<Point>> cache;
-
 	private ElementCreator creator;
 
-	public CraftWindowEditor() {
-		super();
+	private List<Element> elements;
 
+	public CraftWindowEditor() {
 		this.elements = new ArrayList<>();
-		this.cache = new HashMap<>();
 		this.creator = new ElementCreator(this);
 
 		this.getEventManager().registerListener(WindowClickEvent.class, (event) -> {
@@ -55,11 +48,6 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 	}
 
 	@Override
-	public List<Element> getElements() {
-		return Collections.unmodifiableList(this.elements);
-	}
-
-	@Override
 	public void addElement(Element element) {
 		Validate.notNull(element, "The element cannot be null!");
 
@@ -76,7 +64,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		int id = 0;
 
 		while (ids.contains(id)) {
-			id++; // Sucht eine freie id von 0 aufwaerts
+			id++;
 		}
 
 		this.elements.add(element);
@@ -86,38 +74,12 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 	}
 
 	@Override
-	public List<Element> getElementsAt(Point point) {
-		Validate.notNull(point, "The point cannot be null!");
-
-		List<Element> elements = new ArrayList<>();
-
-		for (Element element : this.elements) {
-			if (element.isInside(point)) {
-				elements.add(element);
-			}
-		}
-
-		return elements;
-	}
-
-	@Override
-	public Element getVisibleElementAt(Point point) {
-		Validate.notNull(point, "The point cannot be null!");
-
-		for (Element element : this.getElementsAt(point)) {
-			if (element.isVisible()) {
-				return element;
-			}
-		}
-
-		return null;
-	}
-
-	@Override
 	public void renderAll() {
 		for (Element element : this.elements) {
-			this.renderElement(element);
+			this.renderElement(element, false);
 		}
+		
+		this.updateInventory();
 	}
 
 	@Override
@@ -128,44 +90,16 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			throw new APIException("The element is not added in this Window!");
 		}
 
-		Set<Point> points = this.cache.containsKey(element) ? this.cache.get(element) : new HashSet<>();
-		element.iterate((point) -> {
-			Point trans = point.add(element.getPoint());
-
-			// if (!craftElement.isVisible()) {
-			// if (this.hasVisibleElementAt(trans)) {
-			// this.readItemsFrom(this.getVisibleElementAt(trans));
-			// return;
-			// }
-			// }
-
-			if ( /* !this.hasVisibleElementAt(trans) || */ this.getVisibleElementAt(
-					trans) == element) { /* Vlt überlappen sich Elemente */
-				// this.setItem(trans, craftElement.getItemAt(point));
-				this.update(trans);
-			}
-
-			points.remove(trans);
-		});
-
-		if (!points.isEmpty()) {
-			this.update(points);
-			this.updateInventory();
-		}
-		
-		this.cache.put(element, element.getPoints());
-	}
-
-	@Override
-	public ElementCreator elementCreator() {
-		return this.creator;
+		this.renderElement(element, true);
 	}
 
 	@Override
 	public void clearElements() {
 		for (Element element : this.elements) {
-			this.removeElement(element);
+			this.removeElement(element, false);
 		}
+		
+		this.updateInventory();
 	}
 
 	@Override
@@ -176,11 +110,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			throw new APIException("The element is not added in this Window!");
 		}
 
-		this.injectId(element, -1);
-		this.update(this.cache.get(element));
-
-		this.cache.remove(element);
-		this.elements.remove(element);
+		this.removeElement(element, true);
 	}
 
 	@Override
@@ -191,17 +121,9 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			throw new APIException("The element is not added in this Window!");
 		}
 
-		List<Element> newList = new ArrayList<>();
-		newList.add(element);
-
-		for (Element target : this.elements) {
-			if (!target.equals(element)) {
-				newList.add(target);
-			}
-		}
-
-		this.elements = newList;
-		this.update();
+		this.elements.remove(element);
+		this.elements.add(0, element);
+		this.renderElement(element);
 	}
 
 	@Override
@@ -216,17 +138,78 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		Element element = this.getVisibleElementAt(point);
 
 		if (element == null) {
-			return null;
+			return Icon.AIR;
 		} else {
 			return element.getIcon(point.subtract(element.getPoint()));
 		}
 	}
 
-	private void injectId(Element element, int id) {
-		Validate.notNull(element, "The element cannot be null!");
+	@Override
+	public ElementCreator elementCreator() {
+		return this.creator;
+	}
 
+	@Override
+	public Element getVisibleElementAt(Point point) {
+		Validate.notNull(point, "The point cannot be null!");
+
+		for (Element element : this.getElementsAt(point)) {
+			if (element.isVisible()) {
+				return element;
+			}
+		}
+
+		return null;
+	}
+	
+	@Override
+	public List<Element> getElements() {
+		return Collections.unmodifiableList(this.elements);
+	}
+
+	@Override
+	public List<Element> getElementsAt(Point point) {
+		Validate.notNull(point, "The point cannot be null!");
+
+		List<Element> elements = new ArrayList<>();
+
+		for (Element element : this.elements) {
+			if (element.isInside(point.add(element.getPoint()))) {
+				elements.add(element);
+			}
+		}
+
+		return elements;
+	}
+	
+	private void injectId(Element element, int id) {
 		Field fieldId = ReflectionUtil.getDeclaredField(CraftElement.class, "id");
 		ReflectionUtil.setValue(fieldId, element, id);
+	}
+	
+	private void renderElement(Element element, boolean update) {
+		this.update(element.getPoints().stream().map((point) -> {
+			return point.add(element.getPoint());
+		}).collect(Collectors.toSet()));
+		
+		if (update) {
+			this.updateInventory();
+		}
+	}
+	
+	private void removeElement(Element element, boolean update) {
+		Set<Point> points = element.getPoints();
+		
+		this.injectId(element, -1);
+		this.elements.remove(element);
+		
+		this.update(points.stream().map((point) -> {
+			return point.add(element.getPoint());
+		}).collect(Collectors.toSet()));
+		
+		if (update) {
+			this.updateInventory();
+		}
 	}
 
 }

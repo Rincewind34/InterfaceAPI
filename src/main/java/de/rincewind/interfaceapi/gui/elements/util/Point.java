@@ -32,7 +32,7 @@ public class Point implements Comparable<Point>, Cloneable {
 			}
 		}
 	}
-
+	
 	private final int x;
 	private final int y;
 
@@ -95,6 +95,10 @@ public class Point implements Comparable<Point>, Cloneable {
 
 	public final int getY() {
 		return this.y;
+	}
+	
+	public boolean isPositive() {
+		return this.x >= 0 && this.y >= 0;
 	}
 
 	public boolean isBiggerThan(Point point) {

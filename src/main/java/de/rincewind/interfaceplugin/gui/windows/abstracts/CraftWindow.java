@@ -22,11 +22,15 @@ public abstract class CraftWindow implements Window {
 		this.eventManager = new CraftEventManager();
 		
 		this.eventManager.registerListener(WindowOpenEvent.class, (event) -> {
+			assert !this.isOpened() : "This window is already opened";
+			
 			this.state = WindowState.MINIMIZED;
 			this.player = event.getOwner();
 		}).addAfter();
 		
 		this.eventManager.registerListener(WindowChangeStateEvent.class, (event) -> {
+			assert event.getNewState() == this.state : "State did not change";
+			
 			this.state = event.getNewState();
 			
 			if (this.state == WindowState.CLOSED) {

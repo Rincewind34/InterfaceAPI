@@ -196,7 +196,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	
 	@Override
 	public int getCountPerPage() {
-		return this.getComponentValue(Element.WIDTH) * this.getComponentValue(Element.HEIGHT);
+		return this.getWidth() * this.getHeight();
 	}
 	
 	@Override
@@ -219,11 +219,11 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	public Point getPoint(int index) {
 		int solved = index;
 		
-		while (solved % this.getComponentValue(Element.WIDTH) != 0) {
+		while (solved % this.getWidth() != 0) {
 			solved = solved - 1;
 		}
 		
-		return new Point(index - solved, solved / this.getComponentValue(Element.WIDTH));
+		return new Point(index - solved, solved / this.getWidth());
 	}
 	
 	@Override
@@ -238,7 +238,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	
 	@Override
 	public <T extends Displayable> T getItem(Point point, int page) {
-		int index = point.getY() * this.getComponentValue(Element.WIDTH) + point.getX();
+		int index = point.getY() * this.getWidth() + point.getX();
 		return this.getItem(index, this.page);
 	}
 	
@@ -276,7 +276,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	private int convert(Point point) {
-		return this.getComponentValue(Element.HEIGHT) * point.getY() + point.getX();
+		return this.getHeight() * point.getY() + point.getX();
 	}
 	
 }

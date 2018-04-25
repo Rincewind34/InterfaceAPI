@@ -1,6 +1,7 @@
 package de.rincewind.interfaceapi.gui.windows;
 
 import de.rincewind.interfaceapi.exceptions.InvalidSizeException;
+import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
 import de.rincewind.interfaceapi.gui.windows.util.Windows;
 
@@ -55,5 +56,10 @@ public interface WindowSizeable extends WindowColorable {
 	 * @throws InvalidSizeException if the size is invalid for this object
 	 */
 	public abstract void setSize(int width, int higth);
+	
+	@Override
+	public default boolean isInside(Point point) {
+		return point.isPositive() && point.getX() < this.getWidth() && point.getY() < this.getHeight();
+	}
 	
 }

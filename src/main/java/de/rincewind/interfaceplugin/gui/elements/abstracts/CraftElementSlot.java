@@ -36,7 +36,7 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 
 	@Override
 	public boolean isEmpty() {
-		return this.content == null || this.content.equals(Modifyable.EMPTY_USED_SLOT);
+		return this.content == null;
 	}
 
 	@Override

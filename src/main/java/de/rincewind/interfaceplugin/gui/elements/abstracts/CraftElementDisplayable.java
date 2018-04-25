@@ -56,9 +56,7 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 	public Icon getIcon(Point point) {
 		super.getIcon(point);
 		
-		boolean enabled = this.getComponent(Element.ENABLED).isEnabled() ? this.getComponentValue(Element.ENABLED) : true;
-		
-		if (enabled) {
+		if (this.isEnabled()) {
 			return this.getIcon();
 		} else {
 			return this.getDisabledIcon();

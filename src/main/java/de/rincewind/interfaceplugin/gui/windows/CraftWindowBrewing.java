@@ -1,7 +1,7 @@
 package de.rincewind.interfaceplugin.gui.windows;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
@@ -9,8 +9,9 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
+import com.google.common.collect.Sets;
+
 import de.rincewind.interfaceapi.InterfaceAPI;
-import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowBrewing;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowActivatable;
@@ -18,10 +19,42 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutWindowData;
 
 public class CraftWindowBrewing extends CraftWindowActivatable implements WindowBrewing {
 
+	public static final Set<Point> final_points = Collections
+			.unmodifiableSet(Sets.newHashSet(new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(1, 0)));
+
 	public CraftWindowBrewing(Plugin plugin) {
 		super(plugin);
 
 		this.setProgress(6);
+	}
+
+	@Override
+	public int getSlot(Point point) {
+		if (point.getY() == 0 && point.getX() == 1) {
+			return 3;
+		} else if (point.getY() == 1 && 0 <= point.getX() && point.getX() <= 2) {
+			return point.getX();
+		}
+		
+		assert false : "The point " + point + " is undifined for window brewing";
+		return 0;
+	}
+
+	@Override
+	public Point getPoint(int bukkitSlot) {
+		if (0 <= bukkitSlot && bukkitSlot <= 2) {
+			return new Point(bukkitSlot, 1);
+		} else if (bukkitSlot == 3) {
+			return new Point(1, 0);
+		} else {
+			assert false : "The bukkit slot " + bukkitSlot + " is undifined for window brewing";
+			return null;
+		}
+	}
+
+	@Override
+	public Inventory newInventory() {
+		return Bukkit.createInventory(null, InventoryType.BREWING, this.getName());
 	}
 
 	@Override
@@ -41,6 +74,11 @@ public class CraftWindowBrewing extends CraftWindowActivatable implements Window
 		};
 	}
 
+	@Override
+	public Set<Point> getPoints() {
+		return CraftWindowBrewing.final_points;
+	}
+
 	public void sendUpdatePacket(int progress) {
 		if (this.getUser() == null) {
 			return;
@@ -57,37 +95,5 @@ public class CraftWindowBrewing extends CraftWindowActivatable implements Window
 			this.setProgress(6);
 		}
 	}
-
-	@Override
-	public List<Point> getPoints() {
-		return Arrays.asList(new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(1, 0));
-	}
-
-	@Override
-	public int getSlot(Point point) {
-		if (point.getY() == 0 && point.getX() == 1) {
-			return 3;
-		} else if (point.getY() == 1 && 0 <= point.getX() && point.getX() <= 2) {
-			return point.getX();
-		}
-
-		throw new APIException("Invalid point!");
-	}
-
-	@Override
-	public Point getPoint(int bukkitSlot) {
-		if (0 <= bukkitSlot && bukkitSlot <= 2) {
-			return new Point(bukkitSlot, 1);
-		} else if (bukkitSlot == 3) {
-			return new Point(1, 0);
-		} else {
-			throw new APIException("Invalid slot!");
-		}
-	}
-
-	@Override
-	public Inventory newInventory() {
-		return Bukkit.createInventory(null, InventoryType.BREWING, this.getName());
-	}
-
+	
 }

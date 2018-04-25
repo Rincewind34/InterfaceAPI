@@ -8,7 +8,6 @@ public class CraftWindowNameable extends CraftWindow implements WindowNameable {
 	private String name;
 	
 	public CraftWindowNameable() {
-		super();
 		this.name = "GUI";
 	}
 	
@@ -20,10 +19,6 @@ public class CraftWindowNameable extends CraftWindow implements WindowNameable {
 	@Override
 	public void setName(String name) {
 		Validate.notNull(name, "The name cannot be null!");
-		
-		if (name.equals(this.name)) {
-			return;
-		}
 		
 		this.name = name;
 	}

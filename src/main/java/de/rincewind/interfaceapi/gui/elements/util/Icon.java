@@ -109,12 +109,11 @@ public class Icon implements Displayable, Cloneable {
 	}
 
 	public boolean isAir() {
-		return this.item.getType() == Material.AIR;
+		return this == Icon.AIR;
 	}
 
 	public String getName() {
 		if (!this.isAir()) {
-
 			return this.item.getItemMeta().getDisplayName();
 		} else {
 			return null;
@@ -189,7 +188,11 @@ public class Icon implements Displayable, Cloneable {
 		if (this.isAir()) {
 			throw new UnsupportedOperationException("Cannot typecast Icon#AIR");
 		}
-
+		
+		if (type == Material.AIR) {
+			throw new IllegalArgumentException("Unable to cast into Material#AIR");
+		}
+		
 		this.item.setType(type);
 		return this;
 	}

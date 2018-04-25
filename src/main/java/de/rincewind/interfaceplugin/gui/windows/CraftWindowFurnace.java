@@ -1,7 +1,7 @@
 package de.rincewind.interfaceplugin.gui.windows;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
@@ -9,14 +9,17 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
+import com.google.common.collect.Sets;
+
 import de.rincewind.interfaceapi.InterfaceAPI;
-import de.rincewind.interfaceapi.exceptions.InvalidSlotException;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowFurnace;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowActivatable;
 import net.minecraft.server.v1_12_R1.PacketPlayOutWindowData;
 
 public class CraftWindowFurnace extends CraftWindowActivatable implements WindowFurnace {
+
+	public static final Set<Point> final_points = Collections.unmodifiableSet(Sets.newHashSet(new Point(0, 0), new Point(0, 2), new Point(1, 1)));
 
 	public CraftWindowFurnace(Plugin plugin) {
 		super(plugin);
@@ -39,8 +42,8 @@ public class CraftWindowFurnace extends CraftWindowActivatable implements Window
 	}
 
 	@Override
-	public List<Point> getPoints() {
-		return Arrays.asList(new Point(0, 0), new Point(0, 2), new Point(1, 1));
+	public Set<Point> getPoints() {
+		return CraftWindowFurnace.final_points;
 	}
 
 	@Override
@@ -52,7 +55,8 @@ public class CraftWindowFurnace extends CraftWindowActivatable implements Window
 		} else if (bukkitSlot == 2) {
 			return new Point(1, 1);
 		} else {
-			throw new InvalidSlotException(bukkitSlot, WindowFurnace.class);
+			assert false : "The bukkit slot " + bukkitSlot + " is undefined for window furnace";
+			return null;
 		}
 	}
 
@@ -69,7 +73,8 @@ public class CraftWindowFurnace extends CraftWindowActivatable implements Window
 				return 2;
 			}
 		}
-
+		
+		assert false : "The point " + point + " is undefined for window furnace";
 		return -1;
 	}
 

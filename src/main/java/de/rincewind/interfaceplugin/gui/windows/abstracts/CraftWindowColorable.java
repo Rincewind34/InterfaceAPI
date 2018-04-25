@@ -67,7 +67,7 @@ public abstract class CraftWindowColorable extends CraftWindowEditor implements 
 	public Icon getIcon(Point point) {
 		Icon icon = super.getIcon(point);
 		
-		if (icon == null) {
+		if (icon == Icon.AIR) {
 			return this.color.asIcon();
 		} else {
 			return icon;
