@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 
 public enum Color {
-	
+
 	WHITE(0),
 	ORANGE(1),
 	MAGENTA(2),
@@ -22,21 +22,24 @@ public enum Color {
 	GREEN(13),
 	RED(14),
 	BLACK(15),
-	
-	TRANSLUCENT(-1);
-	
+
+	TRANSLUCENT(-1),
+	NONE(-1);
+
 	private int data;
-	
+
 	private Color(int data) {
 		this.data = data;
 	}
-	
+
 	public Icon asIcon() {
-		if (this.data == -1) {
-			return new Icon(Material.AIR);
+		if (this == Color.TRANSLUCENT) {
+			return new Icon(Material.THIN_GLASS, 0);
+		} else if(this == Color.NONE) {
+			return Icon.AIR;
 		} else {
-			return new Icon(Material.STAINED_GLASS_PANE, this.data).rename("§7");
+			return new Icon(Material.STAINED_GLASS_PANE, this.data);
 		}
 	}
-	
+
 }

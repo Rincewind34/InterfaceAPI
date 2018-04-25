@@ -4,8 +4,10 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
@@ -23,7 +25,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 	private List<Element> elements;
 
-	private Map<Element, List<Point>> cache;
+	private Map<Element, Set<Point>> cache;
 
 	private ElementCreator creator;
 
@@ -43,7 +45,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 				}
 
 				if (!element.getBlocker().allows(event.getAction())) {
-					event.cancleInteraction();
+					event.cancelInteraction();
 				}
 
 				element.getEventManager().callEvent(ElementInteractEvent.class, new ElementInteractEvent(element, this.getUser(),
@@ -126,7 +128,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			throw new APIException("The element is not added in this Window!");
 		}
 
-		List<Point> points = this.cache.containsKey(element) ? this.cache.get(element) : new ArrayList<>();
+		Set<Point> points = this.cache.containsKey(element) ? this.cache.get(element) : new HashSet<>();
 		element.iterate((point) -> {
 			Point trans = point.add(element.getPoint());
 
@@ -148,8 +150,9 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 		if (!points.isEmpty()) {
 			this.update(points);
+			this.updateInventory();
 		}
-
+		
 		this.cache.put(element, element.getPoints());
 	}
 

@@ -1,29 +1,30 @@
 package de.rincewind.interfaceplugin.gui.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.google.common.collect.Sets;
 
 import de.rincewind.interfaceapi.gui.elements.util.ClickAction;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
 
 public class CraftClickBlocker implements ClickBlocker {
 	
-	private List<ClickAction> blocked;
-	
 	private boolean lock;
 	
+	private Set<ClickAction> blocked;
+	
 	public CraftClickBlocker() {
-		this.blocked = new ArrayList<ClickAction>();
+		this.blocked = new HashSet<>();
 	}
 	
 	@Override
-	public List<ClickAction> getBlocked() {
+	public Set<ClickAction> getBlocked() {
 		if (this.lock) {
-			return Collections.unmodifiableList(Arrays.asList(ClickAction.values()));
+			return Collections.unmodifiableSet(Sets.newHashSet(ClickAction.values()));
 		} else {
-			return Collections.unmodifiableList(this.blocked);
+			return Collections.unmodifiableSet(this.blocked);
 		}
 	}
 	

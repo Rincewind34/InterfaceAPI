@@ -80,7 +80,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 			if (this.isEnabled()) {
 				if (!event.isInInterface() && event.getItem() != null && this.selector.test(event.getItem())) {
 					this.setSelected(event.getItem());
-					event.cancleInteraction();
+					event.cancelInteraction();
 				}
 			}
 		}).addAfter();

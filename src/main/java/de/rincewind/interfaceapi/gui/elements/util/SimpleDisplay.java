@@ -38,13 +38,13 @@ public class SimpleDisplay implements Displayable, UserMemory {
 	}
 
 	@Override
-	public void setIcon(Icon icon) {
-		this.icon = icon;
+	public Icon getIcon() {
+		return this.icon;
 	}
 
 	@Override
-	public Icon getIcon() {
-		return this.icon;
+	public void setIcon(Icon icon) {
+		this.icon = icon;
 	}
 	
 }

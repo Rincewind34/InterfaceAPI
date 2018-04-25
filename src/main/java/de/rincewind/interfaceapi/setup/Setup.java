@@ -5,9 +5,9 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
-import de.rincewind.interfaceapi.gui.util.EventManager;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
+import de.rincewind.interfaceapi.handling.EventManager;
 import de.rincewind.interfaceapi.handling.window.WindowOpenEvent;
 
 public interface Setup {

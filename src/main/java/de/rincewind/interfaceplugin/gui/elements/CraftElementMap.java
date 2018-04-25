@@ -212,7 +212,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	
 	@Override
 	public int getFirstIndex(int page) {
-		return (this.page - 1) * this.getCountPerPage();
+		return (page - 1) * this.getCountPerPage();
 	}
 	
 	@Override

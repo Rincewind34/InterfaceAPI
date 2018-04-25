@@ -49,6 +49,8 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 		this.iterate((point) -> {
 			this.update(point);
 		});
+		
+		this.updateInventory();
 	}
 	
 	protected void update(Point point) {
@@ -59,15 +61,17 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 		}
 		
 		this.inventory.setItem(this.getSlot(point), icon.toItem());
-		
-		if (this.getUser() != null) {
-			this.getUser().updateInventory(); // TODO remove?
-		}
 	}
 	
 	protected void update(Iterable<Point> points) {
 		for (Point point : points) {
 			this.update(point);
+		}
+	}
+	
+	protected void updateInventory() {
+		if (this.getUser() != null) {
+			this.getUser().updateInventory();
 		}
 	}
 	

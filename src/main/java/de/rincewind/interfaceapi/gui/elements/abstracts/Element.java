@@ -1,6 +1,6 @@
 package de.rincewind.interfaceapi.gui.elements.abstracts;
 
-import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.bukkit.event.inventory.InventoryAction;
@@ -100,7 +100,7 @@ public abstract interface Element extends EventBased, UserMemory {
 	 */
 	public abstract ClickBlocker getBlocker();
 	
-	public abstract List<Point> getPoints();
+	public abstract Set<Point> getPoints();
 	
 	public abstract <T> void setComponentValue(ElementComponentType<T> type, T value);
 	

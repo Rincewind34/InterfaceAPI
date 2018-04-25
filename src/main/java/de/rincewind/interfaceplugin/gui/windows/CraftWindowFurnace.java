@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
@@ -12,16 +13,15 @@ import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.exceptions.InvalidSlotException;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowFurnace;
-import de.rincewind.interfaceplugin.APIReflection;
-import de.rincewind.interfaceplugin.ReflectionUtil;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowActivatable;
+import net.minecraft.server.v1_12_R1.PacketPlayOutWindowData;
 
 public class CraftWindowFurnace extends CraftWindowActivatable implements WindowFurnace {
 
 	public CraftWindowFurnace(Plugin plugin) {
 		super(plugin);
 	}
-	
+
 	@Override
 	public Runnable getRunnable() {
 		return () -> {
@@ -30,19 +30,19 @@ public class CraftWindowFurnace extends CraftWindowActivatable implements Window
 			} else {
 				this.sendUpdatePacket(this.getProgress());
 				this.setProgress(this.getProgress() + 1);
-				
+
 				if (0 > this.getProgress() || this.getProgress() > 13) {
 					this.setProgress(0);
 				}
 			}
 		};
 	}
-	
+
 	@Override
 	public List<Point> getPoints() {
 		return Arrays.asList(new Point(0, 0), new Point(0, 2), new Point(1, 1));
 	}
-	
+
 	@Override
 	public Point getPoint(int bukkitSlot) {
 		if (bukkitSlot == 0) {
@@ -55,7 +55,7 @@ public class CraftWindowFurnace extends CraftWindowActivatable implements Window
 			throw new InvalidSlotException(bukkitSlot, WindowFurnace.class);
 		}
 	}
-	
+
 	@Override
 	public int getSlot(Point point) {
 		if (point.getX() == 0) {
@@ -69,23 +69,23 @@ public class CraftWindowFurnace extends CraftWindowActivatable implements Window
 				return 2;
 			}
 		}
-		
+
 		return -1;
 	}
-	
+
 	@Override
 	public Inventory newInventory() {
 		return Bukkit.createInventory(null, InventoryType.FURNACE, this.getName());
 	}
-	
+
 	public void sendUpdatePacket(int progress) {
 		if (super.getUser() == null) {
 			return;
 		}
-		
-		Object packet = ReflectionUtil.createObject(APIReflection.CONSTRUCTOR_PACKET_WINDOWDATA, 
-				new Object[] { InterfaceAPI.getActiveWindowId(super.getUser()), 0, progress * 15 });
-		APIReflection.sendPacket(super.getUser(), packet);
+
+		((CraftPlayer) this.getUser()).getHandle().playerConnection
+				.sendPacket(new PacketPlayOutWindowData(InterfaceAPI.getActiveWindowId(this.getUser()), 0, progress * 15));
+
 	}
 
 }

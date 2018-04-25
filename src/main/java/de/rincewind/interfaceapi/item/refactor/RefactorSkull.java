@@ -5,6 +5,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class RefactorSkull {
 	
+	@SuppressWarnings("deprecation")
 	public ItemStack setOwner(ItemStack item, String name) {
 		ItemStack clone = item.clone();
 		SkullMeta meta = (SkullMeta) clone.getItemMeta();

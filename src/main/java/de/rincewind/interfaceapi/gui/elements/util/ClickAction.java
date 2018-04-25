@@ -1,9 +1,10 @@
 package de.rincewind.interfaceapi.gui.elements.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.event.inventory.InventoryAction;
 
@@ -76,15 +77,11 @@ public enum ClickAction {
 	 * 
 	 * @return a list of all {@link InventoryAction}'s contained by the enum-fields
 	 */
-	public static List<InventoryAction> getBlockableActions() {
-		List<InventoryAction> actions = new ArrayList<>();
+	public static Set<InventoryAction> getBlockableActions() {
+		Set<InventoryAction> actions = new HashSet<>();
 		
 		for (ClickAction action : ClickAction.values()) {
-			for (InventoryAction invAction : action.actions) {
-				if (!actions.contains(invAction)) {
-					actions.add(invAction);
-				}
-			}
+			actions.addAll(action.actions);
 		}
 		
 		return actions;

@@ -18,7 +18,7 @@ public abstract class CraftWindowColorable extends CraftWindowEditor implements 
 		
 		this.getEventManager().registerListener(WindowClickEvent.class, (event) -> {
 			if (!this.hasVisibleElementAt(event.getInterfacePoint())) {
-				event.cancleInteraction();
+				event.cancelInteraction();
 			}
 		}).addAfter();
 	}

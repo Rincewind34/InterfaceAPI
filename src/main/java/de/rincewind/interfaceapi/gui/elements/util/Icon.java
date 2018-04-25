@@ -5,7 +5,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
-import de.rincewind.interfaceapi.item.ItemLibary;
+import de.rincewind.interfaceapi.item.ItemLibrary;
 import de.rincewind.interfaceapi.item.ItemRefactor.Lore;
 
 /**
@@ -15,113 +15,200 @@ import de.rincewind.interfaceapi.item.ItemRefactor.Lore;
  * @since 2.3.3
  */
 public class Icon implements Displayable, Cloneable {
-	
-	public static final Icon AIR = new Icon(Material.AIR);
-	
-	
+
+	public static final Icon AIR = new Icon();
+
 	private ItemStack item;
-	
+
 	private Icon() {
-		
+		this.item = new ItemStack(Material.AIR);
 	}
-	
+
 	public Icon(Material type) {
 		this(type, 0);
 	}
-	
+
 	public Icon(Material type, int data) {
-		this(type, data, " ");
+		this(type, data, "§7");
 	}
-	
+
 	public Icon(Material type, int data, String name) {
-		this(ItemLibary.refactor().renameItem(new ItemStack(type, 1, (short) data), name));
+		if (type == null) {
+			throw new IllegalArgumentException("Type cannot be null");
+		}
+
+		if (type == Material.AIR) {
+			throw new IllegalArgumentException("Type cannot be AIR");
+		}
+
+		if (data < 0 || data > Short.MAX_VALUE) {
+			throw new IllegalArgumentException("Data must be in the interval 0 to " + Short.MAX_VALUE);
+		}
+
+		if (name == null) {
+			throw new IllegalArgumentException("Name cannot be null");
+		}
+
+		if (name.isEmpty()) {
+			throw new IllegalArgumentException("Name cannot be empty");
+		}
+
+		this.item = ItemLibrary.refactor().renameItem(new ItemStack(type, 1, (short) data), name);
+		this.item = ItemLibrary.refactor().addAllFlags(this.item);
 	}
-	
+
 	public Icon(ItemStack item) {
 		if (item == null) {
-			item = new ItemStack(Material.AIR);
+			throw new IllegalArgumentException("Item cannot be null");
 		}
-		
+
+		if (item.getType() == Material.AIR) {
+			throw new IllegalArgumentException("Itemtype cannot be AIR");
+		}
+
 		this.item = item;
-		this.item = ItemLibary.refactor().addAllFlags(this.item);
+		this.item = ItemLibrary.refactor().addAllFlags(this.item);
 	}
-	
+
 	@Override
 	public Icon getIcon() {
 		return this;
 	}
-	
+
 	@Override
 	public void setIcon(Icon icon) {
 		this.item = icon.item;
 	}
-	
+
+	@Override
+	public boolean equals(Object icon) {
+		if (this == icon) {
+			return true;
+		}
+		if (icon == null || this.getClass() != icon.getClass()) {
+			return false;
+		}
+
+		Icon other = (Icon) icon;
+		return this.item.equals(other.item);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (this.item == null ? 0 : this.item.hashCode());
+		return result;
+	}
+
 	@Override
 	public Icon clone() {
 		Icon icon = new Icon();
 		icon.item = this.item.clone();
 		return icon;
 	}
-	
-	public String getName() {
-		return this.item.getItemMeta().getDisplayName();
+
+	public boolean isAir() {
+		return this.item.getType() == Material.AIR;
 	}
-	
+
+	public String getName() {
+		if (!this.isAir()) {
+
+			return this.item.getItemMeta().getDisplayName();
+		} else {
+			return null;
+		}
+	}
+
 	public Lore getLore() {
-		if (!this.item.getItemMeta().hasLore()) {
+		if (this.isAir() || !this.item.getItemMeta().hasLore()) {
 			return null;
 		} else {
 			return new Lore(this.item.getItemMeta().getLore());
 		}
 	}
-	
+
 	public Icon rename(String name) {
-		this.item = ItemLibary.refactor().renameItem(this.item, name);
-		return this;
-	}
-	
-	public Icon describe(Lore lore) {
-		this.item = ItemLibary.refactor().loreItem(this.item, lore);
-		return this;
-	}
-	
-	public Icon showInfo(boolean info) {
-		if (info) {
-			this.item = ItemLibary.refactor().removeAllFlags(this.item);
-		} else {
-			this.item = ItemLibary.refactor().addAllFlags(this.item);
+		if (!this.isAir()) {
+			this.item = ItemLibrary.refactor().renameItem(this.item, name);
 		}
-		
+
 		return this;
 	}
-	
+
+	public Icon removeName() {
+		return this.rename("§7");
+	}
+
+	public Icon describe(Lore lore) {
+		if (!this.isAir()) {
+			this.item = ItemLibrary.refactor().loreItem(this.item, lore);
+		}
+
+		return this;
+	}
+
+	public Icon showInfo(boolean info) {
+		if (!this.isAir()) {
+			if (info) {
+				this.item = ItemLibrary.refactor().removeAllFlags(this.item);
+			} else {
+				this.item = ItemLibrary.refactor().addAllFlags(this.item);
+			}
+		}
+
+		return this;
+	}
+
 	public Icon enchant() {
-		this.item = ItemLibary.refactor().enchantItem(this.item, Enchantment.WATER_WORKER, 1, false);
+		if (!this.isAir()) {
+			this.item = ItemLibrary.refactor().enchantItem(this.item, Enchantment.WATER_WORKER, 1, false);
+		}
+
 		return this;
 	}
-	
+
 	public Icon damage(int damage) {
-		this.item.setDurability((short) damage);
+		if (!this.isAir()) {
+			this.item.setDurability((short) damage);
+		}
+
 		return this;
 	}
-	
+
 	public Icon unenchant() {
-		this.item = ItemLibary.refactor().unenchantItem(this.item, Enchantment.WATER_WORKER);
+		if (!this.isAir()) {
+			this.item = ItemLibrary.refactor().unenchantItem(this.item, Enchantment.WATER_WORKER);
+		}
+
 		return this;
 	}
-	
+
 	public Icon typecast(Material type) {
+		if (this.isAir()) {
+			throw new UnsupportedOperationException("Cannot typecast Icon#AIR");
+		}
+
 		this.item.setType(type);
 		return this;
 	}
-	
+
 	public Icon count(int amount) {
-		this.item.setAmount(amount);
+		if (!this.isAir()) {
+			this.item.setAmount(amount);
+		}
+
 		return this;
 	}
-	
+
+	/**
+	 * Can never be <code>null</code>.
+	 * 
+	 * @return
+	 */
 	public ItemStack toItem() {
 		return this.item;
 	}
-	
+
 }

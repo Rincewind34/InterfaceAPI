@@ -1,7 +1,7 @@
 package de.rincewind.interfaceapi.gui.components;
 
-import de.rincewind.interfaceapi.gui.util.EventManager;
 import de.rincewind.interfaceapi.handling.Event;
+import de.rincewind.interfaceapi.handling.EventManager;
 
 /**
  * This interface is implemented by classes, witch want to call events ({@link Event}).

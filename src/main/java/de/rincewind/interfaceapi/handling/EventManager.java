@@ -1,4 +1,4 @@
-package de.rincewind.interfaceapi.gui.util;
+package de.rincewind.interfaceapi.handling;
 
 import java.util.List;
 
@@ -6,8 +6,6 @@ import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.components.EventBased;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
-import de.rincewind.interfaceapi.handling.Event;
-import de.rincewind.interfaceapi.handling.InterfaceListener;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
 

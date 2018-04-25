@@ -1,6 +1,6 @@
 package de.rincewind.interfaceapi.gui.elements.util;
 
-import java.util.List;
+import java.util.Set;
 
 import org.bukkit.event.inventory.InventoryAction;
 
@@ -27,7 +27,7 @@ public interface ClickBlocker {
 	 * 
 	 * @return all blocked actions
 	 */
-	public abstract List<ClickAction> getBlocked();
+	public abstract Set<ClickAction> getBlocked();
 	
 	/**
 	 * Adds an action to block to this instance.

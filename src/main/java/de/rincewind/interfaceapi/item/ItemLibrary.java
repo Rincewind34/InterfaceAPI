@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.bukkit.inventory.ItemStack;
 
-public class ItemLibary {
+public class ItemLibrary {
 	
 	public static <T extends ScanResult> T scanItem(ItemStack item, Class<T> clazz) {
 		if (item == null) {
@@ -41,6 +41,7 @@ public class ItemLibary {
 		return new ItemSerializer();
 	}
 	
+	@Deprecated
 	public static ItemNBTModifier nbtModifier(ItemStack item) {
 		return new ItemNBTModifier(item);
 	}

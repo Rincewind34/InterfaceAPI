@@ -5,6 +5,20 @@
 	<artifactId>interfaceapi</artifactId>
 	<version>3.0.0</version>
 
+	<properties>
+		<finalName>AerionBearTrap</finalName>
+
+		<spigot.version>1.12.1</spigot.version>
+		<serverapi.version>1.28.4</serverapi.version>
+		<dicefurniture.version>3.2.0.2</dicefurniture.version>
+		<furniturelib.version>1.9.2.9</furniturelib.version>
+
+		<jdk.version>9</jdk.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>${jdk.version}</maven.compiler.source>
+		<maven.compiler.target>${jdk.version}</maven.compiler.target>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>aerion-group</id>
@@ -24,7 +38,13 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-aerion</artifactId>
-			<version>1.10.2</version>
+			<version>1.12.2</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -33,20 +53,28 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<encoding>UTF-8</encoding>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
 				<configuration>
 					<outputDirectory>${output}</outputDirectory>
-					<finalName>InterfaceAPI-${version}</finalName>
+					<finalName>InterfaceAPI-${project.version}</finalName>
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 </project>

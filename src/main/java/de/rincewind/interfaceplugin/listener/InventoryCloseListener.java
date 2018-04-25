@@ -17,6 +17,7 @@ public class InventoryCloseListener implements Listener {
 	@EventHandler
 	public void onClose(InventoryCloseEvent e) {
 		Player player = (Player) e.getPlayer();
+		
 		if (InventoryCloseListener.blocked.contains(player.getName())) {
 			return;
 		} else if (InterfaceAPI.getSetup(player).hasMaximizedWindow()) {

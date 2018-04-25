@@ -2,9 +2,9 @@ package de.rincewind.interfaceplugin.gui.windows.abstracts;
 
 import org.bukkit.entity.Player;
 
-import de.rincewind.interfaceapi.gui.util.EventManager;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
+import de.rincewind.interfaceapi.handling.EventManager;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
 import de.rincewind.interfaceapi.handling.window.WindowOpenEvent;
 import de.rincewind.interfaceplugin.gui.util.CraftEventManager;

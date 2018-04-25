@@ -19,24 +19,25 @@ import de.rincewind.interfaceapi.util.recipes.RecipePacket;
 import de.rincewind.interfaceapi.util.recipes.RecipeShaped;
 import de.rincewind.interfaceapi.util.recipes.RecipeShapeless;
 import de.rincewind.interfaceapi.util.recipes.RecipeType;
-import de.rincewind.interfaceplugin.APIReflection;
 
 public class CraftRecipeManager implements RecipeManager {
-	
+
 	private final Map<RecipeType, List<Recipe>> recipes;
-	
+
 	public CraftRecipeManager() {
-		this.recipes = new HashMap<RecipeType, List<Recipe>>();
-		
-		for(RecipeType type : RecipeType.values()) recipes.put(type, new ArrayList<Recipe>());
+		this.recipes = new HashMap<>();
+
+		for (RecipeType type : RecipeType.values()) {
+			this.recipes.put(type, new ArrayList<Recipe>());
+		}
 	}
-	
+
 	@Override
 	public void addRecipe(Recipe recipe) {
 		if (recipe == null) {
 			return;
 		}
-		
+
 		if (this.containsRecipe(recipe)) {
 			return;
 		} else {
@@ -49,7 +50,7 @@ public class CraftRecipeManager implements RecipeManager {
 		if (recipe == null) {
 			return;
 		}
-		
+
 		if (!this.containsRecipe(recipe)) {
 			return;
 		} else {
@@ -62,7 +63,7 @@ public class CraftRecipeManager implements RecipeManager {
 		if (!this.hasRecipe(index, type)) {
 			return;
 		}
-		
+
 		this.removeRecipe(this.getRecipe(index, type));
 	}
 
@@ -92,26 +93,30 @@ public class CraftRecipeManager implements RecipeManager {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void activate() {
-		APIReflection.clearRecipes("CraftingManager");
-		APIReflection.clearRecipes("RecipesFurnace");
-		
-		for (Recipe recipe : getRecipes(RecipeType.SHAPED)) {
+//		APIReflection.clearRecipes("CraftingManager"); TODO
+//		APIReflection.clearRecipes("RecipesFurnace");
+
+		for (Recipe recipe : this.getRecipes(RecipeType.SHAPED)) {
 			ShapedRecipe bukkitRecipe = new ShapedRecipe(recipe.getResult());
 			bukkitRecipe.shape(((RecipeShaped) recipe).getShape());
-			for(char key : ((RecipeShaped) recipe).getIngradientsMap().keySet())
+			for (char key : ((RecipeShaped) recipe).getIngradientsMap().keySet()) {
 				bukkitRecipe.setIngredient(key, ((RecipeShaped) recipe).getIngradientsMap().get(key));
+			}
 			Bukkit.addRecipe(bukkitRecipe);
 		}
-		
-		for (Recipe recipe : getRecipes(RecipeType.SHAPLESS)) {
+
+		for (Recipe recipe : this.getRecipes(RecipeType.SHAPLESS)) {
 			ShapelessRecipe bukkitRecipe = new ShapelessRecipe(recipe.getResult());
-			for(MaterialData data : ((RecipeShapeless) recipe).getIngradients()) bukkitRecipe.addIngredient(data);
+			for (MaterialData data : ((RecipeShapeless) recipe).getIngradients()) {
+				bukkitRecipe.addIngredient(data);
+			}
 			Bukkit.addRecipe(bukkitRecipe);
 		}
-		
-		for (Recipe recipe : getRecipes(RecipeType.FURNACE)) {
+
+		for (Recipe recipe : this.getRecipes(RecipeType.FURNACE)) {
 			Bukkit.addRecipe(new FurnaceRecipe(recipe.getResult(), ((RecipeFurnace) recipe).getInput()));
 		}
 	}
@@ -130,13 +135,13 @@ public class CraftRecipeManager implements RecipeManager {
 		if (result == null) {
 			return null;
 		}
-		
-		List<Recipe> targetRecipes = new ArrayList<Recipe>();
-		
+
+		List<Recipe> targetRecipes = new ArrayList<>();
+
 		for (RecipeType type : RecipeType.values()) {
 			targetRecipes.addAll(this.getRecipes(result, type));
 		}
-		
+
 		return targetRecipes;
 	}
 
@@ -145,19 +150,19 @@ public class CraftRecipeManager implements RecipeManager {
 		if (result == null) {
 			return null;
 		}
-		
+
 		if (type == null) {
 			return null;
 		}
-		
-		List<Recipe> targetRecipes = new ArrayList<Recipe>();
-		
+
+		List<Recipe> targetRecipes = new ArrayList<>();
+
 		for (Recipe targetRecipe : this.getRecipes(type)) {
 			if (targetRecipe.getResult().equals(result)) {
 				targetRecipes.add(targetRecipe);
 			}
 		}
-		
+
 		return targetRecipes;
 	}
 
@@ -177,7 +182,7 @@ public class CraftRecipeManager implements RecipeManager {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 

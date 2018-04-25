@@ -20,40 +20,38 @@ public class InventoryClickListener implements Listener {
 	public void onClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
 
-		if (event.getCurrentItem() != null) {
-			if (InterfaceAPI.getSetup(player).hasMaximizedWindow()) {
-				Window window = InterfaceAPI.getSetup(player).getMaximizedWindow();
-				ClickAction action = ClickAction.getAction(event.getAction());
-				
-				if (action == null) {
+		if (InterfaceAPI.getSetup(player).hasMaximizedWindow()) {
+			Window window = InterfaceAPI.getSetup(player).getMaximizedWindow();
+			ClickAction action = ClickAction.getAction(event.getAction());
+
+			if (action == null) {
+				event.setCancelled(true);
+				return;
+			}
+
+			if (window instanceof WindowContainer) {
+				WindowContainer containerWindow = (WindowContainer) window;
+
+				WindowClickEvent windowEvent = new WindowClickEvent(containerWindow, action, event.getRawSlot(), event.getSlot(), event.getCurrentItem(),
+						event.isLeftClick(), event.isShiftClick());
+				containerWindow.getEventManager().callEvent(WindowClickEvent.class, windowEvent);
+
+				if (windowEvent.isCancelled() || !ClickAction.getBlockableActions().contains(event.getAction())) {
 					event.setCancelled(true);
-					return;
 				}
-				
-				if (window instanceof WindowContainer) {
-					WindowContainer containerWindow = (WindowContainer) window;
 
-					WindowClickEvent windowEvent = new WindowClickEvent(containerWindow, action, event.getRawSlot(), event.getSlot(), event.getCurrentItem(),
-							event.isLeftClick(), event.isShiftClick());
-					containerWindow.getEventManager().callEvent(WindowClickEvent.class, windowEvent);
-
-					if (event.isCancelled() || !ClickAction.getBlockableActions().contains(event.getAction())) {
-						event.setCancelled(true);
-					}
-
-					if (windowEvent.removeItem() && !windowEvent.isInInterface()) {
-						player.getInventory().setItem(event.getSlot(), null);
-					}
-				} else if (window instanceof WindowAnvil) {
-					event.setCancelled(true);
-
-					if (event.getRawSlot() == 2) {
-						window.getEventManager().callEvent(AnvilNameEvent.class,
-								new AnvilNameEvent((WindowAnvil) window, ((WindowAnvil) window).getInsertedName()));
-					}
-
-					InterfaceAPI.getSetup(player).close(window);
+				if (windowEvent.removeItem() && !windowEvent.isInInterface()) {
+					player.getInventory().setItem(event.getSlot(), null);
 				}
+			} else if (window instanceof WindowAnvil) {
+				event.setCancelled(true);
+
+				if (event.getRawSlot() == 2) {
+					window.getEventManager().callEvent(AnvilNameEvent.class,
+							new AnvilNameEvent((WindowAnvil) window, ((WindowAnvil) window).getInsertedName()));
+				}
+
+				InterfaceAPI.getSetup(player).close(window);
 			}
 		}
 	}

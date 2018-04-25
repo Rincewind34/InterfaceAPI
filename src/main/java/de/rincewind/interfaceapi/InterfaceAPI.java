@@ -1,43 +1,83 @@
 package de.rincewind.interfaceapi;
 
-import org.bukkit.Bukkit;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import de.rincewind.interfaceapi.item.categorys.Categorys;
 import de.rincewind.interfaceapi.setup.Setup;
 import de.rincewind.interfaceapi.util.recipes.RecipeManager;
 import de.rincewind.interfaceapi.util.recipes.RecipePacket;
-import de.rincewind.interfaceplugin.APIReflection;
 import de.rincewind.interfaceplugin.InterfacePlugin;
-import de.rincewind.interfaceplugin.ReflectionUtil;
 import de.rincewind.interfaceplugin.recipes.CraftRecipeManager;
 import de.rincewind.interfaceplugin.recipes.CraftRecipePacket;
 import de.rincewind.interfaceplugin.setup.CraftSetup;
 
 public class InterfaceAPI {
-	
-	public static Setup getSetup(Player player) {
-		if (!InterfacePlugin.setups.containsKey(player)) {
-			Setup setup = new CraftSetup(player, InterfacePlugin.instance);
-			Bukkit.getPluginManager().callEvent(new SetupCreateEvent(setup, player));
-			InterfacePlugin.setups.put(player, setup);
-		}
-		
-		return InterfacePlugin.setups.get(player);
+
+	private static Map<Player, Setup> setups;
+
+	public static void enable() {
+		InterfaceAPI.setups = new HashMap<>();
+
+		new Categorys();
 	}
 	
+	public static void cleanUpSetup(Player owner) {
+		InterfaceAPI.getSetup(owner).closeAll();
+		InterfaceAPI.setups.remove(owner);
+	}
+
+	public static void resetSetups() {
+		for (Setup setup : InterfaceAPI.setups.values()) {
+			setup.closeAll();
+		}
+
+		InterfaceAPI.setups.clear();
+	}
+
+	public static void disable() {
+		for (Setup setup : InterfaceAPI.setups.values()) {
+			setup.closeAll();
+		}
+
+		InterfaceAPI.setups = null;
+	}
+	
+	public static int getSetupAmount() {
+		return InterfaceAPI.setups.size();
+	}
+
+	public static Setup getSetup(Player player) {
+		if (player == null) {
+			throw new IllegalArgumentException("Player cannot be null");
+		}
+
+		if (!InterfaceAPI.setups.containsKey(player)) {
+			Setup setup = new CraftSetup(player, InterfacePlugin.instance);
+
+			if (InterfacePlugin.instance != null) {
+				InterfacePlugin.instance.getServer().getPluginManager().callEvent(new SetupCreateEvent(setup, player));
+			}
+
+			InterfaceAPI.setups.put(player, setup);
+		}
+
+		return InterfaceAPI.setups.get(player);
+	}
+
 	public static RecipeManager createRecipeManager() {
 		return new CraftRecipeManager();
 	}
-	
+
 	public static int getActiveWindowId(Player player) {
-		Object nmsPlayer = ReflectionUtil.createObject(APIReflection.METHOD_GETHANDLE, player, ReflectionUtil.emtyObjectArray());
-		Object container = ReflectionUtil.createObject(APIReflection.FIELD_ACTIVEWINDOW, nmsPlayer);
-		
-		return (int) ReflectionUtil.createObject(APIReflection.FIELD_WINDOWID, container);
+		return ((CraftPlayer) player).getHandle().activeContainer.windowId;
 	}
-	
+
 	public static RecipePacket createRecipePacket() {
 		return new CraftRecipePacket();
 	}
-	
+
 }

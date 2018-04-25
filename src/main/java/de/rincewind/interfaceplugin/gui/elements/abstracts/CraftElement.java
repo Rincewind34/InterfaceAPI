@@ -1,8 +1,8 @@
 package de.rincewind.interfaceplugin.gui.elements.abstracts;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
@@ -11,7 +11,7 @@ import de.rincewind.interfaceapi.gui.elements.util.ElementComponent;
 import de.rincewind.interfaceapi.gui.elements.util.ElementComponentType;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
-import de.rincewind.interfaceapi.gui.util.EventManager;
+import de.rincewind.interfaceapi.handling.EventManager;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.util.CraftClickBlocker;
 import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
@@ -138,7 +138,7 @@ public abstract class CraftElement implements Element {
 	}
 	
 	@Override
-	public List<Point> getPoints() {
+	public Set<Point> getPoints() {
 		int width = this.getComponent(Element.WIDTH).isEnabled() ? this.getComponentValue(Element.WIDTH) : 1;
 		int height = this.getComponent(Element.HEIGHT).isEnabled() ? this.getComponentValue(Element.HEIGHT) : 1;
 		

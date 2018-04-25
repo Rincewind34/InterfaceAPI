@@ -1,19 +1,19 @@
 package de.rincewind.interfaceapi.gui.windows;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.inventory.Inventory;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindow;
-import net.minecraft.server.v1_10_R1.BlockPosition;
-import net.minecraft.server.v1_10_R1.ChatMessage;
-import net.minecraft.server.v1_10_R1.ContainerAnvil;
-import net.minecraft.server.v1_10_R1.EntityHuman;
-import net.minecraft.server.v1_10_R1.EntityPlayer;
-import net.minecraft.server.v1_10_R1.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_12_R1.BlockPosition;
+import net.minecraft.server.v1_12_R1.ChatMessage;
+import net.minecraft.server.v1_12_R1.ContainerAnvil;
+import net.minecraft.server.v1_12_R1.EntityHuman;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutOpenWindow;
 
 public class WindowAnvil extends CraftWindow {
 
@@ -66,11 +66,8 @@ public class WindowAnvil extends CraftWindow {
 
 		public AnvilContainer(EntityHuman entity) {
 			super(entity.inventory, entity.world, new BlockPosition(0, 0, 0), entity);
-		}
-
-		@Override
-		public boolean a(EntityHuman entityhuman) {
-			return true;
+			
+			super.checkReachable = false;
 		}
 
 	}

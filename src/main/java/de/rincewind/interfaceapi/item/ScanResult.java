@@ -1,24 +1,24 @@
 package de.rincewind.interfaceapi.item;
 
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.item.categorys.Categorys;
-import de.rincewind.interfaceplugin.APIReflection;
-import de.rincewind.interfaceplugin.ReflectionUtil;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
 
 public class ScanResult {
 	
 	private ItemStack item;
 	
-	private Object nbtTagCompound;
+	private NBTTagCompound nbtTagCompound;
 	
 	public ScanResult(ItemStack item) {
 		this.item = item;
 		
-		this.nbtTagCompound = ReflectionUtil.createObject(APIReflection.METHOD_GETTAG, ReflectionUtil.createStaticObject(APIReflection.METHOD_NMSCOPY, this.item));
+		this.nbtTagCompound = CraftItemStack.asNMSCopy(item).getTag();
 		
 		if (this.nbtTagCompound == null) {
-			this.nbtTagCompound = ReflectionUtil.createObject(APIReflection.CLASS_NBTTAG);
+			this.nbtTagCompound = new NBTTagCompound();
 		}
 	}
 	
@@ -35,39 +35,39 @@ public class ScanResult {
 	}
 	
 	public double getDouble(String key) {
-		return (double) ReflectionUtil.createObject(APIReflection.METHOD_NBT_GETDOUBLE, this.nbtTagCompound, key);
+		return this.nbtTagCompound.getDouble(key);
 	}
 	
 	public float getFloat(String key) {
-		return (float) ReflectionUtil.createObject(APIReflection.METHOD_NBT_GETFLOAT, this.nbtTagCompound, key);
+		return this.nbtTagCompound.getFloat(key);
 	}
 	
 	public String getString(String key) {
-		return (String) ReflectionUtil.createObject(APIReflection.METHOD_NBT_GETSTRING, this.nbtTagCompound, key);
+		return this.nbtTagCompound.getString(key);
 	}
 	
 	public int getInteger(String key) {
-		return (int) ReflectionUtil.createObject(APIReflection.METHOD_NBT_GETINT, this.nbtTagCompound, key);
+		return this.nbtTagCompound.getInt(key);
 	}
 	
 	public boolean getBoolean(String key) {
-		return (boolean) ReflectionUtil.createObject(APIReflection.METHOD_NBT_GETBOOLEAN, this.nbtTagCompound, key);
+		return this.nbtTagCompound.getBoolean(key);
 	}
 	
 	public boolean hasKey(String key) {
-		return (boolean) ReflectionUtil.createObject(APIReflection.METHOD_NBT_HASKEY, this.nbtTagCompound, key);
+		return this.nbtTagCompound.hasKey(key);
 	}
 	
 	public byte getByte(String key) {
-		return (byte) ReflectionUtil.createObject(APIReflection.METHOD_NBT_GETBYTE, this.nbtTagCompound, key);
+		return this.nbtTagCompound.getByte(key);
 	}
 	
 	public short getShort(String key) {
-		return (short) ReflectionUtil.createObject(APIReflection.METHOD_NBT_GETSHORT, this.nbtTagCompound, key);
+		return this.nbtTagCompound.getShort(key);
 	}
 	
 	public long getLong(String key) {
-		return (long) ReflectionUtil.createObject(APIReflection.METHOD_NBT_GETLONG, this.nbtTagCompound, key);
+		return this.nbtTagCompound.getLong(key);
 	}
 	
 }

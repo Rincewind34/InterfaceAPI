@@ -5,7 +5,6 @@ import java.util.Collection;
 
 public class Validate {
 
-
 	public static void notEmpty(Collection<?> collection, String error) {
 		if (collection.isEmpty()) {
 			throw new IllegalArgumentException(error);

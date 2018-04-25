@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import de.rincewind.interfaceapi.exceptions.APIException;
+import de.rincewind.interfaceapi.exceptions.SetupException;
 import de.rincewind.interfaceapi.gui.windows.WindowAnvil;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowContainer;
@@ -25,22 +24,22 @@ import de.rincewind.interfaceplugin.listener.InventoryCloseListener;
 public class CraftSetup implements Setup {
 
 	private List<Window> windows;
-	
+
 	private Player owner;
-	
+
 	private InterfacePlugin plugin;
-	
+
 	private String clipBoard;
-	
+
 	private FileBrowser browser;
-	
+
 	public CraftSetup(Player player, InterfacePlugin plugin) {
 		this.windows = new ArrayList<>();
 		this.plugin = plugin;
 		this.owner = player;
 		this.browser = new CraftFileBrowser(this, new File("plugins"));
 	}
-	
+
 	@Override
 	public String getClipBoard() {
 		return this.clipBoard;
@@ -50,7 +49,7 @@ public class CraftSetup implements Setup {
 	public void setClipBoard(String clipBoard) {
 		this.clipBoard = clipBoard;
 	}
-	
+
 	@Override
 	public List<Window> getOpenWindows() {
 		return Collections.unmodifiableList(this.windows);
@@ -59,20 +58,16 @@ public class CraftSetup implements Setup {
 	@Override
 	public Window getMaximizedWindow() {
 		for (Window window : this.windows) {
-			if(window.getState() == WindowState.MAXIMIZED) {
+			if (window.getState() == WindowState.MAXIMIZED) {
 				return window;
 			}
 		}
-		
+
 		return null;
 	}
 
 	@Override
 	public Window getWindow(int index) {
-		if (index < 0 || index >= this.windows.size()) {
-			throw new APIException("Invalid index!");
-		}
-		
 		return this.windows.get(index);
 	}
 
@@ -80,55 +75,47 @@ public class CraftSetup implements Setup {
 	public boolean hasMaximizedWindow() {
 		return this.getMaximizedWindow() != null;
 	}
-	
+
 	@Override
 	public boolean hasOpenWindow(Window window) {
 		Validate.notNull(window, "The window cannot be null!");
-		
-		if (this.windows.contains(window)) {
-			return true;
-		}
-		
-		return false;
+
+		return this.windows.contains(window);
 	}
 
 	@Override
 	public void open(Window window) {
 		Validate.notNull(window, "The window cannot be null!");
-		
+
 		if (window.getUser() != null) {
-			throw new APIException("The window is already opend!");
+			throw new SetupException("The window is already opend!");
 		}
-		
+
 		window.getEventManager().callEvent(WindowOpenEvent.class, new WindowOpenEvent(window, this.owner));
 		this.windows.add(window);
-		
+
 		this.maximize(window);
 	}
-	
+
 	@Override
 	public void close(Window window) {
 		Validate.notNull(window, "The window cannot be null!");
-		
+
 		if (!this.hasOpenWindow(window)) {
-			throw new APIException("The window is not opend by this player!");
+			throw new SetupException("The window is not opend by this player!");
 		}
-		
+
 		if (window.getState() == WindowState.MAXIMIZED) {
 			this.minimize();
 		}
-		
+
 		window.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.CLOSED));
 		this.windows.remove(window);
 	}
 
 	@Override
 	public void close(int index) {
-		Window window = this.getWindow(index);
-		
-		if (window != null) {
-			this.close(window);
-		}
+		this.close(this.getWindow(index));
 	}
 
 	@Override
@@ -141,32 +128,32 @@ public class CraftSetup implements Setup {
 	@Override
 	public void maximize(Window window) {
 		Validate.notNull(window, "The window cannot be null!");
-		
+
 		if (!this.hasOpenWindow(window)) {
-			throw new APIException("The window is not opend by this player!");
+			throw new SetupException("The window is not opend by this player!");
 		}
-		
+
 		if (this.hasMaximizedWindow()) {
-			if (this.getMaximizedWindow().equals(window)) {
-				throw new APIException("The window is already maximized!");
+			if (this.getMaximizedWindow() == window) {
+				throw new SetupException("The window is already maximized!");
 			}
-			
+
 			Window maximized = this.getMaximizedWindow();
-			
+
 			maximized.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.BACKGROUND));
-			
+
 			if (maximized instanceof WindowContainer) {
 				this.sendClosePacket();
 			}
 		}
-		
+
 		window.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.MAXIMIZED));
 	}
 
 	@Override
 	public void maximize(int index) {
 		Window window = this.getWindow(index);
-		
+
 		if (window != null) {
 			this.maximize(window);
 		}
@@ -177,33 +164,37 @@ public class CraftSetup implements Setup {
 		if (!this.hasMaximizedWindow()) {
 			return;
 		}
-		
+
 		Window window = this.getMaximizedWindow();
 		window.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.MINIMIZED));
-		
+
 		if (window instanceof WindowContainer || window instanceof WindowAnvil) {
 			this.sendClosePacket();
 		}
-		
+
 		List<Window> reverse = new ArrayList<>(this.windows);
 		Collections.reverse(reverse);
-		
+
 		for (Window background : reverse) {
 			if (background.getState() == WindowState.BACKGROUND) {
-				
-				Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, () -> {
-					this.maximize(background);
-				}, 1L);
-				
+				// Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, ()
+				// -> {
+				this.maximize(background);
+				// }, 1L);
+
 				break;
 			}
 		}
 	}
-	
+
 	public void sendClosePacket() {
 		InventoryCloseListener.blocked.add(this.owner.getName());
 		this.owner.closeInventory();
 		InventoryCloseListener.blocked.remove(this.owner.getName());
+	}
+
+	public InterfacePlugin getPlugin() {
+		return this.plugin;
 	}
 
 	@Override
@@ -216,5 +207,5 @@ public class CraftSetup implements Setup {
 	public Player getOwner() {
 		return this.owner;
 	}
-	
+
 }

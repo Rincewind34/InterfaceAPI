@@ -9,7 +9,7 @@ import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowContainer;
 
 public class WindowClickEvent extends WindowEvent<WindowContainer> {
 
-	private boolean cancle;
+	private boolean cancel;
 	private boolean removeItem;
 	private boolean leftClick;
 	private boolean shiftClick;
@@ -32,8 +32,8 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 		this.shiftClick = shiftClick;
 	}
 
-	public void cancleInteraction() {
-		this.cancle = true;
+	public void cancelInteraction() {
+		this.cancel = true;
 	}
 
 	public void removeClickedItem() {
@@ -53,7 +53,7 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 	}
 
 	public boolean isCancelled() {
-		return this.cancle;
+		return this.cancel;
 	}
 
 	public boolean removeItem() {
@@ -92,7 +92,7 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 		if (this.isInInterface()) {
 			throw new RuntimeException("The click was in the interface!");
 		}
-		
+
 		return this.item;
 	}
 

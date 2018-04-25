@@ -11,7 +11,7 @@ import de.rincewind.interfaceapi.gui.elements.util.ElementCreator;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
-import de.rincewind.interfaceapi.item.ItemLibary;
+import de.rincewind.interfaceapi.item.ItemLibrary;
 
 /**
  * If a class implements this methods, you are able to add elements
@@ -40,14 +40,14 @@ public abstract interface Modifyable {
 	 * If an element adds this item to the cache, this object will not replace the
 	 * item with something else and the slot in the inventory remains empty.
 	 */
-	public static final ItemStack EMPTY_USED_SLOT = ItemLibary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "§0EMPTY_USED_ITEM");
+	public static final ItemStack EMPTY_USED_SLOT = ItemLibrary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "§0EMPTY_USED_ITEM");
 	
 	/**
 	 * If an element adds this item to the cache, this object know about, that there is the element
 	 * present, but for example the {@link WindowColorable} will set the background color into
 	 * this slot.
 	 */
-	public static final ItemStack INVISIBLE_ELEMENT = ItemLibary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "§0INVISIBLE_ELEMENT");
+	public static final ItemStack INVISIBLE_ELEMENT = ItemLibrary.refactor().renameItem(new ItemStack(Material.WOOL, 1, (byte) 15), "§0INVISIBLE_ELEMENT");
 	
 	/**
 	 * Reads all set items from all elements into the cache.
