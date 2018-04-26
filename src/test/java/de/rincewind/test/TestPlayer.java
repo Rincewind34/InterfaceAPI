@@ -37,8 +37,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.Inventory;
@@ -59,6 +63,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
+import de.rincewind.interfaceplugin.listener.InventoryClickListener;
 import de.rincewind.interfaceplugin.listener.InventoryCloseListener;
 
 @SuppressWarnings("deprecation")
@@ -66,52 +71,66 @@ public class TestPlayer implements Player {
 
 	private String name;
 	
-	private Inventory openInventory;
+	private InventoryView openInventory;
 
-	private InventoryCloseListener listener;
+	private InventoryCloseListener listenerClose;
+	private InventoryClickListener listenerClick;
 
 	public TestPlayer(String name) {
 		this(name, null);
 	}
 	
 	public TestPlayer(String name, InventoryCloseListener listener) {
-		this.listener = listener;
+		this.listenerClose = listener;
 		this.name = name;
 	}
-
+	
+	public void clickInventory(ClickType type, InventoryAction action, int rawSlot) {
+		this.listenerClick.onClick(new InventoryClickEvent(this.openInventory, SlotType.CONTAINER, rawSlot, type, action));
+	}
+	
 	public Inventory getSynthInventory() {
-		return this.openInventory;
+		return this.openInventory == null ? null : this.openInventory.getTopInventory();
 	}
 
 	@Override
 	public void closeInventory() {
-		if (this.listener != null) {
-			this.listener.onClose(new InventoryCloseEvent(new InventoryView() {
-
-				@Override
-				public Inventory getBottomInventory() {
-					return null;
-				}
-
-				@Override
-				public HumanEntity getPlayer() {
-					return TestPlayer.this;
-				}
-
-				@Override
-				public Inventory getTopInventory() {
-					return TestPlayer.this.openInventory;
-				}
-
-				@Override
-				public InventoryType getType() {
-					return TestPlayer.this.openInventory.getType();
-				}
-
-			}));
+		if (this.listenerClose != null) {
+			this.listenerClose.onClose(new InventoryCloseEvent(this.openInventory));
 		}
 
 		this.openInventory = null;
+	}
+
+	@Override
+	public void updateInventory() {
+		// Supported
+	}
+	
+	@Override
+	public InventoryView openInventory(Inventory inventory) {
+		return this.openInventory = new InventoryView() {
+			
+			@Override
+			public InventoryType getType() {
+				return inventory.getType();
+			}
+			
+			@Override
+			public Inventory getTopInventory() {
+				return inventory;
+			}
+			
+			@Override
+			public HumanEntity getPlayer() {
+				return TestPlayer.this;
+			}
+			
+			@Override
+			public Inventory getBottomInventory() {
+				return null;
+			}
+		};
 	}
 
 	@Override
@@ -218,13 +237,6 @@ public class TestPlayer implements Player {
 	public InventoryView openEnchanting(Location arg0, boolean arg1) {
 		throw new UnsupportedOperationException();
 
-	}
-
-	@Override
-	public InventoryView openInventory(Inventory inventory) {
-		System.out.println("Opening inventory: " + inventory.getName());
-		this.openInventory = inventory;
-		return null;
 	}
 
 	@Override
@@ -1721,11 +1733,6 @@ public class TestPlayer implements Player {
 	@Override
 	public void stopSound(String arg0, SoundCategory arg1) {
 		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void updateInventory() {
-		System.out.println("Updating inventory");
 	}
 
 }

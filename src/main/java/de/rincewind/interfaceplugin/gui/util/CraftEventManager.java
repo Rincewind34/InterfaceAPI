@@ -84,6 +84,10 @@ public class CraftEventManager implements EventManager {
 		private void fireEvent(E event) {
 			for (InterfaceListener<E> listener : this.listeners) {
 				listener.onAction(event);
+				
+				if (event.isConsumed()) {
+					break;
+				}
 			}
 		}
 

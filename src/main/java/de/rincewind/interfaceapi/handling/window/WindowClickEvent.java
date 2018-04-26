@@ -1,5 +1,6 @@
 package de.rincewind.interfaceapi.handling.window;
 
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.elements.util.ClickAction;
@@ -11,28 +12,30 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 
 	private boolean cancel;
 	private boolean removeItem;
-	private boolean leftClick;
-	private boolean shiftClick;
+	private boolean isInInterface;
 
 	private ClickAction action;
+	private ClickType type;
 
 	private int slot;
-	private int rawSlot;
 
 	private ItemStack item;
 
-	public WindowClickEvent(WindowContainer window, ClickAction action, int rawSlot, int slot, ItemStack item, boolean leftClick, boolean shiftClick) {
+	public WindowClickEvent(WindowContainer window, ClickAction action, boolean isInInterface, int slot, ItemStack item, ClickType type) {
 		super(window);
 
 		this.action = action;
 		this.slot = slot;
-		this.rawSlot = rawSlot;
 		this.item = item;
-		this.leftClick = leftClick;
-		this.shiftClick = shiftClick;
+		this.type = type;
+		this.isInInterface = isInInterface;
 	}
 
 	public void cancelInteraction() {
+		if (this.isInInterface) {
+			throw new RuntimeException("The click was in interface!");
+		}
+		
 		this.cancel = true;
 	}
 
@@ -40,40 +43,32 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 		this.removeItem = true;
 	}
 
-	public boolean isLeftClick() {
-		return this.leftClick;
-	}
-
-	public boolean isRightClick() {
-		return !this.leftClick;
-	}
-
-	public boolean isShiftClick() {
-		return this.shiftClick;
-	}
-
 	public boolean isCancelled() {
 		return this.cancel;
 	}
 
 	public boolean removeItem() {
+		if (this.isInInterface) {
+			throw new RuntimeException("The click was in interface!");
+		}
+		
 		return this.removeItem;
 	}
 
 	public boolean isInInterface() {
-		return this.rawSlot == this.slot;
+		return this.isInInterface;
 	}
 
 	public ClickAction getAction() {
 		return this.action;
 	}
 
-	public int getRawSlot() {
-		return this.rawSlot;
+	public ClickType getType() {
+		return this.type;
 	}
 
 	public int getInventorySlot() {
-		if (this.isInInterface()) {
+		if (this.isInInterface) {
 			throw new RuntimeException("The click was in interface!");
 		}
 
@@ -81,7 +76,7 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 	}
 
 	public Point getInterfacePoint() {
-		if (!this.isInInterface()) {
+		if (!this.isInInterface) {
 			throw new RuntimeException("The click was in the inventory!");
 		}
 
@@ -89,7 +84,7 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 	}
 
 	public ItemStack getItem() {
-		if (this.isInInterface()) {
+		if (this.isInInterface) {
 			throw new RuntimeException("The click was in the interface!");
 		}
 

@@ -2,13 +2,11 @@ package de.rincewind.interfaceplugin.gui.windows.abstracts;
 
 import org.bukkit.inventory.Inventory;
 
-import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowContainer;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
-import de.rincewind.interfaceplugin.setup.CraftSetup;
 
 public abstract class CraftWindowContainer extends CraftWindowNameable implements WindowContainer {
 
@@ -16,12 +14,12 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 
 	public CraftWindowContainer() {
 		super();
-
+		
 		this.getEventManager().registerListener(WindowChangeStateEvent.class, (event) -> {
 			if (event.getNewState() == WindowState.MAXIMIZED) {
 				this.reconfigurate();
 			}
-		}).addBefore();
+		}).addAfter();
 	}
 
 	public abstract int getSlot(Point point);
@@ -80,7 +78,6 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 			return;
 		}
 
-		((CraftSetup) InterfaceAPI.getSetup(this.getUser())).sendClosePacket();
 		this.getUser().openInventory(this.inventory);
 	}
 

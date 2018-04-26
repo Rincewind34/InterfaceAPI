@@ -76,7 +76,7 @@ public class Point implements Comparable<Point>, Cloneable {
 
 	@Override
 	public String toString() {
-		return "Point{x: " + this.x + ";y: " + this.y + "}";
+		return "Point{x=" + this.x + ";y=" + this.y + "}";
 	}
 
 	@Override
@@ -122,19 +122,31 @@ public class Point implements Comparable<Point>, Cloneable {
 	}
 
 	public Set<Point> square(Point target) {
+		Validate.notNull(target, "The point cannot be null");
+		
 		if (this.compareTo(target) > 0) {
-			throw new IllegalArgumentException("The target point is not bigger than this instance!");
+			throw new IllegalArgumentException("The target point is smaller than this point!");
 		}
-
-		return this.square(target.getX() - this.x, target.getY() - this.y);
+		
+		return this.square(target.getX() - this.x + 1, target.getY() - this.y + 1);
 	}
 
 	public Set<Point> square(int width, int height) {
+		if (width <= 0) {
+			throw new IllegalArgumentException("The width cannot be smaller or equal to zero!");
+		}
+
+		if (height <= 0) {
+			throw new IllegalArgumentException("The width cannot be smaller or equal to zero!");
+		}
+		
 		Set<Point> result = new HashSet<>();
 		
-		Point.increase(this, width, height, (target) -> {
-			result.add(target);
-		});
+		for (int x = this.x; x < this.x + width; x++) {
+			for (int y = this.y; y < this.y + height; y++) {
+				result.add(new Point(x, y));
+			}
+		}
 
 		return result;
 	}

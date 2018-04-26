@@ -67,10 +67,11 @@ public class SetupTest {
 		Assert.assertFalse(InterfaceAPI.getSetup(player).hasMaximizedWindow());
 		Assert.assertFalse(InterfaceAPI.getSetup(player).hasOpenWindow(window));
 		Assert.assertEquals(WindowState.CLOSED, window.getState());
+		Assert.assertEquals(0, InterfaceAPI.getSetup(player).getOpenWindows().size());
 
 		InterfaceAPI.getSetup(player).open(window);
 
-		Assert.assertSame(player.getSynthInventory(), window.getReference());
+		Assert.assertSame(window.getReference(), player.getSynthInventory());
 		Assert.assertSame(player, window.getUser());
 		Assert.assertEquals(WindowState.MAXIMIZED, window.getState());
 		Assert.assertSame(window, InterfaceAPI.getSetup(player).getMaximizedWindow());
@@ -78,11 +79,14 @@ public class SetupTest {
 		Assert.assertEquals(window, InterfaceAPI.getSetup(player).getOpenWindows().get(0));
 		Assert.assertTrue(InterfaceAPI.getSetup(player).hasMaximizedWindow());
 		Assert.assertTrue(InterfaceAPI.getSetup(player).hasOpenWindow(window));
+		Assert.assertEquals(1, InterfaceAPI.getSetup(player).getOpenWindows().size());
 
 		InterfaceAPI.getSetup(player).minimize();
 
 		Assert.assertEquals(WindowState.MINIMIZED, window.getState());
 		Assert.assertNull(InterfaceAPI.getSetup(player).getMaximizedWindow());
+		Assert.assertEquals(1, InterfaceAPI.getSetup(player).getOpenWindows().size());
+		Assert.assertNull(player.getSynthInventory());
 
 		InterfaceAPI.getSetup(player).close(window);
 
@@ -129,12 +133,18 @@ public class SetupTest {
 		} catch (SetupException exception) {
 
 		}
+		
 		try {
 			InterfaceAPI.getSetup(player2).open(window);
 			Assert.fail();
 		} catch (SetupException exception) {
 
 		}
+	}
+	
+	@Test
+	public void testCloseAll() {
+		
 	}
 
 	@Test
@@ -151,6 +161,7 @@ public class SetupTest {
 		Assert.assertSame(window2.getReference(), player.getSynthInventory());
 		Assert.assertEquals(WindowState.BACKGROUND, window1.getState());
 		Assert.assertEquals(WindowState.MAXIMIZED, window2.getState());
+		Assert.assertEquals(2, InterfaceAPI.getSetup(player).getOpenWindows().size());
 		
 		setup.minimize();
 
@@ -164,6 +175,7 @@ public class SetupTest {
 		Assert.assertEquals(WindowState.BACKGROUND, window1.getState());
 		Assert.assertEquals(WindowState.MINIMIZED, window2.getState());
 		Assert.assertEquals(WindowState.MAXIMIZED, window3.getState());
+		Assert.assertEquals(3, InterfaceAPI.getSetup(player).getOpenWindows().size());
 		
 		setup.close(window1);
 
@@ -171,6 +183,7 @@ public class SetupTest {
 		Assert.assertEquals(WindowState.CLOSED, window1.getState());
 		Assert.assertEquals(WindowState.MINIMIZED, window2.getState());
 		Assert.assertEquals(WindowState.MAXIMIZED, window3.getState());
+		Assert.assertEquals(2, InterfaceAPI.getSetup(player).getOpenWindows().size());
 		
 		setup.open(window1);
 
@@ -178,6 +191,7 @@ public class SetupTest {
 		Assert.assertEquals(WindowState.MAXIMIZED, window1.getState());
 		Assert.assertEquals(WindowState.MINIMIZED, window2.getState());
 		Assert.assertEquals(WindowState.BACKGROUND, window3.getState());
+		Assert.assertEquals(3, InterfaceAPI.getSetup(player).getOpenWindows().size());
 		
 		setup.maximize(window2);
 		
@@ -192,6 +206,7 @@ public class SetupTest {
 		Assert.assertEquals(WindowState.MAXIMIZED, window1.getState());
 		Assert.assertEquals(WindowState.CLOSED, window2.getState());
 		Assert.assertEquals(WindowState.BACKGROUND, window3.getState());
+		Assert.assertEquals(2, InterfaceAPI.getSetup(player).getOpenWindows().size());
 		
 		setup.close(window3);
 		
@@ -199,6 +214,7 @@ public class SetupTest {
 		Assert.assertEquals(WindowState.MAXIMIZED, window1.getState());
 		Assert.assertEquals(WindowState.CLOSED, window2.getState());
 		Assert.assertEquals(WindowState.CLOSED, window3.getState());
+		Assert.assertEquals(1, InterfaceAPI.getSetup(player).getOpenWindows().size());
 		
 		setup.close(window1);
 		
@@ -206,6 +222,7 @@ public class SetupTest {
 		Assert.assertEquals(WindowState.CLOSED, window1.getState());
 		Assert.assertEquals(WindowState.CLOSED, window2.getState());
 		Assert.assertEquals(WindowState.CLOSED, window3.getState());
+		Assert.assertEquals(0, InterfaceAPI.getSetup(player).getOpenWindows().size());
 	}
 
 }

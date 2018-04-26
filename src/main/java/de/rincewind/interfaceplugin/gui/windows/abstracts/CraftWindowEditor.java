@@ -34,6 +34,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 				Element element = this.getVisibleElementAt(event.getInterfacePoint());
 
 				if (element == null) {
+					event.cancelInteraction();
 					return;
 				}
 
@@ -42,7 +43,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 				}
 
 				element.getEventManager().callEvent(ElementInteractEvent.class, new ElementInteractEvent(element, this.getUser(),
-						event.getInterfacePoint().subtract(element.getPoint()), event.getAction(), event.isShiftClick(), event.isLeftClick()));
+						event.getInterfacePoint().subtract(element.getPoint()), event.getType(), event.getItem()));
 			}
 		}).addAfter();
 	}

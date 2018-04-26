@@ -28,12 +28,12 @@ public class InventoryClickListener implements Listener {
 				event.setCancelled(true);
 				return;
 			}
-
+			
 			if (window instanceof WindowContainer) {
 				WindowContainer containerWindow = (WindowContainer) window;
 
-				WindowClickEvent windowEvent = new WindowClickEvent(containerWindow, action, event.getRawSlot(), event.getSlot(), event.getCurrentItem(),
-						event.isLeftClick(), event.isShiftClick());
+				WindowClickEvent windowEvent = new WindowClickEvent(containerWindow, action,
+						event.getClickedInventory() == event.getView().getTopInventory(), event.getSlot(), event.getCurrentItem(), event.getClick());
 				containerWindow.getEventManager().callEvent(WindowClickEvent.class, windowEvent);
 
 				if (windowEvent.isCancelled() || !ClickAction.getBlockableActions().contains(event.getAction())) {
@@ -45,6 +45,8 @@ public class InventoryClickListener implements Listener {
 				}
 			} else if (window instanceof WindowAnvil) {
 				event.setCancelled(true);
+				
+				window.getEventManager().getRegisteredListeners(null).toArray(null);
 
 				if (event.getRawSlot() == 2) {
 					window.getEventManager().callEvent(AnvilNameEvent.class,

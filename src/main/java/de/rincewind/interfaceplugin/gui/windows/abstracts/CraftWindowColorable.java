@@ -4,7 +4,6 @@ import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.util.Color;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
-import de.rincewind.interfaceapi.handling.window.WindowClickEvent;
 import de.rincewind.interfaceplugin.Validate;
 
 public abstract class CraftWindowColorable extends CraftWindowEditor implements WindowColorable {
@@ -15,12 +14,6 @@ public abstract class CraftWindowColorable extends CraftWindowEditor implements 
 		super();
 		
 		this.color = Color.BLACK;
-		
-		this.getEventManager().registerListener(WindowClickEvent.class, (event) -> {
-			if (!this.hasVisibleElementAt(event.getInterfacePoint())) {
-				event.cancelInteraction();
-			}
-		}).addAfter();
 	}
 	
 //	@Override

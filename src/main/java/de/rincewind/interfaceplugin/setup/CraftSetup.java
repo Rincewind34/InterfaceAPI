@@ -139,14 +139,13 @@ public class CraftSetup implements Setup {
 			}
 
 			Window maximized = this.getMaximizedWindow();
-
 			maximized.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.BACKGROUND));
 
 			if (maximized instanceof WindowContainer) {
 				this.sendClosePacket();
 			}
 		}
-
+		
 		window.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.MAXIMIZED));
 	}
 
@@ -177,11 +176,7 @@ public class CraftSetup implements Setup {
 
 		for (Window background : reverse) {
 			if (background.getState() == WindowState.BACKGROUND) {
-				// Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, ()
-				// -> {
 				this.maximize(background);
-				// }, 1L);
-
 				break;
 			}
 		}
@@ -190,7 +185,6 @@ public class CraftSetup implements Setup {
 	public void sendClosePacket() {
 		InventoryCloseListener.blocked.add(this.owner.getName());
 		this.owner.closeInventory();
-		InventoryCloseListener.blocked.remove(this.owner.getName());
 	}
 
 	public InterfacePlugin getPlugin() {

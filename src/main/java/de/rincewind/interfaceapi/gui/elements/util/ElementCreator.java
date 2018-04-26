@@ -52,6 +52,10 @@ public class ElementCreator {
 	}
 
 	public <T extends Element> T newElement(Class<T> elementCls) {
+		if (elementCls == null) {
+			throw new IllegalArgumentException("The element class cannot be null");
+		}
+		
 		if (elementCls.isInterface() || Modifier.isAbstract(elementCls.getModifiers())) {
 			throw new IllegalArgumentException("The element class " + elementCls + " is abstract");
 		}

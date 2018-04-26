@@ -22,6 +22,8 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 
 		this.width = 9;
 		this.height = 3;
+		
+		this.createBukkitInventory();
 	}
 
 	@Override

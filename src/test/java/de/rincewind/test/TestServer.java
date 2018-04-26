@@ -11,6 +11,8 @@ import org.bukkit.Server;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemFactory;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.SimplePluginManager;
 
@@ -18,6 +20,7 @@ import com.google.common.collect.ImmutableMap;
 
 @SuppressWarnings("deprecation")
 public class TestServer implements InvocationHandler {
+	
 	private static interface MethodHandler {
 		Object handle(TestServer server, Object[] args);
 	}
@@ -71,6 +74,19 @@ public class TestServer implements InvocationHandler {
 					return "BukkitVersion_" + CraftServer.class.getPackage().getImplementationVersion();
 				}
 			});
+			methodMap.put(Server.class.getMethod("createInventory", InventoryHolder.class, int.class, String.class), new MethodHandler() {
+				@Override
+				public Object handle(TestServer server, Object[] args) {
+					return new TestInventory((String) args[2], (int) args[1]);
+				}
+			});
+			methodMap.put(Server.class.getMethod("createInventory", InventoryHolder.class, InventoryType.class, String.class), new MethodHandler() {
+				@Override
+				public Object handle(TestServer server, Object[] args) {
+					return new TestInventory((String) args[2], ((InventoryType) args[1]).getDefaultSize());
+				}
+			});
+
 			methods = methodMap.build();
 
 			TestServer server = new TestServer();

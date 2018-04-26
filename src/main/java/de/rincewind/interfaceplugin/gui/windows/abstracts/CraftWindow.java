@@ -29,7 +29,7 @@ public abstract class CraftWindow implements Window {
 		}).addAfter();
 		
 		this.eventManager.registerListener(WindowChangeStateEvent.class, (event) -> {
-			assert event.getNewState() == this.state : "State did not change";
+			assert event.getNewState() != this.state : "State did not change";
 			
 			this.state = event.getNewState();
 			

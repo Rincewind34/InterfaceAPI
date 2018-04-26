@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
+
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import junit.framework.Assert;
 
@@ -11,8 +13,8 @@ public class PointTest {
 	
 	@Test
 	public void testPointEquals() {
-		Point point1 = Point.NULL;
-		Point point2 = Point.NULL;
+		Point point1 = new Point(0, 0);
+		Point point2 = new Point(0, 0);
 		
 		Assert.assertTrue(point1.equals(point2));
 		Assert.assertTrue(point2.equals(point1));
@@ -92,13 +94,21 @@ public class PointTest {
 		Point.NULL.square(5, -2);
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSquareZero() {
+		Point.NULL.square(0, 0);
+	}
+	
 	@Test
-	public void testSquareSuccess() {
-		Set<Point> points = Point.NULL.square(Point.NULL);
-		Assert.assertEquals(1, points.size());
-		Assert.assertEquals(Point.NULL, points.iterator().next());
-		
-		points = Point.NULL.square(new Point(2, 0));
+	public void testSquareSame() {
+		Assert.assertEquals(Sets.newHashSet(Point.NULL), Point.NULL.square(Point.NULL));
+		Assert.assertEquals(Sets.newHashSet(new Point(3, 2)), new Point(3, 2).square(new Point(3, 2)));
+		Assert.assertEquals(Sets.newHashSet(new Point(-1, 4)), new Point(-1, 4).square(new Point(-1, 4)));
+	}
+	
+	@Test
+	public void testSquarePositive() {
+		Set<Point> points = Point.NULL.square(new Point(2, 0));
 		Assert.assertEquals(3, points.size());
 		points.remove(new Point(2, 0));
 		points.remove(new Point(1, 0));
