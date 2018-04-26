@@ -6,7 +6,6 @@ import java.lang.reflect.Modifier;
 
 import de.rincewind.interfaceapi.exceptions.ElementCreationException;
 import de.rincewind.interfaceapi.gui.components.Modifyable;
-import de.rincewind.interfaceapi.gui.elements.ElementButton;
 import de.rincewind.interfaceapi.gui.elements.ElementContentSlot;
 import de.rincewind.interfaceapi.gui.elements.ElementCounter;
 import de.rincewind.interfaceapi.gui.elements.ElementInfo;
@@ -20,7 +19,6 @@ import de.rincewind.interfaceapi.gui.elements.ElementScanner;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceplugin.gui.elements.CraftElementButton;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementContentSlot;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementCounter;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementInfo;
@@ -84,12 +82,6 @@ public class ElementCreator {
 		}
 		
 		throw new IllegalArgumentException("The element class " + elementCls + " does not provide a valid constructor");
-	}
-
-	public ElementButton newButton() {
-		ElementButton element = new CraftElementButton(this.handle);
-		this.handle.addElement(element);
-		return element;
 	}
 
 	public ElementCounter newCounter() {

@@ -8,7 +8,6 @@ import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceapi.gui.elements.util.Elements.ElementSwitcherExtendable;
 import de.rincewind.interfaceapi.handling.element.SwitchChangeEvent;
 
 /**

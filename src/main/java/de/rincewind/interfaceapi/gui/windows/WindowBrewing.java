@@ -1,7 +1,6 @@
 package de.rincewind.interfaceapi.gui.windows;
 
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowActivatable;
-import de.rincewind.interfaceapi.gui.windows.util.Windows;
 
 /**
  * This window is a BrewingInventory. To set elements in this window, you
@@ -15,8 +14,6 @@ import de.rincewind.interfaceapi.gui.windows.util.Windows;
  * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see Windows.WindowBrewingExtendable
  */
 public interface WindowBrewing extends WindowActivatable {
 

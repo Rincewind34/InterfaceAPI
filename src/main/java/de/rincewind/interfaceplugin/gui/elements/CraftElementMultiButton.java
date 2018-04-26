@@ -16,7 +16,7 @@ import de.rincewind.interfaceapi.handling.element.MultiButtonPressEvent;
 import de.rincewind.interfaceapi.item.ItemRefactor.Lore;
 import de.rincewind.interfaceplugin.Validate;
 
-public class CraftElementMultiButton extends CraftElementButton implements ElementMultiButton {
+public class CraftElementMultiButton extends CraftElementItem implements ElementMultiButton {
 
 	private boolean selected;
 

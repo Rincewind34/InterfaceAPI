@@ -9,9 +9,6 @@ import de.rincewind.interfaceapi.gui.elements.util.Point;
 
 public class ElementInteractEvent extends ElementEvent<Element> {
 
-	private boolean leftClick;
-	private boolean shiftClick;
-
 	private ClickType type;
 	private ItemStack courserItem;
 
@@ -24,16 +21,20 @@ public class ElementInteractEvent extends ElementEvent<Element> {
 		this.type = type;
 		this.point = point;
 	}
-
+	
+	public boolean isRightClick() {
+		return this.type == ClickType.RIGHT || this.type == ClickType.SHIFT_RIGHT;
+	}
+	
 	public boolean isLeftClick() {
-		return this.leftClick;
+		return this.type == ClickType.LEFT || this.type == ClickType.SHIFT_LEFT;
 	}
 
 	public boolean isShiftClick() {
-		return this.shiftClick;
+		return this.type == ClickType.SHIFT_LEFT || this.type == ClickType.SHIFT_RIGHT;
 	}
 
-	public ClickType getType() {
+	public ClickType getClickType() {
 		return this.type;
 	}
 

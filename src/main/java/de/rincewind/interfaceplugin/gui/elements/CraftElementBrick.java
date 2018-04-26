@@ -6,10 +6,11 @@ import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementBrick;
-import de.rincewind.interfaceapi.handling.element.ButtonPressEvent;
+import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceplugin.Validate;
+import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementDisplayable;
 
-public class CraftElementBrick extends CraftElementButton implements ElementBrick {
+public class CraftElementBrick extends CraftElementDisplayable implements ElementBrick {
 
 	private Supplier<ItemStack> creator;
 
@@ -34,7 +35,7 @@ public class CraftElementBrick extends CraftElementButton implements ElementBric
 	}
 
 	public void registerListener() {
-		this.getEventManager().registerListener(ButtonPressEvent.class, (event) -> {
+		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			event.getPlayer().setItemOnCursor(CraftElementBrick.this.createItem());
 		}).addAfter();
 	}

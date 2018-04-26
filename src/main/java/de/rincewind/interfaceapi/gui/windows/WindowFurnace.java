@@ -1,7 +1,6 @@
 package de.rincewind.interfaceapi.gui.windows;
 
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowActivatable;
-import de.rincewind.interfaceapi.gui.windows.util.Windows;
 
 /**
  * This window is a FurnaceInventory. To set elements in this window, you

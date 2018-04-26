@@ -6,8 +6,7 @@ import org.junit.Test;
 
 import de.rincewind.interfaceapi.handling.EventManager;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
-import de.rincewind.interfaceapi.handling.element.ButtonPressEvent;
-import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
+import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 
 public class EventManagerTest {
 
@@ -20,17 +19,17 @@ public class EventManagerTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testCallNullParameter() {
-		this.manager.callEvent(ButtonPressEvent.class, null);
+		this.manager.callEvent(ElementInteractEvent.class, null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testCallNullType() {
-		this.manager.callEvent(null, new ButtonPressEvent(null, null, false, false));
+		this.manager.callEvent(null, new ElementInteractEvent(null, null, null, null, null));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testRegisterNullParameter() {
-		this.manager.registerListener(ButtonPressEvent.class, null);
+		this.manager.registerListener(ElementInteractEvent.class, null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

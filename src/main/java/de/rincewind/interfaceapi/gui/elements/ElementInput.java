@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementSlot;
-import de.rincewind.interfaceapi.gui.elements.util.Elements.ElementInputExtendable;
 
 /**
  * In this element, the user can put items in, and pickup items already dropped
@@ -14,8 +13,6 @@ import de.rincewind.interfaceapi.gui.elements.util.Elements.ElementInputExtendab
  * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see ElementInputExtendable
  */
 public abstract interface ElementInput extends ElementSlot, Iterable<ItemStack> {
 

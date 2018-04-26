@@ -10,7 +10,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
-import de.rincewind.interfaceapi.handling.element.ButtonPressEvent;
+import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.SwitchChangeEvent;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
@@ -161,14 +161,14 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	}
 
 	protected void registerListener() {
-		this.getEventManager().registerListener(ButtonPressEvent.class, (event) -> {
+		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			if (event.isRightClick()) {
 				this.back();
 
 				if (event.isShiftClick()) {
 					this.back();
 				}
-			} else {
+			} else if (event.isLeftClick()) {
 				this.next();
 
 				if (event.isShiftClick()) {

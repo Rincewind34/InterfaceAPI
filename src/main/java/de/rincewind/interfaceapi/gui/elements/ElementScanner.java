@@ -2,7 +2,6 @@ package de.rincewind.interfaceapi.gui.elements;
 
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementSlot;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
-import de.rincewind.interfaceapi.gui.elements.util.Elements.ElementScannerExtendable;
 import de.rincewind.interfaceapi.item.ScanResult;
 
 /**

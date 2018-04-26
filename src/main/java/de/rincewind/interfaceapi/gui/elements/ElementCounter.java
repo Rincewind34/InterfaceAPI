@@ -1,6 +1,7 @@
 package de.rincewind.interfaceapi.gui.elements;
 
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
+import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
 
 /**
  * With this element you can count
@@ -8,7 +9,7 @@ import de.rincewind.interfaceapi.gui.elements.util.Point;
  * @author torben
  *
  */
-public abstract interface ElementCounter extends ElementButton {
+public abstract interface ElementCounter extends ElementDisplayable {
 	
 	public static final int MAXIMUM_COUNT = 64;
 	
@@ -87,8 +88,6 @@ public abstract interface ElementCounter extends ElementButton {
 	 * 
 	 * @throws NullPointerException if the button is <code>null</code>
 	 */
-	public abstract void addIncrementer(ElementButton btn, int value);
-	
-	public abstract void addIncrementer(ElementButton btn, int value, Point point);
+	public abstract void addIncrementer(Element btn, int value);
 	
 }

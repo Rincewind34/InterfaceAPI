@@ -7,7 +7,6 @@ import de.rincewind.interfaceapi.exceptions.ElementCreationException;
 import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.interfaceapi.gui.windows.WindowEnchanter;
-import de.rincewind.interfaceplugin.gui.elements.CraftElementButton;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 import de.rincewind.test.TestWindowSizeable;
 import junit.framework.Assert;
@@ -25,7 +24,7 @@ public class ElementCreatorTest {
 	public void testSimpleCreation() {
 		Assert.assertEquals(0, this.window.getElements().size());
 		
-		this.window.elementCreator().newButton();
+		this.window.elementCreator().newItem();
 		
 		Assert.assertEquals(1, this.window.getElements().size());
 	}
@@ -65,7 +64,7 @@ public class ElementCreatorTest {
 		this.window.elementCreator().newElement(TestElement3.class);
 	}
 	
-	private static class TestElement1 extends CraftElementButton {
+	private static class TestElement1 extends CraftElement {
 
 		public TestElement1() {
 			super(null);
@@ -77,7 +76,7 @@ public class ElementCreatorTest {
 		
 	}
 	
-	private static class TestElement2 extends CraftElementButton {
+	private static class TestElement2 extends CraftElement {
 
 		public TestElement2(WindowEnchanter handle) {
 			super(handle);
@@ -85,7 +84,7 @@ public class ElementCreatorTest {
 		
 	}
 	
-	private static class TestElement3 extends CraftElementButton {
+	private static class TestElement3 extends CraftElement {
 
 		public TestElement3() {
 			super(null);
@@ -101,7 +100,7 @@ public class ElementCreatorTest {
 		
 	}
 	
-	private static class TestElement4 extends CraftElementButton {
+	private static class TestElement4 extends CraftElement {
 
 		public TestElement4(Modifyable handle) {
 			super(handle);

@@ -4,17 +4,15 @@ import java.util.function.Supplier;
 
 import org.bukkit.inventory.ItemStack;
 
-import de.rincewind.interfaceapi.gui.elements.util.Elements.ElementBrickExtendable;
+import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
 
 /**
  * If the user clicks on this element, on the cursor an item will be set.
  * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see ElementBrickExtendable
  */
-public interface ElementBrick extends ElementButton {
+public interface ElementBrick extends ElementDisplayable {
 	
 	/**
 	 * Returns a new created item, witch would get the user on his cursor

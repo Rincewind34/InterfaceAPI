@@ -5,7 +5,6 @@ import org.bukkit.inventory.ItemStack;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementSlot;
 import de.rincewind.interfaceapi.gui.elements.util.ClickAction;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
-import de.rincewind.interfaceapi.gui.elements.util.Elements.ElementOutputExtendable;
 
 /**
  * This element allows you to output an item into the slot

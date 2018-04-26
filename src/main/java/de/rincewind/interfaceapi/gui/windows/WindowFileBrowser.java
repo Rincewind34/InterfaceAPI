@@ -1,9 +1,9 @@
 package de.rincewind.interfaceapi.gui.windows;
 
-import de.rincewind.interfaceapi.gui.windows.util.Windows.WindowSizeableExtendable;
+import de.rincewind.interfaceplugin.gui.windows.CraftWindowSizeable;
 
 @Deprecated
-public class WindowFileBrowser extends WindowSizeableExtendable {
+public class WindowFileBrowser extends CraftWindowSizeable {
 	
 //	private DebugScene cache;
 //	

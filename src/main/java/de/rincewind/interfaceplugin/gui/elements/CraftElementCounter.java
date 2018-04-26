@@ -1,15 +1,11 @@
 package de.rincewind.interfaceplugin.gui.elements;
 
-import org.bukkit.Material;
-
 import de.rincewind.interfaceapi.gui.components.Modifyable;
-import de.rincewind.interfaceapi.gui.elements.ElementButton;
 import de.rincewind.interfaceapi.gui.elements.ElementCounter;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
-import de.rincewind.interfaceapi.handling.element.ButtonPressEvent;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementDisplayable;
@@ -115,24 +111,14 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 	}
 
 	@Override
-	public void addIncrementer(ElementButton btn, int value) {
+	public void addIncrementer(Element btn, int value) {
 		Validate.notNull(btn, "The button cannot be null!");
 		
 		if (value == 0) {
 			throw new RuntimeException("The value cannot be zero!");
 		}
 		
-		btn.getEventManager().registerListener(ButtonPressEvent.class, new ActionHandler(value)).addAfter();
-	}
-	
-	@Override
-	public void addIncrementer(ElementButton btn, int value, Point point) {
-		Validate.notNull(point, "The point cannot be null!");
-		
-		btn.setIcon(new Icon(Material.ARROW, 0, (value < 0 ? "§c- " : "§a+ ") + "§7" + Math.abs(value) + " " + this.getIcon().getName()));
-		btn.setPoint(point);
-		
-		this.addIncrementer(btn, value);
+		btn.getEventManager().registerListener(ElementInteractEvent.class, new ActionHandler(value)).addAfter();
 	}
 	
 	@Override
@@ -147,7 +133,7 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 	}
 	
 	
-	private class ActionHandler implements InterfaceListener<ButtonPressEvent> {
+	private class ActionHandler implements InterfaceListener<ElementInteractEvent> {
 
 		private int value;
 		
@@ -156,7 +142,7 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 		}
 		
 		@Override
-		public void onAction(ButtonPressEvent event) {
+		public void onAction(ElementInteractEvent event) {
 			CraftElementCounter.this.setCount(CraftElementCounter.this.getCount() + this.value * (event.isShiftClick() ? 2 : 1));
 		}
 		

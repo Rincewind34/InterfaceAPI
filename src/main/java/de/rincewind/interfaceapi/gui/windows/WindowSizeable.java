@@ -3,7 +3,6 @@ package de.rincewind.interfaceapi.gui.windows;
 import de.rincewind.interfaceapi.exceptions.InvalidSizeException;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
-import de.rincewind.interfaceapi.gui.windows.util.Windows;
 
 /**
  * This window is a ChestInventory or something like this, depends on this size.

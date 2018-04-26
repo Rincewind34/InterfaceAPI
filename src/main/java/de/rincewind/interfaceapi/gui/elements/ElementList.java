@@ -11,7 +11,6 @@ import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.components.Selectable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceapi.gui.elements.util.Elements.ElementListExtendable;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.util.Color;
 import de.rincewind.interfaceapi.gui.util.Directionality;
@@ -50,12 +49,8 @@ import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
  * The {@link ListUnselectEvent} will be called, when the user unselects the selected entry or you calls the method
  * {@link Selectable#unselect()}.
  * 
- * @param <T> specifying the object-type
- * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see ElementListExtendable
  */
 public abstract interface ElementList extends Element, Selectable, DisplayableDisabled, Iterable<Displayable> {
 	
@@ -134,7 +129,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	
 	/**
 	 * Adds to an {@link ElementButton} a listener to scroll through this element. The value to
-	 * scroll forwards by clicking the button can be specified. If the user shiftclicks the button, the value
+	 * scroll forwards by clicking the button can be specified. If the user shift-clicks the button, the value
 	 * will be multiplied by 2.
 	 * 
 	 * You can also set the value to a number smaller than 0 to scroll backwards through this element
@@ -145,7 +140,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 * 
 	 * @throws NullPointerException if the button is <code>null</code>
 	 */
-	public abstract void addScroler(ElementButton btn, int value);
+	public abstract void addScroler(Element btn, int value);
 	
 	/**
 	 * Returns the index of the first displayed entry (at the beginning of this element).

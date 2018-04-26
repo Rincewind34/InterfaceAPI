@@ -23,6 +23,7 @@ public abstract class CraftElement implements Element {
 	private Modifyable handle;
 	
 	private boolean visible;
+	
 	private Point point;
 	
 	private Object userObject;

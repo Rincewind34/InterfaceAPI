@@ -9,7 +9,6 @@ import org.bukkit.Material;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.Modifyable;
-import de.rincewind.interfaceapi.gui.elements.ElementButton;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
@@ -17,7 +16,6 @@ import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.util.Color;
 import de.rincewind.interfaceapi.gui.util.Directionality;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
-import de.rincewind.interfaceapi.handling.element.ButtonPressEvent;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
 import de.rincewind.interfaceplugin.Validate;
@@ -228,14 +226,14 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 	
 	@Override
-	public void addScroler(ElementButton btn, int value) {
+	public void addScroler(Element btn, int value) {
 		Validate.notNull(btn, "The button cannot be null!");
 		
 		if (value == 0) {
 			throw new RuntimeException("The value cannot be zero!");
 		}
 		
-		btn.getEventManager().registerListener(ButtonPressEvent.class, new ActionHandler(value)).addAfter();
+		btn.getEventManager().registerListener(ElementInteractEvent.class, new ActionHandler(value)).addAfter();
 	}
 	
 	@Override
@@ -269,7 +267,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 	
 	
-	private class ActionHandler implements InterfaceListener<ButtonPressEvent> {
+	private class ActionHandler implements InterfaceListener<ElementInteractEvent> {
 
 		private int value;
 		
@@ -278,7 +276,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 		}
 		
 		@Override
-		public void onAction(ButtonPressEvent event) {
+		public void onAction(ElementInteractEvent event) {
 			CraftElementList.this.setStartIndex(CraftElementList.this.getStartIndex() + (this.value * (event.isShiftClick() ? 2 : 1)));
 		}
 		
