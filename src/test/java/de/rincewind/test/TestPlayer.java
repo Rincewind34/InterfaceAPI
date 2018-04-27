@@ -77,11 +77,16 @@ public class TestPlayer implements Player {
 	private InventoryClickListener listenerClick;
 
 	public TestPlayer(String name) {
-		this(name, null);
+		this(name, (InventoryClickListener) null);
 	}
 	
 	public TestPlayer(String name, InventoryCloseListener listener) {
 		this.listenerClose = listener;
+		this.name = name;
+	}
+	
+	public TestPlayer(String name, InventoryClickListener listener) {
+		this.listenerClick = listener;
 		this.name = name;
 	}
 	

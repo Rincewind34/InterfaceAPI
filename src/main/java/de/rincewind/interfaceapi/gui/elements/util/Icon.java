@@ -100,6 +100,11 @@ public class Icon implements Displayable, Cloneable {
 		result = prime * result + (this.item == null ? 0 : this.item.hashCode());
 		return result;
 	}
+	
+	@Override
+	public String toString() {
+		return this.isAir() ? "Icon#AIR" : "Icon{item=" + this.item.getType() + ";name=" + this.getName() + "}";
+	}
 
 	@Override
 	public Icon clone() {

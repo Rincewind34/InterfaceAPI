@@ -31,7 +31,7 @@ public class CraftWindowEnchanter extends CraftWindowEditor implements WindowEnc
 
 		this.getEventManager().registerListener(WindowChangeStateEvent.class, (event) -> {
 			if (event.getNewState() == WindowState.MAXIMIZED) {
-				this.update();
+				this.renderFrame();
 			}
 		}).addAfter();
 

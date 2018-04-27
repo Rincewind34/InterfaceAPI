@@ -13,7 +13,7 @@ public abstract class CraftWindowColorable extends CraftWindowEditor implements 
 	public CraftWindowColorable() {
 		super();
 		
-		this.color = Color.BLACK;
+		this.color = Color.NONE;
 	}
 	
 //	@Override
@@ -53,7 +53,7 @@ public abstract class CraftWindowColorable extends CraftWindowEditor implements 
 		Validate.notNull(color, "The color cannot be null!");
 		
 		this.color = color;
-		this.update();
+		this.renderFrame();
 	}
 	
 	@Override

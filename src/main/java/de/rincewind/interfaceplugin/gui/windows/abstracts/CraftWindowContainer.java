@@ -43,21 +43,21 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 		this.inventory = this.newInventory();
 	}
 
-	protected void update() {
+	protected void renderFrame() {
 		this.iterate((point) -> {
-			this.update(point);
+			this.renderPoint(point);
 		});
 
 		this.updateInventory();
 	}
 
-	protected void update(Point point) {
+	protected void renderPoint(Point point) {
 		this.inventory.setItem(this.getSlot(point), this.getIcon(point).toItem());
 	}
 
-	protected void update(Iterable<Point> points) {
+	protected void renderPoints(Iterable<Point> points) {
 		for (Point point : points) {
-			this.update(point);
+			this.renderPoint(point);
 		}
 	}
 
@@ -69,7 +69,7 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 
 	protected void reconfigurate() {
 		this.createBukkitInventory();
-		this.update();
+		this.renderFrame();
 		this.openBukkitInventory();
 	}
 

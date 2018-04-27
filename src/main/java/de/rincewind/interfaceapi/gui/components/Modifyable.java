@@ -1,6 +1,7 @@
 package de.rincewind.interfaceapi.gui.components;
 
 import java.util.List;
+import java.util.Set;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
@@ -33,7 +34,13 @@ public abstract interface Modifyable {
 	
 	public abstract void renderAll();
 	
+	public abstract void renderFrame();
+	
 	public abstract void renderElement(Element element);
+	
+	public abstract void renderPoint(Point point);
+	
+	public abstract void renderPoints(Iterable<Point> points);
 	
 	/**
 	 * Adds an element to this object. To create a new element use
@@ -137,6 +144,6 @@ public abstract interface Modifyable {
 	 * 
 	 * @throws NullPointerException if the point is <code>null</code>.
 	 */
-	public abstract List<Element> getElementsAt(Point point);
+	public abstract Set<Element> getElementsAt(Point point);
 	
 }

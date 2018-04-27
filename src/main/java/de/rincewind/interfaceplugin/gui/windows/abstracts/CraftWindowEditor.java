@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.rincewind.interfaceapi.exceptions.APIException;
+import de.rincewind.interfaceapi.exceptions.ElementEditorException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.ElementCreator;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
@@ -53,7 +53,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		Validate.notNull(element, "The element cannot be null!");
 
 		if (((CraftElement) element).getId() != -1) {
-			throw new APIException("The element is already added in a Window!");
+			throw new ElementEditorException("The element is already added in a Window!");
 		}
 
 		List<Integer> ids = new ArrayList<Integer>();
@@ -88,7 +88,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		Validate.notNull(element, "The element cannot be null!");
 
 		if (!this.elements.contains(element)) {
-			throw new APIException("The element is not added in this Window!");
+			throw new ElementEditorException("The element is not added in this Window!");
 		}
 
 		this.renderElement(element, true);
@@ -108,7 +108,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		Validate.notNull(element, "The element cannot be null!");
 
 		if (!this.elements.contains(element)) {
-			throw new APIException("The element is not added in this Window!");
+			throw new ElementEditorException("The element is not added in this Window!");
 		}
 
 		this.removeElement(element, true);
@@ -119,7 +119,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		Validate.notNull(element, "The element cannot be null!");
 
 		if (!this.elements.contains(element)) {
-			throw new APIException("The element is not added in this Window!");
+			throw new ElementEditorException("The element is not added in this Window!");
 		}
 
 		this.elements.remove(element);
@@ -169,7 +169,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 	}
 
 	@Override
-	public List<Element> getElementsAt(Point point) {
+	public Set<Element> getElementsAt(Point point) {
 		Validate.notNull(point, "The point cannot be null!");
 
 		List<Element> elements = new ArrayList<>();
@@ -180,7 +180,24 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			}
 		}
 
-		return elements;
+		return Collections.unmodifiableSet(this.elements.stream().filter((element) -> {
+			return element.isInside(point.add(element.getPoint()));
+		}).collect(Collectors.toSet()));
+	}
+	
+	@Override
+	public void renderFrame() {
+		super.renderFrame();
+	}
+	
+	@Override
+	public void renderPoint(Point point) {
+		super.renderPoint(point);
+	}
+	
+	@Override
+	public void renderPoints(Iterable<Point> points) {
+		super.renderPoints(points);
 	}
 	
 	private void injectId(Element element, int id) {
@@ -189,7 +206,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 	}
 	
 	private void renderElement(Element element, boolean update) {
-		this.update(element.getPoints().stream().map((point) -> {
+		this.renderPoints(element.getPoints().stream().map((point) -> {
 			return point.add(element.getPoint());
 		}).collect(Collectors.toSet()));
 		
@@ -204,7 +221,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		this.injectId(element, -1);
 		this.elements.remove(element);
 		
-		this.update(points.stream().map((point) -> {
+		this.renderPoints(points.stream().map((point) -> {
 			return point.add(element.getPoint());
 		}).collect(Collectors.toSet()));
 		

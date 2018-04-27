@@ -78,9 +78,13 @@ public abstract class CraftElement implements Element {
 		if (this.point.equals(point)) {
 			return;
 		}
-
+		
+		Set<Point> old = this.point.square(this.getWidth(), this.getHeight());
+		
 		this.point = point;
+		
 		this.update();
+		this.getHandle().renderPoints(old);
 	}
 
 	@Override
@@ -173,7 +177,7 @@ public abstract class CraftElement implements Element {
 	public int getId() {
 		return this.id;
 	}
-
+	
 	public Modifyable getHandle() {
 		return this.handle;
 	}

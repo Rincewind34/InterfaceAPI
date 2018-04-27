@@ -21,7 +21,7 @@ public class InterfaceAPI {
 
 	public static void enable() {
 		InterfaceAPI.setups = new HashMap<>();
-
+		
 		new Categorys();
 	}
 	
