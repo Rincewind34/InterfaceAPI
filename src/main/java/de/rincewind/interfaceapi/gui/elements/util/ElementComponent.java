@@ -51,8 +51,6 @@ public class ElementComponent<T> {
 	}
 	
 	public T getValue() {
-		this.validateEnabled();
-		
 		return this.enabled ? this.value : this.defaultValue;
 	}
 	
