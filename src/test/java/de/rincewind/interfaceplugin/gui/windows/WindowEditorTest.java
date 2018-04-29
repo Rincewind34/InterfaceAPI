@@ -49,6 +49,8 @@ public class WindowEditorTest {
 		
 		item.setPoint(new Point(1, 1));
 		
+		System.out.println(this.window.getOccupiedPoints(item));
+		
 		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(new Point(1, 1)));
 		this.assertIcons(new Point(1, 1));
 	}

@@ -1,6 +1,5 @@
 package de.rincewind.interfaceplugin.gui.elements.abstracts;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +8,7 @@ import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
 import de.rincewind.interfaceapi.gui.elements.util.ElementComponent;
+import de.rincewind.interfaceapi.gui.elements.util.ElementComponent.PositiveNumberElementComponent;
 import de.rincewind.interfaceapi.gui.elements.util.ElementComponentType;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
@@ -34,6 +34,8 @@ public abstract class CraftElement implements Element {
 	private Map<ElementComponentType<?>, ElementComponent<?>> components;
 	
 	public CraftElement(Modifyable handle) {
+		Validate.notNull(handle, "The handle cannot be null");
+		
 		this.handle = handle;
 		this.id = -1;
 		this.visible = true;
@@ -44,17 +46,17 @@ public abstract class CraftElement implements Element {
 		this.blocker = new CraftClickBlocker();
 		this.blocker.lock();
 		
-		this.registerComponent(Element.ENABLED, true, () -> {
+		this.registerComponent(Element.ENABLED, new ElementComponent<>(Boolean.class, true, () -> {
 			this.update();
-		});
+		}));
 		
-		this.registerComponent(Element.WIDTH, 1, () -> {
+		this.registerComponent(Element.WIDTH, new PositiveNumberElementComponent<>(Integer.class, 1, () -> {
 			this.update();
-		});
+		}));
 		
-		this.registerComponent(Element.HEIGHT, 1, () -> {
+		this.registerComponent(Element.HEIGHT, new PositiveNumberElementComponent<>(Integer.class, 1, () -> {
 			this.update();
-		});
+		}));
 
 		this.getComponent(Element.ENABLED).setEnabled(false);
 		this.getComponent(Element.WIDTH).setEnabled(false);
@@ -135,12 +137,17 @@ public abstract class CraftElement implements Element {
 	}
 	
 	@Override
-	public Icon getIcon(Point point) {
+	public final Icon getIcon(Point point) {
+		Validate.notNull(point, "The point cannot be null");
+		
 		if (!this.isInside(point)) {
-			throw new RuntimeException("The point is not in this element!");
+			throw new IllegalArgumentException("The point is not in this element");
 		}
 		
-		return Icon.AIR;
+		Icon icon = this.getIcon0(point);
+		
+		assert icon != null : "The calculated icon at " + point + " is null";
+		return icon;
 	}
 
 	@Override
@@ -151,11 +158,6 @@ public abstract class CraftElement implements Element {
 	@Override
 	public EventManager getEventManager() {
 		return this.eventManager;
-	}
-	
-	@Override
-	public Set<Point> getPoints() {
-		return Collections.unmodifiableSet(this.getPoint().square(this.getWidth(), this.getHeight()));
 	}
 	
 	@Override
@@ -193,8 +195,10 @@ public abstract class CraftElement implements Element {
 		return null;
 	}
 	
-	protected <T> void registerComponent(ElementComponentType<T> type, T defaultValue, Runnable onChange) {
-		this.components.put(type, new ElementComponent<T>(type.getType(), defaultValue, onChange));
+	protected abstract Icon getIcon0(Point point);
+	
+	protected <T> void registerComponent(ElementComponentType<T> type, ElementComponent<T> component) {
+		this.components.put(type, component);
 	}
 	
 }

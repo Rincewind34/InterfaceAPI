@@ -1,5 +1,6 @@
 package de.rincewind.interfaceapi.gui.elements.abstracts;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -103,8 +104,6 @@ public abstract interface Element extends EventBased, UserMemory {
 	 */
 	public abstract ClickBlocker getBlocker();
 	
-	public abstract Set<Point> getPoints();
-	
 	public abstract <T> void setComponentValue(ElementComponentType<T> type, T value);
 	
 	public default void iterate(Consumer<Point> action) {
@@ -112,7 +111,11 @@ public abstract interface Element extends EventBased, UserMemory {
 	}
 	
 	public default boolean isInside(Point point) {
-		return this.getPoints().contains(point);
+		return point.isPositive() && point.getX() < this.getWidth() && point.getY() < this.getHeight();
+	}
+	
+	public default Set<Point> getPoints() {
+		return Collections.unmodifiableSet(Point.NULL.square(this.getWidth(), this.getHeight()));
 	}
 	
 }

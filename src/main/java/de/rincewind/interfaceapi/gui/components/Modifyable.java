@@ -146,4 +146,6 @@ public abstract interface Modifyable {
 	 */
 	public abstract Set<Element> getElementsAt(Point point);
 	
+	public abstract Set<Point> getOccupiedPoints(Element element);
+	
 }

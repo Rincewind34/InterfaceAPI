@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.google.common.collect.Lists;
+
 import de.rincewind.interfaceapi.item.refactor.RefactorArmor;
 import de.rincewind.interfaceapi.item.refactor.RefactorBook;
 import de.rincewind.interfaceapi.item.refactor.RefactorPotion;
@@ -170,7 +172,7 @@ public class ItemRefactor {
 		private List<String> lore;
 		
 		public Lore() {
-			this(new ArrayList<String>());
+			this(new ArrayList<>());
 		}
 		
 		public Lore(List<String> lore) {
@@ -182,7 +184,7 @@ public class ItemRefactor {
 		}
 		
 		public Lore(String... array) {
-			this(Arrays.asList(array));
+			this(Lists.newArrayList(array));
 		}
 		
 		public Lore split() {

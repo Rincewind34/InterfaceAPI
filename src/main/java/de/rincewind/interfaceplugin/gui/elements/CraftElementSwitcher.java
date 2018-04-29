@@ -146,14 +146,12 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	}
 	
 	@Override
-	public Icon getIcon(Point point) {
-		super.getIcon(point);
-		
+	public Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
 			if (this.switchIndex != -1) {
 				return this.items.get(this.switchIndex).getIcon();
 			} else {
-				return null;
+				return Icon.AIR; /* TODO Error Icon */
 			}
 		} else {
 			return this.disabledIcon;

@@ -53,9 +53,7 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 	}
 	
 	@Override
-	public Icon getIcon(Point point) {
-		super.getIcon(point);
-		
+	public Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
 			return this.getIcon();
 		} else {

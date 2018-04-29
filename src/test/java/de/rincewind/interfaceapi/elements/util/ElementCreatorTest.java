@@ -1,11 +1,14 @@
 package de.rincewind.interfaceapi.elements.util;
 
+import org.bukkit.Material;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.rincewind.interfaceapi.exceptions.ElementCreationException;
 import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
+import de.rincewind.interfaceapi.gui.elements.util.Icon;
+import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowEnchanter;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 import de.rincewind.test.TestWindowSizeable;
@@ -73,6 +76,11 @@ public class ElementCreatorTest {
 		public TestElement1(Modifyable handle, Object payload) {
 			super(handle);
 		}
+
+		@Override
+		protected Icon getIcon0(Point point) {
+			return new Icon(Material.APPLE);
+		}
 		
 	}
 	
@@ -80,6 +88,11 @@ public class ElementCreatorTest {
 
 		public TestElement2(WindowEnchanter handle) {
 			super(handle);
+		}
+
+		@Override
+		protected Icon getIcon0(Point point) {
+			return new Icon(Material.APPLE);
 		}
 		
 	}
@@ -97,6 +110,11 @@ public class ElementCreatorTest {
 		public TestElement3(Modifyable handle) {
 			super(handle);
 		}
+
+		@Override
+		protected Icon getIcon0(Point point) {
+			return new Icon(Material.APPLE);
+		}
 		
 	}
 	
@@ -106,6 +124,11 @@ public class ElementCreatorTest {
 			super(handle);
 			
 			throw new RuntimeException();
+		}
+
+		@Override
+		protected Icon getIcon0(Point point) {
+			return new Icon(Material.APPLE);
 		}
 		
 	}

@@ -122,8 +122,8 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 	}
 	
 	@Override
-	public Icon getIcon(Point point) {
-		Icon icon = super.getIcon(point);
+	public Icon getIcon0(Point point) {
+		Icon icon = super.getIcon0(point);
 		
 		if (this.isEnabled() && icon != null) {
 			return icon.count(this.count);

@@ -259,9 +259,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
-	public Icon getIcon(Point point) {
-		super.getIcon(point);
-		
+	public Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
 			int index = this.convert(point);
 			

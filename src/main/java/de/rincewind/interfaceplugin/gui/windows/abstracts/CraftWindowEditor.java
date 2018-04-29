@@ -3,6 +3,7 @@ package de.rincewind.interfaceplugin.gui.windows.abstracts;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -172,17 +173,30 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 	public Set<Element> getElementsAt(Point point) {
 		Validate.notNull(point, "The point cannot be null!");
 
-		List<Element> elements = new ArrayList<>();
-
-		for (Element element : this.elements) {
-			if (element.isInside(point.add(element.getPoint()))) {
-				elements.add(element);
+		return Collections.unmodifiableSet(this.elements.stream().filter((element) -> {
+			return element.isInside(point.subtract(element.getPoint()));
+		}).collect(Collectors.toSet()));
+	}
+	
+	@Override
+	public Set<Point> getOccupiedPoints(Element element) {
+		Validate.notNull(element, "The element cannot be null!");
+		
+		if (!this.elements.contains(element)) {
+			throw new ElementEditorException("The element is not added in this Window!");
+		}
+		
+		Set<Point> result = new HashSet<>();
+		
+		for (Point target : element.getPoints()) {
+			target = target.add(element.getPoint());
+			
+			if (this.getVisibleElementAt(target) == element) {
+				result.add(target);
 			}
 		}
-
-		return Collections.unmodifiableSet(this.elements.stream().filter((element) -> {
-			return element.isInside(point.add(element.getPoint()));
-		}).collect(Collectors.toSet()));
+		
+		return result;
 	}
 	
 	@Override
@@ -208,6 +222,8 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 	private void renderElement(Element element, boolean update) {
 		this.renderPoints(element.getPoints().stream().map((point) -> {
 			return point.add(element.getPoint());
+		}).filter((point) -> {
+			return this.isInside(point);
 		}).collect(Collectors.toSet()));
 		
 		if (update) {

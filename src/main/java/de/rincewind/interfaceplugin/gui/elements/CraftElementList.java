@@ -242,7 +242,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 	
 	@Override
-	public Icon getIcon(Point point) {
+	public Icon getIcon0(Point point) {
 		if (!this.isEnabled()) {
 			return this.disabledIcon;
 		}

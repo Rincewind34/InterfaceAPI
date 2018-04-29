@@ -107,13 +107,11 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	}
 
 	@Override
-	public Icon getIcon(Point point) {
-		Icon icon = super.getIcon();
-		
+	public Icon getIcon0(Point point) {
 		if (this.isEnabled() && this.selected != null) {
 			return new Icon(this.selected);
 		} else {
-			return icon;
+			return super.getIcon0(point);
 		}
 	}
 

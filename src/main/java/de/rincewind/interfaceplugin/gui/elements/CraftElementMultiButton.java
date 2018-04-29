@@ -202,7 +202,7 @@ public class CraftElementMultiButton extends CraftElementItem implements Element
 	}
 
 	@Override
-	public Icon getIcon(Point point) {
+	public Icon getIcon0(Point point) {
 		Icon icon = super.getIcon(point).clone();
 
 		if (this.isEnabled() && this.isSelected()) {

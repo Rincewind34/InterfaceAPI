@@ -45,9 +45,7 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 	}
 
 	@Override
-	public Icon getIcon(Point point) {
-		super.getIcon(point);
-
+	public Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
 			if (this.content == null) {
 				return Icon.AIR;
