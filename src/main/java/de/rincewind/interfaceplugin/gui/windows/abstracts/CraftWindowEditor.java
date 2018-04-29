@@ -69,7 +69,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			id++;
 		}
 
-		this.elements.add(element);
+		this.elements.add(0, element);
 		this.injectId(element, id);
 
 		this.renderElement(element);
@@ -170,12 +170,12 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 	}
 
 	@Override
-	public Set<Element> getElementsAt(Point point) {
+	public List<Element> getElementsAt(Point point) {
 		Validate.notNull(point, "The point cannot be null!");
 
-		return Collections.unmodifiableSet(this.elements.stream().filter((element) -> {
+		return Collections.unmodifiableList(this.elements.stream().filter((element) -> {
 			return element.isInside(point.subtract(element.getPoint()));
-		}).collect(Collectors.toSet()));
+		}).collect(Collectors.toList()));
 	}
 	
 	@Override

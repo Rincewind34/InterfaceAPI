@@ -144,7 +144,7 @@ public abstract interface Modifyable {
 	 * 
 	 * @throws NullPointerException if the point is <code>null</code>.
 	 */
-	public abstract Set<Element> getElementsAt(Point point);
+	public abstract List<Element> getElementsAt(Point point);
 	
 	public abstract Set<Point> getOccupiedPoints(Element element);
 	
