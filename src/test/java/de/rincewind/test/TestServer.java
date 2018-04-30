@@ -103,7 +103,7 @@ public class TestServer implements InvocationHandler {
 	private PluginManager pluginManager;
 
 	private TestServer() {
-	};
+	}
 
 	public static void setup() {
 	}
