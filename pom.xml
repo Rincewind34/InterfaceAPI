@@ -8,7 +8,7 @@
 	<properties>
 		<finalName>AerionBearTrap</finalName>
 
-		<spigot.version>1.12.1</spigot.version>
+		<spigot.version>1.12.2</spigot.version>
 		<serverapi.version>1.28.4</serverapi.version>
 		<dicefurniture.version>3.2.0.2</dicefurniture.version>
 		<furniturelib.version>1.9.2.9</furniturelib.version>
@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-aerion</artifactId>
-			<version>1.12.2</version>
+			<version>${spigot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
