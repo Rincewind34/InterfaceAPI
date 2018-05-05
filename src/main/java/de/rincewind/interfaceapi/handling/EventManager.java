@@ -14,7 +14,7 @@ import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
  * {@link Window}.
  * 
  * There are many events could be fired and each of them has one attendant listener-class
- * ({@link Listener}).
+ * ({@link InterfaceListener}).
  * If an event is fired all registered listeners, handling the fired event, will be automatically executed.
  * 
  * @author Rincewind34
@@ -40,7 +40,7 @@ public interface EventManager {
 	 * @author Rincewind34
 	 * @since 2.3.3
 	 * 
-	 * @see EventManager#registerListener(Listener)
+	 * @see EventManager#registerListener(Class, InterfaceListener)
 	 */
 	public static class ListenerBase<E extends Event<?>> {
 		

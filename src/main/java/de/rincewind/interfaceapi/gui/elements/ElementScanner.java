@@ -11,8 +11,6 @@ import de.rincewind.interfaceapi.item.ScanResult;
  * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see ElementScannerExtendable
  */
 public abstract interface ElementScanner extends ElementSlot {
 	

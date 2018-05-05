@@ -213,7 +213,7 @@ public class Icon implements Displayable, Cloneable {
 	/**
 	 * Can never be <code>null</code>.
 	 * 
-	 * @return
+	 * @return the bukkit itemstack
 	 */
 	public ItemStack toItem() {
 		return this.item;

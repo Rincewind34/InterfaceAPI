@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 import org.bukkit.event.inventory.InventoryAction;
 
 import de.rincewind.interfaceapi.gui.components.EventBased;
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.components.UserMemory;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
 import de.rincewind.interfaceapi.gui.elements.util.ElementComponentType;
@@ -35,10 +34,6 @@ public abstract interface Element extends EventBased, UserMemory {
 	public static final ElementComponentType<Integer> HEIGHT = new ElementComponentType<>(int.class, "height");
 	
 	/**
-	 * Sets the position of this element. Before changing the position,
-	 * {@link Modifyable#clearItemsFrom(Element)} will be called and
-	 * {@link Modifyable#readItemsFrom(Element)} after changing the position.
-	 * 
 	 * If the x or y coordinate is negative or greater than the size of for example
 	 * the window added this element to, this element may not be rendered.
 	 * 

@@ -12,7 +12,7 @@ public abstract interface WindowEnchanter extends WindowEditor {
 	
 	/**
 	 * Sets the enchantment-offer in a specified slot. To update the
-	 * slots invoke {@link WindowEnchanter#update()}.
+	 * slots invoke {@link WindowEnchanter#updateLevels()}.
 	 * 
 	 * @param slot to change
 	 * @param lvl to set

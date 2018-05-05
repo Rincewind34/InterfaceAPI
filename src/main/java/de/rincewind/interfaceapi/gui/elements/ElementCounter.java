@@ -25,7 +25,6 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	
 	/**
 	 * Returns the maximal countable number of this element.
-	 * The default is set to 10 ({@link ElementDefaults#COUNTER_MAXIMUM}).
 	 * 
 	 * @return the maximal countable number of this element
 	 */
@@ -33,7 +32,6 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	
 	/**
 	 * Returns the minimal countable number of this element.
-	 * The default is set to 1 ({@link ElementDefaults#COUNTER_MINIMUM}).
 	 * 
 	 * @return the minimal countable number of this element
 	 */
@@ -41,7 +39,7 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	
 	/**
 	 * Sets the maximal countable number to this element. If the new count
-	 * is greater than 64 the count will be set automaticly to 64.
+	 * is greater than 64 the count will be set automatically to 64.
 	 * 
 	 * @param maxCount change to
 	 */
@@ -49,7 +47,7 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	
 	/**
 	 * Sets the minimal countable number to this element. If the new count
-	 * is smaller than 1 the count will be set automaticly to 1.
+	 * is smaller than 1 the count will be set automatically to 1.
 	 * 
 	 * @param minCount change to
 	 */
@@ -76,8 +74,8 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	public abstract void decrement();
 	
 	/**
-	 * Adds to an {@link ElementButton} a listener to increment this element. The value to
-	 * add by clicking the button can be specified. If the user shiftclicks the button, the value
+	 * Adds to an {@link Element} a listener to increment this element. The value to
+	 * add by clicking the button can be specified. If the user shift-clicks the button, the value
 	 * to add will multiplied by 2.
 	 * 
 	 * You can also set the value to a number smaller than 0 to subtract counts from this element

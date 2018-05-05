@@ -8,6 +8,7 @@ import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.EventManager;
+import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
 import de.rincewind.interfaceapi.handling.window.WindowOpenEvent;
 
 public interface Setup {
@@ -106,7 +107,7 @@ public interface Setup {
 	 * If the closing window is the maximized window of the given player
 	 * the method {@link Setup#minimize()} will be called.
 	 * 
-	 * The {@link WindowCloseEvent} will be called in the {@link EventManager}.
+	 * The {@link WindowChangeStateEvent} will be called in the {@link EventManager}.
 	 * 
 	 * @param window to close
 	 * 
@@ -141,7 +142,7 @@ public interface Setup {
 	 * maximized window gets minimized the first window with the state 
 	 * {@link WindowState#BACKGROUND} will be automatically maximized.
 	 * 
-	 * The {@link WindowMaximizeEvent} will be called in the {@link EventManager}.
+	 * The {@link WindowChangeStateEvent} will be called in the {@link EventManager}.
 	 * 
 	 * @param window to maximize
 	 * 
@@ -170,7 +171,7 @@ public interface Setup {
 	 * If the player has any other opened windows with the state {@link WindowState#BACKGROUND}
 	 * the first window with this state will be maximized with a little delay of one tick.
 	 * 
-	 * The {@link WindowMinimizeEvent} will be called in the {@link EventManager}.
+	 * The {@link WindowChangeStateEvent} will be called in the {@link EventManager}.
 	 * 
 	 * @throws NullPointerException if the player is <b>null</b>
 	 */

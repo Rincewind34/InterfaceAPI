@@ -70,7 +70,7 @@ public interface ElementMultiButton extends ElementDisplayable, Selectable, Iter
 	/**
 	 * Sets the format witch is important for the regular lines in the lore.
 	 * The first '%s' will be replaced with the raw entry. The default format is
-	 * '§f%s' ({@link ElementDefaults#MULTI_BUTTON_DEFAULT_FORMAT}).
+	 * '§f%s'.
 	 * 
 	 * @param str change the format to
 	 * 
@@ -81,7 +81,7 @@ public interface ElementMultiButton extends ElementDisplayable, Selectable, Iter
 	/**
 	 * Sets the format witch is important for the selected line in the lore.
 	 * The first '%s' will be replaced with the raw entry. The default format is
-	 * '§d%s' ({@link ElementDefaults#MULTI_BUTTON_SELECTED_FORMAT}).
+	 * '§d%s'.
 	 * 
 	 * @param str change the format to
 	 * 

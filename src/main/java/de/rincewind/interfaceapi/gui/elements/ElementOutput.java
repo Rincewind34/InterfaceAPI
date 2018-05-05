@@ -14,8 +14,6 @@ import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
  * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see ElementOutputExtendable
  */
 public abstract interface ElementOutput extends ElementSlot {
 	

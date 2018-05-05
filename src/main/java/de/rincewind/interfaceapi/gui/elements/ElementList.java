@@ -46,9 +46,6 @@ import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
  * The {@link ListChangeSelectEvent} will be called, when the user selects an entry or you calls the method
  * {@link ElementList#select(int)}.
  * 
- * The {@link ListUnselectEvent} will be called, when the user unselects the selected entry or you calls the method
- * {@link Selectable#unselect()}.
- * 
  * @author Rincewind34
  * @since 2.3.3
  */
@@ -63,7 +60,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void setColor(Color color);
 	
 	/**
-	 * Adds an entry to this list. The list will be automaticly updated
+	 * Adds an entry to this list. The list will be automatically updated
 	 * in the {@link Modifyable}.
 	 * 
 	 * @param item to add
@@ -77,7 +74,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract <T extends Enum<?>> void addItems(Class<T> cls);
 	
 	/**
-	 * Removes an entry from this list. The list will be automaticly updated
+	 * Removes an entry from this list. The list will be automatically updated
 	 * in the {@link Modifyable}.
 	 * 
 	 * @param item to remove
@@ -119,7 +116,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void unselect(boolean fireEvent);
 	
 	/**
-	 * Sets the {@link ItemModifier} used to modify the entry, witch is selected.
+	 * Sets the item-modifier used to modify the entry, witch is selected.
 	 * 
 	 * @param modifier The modifier to set
 	 * 
@@ -128,7 +125,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void setSelectModifyer(Function<Icon, Icon> modifier);
 	
 	/**
-	 * Adds to an {@link ElementButton} a listener to scroll through this element. The value to
+	 * Adds to an {@link Element} a listener to scroll through this element. The value to
 	 * scroll forwards by clicking the button can be specified. If the user shift-clicks the button, the value
 	 * will be multiplied by 2.
 	 * 
@@ -158,7 +155,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract int getSelectedIndex();
 	
 	/**
-	 * Returns the color of this element. By the default, it is {@link Color#TRANSLUCENT}
+	 * Returns the color of this element. By the default, it is {@link Color#NONE}
 	 * 
 	 * @return the color of this element
 	 */

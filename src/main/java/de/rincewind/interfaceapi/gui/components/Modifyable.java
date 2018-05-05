@@ -21,10 +21,6 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
  * The elements can decide, what item lays in there area. The area of an
  * element is defined as rectangle limited with the elements size.
  * 
- * There are tow special items:
- * {@link Modifyable#EMPTY_USED_SLOT}
- * {@link Modifyable#INVISIBLE_ELEMENT}
- * 
  * @author Rincewind34
  * @since 2.3.3
  * 
@@ -46,7 +42,7 @@ public abstract interface Modifyable {
 	 * Adds an element to this object. To create a new element use
 	 * the {@link ElementCreator} (Modifyable{@link #elementCreator()}).
 	 * 
-	 * This method calls {@link Modifyable#readItemsFrom(Element)} to
+	 * This method calls {@link Modifyable#renderElement(Element)} to
 	 * get the items to set from the new element. 
 	 * 
 	 * @param element to add
@@ -58,9 +54,6 @@ public abstract interface Modifyable {
 	
 	/**
 	 * Removes an element from this object.
-	 * 
-	 * This method calls {@link Modifyable#clearItemsFrom(Element)} to
-	 * remove the items set from the old element.
 	 * 
 	 * @param element to remove
 	 * 
@@ -74,8 +67,8 @@ public abstract interface Modifyable {
 	 * this object handles the element as an element added before all other
 	 * elements.
 	 * 
-	 * To reconfigure the items in the cache this method calls {@link Modifyable#clearItemsFrom(Element)}
-	 * and {@link Modifyable#readItemsFromAll()}.
+	 * To reconfigure the items in the cache this method calls {@link Modifyable#renderElement(Element)}
+	 * and {@link Modifyable#renderAll()}.
 	 * 
 	 * @param element to priorize
 	 * 
