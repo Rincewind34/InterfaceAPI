@@ -1,11 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.rincewind</groupId>
 	<artifactId>interfaceapi</artifactId>
 	<version>3.0.3-SNAPSHOT</version>
 
 	<properties>
-		<finalName>AerionBearTrap</finalName>
+		<finalName>InterfaceAPI</finalName>
 
 		<spigot.version>1.12.2</spigot.version>
 		<serverapi.version>1.28.4</serverapi.version>
@@ -13,10 +14,20 @@
 		<furniturelib.version>1.9.2.9</furniturelib.version>
 
 		<jdk.version>9</jdk.version>
+		<output>.</output>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>${jdk.version}</maven.compiler.source>
 		<maven.compiler.target>${jdk.version}</maven.compiler.target>
 	</properties>
+	
+	<profiles>
+		<profile>
+			<id>skiptests</id>
+			<properties>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
@@ -46,12 +57,12 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<scm>
 		<connection>scm:git:https://gitlab.com/journey_aerion/apis/InterfaceAPI.git</connection>
 		<developerConnection>scm:git:https://gitlab.com/journey_aerion/apis/InterfaceAPI.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<build>
 		<plugins>
@@ -71,7 +82,53 @@
 				<version>2.6</version>
 				<configuration>
 					<outputDirectory>${output}</outputDirectory>
-					<finalName>InterfaceAPI-${project.version}</finalName>
+					<finalName>${finalName}-${project.version}</finalName>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<excludeDefaultDirectories>true</excludeDefaultDirectories>
+					<failOnError>false</failOnError>
+					<filesets>
+						<fileset>
+							<directory>${output}</directory>
+							<includes>
+								<include>${finalName}-*.jar</include>
+							</includes>
+							<excludes>
+								<exclude>${finalName}-${project.version}.jar</exclude>
+							</excludes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.21.0</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
 				</configuration>
 			</plugin>
 			<plugin>
