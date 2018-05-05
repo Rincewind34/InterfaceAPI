@@ -1,6 +1,7 @@
 package de.rincewind.interfaceplugin;
 
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.entity.EntityType;
@@ -8,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.gui.components.Displayable;
+import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.util.InterfaceUtils;
 import de.rincewind.interfaceplugin.listener.InventoryClickListener;
 import de.rincewind.interfaceplugin.listener.InventoryCloseListener;
@@ -22,6 +24,9 @@ public class InterfacePlugin extends JavaPlugin {
 		Displayable.put(Environment.class, InterfaceUtils::convertEnvironment);
 		Displayable.put(World.class, InterfaceUtils::convertWorld);
 		Displayable.put(EntityType.class, InterfaceUtils::convertEntityType);
+		Displayable.put(Boolean.class, (input) -> {
+			return input ? new Icon(Material.CONCRETE, 13, "§aTrue") : new Icon(Material.CONCRETE, 14, "§cFalse");
+		});
 	}
 	
 	@Override
