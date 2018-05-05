@@ -1,9 +1,8 @@
-package de.rincewind.interfaceapi.gui.elements.util;
+package de.rincewind.interfaceapi.gui.components;
 
-import de.rincewind.interfaceapi.gui.components.Displayable;
-import de.rincewind.interfaceapi.gui.components.UserMemory;
+import de.rincewind.interfaceapi.gui.elements.util.Icon;
 
-public class SimpleDisplay implements Displayable, UserMemory {
+class SimpleDisplay implements Displayable, UserMemory {
 	
 	private Icon icon;
 	private Object userObject;
@@ -17,13 +16,15 @@ public class SimpleDisplay implements Displayable, UserMemory {
 	}
 	
 	public SimpleDisplay(Icon icon, Object userObject) {
+		assert icon != null : "The icon cannot be null";
+		
 		this.icon = icon;
 		this.userObject = userObject;
 	}
 	
 	@Override
-	public void setUserObject(Object obj) {
-		this.userObject = obj;
+	public void setUserObject(Object userObject) {
+		this.userObject = userObject;
 	}
 
 	@Override

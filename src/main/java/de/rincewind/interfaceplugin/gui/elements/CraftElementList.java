@@ -123,17 +123,17 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 	
 	@Override
-	public <T extends Enum<?> & Displayable> void addItems(Class<T> cls) {
-		for (T enumInstance : cls.getEnumConstants()) {
-			this.items.add(enumInstance);
-		}
+	public <T extends Enum<?>> void addItems(Class<T> cls) {
+		Validate.notNull(cls, "The class cannot be null");
 		
-		this.update();
+		for (T enumInstance : cls.getEnumConstants()) {
+			this.items.add(Displayable.of(enumInstance));
+		}
 	}
-
+	
 	@Override
 	public void removeItem(Displayable item) {
-		Validate.notNull(item, "The item cannot be null!");
+		Validate.notNull(item, "The item cannot be null");
 		
 		this.items.remove(item);
 		this.update();
@@ -147,7 +147,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void setType(Directionality type) {
-		Validate.notNull(type, "The type cannot be null!");
+		Validate.notNull(type, "The type cannot be null");
 		
 		this.type = type;
 		this.update();
@@ -179,20 +179,22 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public <T extends Displayable> T getSelected() {
+	public <T> T getSelected() {
 		if (!this.isSelected()) {
 			return null;
 		} else {
-			return (T) this.items.get(this.selected);
+			return Displayable.readPayload(this.items.get(this.selected));
 		}
 	}
 
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public <T extends Displayable> T getItem(int index) {
-		return (T) this.items.get(index);
+	public <T> T get(int index) {
+		if (index < 0 || this.items.size() >= index) {
+			throw new IllegalArgumentException("Invalid index");
+		}
+		
+		return Displayable.readPayload(this.items.get(index));
 	}
 	
 	@Override
@@ -218,6 +220,15 @@ public class CraftElementList extends CraftElement implements ElementList {
 	@Override
 	public void unselect(boolean fireEvent) {
 		this.select(-1, fireEvent);
+	}
+	
+	@Override
+	public Displayable getSelectedItem() {
+		if (!this.isSelected()) {
+			return null;
+		} else {
+			return this.items.get(this.selected);
+		}
 	}
 
 	@Override

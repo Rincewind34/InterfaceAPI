@@ -76,11 +76,6 @@ public class Icon implements Displayable, Cloneable {
 	}
 
 	@Override
-	public void setIcon(Icon icon) {
-		this.item = icon.item;
-	}
-
-	@Override
 	public boolean equals(Object icon) {
 		if (this == icon) {
 			return true;

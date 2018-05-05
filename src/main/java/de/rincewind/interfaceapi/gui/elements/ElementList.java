@@ -74,7 +74,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	
 	public abstract void addItem(int index, Displayable item);
 	
-	public abstract <T extends Enum<?> & Displayable> void addItems(Class<T> cls);
+	public abstract <T extends Enum<?>> void addItems(Class<T> cls);
 	
 	/**
 	 * Removes an entry from this list. The list will be automaticly updated
@@ -175,11 +175,13 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 */
 	public abstract Icon modifyToSelect(Icon item);
 	
+	public abstract Displayable getSelectedItem();
+	
 	public abstract List<Displayable> getItems();
 	
-	public abstract <T extends Displayable> T getSelected();
+	public abstract <T> T getSelected();
 	
-	public abstract <T extends Displayable> T getItem(int index);
+	public abstract <T> T get(int index);
 	
 	@Override
 	public default void select() {
@@ -199,12 +201,12 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 		return this.getItems().size();
 	}
 	
-	public default <T extends Displayable> T getSelected(Class<T> cls) {
-		return cls.cast(this.getSelected());
+	public default <T> T getSelected(Class<T> cls) {
+		return this.getSelected();
 	}
 	
-	public default <T extends Displayable> T getItem(Class<T> cls, int index) {
-		return cls.cast(this.getItem(index));
+	public default <T> T get(Class<T> cls, int index) {
+		return this.get(index);
 	}
 	
 	public default <T extends Displayable> List<T> getItems(Class<T> cls) {

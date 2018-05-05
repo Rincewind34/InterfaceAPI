@@ -1,6 +1,5 @@
 package de.rincewind.interfaceapi.handling.element;
 
-import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 
@@ -26,12 +25,12 @@ public class MapChangeSelectEvent extends ElementEvent<ElementMap> {
 		return this.getElement().getPoint(this.newIndex);
 	}
 
-	public <T extends Displayable> T getClicked() {
-		return this.getElement().getItem(this.getClickedPoint());
+	public <T> T getClicked() {
+		return this.getElement().get(this.getClickedPoint());
 	}
 	
-	public <T extends Displayable> T getClicked(Class<T> cls) {
-		return this.getElement().getItem(cls, this.getClickedPoint());
+	public <T> T getClicked(Class<T> cls) {
+		return this.getElement().get(cls, this.getClickedPoint());
 	}
 
 }

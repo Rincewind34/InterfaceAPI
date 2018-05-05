@@ -190,6 +190,11 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
+	public int getSelectedIndex() {
+		return this.selected;
+	}
+	
+	@Override
 	public int getPage() {
 		return this.page;
 	}
@@ -232,25 +237,29 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
-	public <T extends Displayable> T getItem(Point point) {
-		return this.getItem(point, this.page);
+	public <T> T get(Point point) {
+		return this.get(point, this.page);
 	}
 	
 	@Override
-	public <T extends Displayable> T getItem(Point point, int page) {
-		int index = point.getY() * this.getWidth() + point.getX();
-		return this.getItem(index, this.page);
+	public <T> T get(Point point, int page) {
+		return this.get(this.convert(point), this.page);
+	}
+	
+	@Override
+	public <T> T get(int index) {
+		return Displayable.readPayload(this.items.get(index));
+	}
+	
+	@Override
+	public <T> T get(int index, int page) {
+		return this.get(index + this.getFirstIndex(page));
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T extends Displayable> T getItem(int index) {
-		return (T) this.items.get(index);
-	}
-	
-	@Override
-	public <T extends Displayable> T getItem(int index, int page) {
-		return this.getItem(index + this.getFirstIndex(page));
+	public <T extends Displayable> T getItem(Point point, int page) {
+		return (T) this.items.get(this.convert(point));
 	}
 	
 	@Override
@@ -259,7 +268,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
-	public Icon getIcon0(Point point) {
+	protected Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
 			int index = this.convert(point);
 			
