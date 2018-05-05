@@ -2,9 +2,9 @@ package de.rincewind.interfaceplugin.gui.elements;
 
 import org.bukkit.inventory.ItemStack;
 
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.util.ClickAction;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.OutputConsumeEvent;
 import de.rincewind.interfaceplugin.Validate;
@@ -14,7 +14,7 @@ public class CraftElementOutput extends CraftElementSlot implements ElementOutpu
 	
 	private boolean empty;
 	
-	public CraftElementOutput(Modifyable handle) {
+	public CraftElementOutput(WindowEditor handle) {
 		super(handle);
 		
 		this.empty = true;

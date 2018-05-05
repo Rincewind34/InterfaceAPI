@@ -1,17 +1,17 @@
 package de.rincewind.interfaceplugin.gui.elements.abstracts;
 
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 
 public abstract class CraftElementDisplayable extends CraftElement implements ElementDisplayable {
 	
 	private Icon icon;
 	private Icon disabledIcon;
 	
-	public CraftElementDisplayable(Modifyable handle) {
+	public CraftElementDisplayable(WindowEditor handle) {
 		super(handle);
 		
 		this.icon = Icon.AIR;

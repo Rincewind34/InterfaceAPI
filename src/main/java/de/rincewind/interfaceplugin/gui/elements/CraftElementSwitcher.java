@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.SwitchChangeEvent;
 import de.rincewind.interfaceplugin.Validate;
@@ -23,7 +23,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	
 	private List<Displayable> items;
 	
-	public CraftElementSwitcher(Modifyable handle) {
+	public CraftElementSwitcher(WindowEditor handle) {
 		super(handle);
 		
 		this.switchIndex = -1;

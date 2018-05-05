@@ -7,12 +7,12 @@ import java.util.List;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.components.Displayable;
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.util.Color;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.MapChangeSelectEvent;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
@@ -28,7 +28,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	
 	private List<Displayable> items;
 	
-	public CraftElementMap(Modifyable handle) {
+	public CraftElementMap(WindowEditor handle) {
 		super(handle);
 		
 		this.page = 1;

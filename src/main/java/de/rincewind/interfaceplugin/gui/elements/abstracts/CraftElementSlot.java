@@ -3,19 +3,19 @@ package de.rincewind.interfaceplugin.gui.elements.abstracts;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementSlot;
 import de.rincewind.interfaceapi.gui.elements.util.ClickAction;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 
 public abstract class CraftElementSlot extends CraftElement implements ElementSlot {
 
 	private ItemStack content;
 
-	public CraftElementSlot(Modifyable handle) {
+	public CraftElementSlot(WindowEditor handle) {
 		super(handle);
 
 		this.content = null;

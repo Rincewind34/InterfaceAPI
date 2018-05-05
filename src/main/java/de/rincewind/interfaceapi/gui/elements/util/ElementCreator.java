@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import de.rincewind.interfaceapi.exceptions.ElementCreationException;
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementContentSlot;
 import de.rincewind.interfaceapi.gui.elements.ElementCounter;
 import de.rincewind.interfaceapi.gui.elements.ElementInput;
@@ -18,6 +17,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementScanner;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementContentSlot;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementCounter;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementInput;
@@ -29,21 +29,20 @@ import de.rincewind.interfaceplugin.gui.elements.CraftElementOutput;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementScanner;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementSelector;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementSwitcher;
+import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowEditor;
 
 /**
  * With this object you are able to create elements. The elements will be
- * automatically added to the handler ({@link Modifyable}).
+ * automatically added to the handler ({@link WindowEditor}).
  * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see Modifyable
  */
 public class ElementCreator {
 
-	private Modifyable handle;
+	private CraftWindowEditor handle;
 
-	public ElementCreator(Modifyable handle) {
+	public ElementCreator(CraftWindowEditor handle) {
 		this.handle = handle;
 	}
 
@@ -57,7 +56,7 @@ public class ElementCreator {
 		}
 
 		for (Constructor<?> constructor : elementCls.getDeclaredConstructors()) {
-			if (constructor.getParameterTypes().length == 1 && Modifyable.class.isAssignableFrom(constructor.getParameterTypes()[0])) {
+			if (constructor.getParameterTypes().length == 1 && WindowEditor.class.isAssignableFrom(constructor.getParameterTypes()[0])) {
 				try {
 					Constructor<T> target = elementCls.getConstructor(constructor.getParameterTypes());
 					target.setAccessible(true);

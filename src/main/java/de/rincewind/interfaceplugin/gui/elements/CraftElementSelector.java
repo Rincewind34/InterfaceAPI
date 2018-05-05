@@ -4,12 +4,12 @@ import java.util.function.Predicate;
 
 import org.bukkit.inventory.ItemStack;
 
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ItemSelectEvent;
 import de.rincewind.interfaceapi.handling.window.WindowClickEvent;
@@ -24,7 +24,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 
 	private Predicate<ItemStack> selector;
 
-	public CraftElementSelector(Modifyable handle) {
+	public CraftElementSelector(WindowEditor handle) {
 		super(handle);
 
 		this.canUnselect = false;

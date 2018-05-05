@@ -5,11 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.rincewind.interfaceapi.exceptions.ElementCreationException;
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowEnchanter;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 import de.rincewind.test.TestWindowSizeable;
 import junit.framework.Assert;
@@ -73,7 +73,7 @@ public class ElementCreatorTest {
 			super(null);
 		}
 
-		public TestElement1(Modifyable handle, Object payload) {
+		public TestElement1(WindowEditor handle, Object payload) {
 			super(handle);
 		}
 
@@ -107,7 +107,7 @@ public class ElementCreatorTest {
 			super(null);
 		}
 
-		public TestElement3(Modifyable handle) {
+		public TestElement3(WindowEditor handle) {
 			super(handle);
 		}
 
@@ -120,7 +120,7 @@ public class ElementCreatorTest {
 	
 	private static class TestElement4 extends CraftElement {
 
-		public TestElement4(Modifyable handle) {
+		public TestElement4(WindowEditor handle) {
 			super(handle);
 			
 			throw new RuntimeException();

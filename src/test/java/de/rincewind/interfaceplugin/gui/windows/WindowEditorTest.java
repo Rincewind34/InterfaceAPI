@@ -18,8 +18,11 @@ import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementItem;
+import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowEditor;
+import de.rincewind.test.Success;
 import de.rincewind.test.TestInventory;
 import junit.framework.Assert;
 
@@ -63,6 +66,14 @@ public class WindowEditorTest {
 		this.window.addElement(item);
 		this.window.addElement(item);
 	}
+
+	@Test(expected = ElementEditorException.class)
+	public void testAddElementDifferent() {
+		CraftElementItem item = new CraftElementItem(this.window);
+		this.window.addElement(item);
+		
+		new TestWindow().addElement(item);
+	}
 	
 	@Test
 	public void testRemoveElement() {
@@ -74,6 +85,17 @@ public class WindowEditorTest {
 
 		this.window.removeElement(item);
 		this.assertIcons(Icon.AIR);
+	}
+	
+	@Test(expected = Success.class)
+	public void testOnElementAdded() {
+		this.window.elementCreator().newElement(TestElement1.class);
+	}
+	
+	
+	@Test(expected = Success.class)
+	public void testOnElementRemoved() {
+		this.window.removeElement(this.window.elementCreator().newElement(TestElement2.class));
 	}
 
 	/**
@@ -285,6 +307,42 @@ public class WindowEditorTest {
 			return new TestInventory("GUI", 9 * 3);
 		}
 
+	}
+	
+	private static class TestElement1 extends CraftElement {
+
+		public TestElement1(WindowEditor handle) {
+			super(handle);
+		}
+		
+		@Override
+		public void onElementAdded() {
+			throw new Success();
+		}
+		
+		@Override
+		protected Icon getIcon0(Point point) {
+			return new Icon(Material.APPLE);
+		}
+		
+	}
+	
+	private static class TestElement2 extends CraftElement {
+
+		public TestElement2(WindowEditor handle) {
+			super(handle);
+		}
+		
+		@Override
+		public void onElementRemoved() {
+			throw new Success();
+		}
+		
+		@Override
+		protected Icon getIcon0(Point point) {
+			return new Icon(Material.APPLE);
+		}
+		
 	}
 
 }

@@ -1,10 +1,10 @@
 package de.rincewind.interfaceplugin.gui.elements;
 
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementCounter;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceplugin.Validate;
@@ -17,7 +17,7 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 	private int minCount;
 	private int maxCount;
 	
-	public CraftElementCounter(Modifyable handle) {
+	public CraftElementCounter(WindowEditor handle) {
 		super(handle);
 		
 		this.minCount = ElementCounter.MINIMUM_COUNT;

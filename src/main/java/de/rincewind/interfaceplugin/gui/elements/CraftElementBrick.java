@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import org.bukkit.inventory.ItemStack;
 
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementBrick;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementDisplayable;
@@ -14,7 +14,7 @@ public class CraftElementBrick extends CraftElementDisplayable implements Elemen
 
 	private Supplier<ItemStack> creator;
 
-	public CraftElementBrick(Modifyable handle) {
+	public CraftElementBrick(WindowEditor handle) {
 		super(handle);
 
 		this.creator = () -> {

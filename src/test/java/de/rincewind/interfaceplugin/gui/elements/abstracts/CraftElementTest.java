@@ -7,10 +7,10 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 
 import de.rincewind.interfaceapi.exceptions.ElementComponentException;
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.test.TestWindowSizeable;
 import junit.framework.Assert;
 
@@ -201,7 +201,7 @@ public class CraftElementTest {
 	
 	private static class TestElement extends CraftElement {
 
-		public TestElement(Modifyable handle) {
+		public TestElement(WindowEditor handle) {
 			super(handle);
 		}
 

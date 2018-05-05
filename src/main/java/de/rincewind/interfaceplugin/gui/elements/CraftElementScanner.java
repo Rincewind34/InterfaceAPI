@@ -1,13 +1,13 @@
 package de.rincewind.interfaceplugin.gui.elements;
 
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementScanner;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.item.ScanResult;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementSlot;
 
 public class CraftElementScanner extends CraftElementSlot implements ElementScanner {
 	
-	public CraftElementScanner(Modifyable handle) {
+	public CraftElementScanner(WindowEditor handle) {
 		super(handle);
 		
 		this.getBlocker().unlock();

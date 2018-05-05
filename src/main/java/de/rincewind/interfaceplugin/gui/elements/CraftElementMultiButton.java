@@ -7,12 +7,12 @@ import java.util.function.Function;
 
 import org.bukkit.Material;
 
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementMultiButton;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Lore;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.MultiButtonPressEvent;
 import de.rincewind.interfaceplugin.Validate;
@@ -30,7 +30,7 @@ public class CraftElementMultiButton extends CraftElementItem implements Element
 
 	private Function<Icon, Icon> selectModifier;
 
-	public CraftElementMultiButton(Modifyable handle) {
+	public CraftElementMultiButton(WindowEditor handle) {
 		super(handle);
 
 		this.defaultFormat = "§f%s";

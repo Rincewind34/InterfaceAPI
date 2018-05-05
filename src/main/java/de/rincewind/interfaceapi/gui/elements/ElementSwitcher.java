@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.SwitchChangeEvent;
 
 /**
@@ -47,7 +47,7 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 	 * 0 and the length of the entrylist, the index will be adapted.
 	 * 
 	 * The {@link SwitchChangeEvent} will be called after updating this element
-	 * in the handler ({@link Modifyable}).
+	 * in the handler ({@link WindowEditor}).
 	 * 
 	 * @param index
 	 *            to set
@@ -79,7 +79,7 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 
 	/**
 	 * Clears all entries from this element. This method does not call
-	 * {@link Modifyable#renderElement(Element)} so you do have to call it by
+	 * {@link WindowEditor#renderElement(Element)} so you do have to call it by
 	 * your self to update this element or add a new entry
 	 */
 	public abstract void clear();

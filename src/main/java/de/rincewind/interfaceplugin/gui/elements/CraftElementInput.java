@@ -6,15 +6,15 @@ import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementInput;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementSlot;
 
 public class CraftElementInput extends CraftElementSlot implements ElementInput {
 	
 	private List<ItemStack> items;
 	
-	public CraftElementInput(Modifyable handle) {
+	public CraftElementInput(WindowEditor handle) {
 		super(handle);
 		
 		super.getBlocker().unlock();

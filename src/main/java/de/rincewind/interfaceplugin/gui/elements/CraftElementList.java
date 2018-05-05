@@ -8,13 +8,13 @@ import java.util.function.Function;
 import org.bukkit.Material;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
-import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.util.Color;
 import de.rincewind.interfaceapi.gui.util.Directionality;
+import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
@@ -35,7 +35,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 	private List<Displayable> items;
 	private Function<Icon, Icon> modifier;
 	
-	public CraftElementList(Modifyable handle) {
+	public CraftElementList(WindowEditor handle) {
 		super(handle);
 		
 		this.selected = -1;
