@@ -1,12 +1,13 @@
 package de.rincewind.interfaceapi.gui.elements.util;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.item.ItemLibrary;
-import de.rincewind.interfaceapi.item.ItemRefactor.Lore;
 
 /**
  * This is a basic class to modify items.
@@ -145,7 +146,7 @@ public class Icon implements Displayable, Cloneable {
 		return this.rename("§7");
 	}
 
-	public Icon describe(Lore lore) {
+	public Icon describe(List<String> lore) {
 		if (!this.isAir()) {
 			this.item = ItemLibrary.refactor().loreItem(this.item, lore);
 		}

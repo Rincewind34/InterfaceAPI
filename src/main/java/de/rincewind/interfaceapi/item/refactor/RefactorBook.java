@@ -7,7 +7,7 @@ import java.util.List;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
-import de.rincewind.interfaceapi.item.ItemRefactor.Lore;
+import de.rincewind.interfaceapi.gui.elements.util.Lore;
 
 public class RefactorBook {
 	

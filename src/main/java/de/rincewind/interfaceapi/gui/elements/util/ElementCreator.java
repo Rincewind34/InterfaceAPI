@@ -8,7 +8,6 @@ import de.rincewind.interfaceapi.exceptions.ElementCreationException;
 import de.rincewind.interfaceapi.gui.components.Modifyable;
 import de.rincewind.interfaceapi.gui.elements.ElementContentSlot;
 import de.rincewind.interfaceapi.gui.elements.ElementCounter;
-import de.rincewind.interfaceapi.gui.elements.ElementInfo;
 import de.rincewind.interfaceapi.gui.elements.ElementInput;
 import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
@@ -21,7 +20,6 @@ import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementContentSlot;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementCounter;
-import de.rincewind.interfaceplugin.gui.elements.CraftElementInfo;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementInput;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementItem;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementList;
@@ -128,12 +126,6 @@ public class ElementCreator {
 
 	public ElementMultiButton newMultiButton() {
 		ElementMultiButton element = new CraftElementMultiButton(this.handle);
-		this.handle.addElement(element);
-		return element;
-	}
-
-	public ElementInfo newInfoPanel() {
-		ElementInfo element = new CraftElementInfo(this.handle);
 		this.handle.addElement(element);
 		return element;
 	}
