@@ -108,7 +108,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 
 	public abstract void select(int index, boolean fireEvent);
 
-	public abstract void unselect(boolean fireEvent);
+	public abstract void deselect(boolean fireEvent);
 
 	/**
 	 * Sets the item-modifier used to modify the entry, witch is selected.

@@ -151,12 +151,12 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
-	public void unselect() {
-		this.unselect(true);
+	public void deselect() {
+		this.deselect(true);
 	}
 	
 	@Override
-	public void unselect(boolean fireEvent) {
+	public void deselect(boolean fireEvent) {
 		this.select(-1, fireEvent);
 	}
 	

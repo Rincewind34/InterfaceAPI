@@ -85,7 +85,7 @@ public class CraftElementMultiButton extends CraftElementItem implements Element
 		this.selectedIndex = index;
 
 		if (this.selectedIndex == -2 && this.isSelected()) {
-			this.unselect();
+			this.deselect();
 		} else {
 			if (!this.isSelected()) {
 				this.select();
@@ -153,7 +153,7 @@ public class CraftElementMultiButton extends CraftElementItem implements Element
 	}
 
 	@Override
-	public void unselect() {
+	public void deselect() {
 		if (!this.isSelected()) {
 			throw new RuntimeException("This element is not selected!");
 		}
@@ -238,7 +238,7 @@ public class CraftElementMultiButton extends CraftElementItem implements Element
 				}
 			} else {
 				if (this.isSelected()) {
-					this.unselect();
+					this.deselect();
 				}
 			}
 		}).addAfter();

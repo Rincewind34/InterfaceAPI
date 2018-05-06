@@ -65,7 +65,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 			index = index + this.startIndex;
 
 			if (index == this.getSelectedIndex()) {
-				this.unselect();
+				this.deselect();
 			} else if (index < this.getSize()) {
 				this.select(index);
 			}
@@ -210,12 +210,12 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 
 	@Override
-	public void unselect() {
-		this.unselect(true);
+	public void deselect() {
+		this.deselect(true);
 	}
 
 	@Override
-	public void unselect(boolean fireEvent) {
+	public void deselect(boolean fireEvent) {
 		this.select(-1, fireEvent);
 	}
 	

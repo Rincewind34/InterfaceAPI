@@ -40,7 +40,7 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	
 	public abstract void select(int index, boolean fireEvent);
 	
-	public abstract void unselect(boolean fireEvent);
+	public abstract void deselect(boolean fireEvent);
 	
 	public abstract boolean isFirstPage();
 	
