@@ -12,7 +12,7 @@ import de.rincewind.interfaceapi.InterfaceAPI;
 
 public class InventoryCloseListener implements Listener {
 	
-	public static List<String> blocked = new ArrayList<String>();
+	public static List<String> blocked = new ArrayList<>();
 	
 	@EventHandler
 	public void onClose(InventoryCloseEvent e) {

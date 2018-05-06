@@ -1,5 +1,6 @@
 package de.rincewind.interfaceplugin.gui.elements.abstracts;
 
+import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
@@ -21,24 +22,14 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 	}
 	
 	@Override
-	public void setIcon(Icon icon) {
-		if (icon != null) {
-			this.icon = icon;
-		} else {
-			this.icon = Icon.AIR;
-		}
-		
+	public void setIcon(Displayable icon) {
+		this.icon = Displayable.validate(icon);
 		this.update();
 	}
 	
 	@Override
-	public void setDisabledIcon(Icon icon) {
-		if (icon != null) {
-			this.disabledIcon = icon;
-		} else {
-			this.disabledIcon = Icon.AIR;
-		}
-		
+	public void setDisabledIcon(Displayable icon) {
+		this.disabledIcon = Displayable.validate(icon);
 		this.update();
 	}
 	

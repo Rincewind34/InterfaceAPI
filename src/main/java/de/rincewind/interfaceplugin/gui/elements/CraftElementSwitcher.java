@@ -36,12 +36,8 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	}
 	
 	@Override
-	public void setDisabledIcon(Icon icon) {
-		if (icon != null) {
-			this.disabledIcon = icon;
-		} else {
-			this.disabledIcon = Icon.AIR;
-		}
+	public void setDisabledIcon(Displayable icon) {
+		this.disabledIcon = Displayable.validate(icon);
 	}
 
 	@Override

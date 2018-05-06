@@ -20,9 +20,9 @@ public interface Selectable {
 	public abstract void select();
 	
 	/**
-	 * Unselects the object.
+	 * Deselects the object.
 	 */
-	public abstract void unselect();
+	public abstract void deselect();
 	
 	/**
 	 * Returns <code>true</code> if this object is selected and <code>false</code>

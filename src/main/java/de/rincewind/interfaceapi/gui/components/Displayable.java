@@ -9,7 +9,7 @@ import org.bukkit.Material;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 
 public interface Displayable {
-
+	
 	public static final Map<Class<?>, Function<Object, Icon>> converters = new HashMap<>();
 
 	@SuppressWarnings("unchecked")
@@ -19,6 +19,10 @@ public interface Displayable {
 
 	public static boolean isConvertable(Class<?> cls) {
 		return Displayable.converters.containsKey(cls);
+	}
+	
+	public static Icon validate(Displayable icon) {
+		return icon == null ? Icon.AIR : icon.getIcon();
 	}
 
 	public static Displayable of(Object payload) {
@@ -62,11 +66,7 @@ public interface Displayable {
 			return (T) input;
 		}
 	}
-
-	public static Icon validate(Displayable input) {
-		return input != null ? input.getIcon() : Icon.AIR;
-	}
-
+	
 	public abstract Icon getIcon();
 
 	public default void setIcon(Icon icon) {

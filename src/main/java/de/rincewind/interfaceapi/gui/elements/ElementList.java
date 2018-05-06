@@ -3,7 +3,6 @@ package de.rincewind.interfaceapi.gui.elements;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.components.Displayable;
@@ -129,7 +128,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 
 	public abstract void select(int index, boolean fireEvent);
 
-	public abstract void unselect(boolean fireEvent);
+	public abstract void deselect(boolean fireEvent);
 
 	/**
 	 * Sets the item-modifier used to modify the entry, witch is selected.
@@ -199,18 +198,20 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 
 	public abstract Displayable getSelectedItem();
 
-	public abstract List<Displayable> getItems();
-
+	public abstract Displayable getItem(int index);
+	
 	public abstract <T> T getSelected();
 
 	public abstract <T> T get(int index);
-
+	
+	public abstract List<Displayable> getItems();
+	
 	@Override
 	public default void select() {
 		if (this.getSize() != 0) {
 			this.select(0);
 		} else {
-			throw new APIException("Cannot select an item in this list!");
+			throw new ArrayIndexOutOfBoundsException("Cannot select an item in this list!");
 		}
 	}
 
@@ -229,12 +230,6 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 
 	public default <T> T get(Class<T> cls, int index) {
 		return this.get(index);
-	}
-
-	public default <T extends Displayable> List<T> getItems(Class<T> cls) {
-		return this.getItems().stream().map((entry) -> {
-			return cls.cast(entry);
-		}).collect(Collectors.toList());
 	}
 
 }

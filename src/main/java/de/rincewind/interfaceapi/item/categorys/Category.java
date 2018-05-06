@@ -36,7 +36,7 @@ public class Category {
 	private List<MaterialData> materials;
 	
 	public Category() {
-		this.materials = new ArrayList<MaterialData>();
+		this.materials = new ArrayList<>();
 	}
 	
 	@SuppressWarnings("deprecation")

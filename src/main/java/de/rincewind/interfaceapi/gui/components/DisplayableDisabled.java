@@ -6,8 +6,6 @@ public interface DisplayableDisabled {
 	
 	public abstract Icon getDisabledIcon();
 	
-	public default void setDisabledIcon(Icon icon) {
-		throw new UnsupportedOperationException();
-	}
+	public abstract void setDisabledIcon(Displayable icon);
 	
 }

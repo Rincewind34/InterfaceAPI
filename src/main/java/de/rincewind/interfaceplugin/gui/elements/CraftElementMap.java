@@ -47,12 +47,8 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
-	public void setDisabledIcon(Icon icon) {
-		if (icon != null) {
-			this.disabledIcon = icon;
-		} else {
-			this.disabledIcon = Icon.AIR;
-		}
+	public void setDisabledIcon(Displayable icon) {
+		this.disabledIcon = Displayable.validate(icon);
 	}
 	
 	@Override
@@ -155,12 +151,12 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
-	public void unselect() {
-		this.unselect(true);
+	public void deselect() {
+		this.deselect(true);
 	}
 	
 	@Override
-	public void unselect(boolean fireEvent) {
+	public void deselect(boolean fireEvent) {
 		this.select(-1, fireEvent);
 	}
 	
