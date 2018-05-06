@@ -12,7 +12,6 @@ public abstract interface WindowNameable extends Window {
 	
 	/**
 	 * Returns the current name of the window.
-	 * The default name of a window is {@value WindowDefaults#NAME}.
 	 * 
 	 * @return the current name of the window.
 	 */

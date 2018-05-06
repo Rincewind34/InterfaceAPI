@@ -13,8 +13,6 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.WindowActivatable;
  * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see Windows.WindowFurnaceExtendable
  */
 public interface WindowFurnace extends WindowActivatable {
 	

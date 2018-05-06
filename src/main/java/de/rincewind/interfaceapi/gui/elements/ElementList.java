@@ -3,7 +3,6 @@ package de.rincewind.interfaceapi.gui.elements;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.components.Displayable;
@@ -52,9 +51,6 @@ import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
  * The {@link ListChangeSelectEvent} will be called, when the user selects an
  * entry or you calls the method {@link ElementList#select(int)}.
  * 
- * The {@link ListUnselectEvent} will be called, when the user unselects the
- * selected entry or you calls the method {@link Selectable#unselect()}.
- * 
  * @author Rincewind34
  * @since 2.3.3
  */
@@ -69,32 +65,12 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 */
 	public abstract void setColor(Color color);
 
-	/**
-	 * Adds an entry to this list. The list will be automaticly updated in the
-	 * {@link Modifyable}.
-	 * 
-	 * @param item
-	 *            to add
-	 * 
-	 * @throws NullPointerException
-	 *             if the item is <code>null</code>
-	 */
 	public abstract void addItem(Displayable item);
 
 	public abstract void addItem(int index, Displayable item);
-
-	public abstract <T extends Enum<?> & Displayable> void addItems(Class<T> cls);
-
-	/**
-	 * Removes an entry from this list. The list will be automaticly updated in
-	 * the {@link Modifyable}.
-	 * 
-	 * @param item
-	 *            to remove
-	 * 
-	 * @throws NullPointerException
-	 *             if the item is <code>null</code>
-	 */
+	
+	public abstract <T extends Enum<?>> void addItems(Class<T> cls);
+	
 	public abstract void removeItem(Displayable item);
 
 	public abstract void clear();
@@ -135,8 +111,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void unselect(boolean fireEvent);
 
 	/**
-	 * Sets the {@link ItemModifier} used to modify the entry, witch is
-	 * selected.
+	 * Sets the item-modifier used to modify the entry, witch is selected.
 	 * 
 	 * @param modifier
 	 *            The modifier to set
@@ -147,10 +122,9 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void setSelectModifyer(Function<Icon, Icon> modifier);
 
 	/**
-	 * Adds to an {@link ElementButton} a listener to scroll through this
-	 * element. The value to scroll forwards by clicking the button can be
-	 * specified. If the user shift-clicks the button, the value will be
-	 * multiplied by 2.
+	 * Adds to an {@link Element} a listener to scroll through this element. The value to
+	 * scroll forwards by clicking the button can be specified. If the user shift-clicks the button, the value
+	 * will be multiplied by 2.
 	 * 
 	 * You can also set the value to a number smaller than 0 to scroll backwards
 	 * through this element by clicking the button.
@@ -182,8 +156,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract int getSelectedIndex();
 
 	/**
-	 * Returns the color of this element. By the default, it is
-	 * {@link Color#TRANSLUCENT}
+	 * Returns the color of this element. By the default, it is {@link Color#NONE}
 	 * 
 	 * @return the color of this element
 	 */
@@ -201,23 +174,23 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 *             if the item is <code>null</code>
 	 */
 	public abstract Icon modifyToSelect(Icon item);
+	
+	public abstract Displayable getSelectedItem();
 
+	public abstract Displayable getItem(int index);
+	
+	public abstract <T> T getSelected();
+	
+	public abstract <T> T get(int index);
+	
 	public abstract List<Displayable> getItems();
-
-	public abstract <T extends Displayable> T getSelected();
-
-	public abstract <T> T getSelectedContent();
-
-	public abstract <T> T getSelectedContent(Class<T> cls);
-
-	public abstract <T extends Displayable> T getItem(int index);
-
+	
 	@Override
 	public default void select() {
 		if (this.getSize() != 0) {
 			this.select(0);
 		} else {
-			throw new APIException("Cannot select an item in this list!");
+			throw new ArrayIndexOutOfBoundsException("Cannot select an item in this list!");
 		}
 	}
 
@@ -229,19 +202,13 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public default int getSize() {
 		return this.getItems().size();
 	}
-
-	public default <T extends Displayable> T getSelected(Class<T> cls) {
-		return cls.cast(this.getSelected());
+	
+	public default <T> T getSelected(Class<T> cls) {
+		return this.getSelected();
 	}
-
-	public default <T extends Displayable> T getItem(Class<T> cls, int index) {
-		return cls.cast(this.getItem(index));
-	}
-
-	public default <T extends Displayable> List<T> getItems(Class<T> cls) {
-		return this.getItems().stream().map((entry) -> {
-			return cls.cast(entry);
-		}).collect(Collectors.toList());
+	
+	public default <T> T get(Class<T> cls, int index) {
+		return this.get(index);
 	}
 
 }

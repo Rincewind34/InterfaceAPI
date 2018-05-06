@@ -9,7 +9,6 @@ import org.bukkit.Material;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.Modifyable;
-import de.rincewind.interfaceapi.gui.components.UserMemory;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
@@ -124,18 +123,18 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 
 	@Override
-	public <T extends Enum<?> & Displayable> void addItems(Class<T> cls) {
+	public <T extends Enum<?>> void addItems(Class<T> cls) {
+		Validate.notNull(cls, "The class cannot be null");
+		
 		for (T enumInstance : cls.getEnumConstants()) {
-			this.items.add(enumInstance);
+			this.items.add(Displayable.of(enumInstance));
 		}
-
-		this.update();
 	}
-
+	
 	@Override
 	public void removeItem(Displayable item) {
-		Validate.notNull(item, "The item cannot be null!");
-
+		Validate.notNull(item, "The item cannot be null");
+		
 		this.items.remove(item);
 		this.update();
 	}
@@ -148,8 +147,8 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void setType(Directionality type) {
-		Validate.notNull(type, "The type cannot be null!");
-
+		Validate.notNull(type, "The type cannot be null");
+		
 		this.type = type;
 		this.update();
 	}
@@ -165,6 +164,22 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 
 	@Override
+	public void addScroler(Element btn, int value) {
+		Validate.notNull(btn, "The button cannot be null");
+
+		if (value == 0) {
+			throw new RuntimeException("The value cannot be zero!");
+		}
+
+		btn.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(value)).addAfter();
+	}
+
+	@Override
+	public boolean isSelected() {
+		return this.selected >= 0;
+	}
+
+	@Override
 	public boolean canSelect() {
 		return this.getSize() > 0;
 	}
@@ -177,52 +192,6 @@ public class CraftElementList extends CraftElement implements ElementList {
 	@Override
 	public int getSelectedIndex() {
 		return this.selected;
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T extends Displayable> T getSelected() {
-		if (!this.isSelected()) {
-			return null;
-		} else {
-			return (T) this.items.get(this.selected);
-		}
-	}
-
-	@Override
-	public <T> T getSelectedContent() {
-		Displayable selected = this.getSelected();
-
-		if (selected == null) {
-			return null;
-		}
-
-		if (selected instanceof UserMemory) {
-			return ((UserMemory) selected).getUserObject();
-		} else {
-			throw new ClassCastException("The selected item does not implement UserMemory");
-		}
-	}
-
-	@Override
-	public <T> T getSelectedContent(Class<T> cls) {
-		Displayable selected = this.getSelected();
-
-		if (selected == null) {
-			return null;
-		}
-
-		if (selected instanceof UserMemory) {
-			return cls.cast(((UserMemory) selected).getUserObject());
-		} else {
-			throw new ClassCastException("The selected item does not implement UserMemory");
-		}
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T extends Displayable> T getItem(int index) {
-		return (T) this.items.get(index);
 	}
 
 	@Override
@@ -249,26 +218,42 @@ public class CraftElementList extends CraftElement implements ElementList {
 	public void unselect(boolean fireEvent) {
 		this.select(-1, fireEvent);
 	}
+	
+	@Override
+	public Displayable getSelectedItem() {
+		if (!this.isSelected()) {
+			return null;
+		} else {
+			return this.items.get(this.selected);
+		}
+	}
+	
+	@Override
+	public Displayable getItem(int index) {
+		return this.items.get(index);
+	}
 
+	@Override
+	public <T> T getSelected() {
+		if (!this.isSelected()) {
+			return null;
+		} else {
+			return Displayable.readPayload(this.items.get(this.selected));
+		}
+	}
+
+	@Override
+	public <T> T get(int index) {
+		if (index < 0 || this.items.size() >= index) {
+			throw new IllegalArgumentException("Invalid index");
+		}
+		
+		return Displayable.readPayload(this.items.get(index));
+	}
+	
 	@Override
 	public List<Displayable> getItems() {
 		return Collections.unmodifiableList(this.items);
-	}
-
-	@Override
-	public void addScroler(Element btn, int value) {
-		Validate.notNull(btn, "The button cannot be null!");
-
-		if (value == 0) {
-			throw new RuntimeException("The value cannot be zero!");
-		}
-
-		btn.getEventManager().registerListener(ElementInteractEvent.class, new ActionHandler(value)).addAfter();
-	}
-
-	@Override
-	public boolean isSelected() {
-		return this.selected >= 0;
 	}
 
 	@Override

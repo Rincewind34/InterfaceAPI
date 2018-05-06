@@ -17,8 +17,6 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
  * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see Windows.WindowSizeableExtendable
  */
 public interface WindowSizeable extends WindowColorable {
 	

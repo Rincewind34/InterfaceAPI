@@ -74,7 +74,12 @@ public class Icon implements Displayable, Cloneable {
 	public Icon getIcon() {
 		return this;
 	}
-
+	
+	@Override
+	public boolean hasStaticIcon() {
+		return true;
+	}
+	
 	@Override
 	public boolean equals(Object icon) {
 		if (this == icon) {
@@ -87,7 +92,7 @@ public class Icon implements Displayable, Cloneable {
 		Icon other = (Icon) icon;
 		return this.item.equals(other.item);
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -208,7 +213,7 @@ public class Icon implements Displayable, Cloneable {
 	/**
 	 * Can never be <code>null</code>.
 	 * 
-	 * @return
+	 * @return the bukkit itemstack
 	 */
 	public ItemStack toItem() {
 		return this.item;

@@ -1,6 +1,5 @@
 package de.rincewind.interfaceapi.handling.element;
 
-import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 
 public class ListChangeSelectEvent extends ElementEvent<ElementList> {
@@ -21,12 +20,12 @@ public class ListChangeSelectEvent extends ElementEvent<ElementList> {
 		return this.newIndex;
 	}
 
-	public <T extends Displayable> T getClicked() {
-		return this.getElement().getItem(this.newIndex);
+	public <T> T getClicked() {
+		return this.getElement().get(this.newIndex);
 	}
 	
-	public <T extends Displayable> T getClicked(Class<T> cls) {
-		return this.getElement().getItem(cls, this.newIndex);
+	public <T> T getClicked(Class<T> cls) {
+		return this.getElement().get(cls, this.newIndex);
 	}
 
 }
