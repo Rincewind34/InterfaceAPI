@@ -4,10 +4,10 @@ import de.rincewind.interfaceapi.gui.elements.util.Icon;
 
 public interface Displayable {
 	
-	public abstract Icon getIcon();
-	
-	public default void setIcon(Icon icon) {
-		throw new UnsupportedOperationException();
+	public static Icon validate(Displayable icon) {
+		return icon == null ? Icon.AIR : icon.getIcon();
 	}
+	
+	public abstract Icon getIcon();
 	
 }

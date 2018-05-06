@@ -4,5 +4,7 @@ import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 
 public interface ElementDisplayable extends Element, Displayable, DisplayableDisabled {
-
+	
+	public abstract void setIcon(Displayable icon);
+	
 }

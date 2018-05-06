@@ -47,12 +47,8 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 	
 	@Override
-	public void setDisabledIcon(Icon icon) {
-		if (icon != null) {
-			this.disabledIcon = icon;
-		} else {
-			this.disabledIcon = Icon.AIR;
-		}
+	public void setDisabledIcon(Displayable icon) {
+		this.disabledIcon = Displayable.validate(icon);
 	}
 	
 	@Override

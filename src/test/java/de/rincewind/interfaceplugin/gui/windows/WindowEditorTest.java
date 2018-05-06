@@ -9,6 +9,7 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
@@ -21,12 +22,18 @@ import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementItem;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowEditor;
 import de.rincewind.test.TestInventory;
+import de.rincewind.test.TestServer;
 import junit.framework.Assert;
 
 public class WindowEditorTest {
 
 	private CraftWindowEditor window;
-
+	
+	@BeforeClass
+	public static void initServer() {
+		TestServer.setup();
+	}
+	
 	@Before
 	public void initWindow() {
 		this.window = new TestWindow();
