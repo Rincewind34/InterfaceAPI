@@ -13,6 +13,12 @@ import junit.framework.Assert;
 
 public class PointIncrementorTest {
 	
+	private static Set<Point> newSet(Point... points) {
+		Set<Point> result = new HashSet<>();
+		result.addAll(Arrays.asList(points));
+		return result;
+	}
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testInitNegativX() {
 		new PointIncrementor(-1, 5);
@@ -37,7 +43,7 @@ public class PointIncrementorTest {
 	
 	@Test
 	public void testIterateZero() {
-		Set<Point> points = this.newSet(new Point(2, 1));
+		Set<Point> points = PointIncrementorTest.newSet(new Point(2, 1));
 		int carry = 0;
 		
 		for (Point point : new PointIncrementor(2, 1, 2, 1)) {
@@ -51,7 +57,7 @@ public class PointIncrementorTest {
 	
 	@Test
 	public void testIterateX() {
-		Set<Point> points = this.newSet(new Point(-1, 1), new Point(0, 1), new Point(1, 1));
+		Set<Point> points = PointIncrementorTest.newSet(new Point(-1, 1), new Point(0, 1), new Point(1, 1));
 		int carry = 0;
 		
 		for (Point point : new PointIncrementor(-1, 1, 1, 1)) {
@@ -65,7 +71,7 @@ public class PointIncrementorTest {
 	
 	@Test
 	public void testIterateY() {
-		Set<Point> points = this.newSet(new Point(0, -3), new Point(0, -2), new Point(0, -1));
+		Set<Point> points = PointIncrementorTest.newSet(new Point(0, -3), new Point(0, -2), new Point(0, -1));
 		int carry = 0;
 		
 		for (Point point : new PointIncrementor(0, -3, 0, -1)) {
@@ -79,7 +85,7 @@ public class PointIncrementorTest {
 	
 	@Test
 	public void testIterateSquare() {
-		Set<Point> points = this.newSet(new Point(-1, -3), new Point(-1, -2), new Point(0, -3), new Point(0, -2));
+		Set<Point> points = PointIncrementorTest.newSet(new Point(-1, -3), new Point(-1, -2), new Point(0, -3), new Point(0, -2));
 		int carry = 0;
 		
 		for (Point point : new PointIncrementor(-1, -3, 0, -2)) {
@@ -89,12 +95,6 @@ public class PointIncrementorTest {
 		
 		Assert.assertEquals(0, points.size());
 		Assert.assertEquals(4, carry);
-	}
-	
-	private Set<Point> newSet(Point... points) {
-		Set<Point> result = new HashSet<>();
-		result.addAll(Arrays.asList(points));
-		return result;
 	}
 	
 }

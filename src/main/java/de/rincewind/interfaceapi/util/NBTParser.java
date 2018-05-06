@@ -318,6 +318,7 @@ public class NBTParser {
 			this.b = s1;
 		}
 
+		@Override
 		public NBTBase a() throws Exception {
 			try {
 				if (NBTParser.NBTPrimitiveParser.c.matcher(this.b).matches()) {
@@ -401,6 +402,7 @@ public class NBTParser {
 			this.a = s;
 		}
 
+		@Override
 		public NBTBase a() throws Exception {
 			NBTTagList nbttaglist = new NBTTagList();
 			Iterator<NBTTypeParser> iterator = this.b.iterator();
@@ -423,6 +425,7 @@ public class NBTParser {
 			this.a = s;
 		}
 
+		@Override
 		public NBTBase a() throws Exception {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			Iterator<NBTParser.NBTTypeParser> iterator = this.b.iterator();

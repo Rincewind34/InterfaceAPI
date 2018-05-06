@@ -57,7 +57,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			throw new ElementEditorException("The element is already added in a Window!");
 		}
 
-		List<Integer> ids = new ArrayList<Integer>();
+		List<Integer> ids = new ArrayList<>();
 
 		for (Element target : this.elements) {
 			ids.add(((CraftElement) target).getId());

@@ -22,9 +22,9 @@ public class RecipeShaped implements Recipe {
 	
 	public RecipeShaped(ItemStack result) {
 		this.result = result;
-		this.ingradients = new HashMap<Character, MaterialData>();
+		this.ingradients = new HashMap<>();
 		
-		RecipeShaped.staticIngradients = new HashMap<Character, MaterialData>();
+		RecipeShaped.staticIngradients = new HashMap<>();
 	}
 	
 	public RecipeShaped(ItemStack result, String... shape) {
@@ -77,7 +77,7 @@ public class RecipeShaped implements Recipe {
 	}
 	
 	public Map<Character, MaterialData> getIngradientsMap() {
-		Map<Character, MaterialData> map = new HashMap<Character, MaterialData>();
+		Map<Character, MaterialData> map = new HashMap<>();
 		
 		for (String line : this.shape) {
 			for (int i = 0; i < line.length(); i++) {

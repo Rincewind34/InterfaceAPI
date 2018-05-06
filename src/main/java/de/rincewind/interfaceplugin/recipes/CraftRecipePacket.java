@@ -17,8 +17,8 @@ public class CraftRecipePacket implements RecipePacket {
 	private List<MaterialData> replaces;
 	
 	public CraftRecipePacket() {
-		this.recipes = new HashMap<String, RecipeShaped>();
-		this.replaces = new ArrayList<MaterialData>();
+		this.recipes = new HashMap<>();
+		this.replaces = new ArrayList<>();
 	}
 	
 	@Override
@@ -72,7 +72,7 @@ public class CraftRecipePacket implements RecipePacket {
 
 	@Override
 	public List<RecipeShaped> getAllRecipes() {
-		List<RecipeShaped> result = new ArrayList<RecipeShaped>();
+		List<RecipeShaped> result = new ArrayList<>();
 		
 		for (RecipeShaped recipe : this.recipes.values()) {
 			for (MaterialData data : this.replaces) {

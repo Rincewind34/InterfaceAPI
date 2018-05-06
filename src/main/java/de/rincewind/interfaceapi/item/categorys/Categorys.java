@@ -9,7 +9,7 @@ import org.bukkit.material.MaterialData;
 @SuppressWarnings("deprecation")
 public class Categorys {
 	
-	private static Map<String, Category> categories = new HashMap<String, Category>();
+	private static Map<String, Category> categories = new HashMap<>();
 	
 	public Categorys() {
 		Category armor = new Category();

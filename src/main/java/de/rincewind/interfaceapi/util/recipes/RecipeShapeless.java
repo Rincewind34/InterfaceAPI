@@ -19,7 +19,7 @@ public class RecipeShapeless implements Recipe {
 	
 	public RecipeShapeless(ItemStack result) {
 		this.result = result;
-		this.ingradients = new ArrayList<MaterialData>();
+		this.ingradients = new ArrayList<>();
 	}
 	
 	public RecipeShapeless(ItemStack result, Material... types) {
