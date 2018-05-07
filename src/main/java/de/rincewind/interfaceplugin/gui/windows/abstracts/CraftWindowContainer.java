@@ -1,6 +1,7 @@
 package de.rincewind.interfaceplugin.gui.windows.abstracts;
 
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
@@ -12,8 +13,8 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 
 	private Inventory inventory;
 
-	public CraftWindowContainer() {
-		super();
+	public CraftWindowContainer(Plugin plugin) {
+		super(plugin);
 		
 		this.getEventManager().registerListener(WindowChangeStateEvent.class, (event) -> {
 			if (event.getNewState() == WindowState.MAXIMIZED) {

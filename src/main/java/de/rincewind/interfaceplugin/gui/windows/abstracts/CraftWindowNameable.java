@@ -1,5 +1,7 @@
 package de.rincewind.interfaceplugin.gui.windows.abstracts;
 
+import org.bukkit.plugin.Plugin;
+
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowNameable;
 import de.rincewind.interfaceplugin.Validate;
 
@@ -7,7 +9,9 @@ public class CraftWindowNameable extends CraftWindow implements WindowNameable {
 	
 	private String name;
 	
-	public CraftWindowNameable() {
+	public CraftWindowNameable(Plugin plugin) {
+		super(plugin);
+		
 		this.name = "GUI";
 	}
 	

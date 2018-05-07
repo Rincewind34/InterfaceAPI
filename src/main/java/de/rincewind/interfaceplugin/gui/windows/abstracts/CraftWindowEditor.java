@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.bukkit.plugin.Plugin;
+
 import de.rincewind.interfaceapi.exceptions.ElementEditorException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.ElementCreator;
@@ -24,7 +26,9 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 	private List<Element> elements;
 
-	public CraftWindowEditor() {
+	public CraftWindowEditor(Plugin plugin) {
+		super(plugin);
+		
 		this.elements = new ArrayList<>();
 		this.creator = new ElementCreator(this);
 

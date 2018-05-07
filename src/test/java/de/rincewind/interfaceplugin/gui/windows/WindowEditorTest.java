@@ -288,6 +288,8 @@ public class WindowEditorTest {
 	private static class TestWindow extends CraftWindowEditor {
 
 		public TestWindow() {
+			super(null);
+			
 			this.createBukkitInventory();
 		}
 

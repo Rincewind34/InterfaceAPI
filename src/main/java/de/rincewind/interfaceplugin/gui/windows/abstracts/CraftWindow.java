@@ -1,6 +1,7 @@
 package de.rincewind.interfaceplugin.gui.windows.abstracts;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
@@ -10,14 +11,16 @@ import de.rincewind.interfaceapi.handling.window.WindowOpenEvent;
 import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
 
 public abstract class CraftWindow implements Window {
-
+	
+	private final Plugin plugin;
+	
 	private WindowState state;
-
 	private Player player;
-
 	private EventManager eventManager;
 
-	public CraftWindow() {
+	public CraftWindow(Plugin plugin) {
+		this.plugin = plugin;
+		
 		this.state = WindowState.CLOSED;
 		this.eventManager = new CraftEventManager();
 		
@@ -47,6 +50,11 @@ public abstract class CraftWindow implements Window {
 	@Override
 	public Player getUser() {
 		return this.player;
+	}
+	
+	@Override
+	public Plugin getPlugin() {
+		return this.plugin;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.bukkit.Material;
+import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.gui.elements.ElementItem;
@@ -18,19 +19,21 @@ public class WindowConfirm extends CraftWindowSizeable {
 
 	private Consumer<Boolean> action;
 
-	public WindowConfirm(String name, Consumer<Boolean> action) {
-		this(name, action, 5);
+	public WindowConfirm(Plugin plugin, String name, Consumer<Boolean> action) {
+		this(plugin, name, action, 5);
 	}
 
-	public WindowConfirm(String name, Consumer<Boolean> action, int width) {
-		this(name, action, width, new Icon(Material.STAINED_CLAY, 13, "§aConfirm"), new Icon(Material.STAINED_CLAY, 14, "§cNegate"));
+	public WindowConfirm(Plugin plugin, String name, Consumer<Boolean> action, int width) {
+		this(plugin, name, action, width, new Icon(Material.STAINED_CLAY, 13, "§aConfirm"), new Icon(Material.STAINED_CLAY, 14, "§cNegate"));
 	}
 
-	public WindowConfirm(String name, Consumer<Boolean> action, int width, Supplier<Icon> iconConfirm, Supplier<Icon> iconDeny) {
-		this(name, action, width, iconConfirm.get(), iconDeny.get());
+	public WindowConfirm(Plugin plugin, String name, Consumer<Boolean> action, int width, Supplier<Icon> iconConfirm, Supplier<Icon> iconDeny) {
+		this(plugin, name, action, width, iconConfirm.get(), iconDeny.get());
 	}
 
-	public WindowConfirm(String name, Consumer<Boolean> action, int width, Icon iconConfirm, Icon iconDeny) {
+	public WindowConfirm(Plugin plugin, String name, Consumer<Boolean> action, int width, Icon iconConfirm, Icon iconDeny) {
+		super(plugin);
+		
 		this.setName(name);
 		this.setSize(width, 1);
 		this.setColor(Color.BLACK);

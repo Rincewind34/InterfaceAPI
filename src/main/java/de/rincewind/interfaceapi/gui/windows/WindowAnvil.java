@@ -3,6 +3,7 @@ package de.rincewind.interfaceapi.gui.windows;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
@@ -21,7 +22,9 @@ public class WindowAnvil extends CraftWindow {
 
 	private Inventory inventory;
 
-	public WindowAnvil() {
+	public WindowAnvil(Plugin plugin) {
+		super(plugin);
+		
 		this.display = new Icon(Material.STONE).rename(">");
 
 		this.getEventManager().registerListener(WindowChangeStateEvent.class, (event) -> {

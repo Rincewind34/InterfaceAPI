@@ -6,6 +6,7 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.exceptions.InvalidSizeException;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
@@ -17,9 +18,9 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 	private int width;
 	private int height;
 	
-	public CraftWindowSizeable() {
-		super();
-
+	public CraftWindowSizeable(Plugin plugin) {
+		super(plugin);
+		
 		this.width = 9;
 		this.height = 3;
 		

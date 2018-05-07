@@ -8,6 +8,10 @@ public class TestWindowSizeable extends CraftWindowSizeable {
 
 	private Inventory reference;
 
+	public TestWindowSizeable() {
+		super(null);
+	}
+
 	@Override
 	public Inventory newInventory() {
 		return this.reference = new TestInventory(this.getName(), this.getWidth() * this.getHeight());

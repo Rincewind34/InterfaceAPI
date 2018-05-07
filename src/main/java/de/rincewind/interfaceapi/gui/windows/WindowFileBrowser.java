@@ -1,9 +1,15 @@
 package de.rincewind.interfaceapi.gui.windows;
 
+import org.bukkit.plugin.Plugin;
+
 import de.rincewind.interfaceplugin.gui.windows.CraftWindowSizeable;
 
 @Deprecated
 public class WindowFileBrowser extends CraftWindowSizeable {
+	
+	public WindowFileBrowser(Plugin plugin) {
+		super(plugin);
+	}
 	
 //	private DebugScene cache;
 //	

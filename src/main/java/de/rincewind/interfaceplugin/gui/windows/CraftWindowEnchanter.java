@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
 
 import com.google.common.collect.Sets;
 
@@ -26,7 +27,9 @@ public class CraftWindowEnchanter extends CraftWindowEditor implements WindowEnc
 
 	private int[] lvls;
 
-	public CraftWindowEnchanter() {
+	public CraftWindowEnchanter(Plugin plugin) {
+		super(plugin);
+		
 		this.lvls = new int[] { 0, 0, 0 };
 
 		this.getEventManager().registerListener(WindowChangeStateEvent.class, (event) -> {

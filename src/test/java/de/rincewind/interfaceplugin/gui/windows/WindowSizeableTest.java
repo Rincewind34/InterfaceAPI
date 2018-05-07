@@ -19,7 +19,7 @@ public class WindowSizeableTest {
 	
 	@Before
 	public void initWindow() {
-		this.window = new CraftWindowSizeable();
+		this.window = new CraftWindowSizeable(null);
 	}
 	
 	@Test

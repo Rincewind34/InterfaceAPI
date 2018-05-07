@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.bukkit.Material;
+import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.gui.elements.ElementItem;
@@ -20,7 +21,9 @@ public class CraftWindowPointer extends CraftWindowSizeable implements WindowPoi
 
 	private List<Point> blocked;
 
-	public CraftWindowPointer(Consumer<Point> action, int width, int height, String name, List<Point> blocked) {
+	public CraftWindowPointer(Plugin plugin, Consumer<Point> action, int width, int height, String name, List<Point> blocked) {
+		super(plugin);
+		
 		this.action = action;
 		this.blocked = blocked;
 

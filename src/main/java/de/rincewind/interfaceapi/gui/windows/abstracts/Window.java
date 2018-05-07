@@ -1,6 +1,7 @@
 package de.rincewind.interfaceapi.gui.windows.abstracts;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.gui.components.EventBased;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
@@ -44,5 +45,7 @@ public abstract interface Window extends EventBased {
 	 * @return if the window already has a user.
 	 */
 	public abstract boolean isOpened();
+	
+	public abstract Plugin getPlugin();
 	
 }

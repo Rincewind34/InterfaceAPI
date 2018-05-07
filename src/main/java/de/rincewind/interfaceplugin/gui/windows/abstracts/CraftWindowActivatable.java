@@ -10,8 +10,6 @@ import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
 
 public abstract class CraftWindowActivatable extends CraftWindowColorable implements WindowActivatable {
 	
-	private Plugin plugin;
-	
 	private boolean isRunning;
 	
 	private int progress;
@@ -19,7 +17,8 @@ public abstract class CraftWindowActivatable extends CraftWindowColorable implem
 	private BukkitTask task;
 	
 	public CraftWindowActivatable(Plugin plugin) {
-		this.plugin = plugin;
+		super(plugin);
+		
 		this.progress = 0;
 		
 		this.getEventManager().registerListener(WindowChangeStateEvent.class, (event) -> {
@@ -60,10 +59,6 @@ public abstract class CraftWindowActivatable extends CraftWindowColorable implem
 	@Override
 	public void setProgress(int progress) {
 		this.progress = progress;
-	}
-	
-	public Plugin getPlugin() {
-		return this.plugin;
 	}
 	
 	public abstract Runnable getRunnable();
