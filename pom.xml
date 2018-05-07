@@ -4,17 +4,16 @@
 	<groupId>de.rincewind</groupId>
 	<artifactId>interfaceapi</artifactId>
 	<version>3.0.3-SNAPSHOT</version>
+	<name>InterfaceAPI</name>
 
 	<properties>
-		<finalName>InterfaceAPI</finalName>
-
 		<spigot.version>1.12.2</spigot.version>
 		<serverapi.version>1.28.4</serverapi.version>
 		<dicefurniture.version>3.2.0.2</dicefurniture.version>
 		<furniturelib.version>1.9.2.9</furniturelib.version>
 
 		<jdk.version>9</jdk.version>
-		<output>.</output>
+		<outputTarget>${project.basedir}/target</outputTarget>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>${jdk.version}</maven.compiler.source>
 		<maven.compiler.target>${jdk.version}</maven.compiler.target>
@@ -49,6 +48,7 @@
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-aerion</artifactId>
 			<version>${spigot.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -65,6 +65,8 @@
 	</scm>
 
 	<build>
+		<defaultGoal>clean package</defaultGoal>
+		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -81,8 +83,8 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
-					<outputDirectory>${output}</outputDirectory>
-					<finalName>${finalName}-${project.version}</finalName>
+					<outputDirectory>${outputTarget}</outputDirectory>
+					<finalName>${name}-${project.version}</finalName>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -94,12 +96,12 @@
 					<failOnError>false</failOnError>
 					<filesets>
 						<fileset>
-							<directory>${output}</directory>
+							<directory>${outputTarget}</directory>
 							<includes>
-								<include>${finalName}-*.jar</include>
+								<include>${name}-*.jar</include>
 							</includes>
 							<excludes>
-								<exclude>${finalName}-${project.version}.jar</exclude>
+								<exclude>${name}-${project.version}.jar</exclude>
 							</excludes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
@@ -115,6 +117,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.0.0</version>
+				<configuration>
+					<failOnError>false</failOnError>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -137,6 +142,7 @@
 				<version>2.5.3</version>
 				<configuration>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<scmCommentPrefix>[#]</scmCommentPrefix>
 				</configuration>
 			</plugin>
 		</plugins>
