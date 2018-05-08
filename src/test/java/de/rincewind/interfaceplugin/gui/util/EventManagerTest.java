@@ -143,6 +143,85 @@ public class EventManagerTest {
 		this.manager.callEvent(Event.class, new Event());
 		Assert.assertEquals(1, counter[0]);
 	}
+	
+	@Test
+	public void testConsume() {
+		int[] counter = new int[] { 0 };
+
+		this.manager.registerListener(TestEvent1.class, (event) -> {
+			counter[0]++;
+			event.consume();
+		}).addAfter();
+		
+		this.manager.registerListener(TestEvent1.class, (event) -> {
+			counter[0]++;
+		}).addAfter();
+		
+		this.manager.callEvent(TestEvent1.class, new TestEvent1());
+		Assert.assertEquals(1, counter[0]);
+		counter[0] = 0;
+		
+		this.manager.registerListener(Event.class, (event) -> {
+			counter[0]++;
+		}).addAfter();
+		
+		this.manager.callEvent(TestEvent1.class, new TestEvent1());
+		Assert.assertEquals(1, counter[0]);
+		counter[0] = 0;
+		
+		this.manager.registerListener(TestEvent1.class, (event) -> {
+			counter[0]++;
+		}).addBefore();
+		
+		this.manager.callEvent(TestEvent1.class, new TestEvent1());
+		Assert.assertEquals(2, counter[0]);
+		counter[0] = 0;
+		
+		this.manager.callEvent(Event.class, new Event());
+		Assert.assertEquals(1, counter[0]);
+		counter[0] = 0;
+		
+		this.manager.registerListener(TestEvent3.class, (event) -> {
+			counter[0]++;
+		}).addAfter();
+		
+		this.manager.callEvent(TestEvent3.class, new TestEvent3());
+		Assert.assertEquals(3, counter[0]);
+		counter[0] = 0;
+		
+		this.manager.registerListener(TestEvent3.class, (event) -> {
+			counter[0]++;
+			event.consume();
+		}).addBefore();
+		
+		this.manager.callEvent(TestEvent3.class, new TestEvent3());
+		Assert.assertEquals(1, counter[0]);
+		counter[0] = 0;
+		
+		this.manager.callEvent(TestEvent1.class, new TestEvent1());
+		Assert.assertEquals(2, counter[0]);
+		counter[0] = 0;
+		
+		this.manager.registerListener(TestEvent2.class, (event) -> {
+			counter[0]++;
+		}).addBefore();
+		
+		this.manager.callEvent(Event.class, new Event());
+		Assert.assertEquals(1, counter[0]);
+		counter[0] = 0;
+		
+		this.manager.callEvent(TestEvent1.class, new TestEvent3());
+		Assert.assertEquals(2, counter[0]);
+		counter[0] = 0;
+		
+		this.manager.callEvent(Event.class, new TestEvent3());
+		Assert.assertEquals(1, counter[0]);
+		counter[0] = 0;
+		
+		this.manager.callEvent(TestEvent2.class, new TestEvent2());
+		Assert.assertEquals(2, counter[0]);
+		counter[0] = 0;
+	}
 
 	@Test
 	public void testPayload() {

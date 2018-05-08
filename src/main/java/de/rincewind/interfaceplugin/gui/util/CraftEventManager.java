@@ -22,9 +22,13 @@ public class CraftEventManager implements EventManager {
 		Validate.notNull(eventCls, "The event class cannot be null");
 		Validate.notNull(event, "The event cannot be null");
 		
+		if (event.isConsumed()) {
+			throw new IllegalArgumentException("The event is already consumed");
+		}
+		
 		this.touchEntry(eventCls).fireEvent(event);
 		
-		if (eventCls != Event.class) {
+		if (eventCls != Event.class && !event.isConsumed()) {
 			this.callEvent((Class) eventCls.getSuperclass(), event);
 		}
 	}
@@ -85,6 +89,7 @@ public class CraftEventManager implements EventManager {
 
 		public <F extends E> void fireEvent(F event) {
 			assert event != null : "The event is null";
+			assert !event.isConsumed() : "The event is already consumed";
 			
 			for (InterfaceListener<E> listener : this.listeners) {
 				listener.onAction(event);
