@@ -24,11 +24,11 @@ import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
  */
 public interface EventManager {
 	
-	public abstract <E extends Event<?>> List<InterfaceListener<E>> getRegisteredListeners(Class<E> eventClass);
+	public abstract <E extends Event> List<InterfaceListener<E>> getRegisteredListeners(Class<E> eventClass);
 	
-	public abstract <E extends Event<?>> ListenerBase<E> registerListener(Class<E> eventCls, InterfaceListener<E> listener);
+	public abstract <E extends Event> ListenerBase<E> registerListener(Class<E> eventCls, InterfaceListener<E> listener);
 	
-	public abstract <E extends Event<?>, F extends E> void callEvent(Class<E> eventCls, F event);
+	public abstract <E extends Event> void callEvent(Class<E> eventCls, E event);
 	
 	/**
 	 * This class is a dummy to let the user decide if the listener to register has to
@@ -42,7 +42,7 @@ public interface EventManager {
 	 * 
 	 * @see EventManager#registerListener(Class, InterfaceListener)
 	 */
-	public static class ListenerBase<E extends Event<?>> {
+	public static class ListenerBase<E extends Event> {
 		
 		private Class<E> eventCls;
 		private InterfaceListener<E> listener;

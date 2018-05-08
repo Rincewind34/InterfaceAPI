@@ -3,7 +3,7 @@ package de.rincewind.interfaceapi.handling.window;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
 import de.rincewind.interfaceapi.handling.Event;
 
-public class WindowEvent<T extends Window> extends Event<T> {
+public class WindowEvent<T extends Window> extends Event {
 	
 	private T window;
 	

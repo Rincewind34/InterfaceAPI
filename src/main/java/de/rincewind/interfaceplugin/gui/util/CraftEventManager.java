@@ -18,7 +18,7 @@ public class CraftEventManager implements EventManager {
 	
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public <E extends Event<?>, F extends E> void callEvent(Class<E> eventCls, F event) {
+	public <E extends Event> void callEvent(Class<E> eventCls, E event) {
 		Validate.notNull(eventCls, "The event class cannot be null");
 		Validate.notNull(event, "The event cannot be null");
 		
@@ -30,7 +30,7 @@ public class CraftEventManager implements EventManager {
 	}
 
 	@Override
-	public <E extends Event<?>> ListenerBase<E> registerListener(Class<E> eventCls, InterfaceListener<E> listener) {
+	public <E extends Event> ListenerBase<E> registerListener(Class<E> eventCls, InterfaceListener<E> listener) {
 		Validate.notNull(eventCls, "The event class cannot be null");
 		Validate.notNull(listener, "The listener cannot be null");
 
@@ -38,20 +38,20 @@ public class CraftEventManager implements EventManager {
 	}
 
 	@Override
-	public <E extends Event<?>> List<InterfaceListener<E>> getRegisteredListeners(Class<E> eventCls) {
+	public <E extends Event> List<InterfaceListener<E>> getRegisteredListeners(Class<E> eventCls) {
 		Validate.notNull(eventCls, "The event class cannot be null");
 
 		return this.touchEntry(eventCls).listeners;
 	}
 
-	public <E extends Event<?>> void addListenerBefore(Class<E> eventCls, InterfaceListener<E> listener) {
+	public <E extends Event> void addListenerBefore(Class<E> eventCls, InterfaceListener<E> listener) {
 		assert eventCls != null : "The event class is nulll";
 		assert listener != null : "The listener is null";
 		
 		this.touchEntry(eventCls).listeners.add(0, listener);
 	}
 
-	public <E extends Event<?>> void addListenerAfter(Class<E> eventCls, InterfaceListener<E> listener) {
+	public <E extends Event> void addListenerAfter(Class<E> eventCls, InterfaceListener<E> listener) {
 		assert eventCls != null : "The event class is nulll";
 		assert listener != null : "The listener is null";
 		
@@ -59,7 +59,7 @@ public class CraftEventManager implements EventManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <E extends Event<?>> Entry<E> touchEntry(Class<E> eventCls) {
+	private <E extends Event> Entry<E> touchEntry(Class<E> eventCls) {
 		assert eventCls != null : "The event class is null";
 		
 		for (Entry<?> target : this.entries) {
@@ -73,7 +73,7 @@ public class CraftEventManager implements EventManager {
 		return entry;
 	}
 
-	private static class Entry<E extends Event<?>> {
+	private static class Entry<E extends Event> {
 
 		private Class<E> eventCls;
 		private List<InterfaceListener<E>> listeners;

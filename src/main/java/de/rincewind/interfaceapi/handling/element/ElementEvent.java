@@ -3,7 +3,7 @@ package de.rincewind.interfaceapi.handling.element;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.handling.Event;
 
-public class ElementEvent<T extends Element> extends Event<T> {
+public class ElementEvent<T extends Element> extends Event {
 	
 	private T element;
 	

@@ -1,6 +1,6 @@
 package de.rincewind.interfaceapi.handling;
 
-public class Event<T> {
+public class Event {
 
 	private boolean consumed;
 
