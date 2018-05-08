@@ -28,7 +28,7 @@ public interface EventManager {
 	
 	public abstract <E extends Event<?>> ListenerBase<E> registerListener(Class<E> eventCls, InterfaceListener<E> listener);
 	
-	public abstract <E extends Event<?>> void callEvent(Class<E> eventCls, E event);
+	public abstract <E extends Event<?>, F extends E> void callEvent(Class<E> eventCls, F event);
 	
 	/**
 	 * This class is a dummy to let the user decide if the listener to register has to

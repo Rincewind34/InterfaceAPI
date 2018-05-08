@@ -2,7 +2,7 @@ package de.rincewind.interfaceapi.handling.element;
 
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 
-public class ListChangeSelectEvent extends ElementEvent<ElementList> {
+public class ListChangeSelectEvent extends ElementValueChangeEvent<ElementList> {
 	
 	private int newIndex;
 	

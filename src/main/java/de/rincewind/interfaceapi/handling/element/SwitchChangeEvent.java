@@ -3,7 +3,7 @@ package de.rincewind.interfaceapi.handling.element;
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 
-public class SwitchChangeEvent extends ElementEvent<ElementSwitcher> {
+public class SwitchChangeEvent extends ElementValueChangeEvent<ElementSwitcher> {
 	
 	private int newIndex;
 	

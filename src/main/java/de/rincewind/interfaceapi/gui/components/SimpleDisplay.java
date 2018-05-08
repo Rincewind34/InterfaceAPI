@@ -44,11 +44,6 @@ class SimpleDisplay implements Displayable, UserMemory {
 	}
 
 	@Override
-	public void setIcon(Icon icon) {
-		this.icon = icon;
-	}
-	
-	@Override
 	public boolean hasStaticIcon() {
 		return true;
 	}

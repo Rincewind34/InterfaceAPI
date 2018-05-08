@@ -7,16 +7,15 @@ import org.bukkit.inventory.ItemStack;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 
-public class ElementInteractEvent extends ElementEvent<Element> {
+public class ElementInteractEvent extends PlayerElementEvent<Element> {
 
 	private ClickType type;
 	private ItemStack courserItem;
 
 	private Point point;
-	private Player player;
 
 	public ElementInteractEvent(Element element, Player player, Point point, ClickType type, ItemStack courserItem) {
-		super(element);
+		super(element, player);
 
 		this.type = type;
 		this.point = point;
@@ -44,10 +43,6 @@ public class ElementInteractEvent extends ElementEvent<Element> {
 
 	public Point getPoint() {
 		return this.point;
-	}
-
-	public Player getPlayer() {
-		return this.player;
 	}
 
 }

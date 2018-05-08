@@ -84,7 +84,7 @@
 				<version>2.6</version>
 				<configuration>
 					<outputDirectory>${outputTarget}</outputDirectory>
-					<finalName>${name}-${project.version}</finalName>
+					<finalName>${project.name}-${project.version}</finalName>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -98,10 +98,10 @@
 						<fileset>
 							<directory>${outputTarget}</directory>
 							<includes>
-								<include>${name}-*.jar</include>
+								<include>${project.name}-*.jar</include>
 							</includes>
 							<excludes>
-								<exclude>${name}-${project.version}.jar</exclude>
+								<exclude>${project.name}-${project.version}.jar</exclude>
 							</excludes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>

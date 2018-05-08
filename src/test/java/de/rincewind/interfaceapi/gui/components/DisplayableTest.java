@@ -16,11 +16,6 @@ public class DisplayableTest {
 		Displayable.put(GameMode.class, InterfaceUtils::convertGameMode);
 	}
 	
-	@Test(expected = UnsupportedOperationException.class)
-	public void testSetIcon() {
-		new Icon(Material.APPLE).setIcon(Icon.AIR);
-	}
-	
 	@Test
 	public void testOfDisplayable() {
 		Icon icon = new Icon(Material.APPLE);

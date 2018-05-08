@@ -98,6 +98,11 @@ public class EventManagerTest {
 
 		Assert.assertEquals(1, counter[0]);
 	}
+	
+	@Test
+	public void testExtendingEvents() {
+		
+	}
 
 	@Test
 	public void testPayload() {

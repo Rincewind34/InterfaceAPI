@@ -50,7 +50,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			}
 		}).addAfter();
 	}
-
+	
 	@Override
 	public void renderAll() {
 		for (Element element : this.elements) {

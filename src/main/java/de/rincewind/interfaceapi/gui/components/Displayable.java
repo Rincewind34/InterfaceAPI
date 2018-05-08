@@ -9,7 +9,7 @@ import org.bukkit.Material;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 
 public interface Displayable {
-	
+
 	public static final Map<Class<?>, Function<Object, Icon>> converters = new HashMap<>();
 
 	@SuppressWarnings("unchecked")
@@ -20,7 +20,7 @@ public interface Displayable {
 	public static boolean isConvertable(Class<?> cls) {
 		return Displayable.converters.containsKey(cls);
 	}
-	
+
 	public static Icon validate(Displayable icon) {
 		return icon == null ? Icon.AIR : icon.getIcon();
 	}
@@ -37,11 +37,11 @@ public interface Displayable {
 
 	public static Displayable of(Object payload, String name) {
 		Displayable result = Displayable.of(payload);
-		
+
 		if (result.hasStaticIcon()) {
 			throw new UnsupportedOperationException();
 		}
-		
+
 		result.getIcon().rename(name);
 		return result;
 	}
@@ -66,22 +66,14 @@ public interface Displayable {
 			return (T) input;
 		}
 	}
-	
+
 	public abstract Icon getIcon();
 
-	public default void setIcon(Icon icon) {
-		throw new UnsupportedOperationException();
-	}
-
 	/**
-	 * Returns <code>true</code> if the following requirements are met handling
-	 * the {@link #getIcon()} method. Independent to the amount of calls to
-	 * {@link #getIcon()}, the method does always return the same reference up
-	 * to the call of {@link #setIcon(Icon)}. As soon as {@link #setIcon(Icon)}
-	 * is called, the reference used as parameter will become the new icon
-	 * reference for this class.<br>
-	 * The result of this method has to be final too independent to
-	 * {@link #getIcon()} or {@link #setIcon(Icon)}.<br>
+	 * Returns <code>true</code> if {{@link #getIcon()}} does always return the
+	 * same reference.<br>
+	 * The result of this method has to be final too independent
+	 * to {@link #getIcon()} or {@link #setIcon(Icon)}.<br>
 	 * If this method returns <code>false</code> there is no need that the
 	 * reference resulting from {@link #getIcon()} changes with every call.
 	 * 
