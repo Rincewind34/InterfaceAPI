@@ -73,7 +73,7 @@ public interface Displayable {
 	 * Returns <code>true</code> if {{@link #getIcon()}} does always return the
 	 * same reference.<br>
 	 * The result of this method has to be final too independent
-	 * to {@link #getIcon()} or {@link #setIcon(Icon)}.<br>
+	 * to {@link #getIcon()}.<br>
 	 * If this method returns <code>false</code> there is no need that the
 	 * reference resulting from {@link #getIcon()} changes with every call.
 	 * 
