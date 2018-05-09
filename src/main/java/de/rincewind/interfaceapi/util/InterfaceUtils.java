@@ -393,5 +393,13 @@ public class InterfaceUtils {
 		nmsItem.getTag().a(nbtTag);
 		return CraftItemStack.asBukkitCopy(nmsItem);
 	}
+	
+	public static ItemStack normalize(ItemStack input) {
+		return input != null ? (input.getType() != Material.AIR ? input : null) : null;
+	}
+	
+	public static ItemStack normalizeAir(ItemStack input) {
+		return input != null ? input : new ItemStack(Material.AIR);
+	}
 
 }

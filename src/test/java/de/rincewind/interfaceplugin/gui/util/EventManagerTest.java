@@ -4,14 +4,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.rincewind.interfaceapi.exceptions.EventPipelineException;
 import de.rincewind.interfaceapi.handling.Event;
-import de.rincewind.interfaceapi.handling.EventManager;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 
 public class EventManagerTest {
 
-	private EventManager manager;
+	private CraftEventManager manager;
 
 	@Before
 	public void initManager() {
@@ -41,8 +41,23 @@ public class EventManagerTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testGetNullType() {
-		this.manager.getRegisteredListeners(null);
+	public void testCountNullType1() {
+		this.manager.countRegisteredListeners(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testCountNullType2() {
+		this.manager.countRegisteredPipelineListeners(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testCountNullType3() {
+		this.manager.countRegisteredMonitorListeners(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testCountNullType4() {
+		this.manager.countActiveListeners(null);
 	}
 
 	@Test
@@ -56,24 +71,89 @@ public class EventManagerTest {
 
 		this.manager.registerListener(TestEvent1.class, listener).addAfter();
 
-		Assert.assertEquals(1, this.manager.getRegisteredListeners(TestEvent1.class).size());
-		Assert.assertSame(listener, manager.getRegisteredListeners(TestEvent1.class).get(0));
+		Assert.assertEquals(1, this.manager.countRegisteredListeners(TestEvent1.class));
+		Assert.assertEquals(1, this.manager.countRegisteredPipelineListeners(TestEvent1.class));
+		Assert.assertEquals(1, this.manager.countActiveListeners(TestEvent1.class));
+		Assert.assertEquals(0, this.manager.countRegisteredMonitorListeners(TestEvent1.class));
+
+		this.manager.callEvent(TestEvent1.class, calledEvent[0]);
+		Assert.assertSame(calledEvent[0], calledEvent[1]);
+	}
+	
+	@Test
+	public void testMonitor() {
+		TestEvent1[] calledEvent = new TestEvent1[2];
+		calledEvent[0] = new TestEvent1();
+		
+		InterfaceListener<TestEvent1> listener = (event) -> {
+			if (!event.isInMonitor()) {
+				Assert.fail();
+			}
+			
+			calledEvent[1] = event;
+		};
+
+		this.manager.registerListener(TestEvent1.class, listener).monitor();
+
+		Assert.assertEquals(1, this.manager.countRegisteredListeners(TestEvent1.class));
+		Assert.assertEquals(0, this.manager.countRegisteredPipelineListeners(TestEvent1.class));
+		Assert.assertEquals(1, this.manager.countActiveListeners(TestEvent1.class));
+		Assert.assertEquals(1, this.manager.countRegisteredMonitorListeners(TestEvent1.class));
 
 		this.manager.callEvent(TestEvent1.class, calledEvent[0]);
 		Assert.assertSame(calledEvent[0], calledEvent[1]);
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test
+	public void testException() {
+		this.manager.registerListener(TestEvent1.class, (event) -> {
+			RuntimeException exception = new RuntimeException();
+			exception.setStackTrace(new StackTraceElement[0]);
+			throw exception;
+		}).addAfter();
+		
+		this.manager.registerListener(TestEvent1.class, (event) -> {
+			throw new Error();
+		}).monitor();
+		
+		TestEvent1 event = new TestEvent1();
+		
+		try {
+			this.manager.callEvent(TestEvent1.class, event);
+			Assert.fail();
+		} catch (Error error) {
+			
+		}
+		
+		Assert.assertTrue(event.isConsumed());
+		Assert.assertTrue(event.isInMonitor());
+	}
+	
+	@Test
 	public void testPipelineException() {
 		this.manager.registerListener(TestEvent1.class, (event) -> {
-			throw new RuntimeException();
+			EventPipelineException exception = new EventPipelineException();
+			exception.setStackTrace(new StackTraceElement[0]);
+			throw exception;
 		}).addAfter();
-
-		this.manager.callEvent(TestEvent1.class, new TestEvent1());
-
-		Assert.fail();
+		
+		this.manager.registerListener(TestEvent1.class, (event) -> {
+			throw new Error();
+		}).monitor();
+		
+		TestEvent1 event = new TestEvent1();
+		
+		try {
+			this.manager.callEvent(TestEvent1.class, event);
+			Assert.fail();
+		} catch (Error error) {
+			
+		}
+		
+		Assert.assertFalse(event.isConsumed());
+		Assert.assertTrue(event.isInMonitor());
 	}
-
+	
 	@Test
 	public void testMultipleCalls() {
 		int[] counter = new int[1];
@@ -260,7 +340,7 @@ public class EventManagerTest {
 		this.manager.registerListener(TestEvent1.class, listener5).addBefore();
 
 		Assert.assertArrayEquals(new Object[] { listener5, listener2, listener1, listener3, listener4 },
-				this.manager.getRegisteredListeners(TestEvent1.class).toArray());
+				this.manager.touchEntry(TestEvent1.class).listeners.toArray());
 	}
 
 }

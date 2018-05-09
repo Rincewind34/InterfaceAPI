@@ -16,6 +16,7 @@ import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
+import de.rincewind.interfaceapi.handling.element.ElementStackChangeEvent;
 import de.rincewind.interfaceapi.handling.window.WindowClickEvent;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
@@ -28,7 +29,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 	public CraftWindowEditor(Plugin plugin) {
 		super(plugin);
-		
+
 		this.elements = new ArrayList<>();
 		this.creator = new ElementCreator(this);
 
@@ -36,27 +37,37 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			if (event.isInInterface()) {
 				Element element = this.getVisibleElementAt(event.getInterfacePoint());
 
-				if (element == null) {
-					event.cancelInteraction();
-					return;
-				}
+				if (element != null) {
+					Point point = event.getInterfacePoint().subtract(element.getPoint());
 
-				if (!element.getBlocker().allows(event.getAction())) {
+					ElementInteractEvent elementInteractEvent = new ElementInteractEvent(element, this.getUser(), point, event.getType(),
+							event.getCourserItem());
+					element.getEventManager().callEvent(ElementInteractEvent.class, elementInteractEvent);
+
+					if (elementInteractEvent.isCancelled()) {
+						event.cancelInteraction();
+					} else {
+						ElementStackChangeEvent elementStackEvent = new ElementStackChangeEvent(element, this.getUser(), point, event.getAction(),
+								event.getCourserItem(), event.getClickedItem());
+						element.getEventManager().callEvent(ElementStackChangeEvent.class, elementStackEvent);
+						
+						if (elementStackEvent.isCancelled()) {
+							event.cancelInteraction();
+						}
+					}
+				} else {
 					event.cancelInteraction();
 				}
-
-				element.getEventManager().callEvent(ElementInteractEvent.class, new ElementInteractEvent(element, this.getUser(),
-						event.getInterfacePoint().subtract(element.getPoint()), event.getType(), event.getItem()));
 			}
 		}).addAfter();
 	}
-	
+
 	@Override
 	public void renderAll() {
 		for (Element element : this.elements) {
 			this.renderElement(element, false);
 		}
-		
+
 		this.updateInventory();
 	}
 
@@ -76,7 +87,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		for (Element element : this.elements) {
 			this.removeElement((CraftElement) element, false);
 		}
-		
+
 		this.updateInventory();
 	}
 
@@ -139,7 +150,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 		return null;
 	}
-	
+
 	@Override
 	public List<Element> getElements() {
 		return Collections.unmodifiableList(this.elements);
@@ -153,38 +164,38 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 			return element.isInside(point.subtract(element.getPoint()));
 		}).collect(Collectors.toList()));
 	}
-	
+
 	@Override
 	public Set<Point> getOccupiedPoints(Element element) {
 		Validate.notNull(element, "The element cannot be null!");
-		
+
 		if (!this.elements.contains(element)) {
 			throw new ElementEditorException("The element is not added in this Window!");
 		}
-		
+
 		Set<Point> result = new HashSet<>();
-		
+
 		for (Point target : element.getPoints()) {
 			target = target.add(element.getPoint());
-			
+
 			if (this.getVisibleElementAt(target) == element) {
 				result.add(target);
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public void renderFrame() {
 		super.renderFrame();
 	}
-	
+
 	@Override
 	public void renderPoint(Point point) {
 		super.renderPoint(point);
 	}
-	
+
 	@Override
 	public void renderPoints(Iterable<Point> points) {
 		super.renderPoints(points);
@@ -192,46 +203,46 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 	public void addElement(Element element) {
 		Validate.notNull(element, "The element cannot be null!");
-		
+
 		if (((CraftElement) element).getHandle() != this) {
 			throw new ElementEditorException("The element is already added to another window");
 		}
-		
+
 		if (this.elements.contains(element)) {
 			throw new ElementEditorException("The element is already added to this window");
 		}
-		
+
 		this.elements.add(0, element);
 		this.renderElement(element);
-		
+
 		((CraftElement) element).onElementAdded();
 	}
-	
+
 	private void renderElement(Element element, boolean update) {
 		this.renderPoints(element.getPoints().stream().map((point) -> {
 			return point.add(element.getPoint());
 		}).filter((point) -> {
 			return this.isInside(point);
 		}).collect(Collectors.toSet()));
-		
+
 		if (update) {
 			this.updateInventory();
 		}
 	}
-	
+
 	private void removeElement(CraftElement element, boolean update) {
 		Set<Point> points = element.getPoints();
-		
+
 		this.elements.remove(element);
-		
+
 		this.renderPoints(points.stream().map((point) -> {
 			return point.add(element.getPoint());
 		}).collect(Collectors.toSet()));
-		
+
 		if (update) {
 			this.updateInventory();
 		}
-		
+
 		element.onElementRemoved();
 	}
 

@@ -2,57 +2,57 @@ package de.rincewind.interfaceapi.handling.element;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
+import de.rincewind.interfaceapi.gui.elements.util.ClickAction;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 
-public class ElementInteractEvent extends PlayerElementEvent<Element> {
+public class ElementStackChangeEvent extends PlayerElementEvent<Element> {
 	
 	private boolean cancelled;
 	
-	private ClickType type;
+	private ClickAction action;
+
+	private ItemStack slotItem;
 	private ItemStack courserItem;
 
 	private Point point;
 
-	public ElementInteractEvent(Element element, Player player, Point point, ClickType type, ItemStack courserItem) {
+	public ElementStackChangeEvent(Element element, Player player, Point point, ClickAction action, ItemStack courserItem, ItemStack slotItem) {
 		super(element, player);
 
-		this.type = type;
+		this.action = action;
 		this.point = point;
 		this.courserItem = courserItem;
+		this.slotItem = slotItem;
 
 		assert this.courserItem == null || this.courserItem.getType() != Material.AIR : "The courser item is AIR";
+		assert this.slotItem == null || this.slotItem.getType() != Material.AIR : "The slot item is AIR";
 	}
 	
 	public void cancel() {
 		this.cancelled = true;
 	}
-
-	public boolean isRightClick() {
-		return this.type == ClickType.RIGHT || this.type == ClickType.SHIFT_RIGHT;
-	}
-
-	public boolean isLeftClick() {
-		return this.type == ClickType.LEFT || this.type == ClickType.SHIFT_LEFT;
-	}
-
-	public boolean isShiftClick() {
-		return this.type == ClickType.SHIFT_LEFT || this.type == ClickType.SHIFT_RIGHT;
-	}
 	
-	public boolean isCourserItemPresent() {
+	public boolean remainItemsOnCourser() {
 		return this.courserItem != null;
+	}
+
+	public boolean remainItemsInSlot() {
+		return this.slotItem != null;
 	}
 	
 	public boolean isCancelled() {
 		return this.cancelled;
 	}
 
-	public ClickType getClickType() {
-		return this.type;
+	public ClickAction getAction() {
+		return this.action;
+	}
+
+	public Point getPoint() {
+		return this.point;
 	}
 
 	/**
@@ -64,8 +64,12 @@ public class ElementInteractEvent extends PlayerElementEvent<Element> {
 		return this.courserItem;
 	}
 
-	public Point getPoint() {
-		return this.point;
+	/**
+	 * Cannot be AIR
+	 * 
+	 * @return
+	 */
+	public ItemStack getSlotItem() {
+		return this.slotItem;
 	}
-
 }

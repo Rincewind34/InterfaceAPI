@@ -1,5 +1,6 @@
 package de.rincewind.interfaceapi.handling.window;
 
+import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,23 +20,25 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 
 	private int slot;
 
-	private ItemStack item;
+	private ItemStack courserItem;
+	private ItemStack clickedItem;
 
-	public WindowClickEvent(WindowContainer window, ClickAction action, boolean isInInterface, int slot, ItemStack item, ClickType type) {
+	public WindowClickEvent(WindowContainer window, ClickAction action, boolean isInInterface, int slot, ItemStack courserItem, ItemStack clickedItem,
+			ClickType type) {
 		super(window);
 
 		this.action = action;
 		this.slot = slot;
-		this.item = item;
+		this.courserItem = courserItem;
+		this.clickedItem = clickedItem;
 		this.type = type;
 		this.isInInterface = isInInterface;
+
+		assert this.courserItem == null || this.courserItem.getType() != Material.AIR : "The courser item is AIR";
+		assert this.clickedItem == null || this.clickedItem.getType() != Material.AIR : "The clicked item is AIR";
 	}
 
 	public void cancelInteraction() {
-		if (this.isInInterface) {
-			throw new RuntimeException("The click was in interface!");
-		}
-		
 		this.cancel = true;
 	}
 
@@ -51,7 +54,7 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 		if (this.isInInterface) {
 			throw new RuntimeException("The click was in interface!");
 		}
-		
+
 		return this.removeItem;
 	}
 
@@ -83,12 +86,12 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 		return ((CraftWindowContainer) this.getWindow()).getPoint(this.slot);
 	}
 
-	public ItemStack getItem() {
-		if (this.isInInterface) {
-			throw new RuntimeException("The click was in the interface!");
-		}
+	public ItemStack getCourserItem() {
+		return this.courserItem;
+	}
 
-		return this.item;
+	public ItemStack getClickedItem() {
+		return this.clickedItem;
 	}
 
 }

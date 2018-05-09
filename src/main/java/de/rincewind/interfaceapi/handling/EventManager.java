@@ -1,13 +1,8 @@
 package de.rincewind.interfaceapi.handling;
 
-import java.util.List;
-
-import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.components.EventBased;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
-import de.rincewind.interfaceplugin.Validate;
-import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
 
 /**
  * This class handles the events and listeners to some Objects like {@link Element} or
@@ -24,11 +19,17 @@ import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
  */
 public interface EventManager {
 	
-	public abstract <E extends Event> List<InterfaceListener<E>> getRegisteredListeners(Class<E> eventClass);
+	public abstract int countRegisteredListeners(Class<? extends Event> eventCls);
 	
-	public abstract <E extends Event> ListenerBase<E> registerListener(Class<E> eventCls, InterfaceListener<E> listener);
+	public abstract int countRegisteredMonitorListeners(Class<? extends Event> eventCls);
+	
+	public abstract int countRegisteredPipelineListeners(Class<? extends Event> eventCls);
+	
+	public abstract int countActiveListeners(Class<? extends Event> eventCls);
 	
 	public abstract <E extends Event> void callEvent(Class<E> eventCls, E event);
+	
+	public abstract <E extends Event> ListenerBase registerListener(Class<E> eventCls, InterfaceListener<E> listener);
 	
 	/**
 	 * This class is a dummy to let the user decide if the listener to register has to
@@ -42,49 +43,15 @@ public interface EventManager {
 	 * 
 	 * @see EventManager#registerListener(Class, InterfaceListener)
 	 */
-	public static class ListenerBase<E extends Event> {
+	public static interface ListenerBase {
 		
-		private Class<E> eventCls;
-		private InterfaceListener<E> listener;
+		public abstract void addAfter();
 		
-		private CraftEventManager manager;
+		public abstract void addBefore();
 		
-		private boolean added;
-		
-		public ListenerBase(Class<E> eventCls, InterfaceListener<E> listener, CraftEventManager manager) {
-			Validate.notNull(listener, "The listener cannot be null!");
-			Validate.notNull(manager, "The eventManager cannot be null!");
-			
-			this.eventCls = eventCls;
-			this.listener = listener;
-			this.manager = manager;
-			this.added = false;
-		}
-		
-		/**
-		 * Adds the listener to register after all even registered listeners.
-		 */
-		public void addAfter() {
-			if (this.added) {
-				throw new APIException("The listenerbase was already added!");
-			}
-			
-			this.manager.addListenerAfter(this.eventCls, this.listener);
-			this.added = true;
-		}
-		
-		/**
-		 * Adds the listener to register before all even registered listeners.
-		 */
-		public void addBefore() {
-			if (this.added) {
-				throw new APIException("The listenerbase was already added!");
-			}
-			
-			this.manager.addListenerBefore(this.eventCls, this.listener);
-			this.added = true;
-		}
+		public abstract void monitor();
 		
 	}
+
 	
 }

@@ -13,6 +13,8 @@ import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.EventManager;
+import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
+import de.rincewind.interfaceapi.handling.element.ElementStackChangeEvent;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.util.CraftClickBlocker;
 import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
@@ -40,8 +42,8 @@ public abstract class CraftElement implements Element {
 		this.point = Point.NULL;
 		this.components = new HashMap<>();
 		this.eventManager = new CraftEventManager();
-
 		this.blocker = new CraftClickBlocker();
+
 		this.blocker.lock();
 
 		this.registerComponent(Element.ENABLED, new ElementComponent<>(Boolean.class, true, () -> {
@@ -59,6 +61,20 @@ public abstract class CraftElement implements Element {
 		this.getComponent(Element.ENABLED).setEnabled(false);
 		this.getComponent(Element.WIDTH).setEnabled(false);
 		this.getComponent(Element.HEIGHT).setEnabled(false);
+		
+		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
+			if (!this.isEnabled()) {
+				event.cancel();
+				event.consume();
+			}
+		}).addAfter();
+		
+		this.getEventManager().registerListener(ElementStackChangeEvent.class, (event) -> {
+			if (!this.getBlocker().allows(event.getAction())) {
+				event.cancel();
+				event.consume();
+			}
+		}).addAfter();
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.bukkit.Material;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
+import de.rincewind.interfaceplugin.Validate;
 
 public interface Displayable {
 
@@ -56,9 +57,7 @@ public interface Displayable {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T readPayload(Displayable input) {
-		if (input == null) {
-			throw new IllegalArgumentException();
-		}
+		Validate.notNull(input, "The input cannot be null");
 
 		if (input instanceof UserMemory) {
 			return ((UserMemory) input).getUserObject();

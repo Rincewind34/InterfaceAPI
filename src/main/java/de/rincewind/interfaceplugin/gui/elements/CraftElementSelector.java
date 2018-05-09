@@ -78,8 +78,8 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	public void registerTarget(Window window) {
 		window.getEventManager().registerListener(WindowClickEvent.class, (event) -> {
 			if (this.isEnabled()) {
-				if (!event.isInInterface() && event.getItem() != null && this.selector.test(event.getItem())) {
-					this.setSelected(event.getItem());
+				if (!event.isInInterface() && event.getCourserItem() != null && this.selector.test(event.getCourserItem())) {
+					this.setSelected(event.getCourserItem());
 					event.cancelInteraction();
 				}
 			}

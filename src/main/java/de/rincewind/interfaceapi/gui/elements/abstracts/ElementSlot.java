@@ -2,9 +2,7 @@ package de.rincewind.interfaceapi.gui.elements.abstracts;
 
 import org.bukkit.inventory.ItemStack;
 
-import de.rincewind.interfaceapi.gui.elements.ElementInput;
-import de.rincewind.interfaceapi.gui.elements.ElementOutput;
-import de.rincewind.interfaceapi.gui.elements.ElementScanner;
+import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
 
 /**
@@ -14,12 +12,8 @@ import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
  * 
  * @author Rincewind34
  * @since 2.3.3
- * 
- * @see ElementScanner
- * @see ElementInput
- * @see ElementOutput
  */
-public abstract interface ElementSlot extends Element {
+public abstract interface ElementSlot extends Element, DisplayableDisabled {
 	
 	/**
 	 * Returns <code>true</code> if the slot is empty and <code>false</code>

@@ -13,6 +13,7 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowContainer;
 import de.rincewind.interfaceapi.handling.window.AnvilNameEvent;
 import de.rincewind.interfaceapi.handling.window.WindowClickEvent;
+import de.rincewind.interfaceapi.util.InterfaceUtils;
 
 public class InventoryClickListener implements Listener {
 
@@ -22,31 +23,29 @@ public class InventoryClickListener implements Listener {
 
 		if (InterfaceAPI.getSetup(player).hasMaximizedWindow()) {
 			Window window = InterfaceAPI.getSetup(player).getMaximizedWindow();
-			ClickAction action = ClickAction.getAction(event.getAction());
 
-			if (action == null) {
-				event.setCancelled(true);
-				return;
-			}
-			
 			if (window instanceof WindowContainer) {
 				WindowContainer containerWindow = (WindowContainer) window;
+				ClickAction action = ClickAction.getAction(event.getAction());
 
 				WindowClickEvent windowEvent = new WindowClickEvent(containerWindow, action,
-						event.getClickedInventory() == event.getView().getTopInventory(), event.getSlot(), event.getCurrentItem(), event.getClick());
+						event.getClickedInventory() == event.getView().getTopInventory(), event.getSlot(),
+						InterfaceUtils.normalize(event.getWhoClicked().getItemOnCursor()), InterfaceUtils.normalize(event.getCurrentItem()),
+						event.getClick());
+
 				containerWindow.getEventManager().callEvent(WindowClickEvent.class, windowEvent);
 
-				if (windowEvent.isCancelled() || !ClickAction.getBlockableActions().contains(event.getAction())) {
+				if (windowEvent.isCancelled()) {
 					event.setCancelled(true);
 				}
 
-				if (windowEvent.removeItem() && !windowEvent.isInInterface()) {
+				if (windowEvent.removeItem()) {
+					assert !windowEvent.isInInterface() : "The item will be removed from interface";
+
 					player.getInventory().setItem(event.getSlot(), null);
 				}
 			} else if (window instanceof WindowAnvil) {
 				event.setCancelled(true);
-				
-				window.getEventManager().getRegisteredListeners(null).toArray(null);
 
 				if (event.getRawSlot() == 2) {
 					window.getEventManager().callEvent(AnvilNameEvent.class,

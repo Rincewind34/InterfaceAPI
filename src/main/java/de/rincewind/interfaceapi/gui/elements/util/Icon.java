@@ -68,7 +68,6 @@ public class Icon implements Displayable, Cloneable {
 		}
 
 		this.item = item;
-		this.item = ItemLibrary.refactor().addAllFlags(this.item);
 	}
 
 	@Override

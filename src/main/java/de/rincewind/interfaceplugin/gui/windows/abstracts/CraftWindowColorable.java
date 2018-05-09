@@ -2,6 +2,7 @@ package de.rincewind.interfaceplugin.gui.windows.abstracts;
 
 import org.bukkit.plugin.Plugin;
 
+import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.util.Color;
@@ -60,12 +61,12 @@ public abstract class CraftWindowColorable extends CraftWindowEditor implements 
 	
 	@Override
 	public Icon getIcon(Point point) {
-		Icon icon = super.getIcon(point);
-		
-		if (icon == Icon.AIR) {
+		Element element = this.getVisibleElementAt(point);
+
+		if (element == null) {
 			return this.color.asIcon();
 		} else {
-			return icon;
+			return element.getIcon(point.subtract(element.getPoint()));
 		}
 	}
 	

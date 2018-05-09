@@ -1,11 +1,12 @@
 package de.rincewind.interfaceapi.gui.elements;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.function.Predicate;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementSlot;
+import de.rincewind.interfaceplugin.Validate;
 
 /**
  * In this element, the user can put items in, and pickup items already dropped
@@ -14,13 +15,34 @@ import de.rincewind.interfaceapi.gui.elements.abstracts.ElementSlot;
  * @author Rincewind34
  * @since 2.3.3
  */
-public abstract interface ElementInput extends ElementSlot, Iterable<ItemStack> {
-
-	/**
-	 * Clears the memory of injected items.
-	 */
-	public abstract void clearMemory();
-
+public abstract interface ElementInput extends ElementSlot {
+	
+	public static Predicate<ItemStack> only(Material type) {
+		return (item) -> {
+			return item.getType() == type;
+		};
+	}
+	
+	public static Predicate<ItemStack> only(Material type, short data) {
+		return (item) -> {
+			return item.getType() == type && item.getDurability() == data;
+		};
+	}
+	
+	public static Predicate<ItemStack> only(ItemStack format) {
+		Validate.notNull(format, "The format cannot be null");
+		
+		if (format.getType() == Material.AIR) {
+			throw new IllegalArgumentException("The format cannot be AIR");
+		}
+		
+		return (item) -> {
+			return item.isSimilar(format);
+		};
+	}
+	
+	public abstract void setInputPredicate(Predicate<ItemStack> predicate, boolean force);
+	
 	/**
 	 * Injects the item, witch is present in the slot. If the slot is empty,
 	 * this method will return <code>null</code>. If there is an item in the
@@ -28,25 +50,12 @@ public abstract interface ElementInput extends ElementSlot, Iterable<ItemStack> 
 	 * 
 	 * @return the item, witch is present in the slot
 	 */
-	public abstract ItemStack inject();
+	public abstract ItemStack popItem();
+	
+	public abstract Predicate<ItemStack> getInputPredicate();
+	
+	public default void setInputPredicate(Predicate<ItemStack> predicate) {
+		this.setInputPredicate(predicate, false);
+	}
 
-	public abstract List<ItemStack> getMemory();
-	
-	@Override
-	public default Iterator<ItemStack> iterator() {
-		return this.getMemory().iterator();
-	}
-	
-	public default int getMemorySize() {
-		return this.getMemory().size();
-	}
-	
-	public default int lastMemoryIndex() {
-		return this.getMemorySize() - 1;
-	}
-	
-	public default ItemStack fromMemory(int index) {
-		return this.getMemory().get(index);
-	}
-	
 }
