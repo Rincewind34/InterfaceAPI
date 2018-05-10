@@ -14,10 +14,13 @@ public class CraftElementOutput extends CraftElementSlot implements ElementOutpu
 	
 	private boolean empty;
 	
+	private int maxStackSize;
+	
 	public CraftElementOutput(WindowEditor handle) {
 		super(handle);
 		
 		this.empty = true;
+		this.maxStackSize = 64;
 		
 		this.getBlocker().unlock();
 		this.getBlocker().addAction(ClickAction.PLACE);
@@ -33,6 +36,11 @@ public class CraftElementOutput extends CraftElementSlot implements ElementOutpu
 	@Override
 	public void output(ItemStack item) {
 		this.output(item, false);
+	}
+	
+	@Override
+	public int getMaxStackSize() {
+		return this.maxStackSize;
 	}
 	
 	@Override

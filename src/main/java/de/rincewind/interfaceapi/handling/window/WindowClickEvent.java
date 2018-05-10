@@ -39,13 +39,20 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 	}
 
 	public void cancelInteraction() {
+		this.validateMonitor();
 		this.cancel = true;
 	}
 
 	public void removeClickedItem() {
+		this.validateMonitor();
 		this.removeItem = true;
 	}
-
+	
+	public void setCourserItem(ItemStack courserItem) {
+		this.validateMonitor();
+		this.courserItem = courserItem;
+	}
+	
 	public boolean isCancelled() {
 		return this.cancel;
 	}

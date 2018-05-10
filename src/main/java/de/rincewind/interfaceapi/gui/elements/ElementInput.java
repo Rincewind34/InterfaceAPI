@@ -41,6 +41,8 @@ public abstract interface ElementInput extends ElementSlot {
 		};
 	}
 	
+	public abstract void setMaxStackSize(int maxStackSize, boolean force);
+	
 	public abstract void setInputPredicate(Predicate<ItemStack> predicate, boolean force);
 	
 	/**
@@ -56,6 +58,10 @@ public abstract interface ElementInput extends ElementSlot {
 	
 	public default void setInputPredicate(Predicate<ItemStack> predicate) {
 		this.setInputPredicate(predicate, false);
+	}
+	
+	public default void setMaxStackSize(int maxStackSize) {
+		this.setMaxStackSize(maxStackSize, false);
 	}
 
 }

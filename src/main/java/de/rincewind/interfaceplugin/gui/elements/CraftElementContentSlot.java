@@ -9,5 +9,10 @@ public class CraftElementContentSlot extends CraftElementSlot implements Element
 	public CraftElementContentSlot(WindowEditor handle) {
 		super(handle);
 	}
+
+	@Override
+	public int getMaxStackSize() {
+		return 64; // TODO
+	}
 	
 }

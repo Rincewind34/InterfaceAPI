@@ -31,12 +31,13 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 				event.consume();
 				return;
 			}
-			
-			ItemStack previous = this.content;
-			this.setContent(event.getSlotItem());
-			
-			this.getEventManager().callEvent(ElementSlotChangeEvent.class, new ElementSlotChangeEvent(this, previous, this.content));
 		}).addAfter();
+
+		this.getEventManager().registerListener(ElementStackChangeEvent.class, (event) -> {
+			if (!event.isConsumed()) {
+				this.setContent(event.getSlotItem());
+			}
+		}).monitor();
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 
 	@Override
 	public ItemStack getCurrentContent() {
-		return this.getContent().clone();
+		return this.isEmpty() ? null : this.content.clone();
 	}
 
 	@Override
@@ -72,13 +73,15 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 		}
 	}
 
-	public ItemStack getContent() {
-		return this.content;
-	}
-
 	public void setContent(ItemStack item) {
+		assert item.getAmount() <= this.getMaxStackSize() : "The amount is bigger than maxstacksize";
+		
+		ItemStack previous = this.content;
+
 		this.content = InterfaceUtils.normalize(item);
 		this.update();
+
+		this.getEventManager().callEvent(ElementSlotChangeEvent.class, new ElementSlotChangeEvent(this, previous, this.content));
 	}
 
 }

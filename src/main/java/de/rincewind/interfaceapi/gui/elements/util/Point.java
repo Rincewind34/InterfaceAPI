@@ -17,7 +17,7 @@ public class Point implements Comparable<Point>, Cloneable {
 	public static void increase(Point point, int width, int height, Consumer<Point> action) {
 		Validate.notNull(point, "The point cannot be null!");
 		Validate.notNull(action, "The action cannot be null!");
-
+		
 		if (width < 0) {
 			throw new IllegalArgumentException("The width cannot be smaller than zero!");
 		}

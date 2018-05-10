@@ -100,9 +100,6 @@
 							<includes>
 								<include>${project.name}-*.jar</include>
 							</includes>
-							<excludes>
-								<exclude>${project.name}-${project.version}.jar</exclude>
-							</excludes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 					</filesets>

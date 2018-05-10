@@ -24,6 +24,8 @@ public abstract interface ElementSlot extends Element, DisplayableDisabled {
 	 */
 	public abstract boolean isEmpty();
 	
+	public abstract int getMaxStackSize();
+	
 	public abstract ItemStack getCurrentContent();
 	
 }

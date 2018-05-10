@@ -28,7 +28,13 @@ public class ElementInteractEvent extends PlayerElementEvent<Element> {
 	}
 	
 	public void cancel() {
+		this.validateMonitor();
 		this.cancelled = true;
+	}
+	
+	public void setCourserItem(ItemStack courserItem) {
+		this.validateMonitor();
+		this.courserItem = courserItem;
 	}
 
 	public boolean isRightClick() {

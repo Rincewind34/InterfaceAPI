@@ -35,6 +35,16 @@ public class ElementStackChangeEvent extends PlayerElementEvent<Element> {
 		this.cancelled = true;
 	}
 	
+	public void setSlotItem(ItemStack slotItem) {
+		this.validateMonitor();
+		this.slotItem = slotItem;
+	}
+	
+	public void setCourserItem(ItemStack courserItem) {
+		this.validateMonitor();
+		this.courserItem = courserItem;
+	}
+	
 	public boolean remainItemsOnCourser() {
 		return this.courserItem != null;
 	}

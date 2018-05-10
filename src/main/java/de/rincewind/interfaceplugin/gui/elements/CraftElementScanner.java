@@ -14,11 +14,16 @@ public class CraftElementScanner extends CraftElementSlot implements ElementScan
 	}
 	
 	@Override
+	public int getMaxStackSize() {
+		return 64; // TODO
+	}
+	
+	@Override
 	public ScanResult scan() {
 		if (this.isEmpty()) {
 			return null;
 		} else {
-			return new ScanResult(this.getContent());
+			return new ScanResult(this.getCurrentContent());
 		}
 	}
 

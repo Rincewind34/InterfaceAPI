@@ -34,7 +34,8 @@ public class InventoryClickListener implements Listener {
 						event.getClick());
 
 				containerWindow.getEventManager().callEvent(WindowClickEvent.class, windowEvent);
-
+				event.getWhoClicked().setItemOnCursor(windowEvent.getCourserItem());
+				
 				if (windowEvent.isCancelled()) {
 					event.setCancelled(true);
 				}
