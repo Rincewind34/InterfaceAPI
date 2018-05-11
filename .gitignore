@@ -15,7 +15,7 @@ nb-configuration.xml
 *.iws
 
 ### Eclipse ###
-.metadata
+.metadata/
 bin/
 tmp/
 *.tmp
@@ -30,12 +30,8 @@ local.properties
 
 ### Maven ###
 target/
+etc/
 
 ### Others ###
-.project~
-.classpath~
-.gitignore~
-plugin.yml~
-README.md~
-todo.yml~
-changelog.txt~
+*~
+*.DS_STORE

@@ -17,6 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>${jdk.version}</maven.compiler.source>
 		<maven.compiler.target>${jdk.version}</maven.compiler.target>
+		<maven.exec.skip>false</maven.exec.skip>
 	</properties>
 
 	<profiles>
@@ -24,6 +25,13 @@
 			<id>skiptests</id>
 			<properties>
 				<maven.test.skip>true</maven.test.skip>
+			</properties>
+		</profile>
+		<profile>
+			<id>skipexec</id>
+
+			<properties>
+				<maven.exec.skip>true</maven.exec.skip>
 			</properties>
 		</profile>
 	</profiles>
@@ -143,10 +151,28 @@
 					<scmCommentPrefix>[#]</scmCommentPrefix>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<executions>
+					<execution>
+						<id>release-execution</id>
+						<phase>package</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>${project.basedir}/etc/scripts/packaged</executable>
+							<skip>${maven.exec.skip}</skip>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
-				<directory>src/main/resources</directory>
+				<directory>${project.basedir}/src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
