@@ -8,6 +8,7 @@
 
 	<properties>
 		<spigot.version>1.12.2</spigot.version>
+		<junit.version>4.8.2</junit.version>
 
 		<jdk.version>9</jdk.version>
 		<outputTarget>${project.basedir}/target</outputTarget>
@@ -20,13 +21,20 @@
 	<profiles>
 		<profile>
 			<id>skiptests</id>
+			
 			<properties>
 				<maven.test.skip>true</maven.test.skip>
 			</properties>
 		</profile>
 		<profile>
 			<id>skipexec</id>
-
+			
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			
 			<properties>
 				<maven.exec.skip>true</maven.exec.skip>
 			</properties>
@@ -58,7 +66,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -154,7 +162,7 @@
 				<version>1.6.0</version>
 				<executions>
 					<execution>
-						<id>release-execution</id>
+						<id>package-execution</id>
 						<phase>package</phase>
 						<goals>
 							<goal>exec</goal>
