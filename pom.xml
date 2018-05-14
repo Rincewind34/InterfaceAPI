@@ -8,9 +8,6 @@
 
 	<properties>
 		<spigot.version>1.12.2</spigot.version>
-		<serverapi.version>1.28.4</serverapi.version>
-		<dicefurniture.version>3.2.0.2</dicefurniture.version>
-		<furniturelib.version>1.9.2.9</furniturelib.version>
 
 		<jdk.version>9</jdk.version>
 		<outputTarget>${project.basedir}/target</outputTarget>
