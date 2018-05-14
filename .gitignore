@@ -9,28 +9,29 @@ nb-configuration.xml
 
 ### Intellij ###
 *.iml
-/out/
+out/
 .idea/
 *.ipr
 *.iws
 
 ### Eclipse ###
 .metadata/
+.settings/
 bin/
 tmp/
 *.tmp
 *.bak
 *.swp
 *~.nib
-local.properties
-.settings/
 .loadpath
 .project
 .classpath
+local.properties
 
 ### Maven ###
 target/
 etc/
+dependency-reduced-pom.xml
 
 ### Others ###
 *~

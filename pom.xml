@@ -51,7 +51,6 @@
 	<distributionManagement>
 		<repository>
 			<id>aerion</id>
-			<name>Aerion Internal Repository</name>
 			<url>http://dev.thejourneyofaerion.net:8081/repository/aerion</url>
 		</repository>
 	</distributionManagement>
@@ -89,6 +88,9 @@
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
+					<compilerArgs>
+						<arg>-parameters</arg>	
+					</compilerArgs>
 				</configuration>
 			</plugin>
 			<plugin>
