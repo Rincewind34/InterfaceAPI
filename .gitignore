@@ -32,6 +32,8 @@ local.properties
 target/
 etc/
 dependency-reduced-pom.xml
+pom.xml.releaseBackup
+release.properties
 
 ### Others ###
 *~
