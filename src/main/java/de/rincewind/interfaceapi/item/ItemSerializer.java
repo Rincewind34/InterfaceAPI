@@ -11,31 +11,28 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 public class ItemSerializer {
 
 	public String serialize(ItemStack is) {
-		try {
-			ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-			BukkitObjectOutputStream out = new BukkitObjectOutputStream(bytesOut);
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream(); 
+		
+		try (BukkitObjectOutputStream out = new BukkitObjectOutputStream(bytesOut)) {
 			out.writeObject(is);
 			out.flush();
-			out.close();
 			return Base64Coder.encodeLines(bytesOut.toByteArray());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	public ItemStack deserialize(String base64) {
-		try {
-			byte[] data = Base64Coder.decodeLines(base64);
-			ByteArrayInputStream bytesIn = new ByteArrayInputStream(data);
-			BukkitObjectInputStream in = new BukkitObjectInputStream(bytesIn);
-			ItemStack is = (ItemStack) in.readObject();
-			in.close();
-			return is;
+		byte[] data = Base64Coder.decodeLines(base64);
+		ByteArrayInputStream bytesIn = new ByteArrayInputStream(data);
+		
+		try (BukkitObjectInputStream in = new BukkitObjectInputStream(bytesIn)) {
+			return (ItemStack) in.readObject();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return null;
 		}
 	}
-	
+
 }

@@ -1,4 +1,4 @@
-name: InterfaceAPI-3
+name: InterfaceAPI-3 ## TODO
 version: ${project.version}
 main: de.rincewind.interfaceplugin.InterfacePlugin
 
