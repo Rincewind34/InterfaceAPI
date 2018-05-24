@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.bukkit.Material;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
+import de.rincewind.interfaceapi.gui.elements.util.Lore;
 import de.rincewind.interfaceplugin.Validate;
 
 public interface Displayable {
@@ -60,6 +61,12 @@ public interface Displayable {
 		}
 
 		result.getIcon().rename(name);
+		return result;
+	}
+
+	public static Displayable of(Object payload, String name, Lore lore) {
+		Displayable result = Displayable.of(payload, name);
+		result.getIcon().describe(lore);
 		return result;
 	}
 

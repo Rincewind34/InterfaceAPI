@@ -51,7 +51,7 @@ public class ElementCreator {
 		if (elementCls == null) {
 			throw new IllegalArgumentException("The element class cannot be null");
 		}
-		
+
 		if (elementCls.isInterface() || Modifier.isAbstract(elementCls.getModifiers())) {
 			throw new IllegalArgumentException("The element class " + elementCls + " is abstract");
 		}
@@ -78,7 +78,7 @@ public class ElementCreator {
 				}
 			}
 		}
-		
+
 		throw new IllegalArgumentException("The element class " + elementCls + " does not provide a valid constructor");
 	}
 
@@ -117,15 +117,23 @@ public class ElementCreator {
 		this.handle.addElement(element);
 		return element;
 	}
-	
+
 	public ElementSwitcher newBooleanSwitcher(String disabledDisplay, String enabledDisplay) {
 		return this.newBooleanSwitcher(disabledDisplay, enabledDisplay, false);
 	}
-	
+
 	public ElementSwitcher newBooleanSwitcher(String disabledDisplay, String enabledDisplay, boolean current) {
 		ElementSwitcher switcher = this.newSwitcher();
 		switcher.addSwitch(Displayable.of(false, "§c" + disabledDisplay));
 		switcher.addSwitch(Displayable.of(true, "§a" + enabledDisplay));
+		switcher.setSwitchIndex(current ? 1 : 0);
+		return switcher;
+	}
+
+	public ElementSwitcher newBooleanSwitcher(String disabledDisplay, Lore disabledLore, String enabledDisplay, Lore enabledLore, boolean current) {
+		ElementSwitcher switcher = this.newSwitcher();
+		switcher.addSwitch(Displayable.of(false, "§c" + disabledDisplay, disabledLore));
+		switcher.addSwitch(Displayable.of(true, "§a" + enabledDisplay, enabledLore));
 		switcher.setSwitchIndex(current ? 1 : 0);
 		return switcher;
 	}
