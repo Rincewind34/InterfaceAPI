@@ -12,13 +12,29 @@ import de.rincewind.interfaceplugin.Validate;
 public interface Displayable {
 
 	public static final Map<Class<?>, Function<Object, Icon>> converters = new HashMap<>();
+	
+	public static void copy(Class<?> cls, Class<?> other) {
+		Validate.notNull(cls, "The class cannot be null");
+		Validate.notNull(other, "The other class cannot be null");
+		
+		if (Displayable.isConvertable(cls)) {
+			throw new IllegalArgumentException("The class " + cls + " is not convertable");
+		}
+		
+		Displayable.converters.put(other, Displayable.converters.get(cls));
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> void put(Class<T> cls, Function<T, Icon> converter) {
+		Validate.notNull(cls, "The class cannot be null");
+		Validate.notNull(converter, "The converter cannot be null");
+		
 		Displayable.converters.put(cls, (Function<Object, Icon>) converter);
 	}
 
 	public static boolean isConvertable(Class<?> cls) {
+		Validate.notNull(cls, "The class cannot be null");
+		
 		return Displayable.converters.containsKey(cls);
 	}
 

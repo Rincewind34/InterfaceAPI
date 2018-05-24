@@ -27,6 +27,8 @@ public class InterfacePlugin extends JavaPlugin {
 		Displayable.put(Boolean.class, (input) -> {
 			return input ? new Icon(Material.CONCRETE, 13, "§aTrue") : new Icon(Material.CONCRETE, 14, "§cFalse");
 		});
+		
+		Displayable.copy(Boolean.class, boolean.class);
 	}
 	
 	@Override

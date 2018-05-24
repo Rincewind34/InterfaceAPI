@@ -1,5 +1,6 @@
 package de.rincewind.interfaceapi.gui.elements;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -109,6 +110,10 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 	@Override
 	public default Iterator<Displayable> iterator() {
 		return this.getSwitches().iterator();
+	}
+	
+	public default void addSwitches(Displayable... items) {
+		this.addSwitches(Arrays.asList(items));
 	}
 
 	public default <T extends Displayable> T getCurrentSwitch(Class<T> cls) {
