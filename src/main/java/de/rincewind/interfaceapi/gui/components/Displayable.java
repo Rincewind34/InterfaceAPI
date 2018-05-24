@@ -18,7 +18,7 @@ public interface Displayable {
 		Validate.notNull(cls, "The class cannot be null");
 		Validate.notNull(other, "The other class cannot be null");
 		
-		if (Displayable.isConvertable(cls)) {
+		if (!Displayable.isConvertable(cls)) {
 			throw new IllegalArgumentException("The class " + cls + " is not convertable");
 		}
 		
