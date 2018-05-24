@@ -38,6 +38,28 @@
 				<maven.exec.skip>true</maven.exec.skip>
 			</properties>
 		</profile>
+		<profile>
+			<id>fix-exec-path</id>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>package-execution</id>
+								<configuration>
+									<workingDirectory>${project.basedir}/../../</workingDirectory>
+									<executable>${project.basedir}/../../etc/scripts/packaged</executable>
+									<skip>${maven.exec.skip}</skip>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 
 	<repositories>
@@ -154,7 +176,8 @@
 				<version>2.5.3</version>
 				<configuration>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
-					<scmCommentPrefix>[#]</scmCommentPrefix>
+					<scmCommentPrefix>[#] </scmCommentPrefix>
+					<releaseProfiles>fix-exec-path</releaseProfiles>
 				</configuration>
 			</plugin>
 			<plugin>
