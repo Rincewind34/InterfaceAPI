@@ -87,7 +87,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 	@Override
 	public void addSwitch(Displayable item) {
-		Validate.notNull(item, "The switchitem cannot be null!");
+		Validate.notNull(item, "The switchitem cannot be null");
 
 		this.items.add(item);
 		
@@ -95,10 +95,19 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 			this.setSwitchIndex(0);
 		}
 	}
+	
+	@Override
+	public void addSwitches(Iterable<Displayable> items) {
+		Validate.notNull(items, "The iterable cannot be null");
+		
+		for (Displayable item : items) {
+			this.addSwitch(item);
+		}
+	}
 
 	@Override
 	public void removeSwitch(Displayable item) {
-		Validate.notNull(item, "The switchitem cannot be null!");
+		Validate.notNull(item, "The switchitem cannot be null");
 
 		this.items.remove(item);
 		this.setSwitchIndex(this.switchIndex);

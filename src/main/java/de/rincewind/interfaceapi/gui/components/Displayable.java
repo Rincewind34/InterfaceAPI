@@ -39,7 +39,7 @@ public interface Displayable {
 	public static Displayable of(Object payload, String name) {
 		Displayable result = Displayable.of(payload);
 
-		if (result.hasStaticIcon()) {
+		if (!result.hasStaticIcon()) {
 			throw new UnsupportedOperationException();
 		}
 

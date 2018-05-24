@@ -67,6 +67,8 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 	 *             if the item is <code>null</code>
 	 */
 	public abstract void addSwitch(Displayable item);
+	
+	public abstract void addSwitches(Iterable<Displayable> items);
 
 	/**
 	 * Removes a {@link Displayable} from this element. If that was the last

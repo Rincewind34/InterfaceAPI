@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import de.rincewind.interfaceapi.exceptions.ElementCreationException;
+import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.ElementContentSlot;
 import de.rincewind.interfaceapi.gui.elements.ElementCounter;
 import de.rincewind.interfaceapi.gui.elements.ElementInput;
@@ -115,6 +116,18 @@ public class ElementCreator {
 		ElementSwitcher element = new CraftElementSwitcher(this.handle);
 		this.handle.addElement(element);
 		return element;
+	}
+	
+	public ElementSwitcher newBooleanSwitcher(String disabledDisplay, String enabledDisplay) {
+		return this.newBooleanSwitcher(disabledDisplay, enabledDisplay, false);
+	}
+	
+	public ElementSwitcher newBooleanSwitcher(String disabledDisplay, String enabledDisplay, boolean current) {
+		ElementSwitcher switcher = this.newSwitcher();
+		switcher.addSwitch(Displayable.of(false, "§c" + disabledDisplay));
+		switcher.addSwitch(Displayable.of(true, "§a" + enabledDisplay));
+		switcher.setSwitchIndex(current ? 1 : 0);
+		return switcher;
 	}
 
 	public ElementItem newItem() {
