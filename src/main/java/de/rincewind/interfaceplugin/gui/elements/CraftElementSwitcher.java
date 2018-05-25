@@ -16,22 +16,26 @@ import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
 public class CraftElementSwitcher extends CraftElement implements ElementSwitcher {
-	
+
+	public static String ELEMENT_INFO = "§7§oKlicke, um den Wert zu ändern";
+
+	private boolean elementInfoEnabled;
+
 	private int switchIndex;
-	
+
 	private Icon disabledIcon;
-	
-	private List<Displayable> items;
-	
+
+	private final List<Displayable> items;
+
 	public CraftElementSwitcher(WindowEditor handle) {
 		super(handle);
-		
+
 		this.switchIndex = -1;
 		this.disabledIcon = Icon.AIR;
 		this.items = new ArrayList<>();
-		
+
 		this.getComponent(Element.ENABLED).setEnabled(true);
-		
+
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			if (event.isRightClick()) {
 				this.back();
@@ -48,7 +52,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 			}
 		}).addAfter();
 	}
-	
+
 	@Override
 	public void setDisabledIcon(Displayable icon) {
 		this.disabledIcon = Displayable.validate(icon);
@@ -76,13 +80,13 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		if (this.size() == 0) {
 			index = -1;
 		}
-		
+
 		if (fireEvent) {
 			this.getEventManager().callEvent(SwitchChangeEvent.class, new SwitchChangeEvent(this, index));
 		}
-		
+
 		this.switchIndex = index;
-		
+
 		if (this.size() != 0) {
 			if (this.switchIndex < 0) {
 				this.switchIndex = this.size() - 1;
@@ -104,16 +108,20 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		Validate.notNull(item, "The switchitem cannot be null");
 
 		this.items.add(item);
-		
+
+		if (this.elementInfoEnabled && item.hasStaticIcon()) {
+			item.getIcon().getLore().setEnd(CraftElementSwitcher.ELEMENT_INFO);
+		}
+
 		if (this.switchIndex == -1) {
 			this.setSwitchIndex(0);
 		}
 	}
-	
+
 	@Override
 	public void addSwitches(Iterable<Displayable> items) {
 		Validate.notNull(items, "The iterable cannot be null");
-		
+
 		for (Displayable item : items) {
 			this.addSwitch(item);
 		}
@@ -122,6 +130,10 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	@Override
 	public void removeSwitch(Displayable item) {
 		Validate.notNull(item, "The switchitem cannot be null");
+
+		if (this.elementInfoEnabled && item.hasStaticIcon() && CraftElementSwitcher.ELEMENT_INFO.equals(item.getIcon().getLore().getEnd())) {
+			item.getIcon().getLore().setEnd(null);
+		}
 
 		this.items.remove(item);
 		this.setSwitchIndex(this.switchIndex);
@@ -134,10 +146,39 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	}
 
 	@Override
+	public void setElementInfoEnabled(boolean value) {
+		if (this.elementInfoEnabled == value) {
+			return;
+		}
+
+		this.elementInfoEnabled = value;
+
+		if (this.elementInfoEnabled) {
+			for (Displayable displayable : this.items) {
+				if (displayable.hasStaticIcon()) {
+					displayable.getIcon().getLore().setEnd(CraftElementSwitcher.ELEMENT_INFO);
+				}
+			}
+		} else {
+			for (Displayable displayable : this.items) {
+				if (displayable.hasStaticIcon() && CraftElementSwitcher.ELEMENT_INFO.equals(displayable.getIcon().getLore().getEnd())) {
+					displayable.getIcon().getLore().setEnd(null);
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean isElementInfoEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public int size() {
 		return this.items.size();
 	}
-	
+
 	@Override
 	public Icon getDisabledIcon() {
 		return this.disabledIcon;
@@ -158,17 +199,25 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	public <T extends Displayable> T getSwitch(int index) {
 		return (T) this.items.get(index);
 	}
-	
+
 	@Override
 	public List<Displayable> getSwitches() {
 		return Collections.unmodifiableList(this.items);
 	}
-	
+
 	@Override
 	protected Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
 			if (this.switchIndex != -1) {
-				return this.items.get(this.switchIndex).getIcon();
+				Displayable displayable = this.items.get(this.switchIndex);
+
+				if (this.elementInfoEnabled && !displayable.hasStaticIcon()) {
+					Icon icon = displayable.getIcon();
+					icon.getLore().setEnd(CraftElementSwitcher.ELEMENT_INFO);
+					return icon;
+				} else {
+					return displayable.getIcon();
+				}
 			} else {
 				return Icon.AIR; /* TODO Error Icon */
 			}
@@ -176,5 +225,5 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 			return this.disabledIcon;
 		}
 	}
-	
+
 }

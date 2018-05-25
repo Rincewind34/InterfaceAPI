@@ -10,6 +10,8 @@ import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.SwitchChangeEvent;
+import de.rincewind.interfaceplugin.Validate;
+import de.rincewind.interfaceplugin.gui.elements.CraftElementSwitcher;
 
 /**
  * This element allows the suer to switch through items, added to this element.
@@ -26,7 +28,17 @@ import de.rincewind.interfaceapi.handling.element.SwitchChangeEvent;
  * @since 2.3.3
  */
 public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<Displayable> {
-
+	
+	public static void setElementInfo(String info) {
+		Validate.notNull(info, "The info cannot be null");
+		
+		CraftElementSwitcher.ELEMENT_INFO = info;
+	}
+	
+	public static String getElementInfo() {
+		return CraftElementSwitcher.ELEMENT_INFO;
+	}
+	
 	/**
 	 * Switches to the next entry and returns the entry switched to. The
 	 * {@link ElementSwitcher#setSwitchIndex(int)} will be called.
@@ -86,6 +98,10 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 	 * your self to update this element or add a new entry
 	 */
 	public abstract void clear();
+	
+	public abstract void setElementInfoEnabled(boolean value);
+	
+	public abstract boolean isElementInfoEnabled();
 
 	/**
 	 * Returns the size of the entrylist.
