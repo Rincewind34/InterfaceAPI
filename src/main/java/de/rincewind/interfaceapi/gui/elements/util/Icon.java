@@ -4,7 +4,9 @@ import java.util.Objects;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.item.ItemLibrary;
@@ -33,6 +35,11 @@ public final class Icon implements Displayable, Cloneable {
 
 	private ItemStack item;
 
+	{
+		this.amount = 1;
+		this.name = "§7";
+	}
+
 	private Icon() {
 		this.item = new ItemStack(Material.AIR);
 	}
@@ -46,6 +53,7 @@ public final class Icon implements Displayable, Cloneable {
 	}
 
 	public Icon(Material type, int data, String name) {
+		this.item = new ItemStack(Material.BEDROCK);
 		this.typecast(type);
 		this.damage(data);
 		this.rename(name);
@@ -61,6 +69,28 @@ public final class Icon implements Displayable, Cloneable {
 		}
 
 		this.item = item;
+
+		ItemMeta meta = this.item.getItemMeta();
+
+		this.type = item.getType();
+		this.damage = item.getDurability();
+		this.amount = item.getAmount();
+		this.enchantet = meta.hasEnchants();
+
+		if (meta.hasDisplayName()) {
+			this.name = meta.getDisplayName();
+		}
+
+		if (meta.hasLore()) {
+			this.lore = new Lore(meta.getLore());
+		}
+
+		for (ItemFlag flag : ItemFlag.values()) {
+			if (!meta.hasItemFlag(flag)) {
+				this.showInfo = true;
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -74,29 +104,38 @@ public final class Icon implements Displayable, Cloneable {
 	}
 
 	@Override
-	public boolean equals(Object icon) {
-		if (this == icon) {
+	public boolean equals(Object obj) {
+		if (this == obj) {
 			return true;
 		}
-		if (icon == null || this.getClass() != icon.getClass()) {
+		
+		if (obj == null) {
+			return false;
+		}
+		
+		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
 
-		Icon other = (Icon) icon;
-		return this.item.equals(other.item);
+		Icon other = (Icon) obj;
+		
+		// TODO try to avoid using toItem
+		return this.toItem().equals(other.toItem());
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (this.item == null ? 0 : this.item.hashCode());
+		
+		// TODO try to avoid using toItem
+		result = prime * result + this.toItem().hashCode();
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return this.isAir() ? "Icon#AIR" : "Icon{item=" + this.item.getType() + ";name=" + this.getName() + "}";
+		return this.isAir() ? "Icon#AIR" : "Icon{type=" + this.type + ";name=" + this.name + "}";
 	}
 
 	@Override
@@ -154,15 +193,11 @@ public final class Icon implements Displayable, Cloneable {
 	}
 
 	public Icon rename(String name) {
-		if (name == null) {
-			throw new IllegalArgumentException("Name cannot be null");
-		}
+		if (!this.isAir() && !Objects.equals(this.name, name)) {
+			if (name != null && name.isEmpty()) {
+				throw new IllegalArgumentException("Name cannot be empty");
+			}
 
-		if (name.isEmpty()) {
-			throw new IllegalArgumentException("Name cannot be empty");
-		}
-		
-		if (!this.isAir() && !this.name.equals(name)) {
 			this.name = name;
 			this.dirty = true;
 		}
@@ -260,7 +295,7 @@ public final class Icon implements Displayable, Cloneable {
 	 */
 	public ItemStack toItem() {
 		assert !(this.isAir() && this.dirty) : "Icon#AIR is dirty";
-		
+
 		if (!this.dirty) {
 			if (this.lore != null && this.lore.isDirty()) {
 				return this.item = ItemLibrary.refactor().loreItem(this.item, this.lore.toList());
@@ -269,17 +304,23 @@ public final class Icon implements Displayable, Cloneable {
 			}
 		} else {
 			this.item = new ItemStack(this.type, this.amount, (short) this.damage);
-			this.item = ItemLibrary.refactor().loreItem(this.item, this.lore.toList());
-			this.item = ItemLibrary.refactor().renameItem(this.item, this.name);
-			
+
+			if (this.name != null) {
+				this.item = ItemLibrary.refactor().renameItem(this.item, this.name);
+			}
+
+			if (this.lore != null) {
+				this.item = ItemLibrary.refactor().loreItem(this.item, this.lore.toList());
+			}
+
 			if (!this.showInfo) {
 				this.item = ItemLibrary.refactor().addAllFlags(this.item);
 			}
-			
+
 			if (this.enchantet) {
 				this.item = ItemLibrary.refactor().enchantItem(this.item, Enchantment.WATER_WORKER, 1, false);
 			}
-			
+
 			this.dirty = false;
 			return this.item;
 		}
