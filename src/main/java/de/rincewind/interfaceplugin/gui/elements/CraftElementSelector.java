@@ -1,56 +1,50 @@
 package de.rincewind.interfaceplugin.gui.elements;
 
-import java.util.function.Predicate;
+import java.util.Objects;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
-import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
-import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ItemSelectEvent;
-import de.rincewind.interfaceapi.handling.window.WindowClickEvent;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementDisplayable;
 
 public class CraftElementSelector extends CraftElementDisplayable implements ElementSelector {
-	
+
 	private boolean canUnselect;
-	private boolean isPullingOnlyOne;
+	private boolean copyAmount;
 
 	private ItemStack selected;
-
-	private Predicate<ItemStack> selector;
 
 	public CraftElementSelector(WindowEditor handle) {
 		super(handle);
 
 		this.canUnselect = false;
-		this.isPullingOnlyOne = false;
 		this.selected = null;
-		this.selector = (item) -> {
-			return true;
-		};
 		
-		this.getComponent(Element.ENABLED).setEnabled(true);
-		
+		this.setIcon(new Icon(Material.FISHING_ROD, 0, "§7§oKlicke mit einem Item auf das Icon..."));
+
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
-			if (this.canUnselect) {
+			if (event.getCourserItem() != null) {
+				this.setSelected(event.getCourserItem());
+			} else if (this.canUnselect) {
 				this.setSelected(null);
 			}
-		}).addAfter();
-	}
-
-	@Override
-	public void pullOnlyOne(boolean value) {
-		this.isPullingOnlyOne = value;
+		}).monitor();
 	}
 
 	@Override
 	public void canUnselect(boolean value) {
 		this.canUnselect = value;
+	}
+	
+	@Override
+	public void copyAmount(boolean value) {
+		this.copyAmount = value;
 	}
 
 	@Override
@@ -60,10 +54,16 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 
 	@Override
 	public void setSelected(ItemStack item, boolean fireEvent) {
-		if (item != null && this.isPullingOnlyOne && item.getAmount() > 1) {
-			ItemStack select = item.clone();
-			select.setAmount(1);
-			this.setSelected(select);
+		if (Objects.equals(this.selected, item)) {
+			return;
+		}
+
+		if (item != null) {
+			item = item.clone();
+
+			if (!this.copyAmount) {
+				item.setAmount(1);
+			}
 		}
 
 		this.selected = item;
@@ -73,32 +73,15 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 			this.getEventManager().callEvent(ItemSelectEvent.class, new ItemSelectEvent(this));
 		}
 	}
-
-	@Override
-	public void registerTarget(Window window) {
-		window.getEventManager().registerListener(WindowClickEvent.class, (event) -> {
-			if (this.isEnabled()) {
-				if (!event.isInInterface() && event.getCourserItem() != null && this.selector.test(event.getCourserItem())) {
-					this.setSelected(event.getCourserItem());
-					event.cancelInteraction();
-				}
-			}
-		}).addAfter();
-	}
-
-	@Override
-	public void setSelector(Predicate<ItemStack> selector) {
-		this.selector = selector;
-	}
-
-	@Override
-	public boolean isPullingOnlyOne() {
-		return this.isPullingOnlyOne;
-	}
-
+	
 	@Override
 	public boolean canUnselect() {
 		return this.canUnselect;
+	}
+	
+	@Override
+	public boolean copyAmount() {
+		return this.copyAmount;
 	}
 
 	@Override
