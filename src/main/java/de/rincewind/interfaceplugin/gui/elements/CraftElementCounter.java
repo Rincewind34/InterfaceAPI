@@ -28,7 +28,7 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 		
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			this.setCount((int) (this.minCount + (this.maxCount - this.minCount) / 2.0D));
-		}).addAfter();
+		}).monitor();
 	}
 	
 	@Override
@@ -98,6 +98,8 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 			this.count = count;
 			this.update();
 		}
+		
+		// TODO ElementValueChangeEvent
 	}
 	
 	@Override

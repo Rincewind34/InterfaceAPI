@@ -60,8 +60,6 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	
 	public abstract Point getPoint(int index);
 	
-	public abstract List<Displayable> getItems();
-	
 	public abstract <T> T get(Point point);
 	
 	public abstract <T> T get(Point point, int page);
@@ -71,6 +69,8 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	public abstract <T> T get(int index, int page);
 	
 	public abstract <T extends Displayable> T getItem(Point point, int page);
+	
+	public abstract List<Displayable> getItems();
 	
 	@Override
 	public default Iterator<Displayable> iterator() {
@@ -97,10 +97,8 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 		return this.getItem(point, page);
 	}
 	
-	public default <T> List<T> getItem(Class<T> cls) {
-		return this.getItems().stream().map((entry) -> {
-			return cls.cast(entry);
-		}).collect(Collectors.toList());
+	public default <T extends Displayable> List<T> getItems(Class<T> cls) {
+		return this.getItems().stream().map(cls::cast).collect(Collectors.toList());
 	}
 	
 }

@@ -17,7 +17,7 @@ import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
 public class CraftElementSwitcher extends CraftElement implements ElementSwitcher {
 
-	public static String ELEMENT_INFO = "§7§oKlicke, um den Wert zu ändern";
+	public static String ELEMENT_INFO = "§7§oKlicke, um den Wert zu ändern...";
 
 	private boolean elementInfoEnabled;
 
@@ -96,6 +96,21 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		}
 
 		this.update();
+	}
+	
+	@Override
+	public <T> void setSwitch(T switchItem) {
+		this.setSwitch(switchItem, true);
+	}
+	
+	@Override
+	public <T> void setSwitch(T switchItem, boolean fireEvent) {
+		for (int index = 0; index < this.items.size(); index++) {
+			if (Displayable.readPayload(this.getSwitch(index)) == switchItem) {
+				this.setSwitchIndex(index, fireEvent);
+				return;
+			}
+		}
 	}
 
 	@Override
@@ -185,19 +200,31 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	}
 
 	@Override
-	@SuppressWarnings(value = "unchecked")
-	public <T extends Displayable> T getCurrentSwitch() {
+	public Displayable getCurrentSwitch() {
 		if (this.size() == 0) {
 			return null;
 		} else {
-			return (T) this.items.get(this.switchIndex);
+			return this.items.get(this.switchIndex);
 		}
 	}
 
 	@Override
-	@SuppressWarnings(value = "unchecked")
-	public <T extends Displayable> T getSwitch(int index) {
-		return (T) this.items.get(index);
+	public Displayable getSwitch(int index) {
+		return this.items.get(index);
+	}
+	
+	@Override
+	public <T> T getCurrent() {
+		if (this.size() == 0) {
+			return null;
+		} else {
+			return Displayable.readPayload(this.items.get(this.switchIndex));
+		}
+	}
+
+	@Override
+	public <T> T get(int index) {
+		return Displayable.readPayload(this.items.get(index));
 	}
 
 	@Override

@@ -56,20 +56,6 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 	public abstract Displayable back();
 
 	/**
-	 * Sets the index switched to. If the new index does not match the frame of
-	 * 0 and the length of the entrylist, the index will be adapted.
-	 * 
-	 * The {@link SwitchChangeEvent} will be called after updating this element
-	 * in the handler ({@link WindowEditor}).
-	 * 
-	 * @param index
-	 *            to set
-	 */
-	public abstract void setSwitchIndex(int index);
-
-	public abstract void setSwitchIndex(int index, boolean fireEvent);
-
-	/**
 	 * Adds a {@link Displayable} to this element. If that is the first added
 	 * entry, the item will be immediately displayed.
 	 * 
@@ -100,6 +86,24 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 	public abstract void clear();
 	
 	public abstract void setElementInfoEnabled(boolean value);
+
+	/**
+	 * Sets the index switched to. If the new index does not match the frame of
+	 * 0 and the length of the entrylist, the index will be adapted.
+	 * 
+	 * The {@link SwitchChangeEvent} will be called after updating this element
+	 * in the handler ({@link WindowEditor}).
+	 * 
+	 * @param index
+	 *            to set
+	 */
+	public abstract void setSwitchIndex(int index);
+
+	public abstract void setSwitchIndex(int index, boolean fireEvent);
+	
+	public abstract <T> void setSwitch(T switchItem);
+	
+	public abstract <T> void setSwitch(T switchItem, boolean fireEvent);
 	
 	public abstract boolean isElementInfoEnabled();
 
@@ -117,11 +121,15 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 	 */
 	public abstract int getSwitchIndex();
 
+	public abstract Displayable getCurrentSwitch();
+
+	public abstract Displayable getSwitch(int index);
+	
+	public abstract <T> T getCurrent();
+
+	public abstract <T> T get(int index);
+
 	public abstract List<Displayable> getSwitches();
-
-	public abstract <T extends Displayable> T getCurrentSwitch();
-
-	public abstract <T extends Displayable> T getSwitch(int index);
 
 	@Override
 	public default Iterator<Displayable> iterator() {
@@ -132,18 +140,16 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 		this.addSwitches(Arrays.asList(items));
 	}
 
-	public default <T extends Displayable> T getCurrentSwitch(Class<T> cls) {
-		return cls.cast(this.getCurrentSwitch());
+	public default <T> T getCurrent(Class<T> cls) {
+		return cls.cast(this.getCurrent());
 	}
 
-	public default <T extends Displayable> T getSwitch(Class<T> cls, int index) {
-		return cls.cast(this.getSwitch(index));
+	public default <T> T get(Class<T> cls, int index) {
+		return cls.cast(this.get(index));
 	}
 
 	public default <T extends Displayable> List<T> getSwitches(Class<T> cls) {
-		return this.getSwitches().stream().map((entry) -> {
-			return cls.cast(entry);
-		}).collect(Collectors.toList());
+		return this.getSwitches().stream().map(cls::cast).collect(Collectors.toList());
 	}
 
 }

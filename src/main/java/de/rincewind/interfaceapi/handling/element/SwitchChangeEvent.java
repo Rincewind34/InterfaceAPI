@@ -1,6 +1,5 @@
 package de.rincewind.interfaceapi.handling.element;
 
-import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 
 public class SwitchChangeEvent extends ElementValueChangeEvent<ElementSwitcher> {
@@ -17,12 +16,8 @@ public class SwitchChangeEvent extends ElementValueChangeEvent<ElementSwitcher> 
 		return this.newIndex;
 	}
 	
-	public <T extends Displayable> T getNewSwitch() {
-		return this.getElement().getSwitch(this.newIndex);
-	}
-	
-	public <T extends Displayable> T getNewSwitch(Class<T> cls) {
-		return this.getElement().getSwitch(cls, this.newIndex);
+	public <T> T getNewSwitch() {
+		return this.getElement().get(this.newIndex);
 	}
 	
 }

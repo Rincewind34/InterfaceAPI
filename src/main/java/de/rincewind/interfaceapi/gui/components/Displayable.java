@@ -1,8 +1,10 @@
 package de.rincewind.interfaceapi.gui.components;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collector;
 
 import org.bukkit.Material;
 
@@ -13,15 +15,15 @@ import de.rincewind.interfaceplugin.Validate;
 public interface Displayable {
 
 	public static final Map<Class<?>, Function<Object, Icon>> converters = new HashMap<>();
-	
+
 	public static void copy(Class<?> cls, Class<?> other) {
 		Validate.notNull(cls, "The class cannot be null");
 		Validate.notNull(other, "The other class cannot be null");
-		
+
 		if (!Displayable.isConvertable(cls)) {
 			throw new IllegalArgumentException("The class " + cls + " is not convertable");
 		}
-		
+
 		Displayable.converters.put(other, Displayable.converters.get(cls));
 	}
 
@@ -29,13 +31,13 @@ public interface Displayable {
 	public static <T> void put(Class<T> cls, Function<T, Icon> converter) {
 		Validate.notNull(cls, "The class cannot be null");
 		Validate.notNull(converter, "The converter cannot be null");
-		
+
 		Displayable.converters.put(cls, (Function<Object, Icon>) converter);
 	}
 
 	public static boolean isConvertable(Class<?> cls) {
 		Validate.notNull(cls, "The class cannot be null");
-		
+
 		return Displayable.converters.containsKey(cls);
 	}
 
@@ -67,9 +69,24 @@ public interface Displayable {
 	public static Displayable of(Object payload, String name, Lore lore) {
 		Displayable result = Displayable.of(payload, name);
 		result.getIcon().describe(lore);
-		
-		
+
 		return result;
+	}
+
+	public static Displayable[] of(Object... payloads) {
+		Displayable[] result = new Displayable[payloads.length];
+
+		for (int i = 0; i < payloads.length; i++) {
+			result[i] = Displayable.of(payloads[i]);
+		}
+
+		return result;
+	}
+
+	public static <T extends Collection<Displayable>> T of(Collection<Object> payloads, Collector<Displayable, ?, T> collector) {
+		return payloads.stream().map((payload) -> {
+			return Displayable.of(payload);
+		}).collect(collector);
 	}
 
 	public static Displayable of(Icon icon, Object payload) {
@@ -96,8 +113,8 @@ public interface Displayable {
 	/**
 	 * Returns <code>true</code> if {{@link #getIcon()}} does always return the
 	 * same reference.<br>
-	 * The result of this method has to be final too independent
-	 * to {@link #getIcon()}.<br>
+	 * The result of this method has to be final too independent to
+	 * {@link #getIcon()}.<br>
 	 * If this method returns <code>false</code> there is no need that the
 	 * reference resulting from {@link #getIcon()} changes with every call.
 	 * 
