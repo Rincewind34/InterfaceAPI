@@ -1,21 +1,25 @@
 package de.rincewind.interfaceapi.gui.elements.util;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
 
-public class Lore implements List<String> {
+public final class Lore implements Iterable<String>, Cloneable {
+
+	private boolean dirty;
 
 	private String prefix;
+	private String end;
 
-	private List<String> lore;
+	private final List<String> lore;
 
 	public Lore() {
 		this(new ArrayList<>());
@@ -31,136 +35,103 @@ public class Lore implements List<String> {
 	}
 
 	@Override
-	public boolean add(String line) {
-		return this.lore.add(this.prefix + line);
+	public Iterator<String> iterator() {
+		return this.toList().iterator();
 	}
 
 	@Override
-	public void add(int index, String line) {
-		this.addAll(index, Stream.of(line.split(Pattern.quote("\\n"))).map((lineElement) -> {
-			return this.prefix + line;
-		}).collect(Collectors.toList()));
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null) {
+			return false;
+		}
+		
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		Lore other = (Lore) obj;
+		
+		if (this.end == null) {
+			if (other.end != null) {
+				return false;
+			}
+		} else if (!this.end.equals(other.end)) {
+			return false;
+		}
+		
+		if (this.lore == null) {
+			if (other.lore != null) {
+				return false;
+			}
+		} else if (!this.lore.equals(other.lore)) {
+			return false;
+		}
+		
+		if (this.prefix == null) {
+			if (other.prefix != null) {
+				return false;
+			}
+		} else if (!this.prefix.equals(other.prefix)) {
+			return false;
+		}
+		
+		return true;
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends String> lines) {
-		return this.lore.addAll(lines.stream().flatMap((line) -> {
-			return Stream.of(line.split(Pattern.quote("\\n")));
-		}).map((line) -> {
-			return this.prefix + line;
-		}).collect(Collectors.toList()));
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.end == null) ? 0 : this.end.hashCode());
+		result = prime * result + ((this.lore == null) ? 0 : this.lore.hashCode());
+		result = prime * result + ((this.prefix == null) ? 0 : this.prefix.hashCode());
+		return result;
 	}
 
 	@Override
-	public boolean addAll(int index, Collection<? extends String> lines) {
-		return this.lore.addAll(index, lines.stream().flatMap((line) -> {
-			return Stream.of(line.split(Pattern.quote("\\n")));
-		}).map((line) -> {
-			return this.prefix + line;
-		}).collect(Collectors.toList()));
+	public Lore clone() {
+		try {
+			Lore lore = (Lore) super.clone();
+			Collections.copy(lore.lore, this.lore);
+			return lore;
+		} catch (CloneNotSupportedException exception) {
+			assert false : "Unsupported cloning operation";
+			return null;
+		}
 	}
 
-	@Override
-	public void clear() {
-		this.lore.clear();
-	}
-
-	@Override
-	public boolean contains(Object object) {
-		return this.lore.contains(object);
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> objects) {
-		return this.lore.containsAll(objects);
-	}
-
-	@Override
-	public String get(int index) {
-		return this.lore.get(index);
-	}
-
-	@Override
-	public int indexOf(Object object) {
-		return this.lore.lastIndexOf(object);
-	}
-
-	@Override
 	public boolean isEmpty() {
 		return this.lore.isEmpty();
 	}
 
-	@Override
-	public Iterator<String> iterator() {
-		return this.lore.iterator();
+	public boolean isDirty() {
+		return this.dirty;
 	}
 
-	@Override
-	public int lastIndexOf(Object object) {
-		return this.lore.lastIndexOf(object);
-	}
-
-	@Override
-	public ListIterator<String> listIterator() {
-		return this.lore.listIterator();
-	}
-
-	@Override
-	public ListIterator<String> listIterator(int index) {
-		return this.lore.listIterator(index);
-	}
-
-	@Override
-	public boolean remove(Object object) {
-		return this.lore.remove(object);
-	}
-
-	@Override
-	public String remove(int index) {
-		return this.lore.remove(index);
-	}
-
-	@Override
-	public boolean removeAll(Collection<?> lines) {
-		return this.lore.removeAll(lines);
-	}
-
-	@Override
-	public boolean retainAll(Collection<?> lines) {
-		return this.lore.retainAll(lines);
-	}
-
-	@Override
-	public String set(int index, String line) {
-		return this.lore.set(index, this.prefix + line); // TODO support split at \\n
-	}
-
-	@Override
 	public int size() {
 		return this.lore.size();
 	}
 
-	@Override
-	public List<String> subList(int fromIndex, int toIndex) {
-		return this.lore.subList(fromIndex, toIndex);
-	}
-
-	@Override
-	public Object[] toArray() {
-		return this.lore.toArray();
-	}
-
-	@Override
-	public <T> T[] toArray(T[] array) {
-		return this.lore.toArray(array);
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-
 	public String getPrefix() {
 		return this.prefix;
+	}
+
+	public String getEnd() {
+		return this.end;
+	}
+
+	public String getLine(int index) {
+		return this.lore.get(index);
+	}
+
+	public Lore clear() {
+		this.lore.clear();
+		this.dirty = true;
+		return this;
 	}
 
 	public Lore expand() {
@@ -168,8 +139,56 @@ public class Lore implements List<String> {
 	}
 
 	public Lore expand(String line) {
-		this.add(line);
+		if (this.lore.addAll(Stream.of(line.split(Pattern.quote("\\n"))).map((lineElement) -> {
+			return this.prefix + line;
+		}).collect(Collectors.toList()))) {
+			this.dirty = true;
+		}
+
 		return this;
 	}
-	
+
+	public Lore insert(int index, String line) {
+		if (this.lore.addAll(index, Stream.of(line.split(Pattern.quote("\\n"))).map((lineElement) -> {
+			return this.prefix + line;
+		}).collect(Collectors.toList()))) {
+			this.dirty = true;
+		}
+		return this;
+	}
+
+	public Lore delete(int index) {
+		this.lore.remove(index);
+		this.dirty = true;
+		return this;
+	}
+
+	public Lore setPrefix(String prefix) {
+		if (!Objects.equals(this.prefix, prefix)) {
+			this.prefix = prefix;
+		}
+
+		return this;
+	}
+
+	public Lore setEnd(String end) {
+		if (!Objects.equals(this.end, end)) {
+			this.end = end;
+		}
+
+		return this;
+	}
+
+	protected List<String> toList() {
+		List<String> dummy = new ArrayList<>();
+		dummy.addAll(this.lore);
+
+		if (this.end != null) {
+			dummy.addAll(Arrays.asList(this.end.split(Pattern.quote("\\n"))));
+		}
+		
+		this.dirty = false;
+		return dummy;
+	}
+
 }

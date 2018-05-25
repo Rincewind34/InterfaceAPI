@@ -214,9 +214,9 @@ public class CraftElementMultiButton extends CraftElementItem implements Element
 
 			for (int i = 0; i < this.size(); i++) {
 				if (i == this.selectedIndex) {
-					lore.add(String.format(this.selectFormat, this.list.get(i).toString()));
+					lore.expand(String.format(this.selectFormat, this.list.get(i).toString()));
 				} else {
-					lore.add(String.format(this.defaultFormat, this.list.get(i).toString()));
+					lore.expand(String.format(this.defaultFormat, this.list.get(i).toString()));
 				}
 			}
 

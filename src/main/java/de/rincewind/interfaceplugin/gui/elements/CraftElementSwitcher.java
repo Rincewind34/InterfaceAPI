@@ -32,7 +32,21 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		
 		this.getComponent(Element.ENABLED).setEnabled(true);
 		
-		this.registerListener();
+		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
+			if (event.isRightClick()) {
+				this.back();
+
+				if (event.isShiftClick() && this.items.size() > 2) {
+					this.back();
+				}
+			} else if (event.isLeftClick()) {
+				this.next();
+
+				if (event.isShiftClick() && this.items.size() > 2) {
+					this.next();
+				}
+			}
+		}).addAfter();
 	}
 	
 	@Override
@@ -151,7 +165,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	}
 	
 	@Override
-	public Icon getIcon0(Point point) {
+	protected Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
 			if (this.switchIndex != -1) {
 				return this.items.get(this.switchIndex).getIcon();
@@ -161,24 +175,6 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		} else {
 			return this.disabledIcon;
 		}
-	}
-
-	protected void registerListener() {
-		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
-			if (event.isRightClick()) {
-				this.back();
-
-				if (event.isShiftClick()) {
-					this.back();
-				}
-			} else if (event.isLeftClick()) {
-				this.next();
-
-				if (event.isShiftClick()) {
-					this.next();
-				}
-			}
-		}).addAfter();
 	}
 	
 }

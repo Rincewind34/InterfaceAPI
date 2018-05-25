@@ -67,6 +67,8 @@ public interface Displayable {
 	public static Displayable of(Object payload, String name, Lore lore) {
 		Displayable result = Displayable.of(payload, name);
 		result.getIcon().describe(lore);
+		
+		
 		return result;
 	}
 
