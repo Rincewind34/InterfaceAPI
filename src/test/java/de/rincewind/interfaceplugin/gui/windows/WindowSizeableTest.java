@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
 import de.rincewind.test.TestServer;
 
 public class WindowSizeableTest {
@@ -20,6 +21,41 @@ public class WindowSizeableTest {
 	@Before
 	public void initWindow() {
 		this.window = new CraftWindowSizeable(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testCalculateHeight1() {
+		WindowSizeable.calculateHeight(0);
+	}
+	
+	@Test
+	public void testCalculateHeight2() {
+		Assert.assertEquals(1, WindowSizeable.calculateHeight(1));
+	}
+	
+	@Test
+	public void testCalculateHeight3() {
+		Assert.assertEquals(1, WindowSizeable.calculateHeight(5));
+	}
+	
+	@Test
+	public void testCalculateHeight4() {
+		Assert.assertEquals(1, WindowSizeable.calculateHeight(9));
+	}
+	
+	@Test
+	public void testCalculateHeight5() {
+		Assert.assertEquals(2, WindowSizeable.calculateHeight(10));
+	}
+	
+	@Test
+	public void testCalculateHeight6() {
+		Assert.assertEquals(2, WindowSizeable.calculateHeight(18));
+	}
+	
+	@Test
+	public void testCalculateHeight7() {
+		Assert.assertEquals(3, WindowSizeable.calculateHeight(22));
 	}
 	
 	@Test
