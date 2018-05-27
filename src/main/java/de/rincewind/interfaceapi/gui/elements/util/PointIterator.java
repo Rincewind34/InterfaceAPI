@@ -5,8 +5,33 @@ import java.util.NoSuchElementException;
 
 import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
 
-public class PointIncrementor implements Iterator<Point>, Iterable<Point>, Cloneable {
+public class PointIterator implements Iterator<Point>, Iterable<Point>, Cloneable {
+	
+	public static <T> Iterable<Content<T>> iterate(Iterable<Point> points, Iterable<T> contents) {
+		return new Iterable<>() {
+			
+			@Override
+			public Iterator<Content<T>> iterator() {
+				return new Iterator<>() {
+					
+					private Iterator<Point> pointIterator = points.iterator();
+					private Iterator<T> contentIterator = contents.iterator();
+					
+					@Override
+					public boolean hasNext() {
+						return this.pointIterator.hasNext() && this.contentIterator.hasNext();
+					}
 
+					@Override
+					public Content<T> next() {
+						return new Content<>(this.pointIterator.next(), this.contentIterator.next());
+					}
+				};
+			}
+			
+		};
+	}
+	
 	private final int minX;
 	private final int minY;
 
@@ -15,19 +40,19 @@ public class PointIncrementor implements Iterator<Point>, Iterable<Point>, Clone
 
 	private Point current;
 
-	public PointIncrementor(WindowSizeable window) {
+	public PointIterator(WindowSizeable window) {
 		this(0, 0, window.getWidth() - 1, window.getHeight() - 1);
 	}
 
-	public PointIncrementor(int maxX, int maxY) {
+	public PointIterator(int maxX, int maxY) {
 		this(0, 0, maxX, maxY);
 	}
 
-	public PointIncrementor(Point minPoint, Point maxPoint) {
+	public PointIterator(Point minPoint, Point maxPoint) {
 		this(minPoint.getX(), minPoint.getY(), maxPoint.getX(), maxPoint.getY());
 	}
 
-	public PointIncrementor(int minX, int minY, int maxX, int maxY) {
+	public PointIterator(int minX, int minY, int maxX, int maxY) {
 		if (minX > maxX) {
 			throw new IllegalArgumentException("The maximal x has to be greater or equal to minimal x");
 		}
@@ -67,9 +92,9 @@ public class PointIncrementor implements Iterator<Point>, Iterable<Point>, Clone
 	}
 
 	@Override
-	public PointIncrementor clone() {
+	public PointIterator clone() {
 		try {
-			PointIncrementor incrementor = (PointIncrementor) super.clone();
+			PointIterator incrementor = (PointIterator) super.clone();
 			incrementor.current = null;
 			return incrementor;
 		} catch (CloneNotSupportedException exception) {
@@ -96,6 +121,19 @@ public class PointIncrementor implements Iterator<Point>, Iterable<Point>, Clone
 
 	public Point current() {
 		return this.current;
+	}
+	
+	public static class Content<T> {
+		
+		public final Point point;
+		
+		public T content;
+		
+		public Content(Point point, T content) {
+			this.point = point;
+			this.content = content;
+		}
+		
 	}
 
 }
