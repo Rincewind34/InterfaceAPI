@@ -13,7 +13,7 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
  * <li>9 x (i e {1, 2, 3, 4, 5, 6})</li>
  * </ul>
  * 
- * To set elements in this window, this point P(0, 0) is in the upper right
+ * To set elements in this window, the point P(0, 0) is in the upper left
  * corner.
  * 
  * @author Rincewind34
@@ -26,7 +26,7 @@ public interface WindowSizeable extends WindowColorable {
 			throw new IllegalArgumentException("The object amount is smaller than 1");
 		}
 
-		return (int) Math.floor((objectAmount + (objectAmount % 9 == 0 ? 0 : 9)) / 9.0D);
+		return (objectAmount + (objectAmount % 9 == 0 ? 0 : 9)) / 9;
 	}
 
 	/**

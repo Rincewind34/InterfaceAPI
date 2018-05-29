@@ -460,7 +460,7 @@ public class InterfaceUtils {
 			return null;
 		}
 	}
-
+	
 	public static ItemStack buildHead(Player player) {
 		String value = ((CraftPlayer) player).getHandle().getProfile().getProperties().get("textures").iterator().next().getValue();
 

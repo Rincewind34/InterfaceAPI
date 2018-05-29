@@ -17,7 +17,7 @@ import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
 public class CraftElementSwitcher extends CraftElement implements ElementSwitcher {
 
-	public static String ELEMENT_INFO = "§7§oKlicke, um den Wert zu ändern...";
+	public static String ELEMENT_INFO = "§7§lLK: §7§oNächster Wert \\n§7§lRK: §7§oVorheriger Wert\\n§7§l+S: §7§oEinen Wert überspringen";
 
 	private boolean elementInfoEnabled;
 
@@ -97,12 +97,12 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 		this.update();
 	}
-	
+
 	@Override
 	public <T> void setSwitch(T switchItem) {
 		this.setSwitch(switchItem, true);
 	}
-	
+
 	@Override
 	public <T> void setSwitch(T switchItem, boolean fireEvent) {
 		for (int index = 0; index < this.items.size(); index++) {
@@ -212,7 +212,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	public Displayable getSwitch(int index) {
 		return this.items.get(index);
 	}
-	
+
 	@Override
 	public <T> T getCurrent() {
 		if (this.size() == 0) {
