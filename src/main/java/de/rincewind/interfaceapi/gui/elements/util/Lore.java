@@ -178,8 +178,8 @@ public final class Lore implements Iterable<String>, Cloneable {
 
 		return this;
 	}
-
-	protected List<String> toList() {
+	
+	public List<String> asList() {
 		List<String> dummy = new ArrayList<>();
 		dummy.addAll(this.lore);
 
@@ -191,8 +191,15 @@ public final class Lore implements Iterable<String>, Cloneable {
 			dummy.addAll(Arrays.asList(this.end.split(Pattern.quote("\\n"))));
 		}
 		
-		this.dirty = false;
 		return dummy;
+	}
+	
+	/*
+	 * Only called by Icon
+	 */
+	protected List<String> toList() {
+		this.dirty = false;
+		return this.asList();
 	}
 
 }
