@@ -16,12 +16,12 @@ import de.rincewind.interfaceapi.util.HeadsDatabase;
 
 public class WindowMapSelector<T> extends WindowSelector<T> {
 
-	protected ElementItem barrier;
+	protected final ElementItem barrier;
 
-	protected ElementItem buttonNext;
-	protected ElementItem buttonPrevious;
+	protected final ElementItem buttonNext;
+	protected final ElementItem buttonPrevious;
 
-	protected ElementMap typeMap;
+	protected final ElementMap typeMap;
 
 	public WindowMapSelector(Plugin plugin, Consumer<T> onSelect, Iterable<T> typeElements, Class<T> typeClass) {
 		super(plugin, onSelect, typeElements, typeClass);
