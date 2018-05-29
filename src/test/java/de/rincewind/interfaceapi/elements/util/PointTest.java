@@ -12,6 +12,41 @@ import junit.framework.Assert;
 public class PointTest {
 	
 	@Test
+	public void testCalculate1() {
+		Assert.assertEquals(new Point(0, 0), Point.calculate(0, 1, 1));
+	}
+	
+	@Test
+	public void testCalculate2() {
+		Assert.assertEquals(new Point(0, 0), Point.calculate(0, 4, 3));
+	}
+	
+	@Test
+	public void testCalculate3() {
+		Assert.assertEquals(new Point(1, 0), Point.calculate(1, 4, 3));
+	}
+	
+	@Test
+	public void testCalculate4() {
+		Assert.assertEquals(new Point(3, 0), Point.calculate(3, 4, 3));
+	}
+	
+	@Test
+	public void testCalculate5() {
+		Assert.assertEquals(new Point(0, 1), Point.calculate(4, 4, 3));
+	}
+	
+	@Test
+	public void testCalculate6() {
+		Assert.assertEquals(new Point(3, 2), Point.calculate(11, 4, 3));
+	}
+	
+	@Test
+	public void testCalculate7() {
+		Assert.assertEquals(null, Point.calculate(12, 4, 3));
+	}
+	
+	@Test
 	public void testPointEquals() {
 		Point point1 = new Point(0, 0);
 		Point point2 = new Point(0, 0);

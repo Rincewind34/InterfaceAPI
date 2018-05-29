@@ -3,6 +3,7 @@ package de.rincewind.interfaceapi.gui.elements;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
@@ -11,9 +12,11 @@ import de.rincewind.interfaceapi.gui.components.Selectable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.util.Color;
+import de.rincewind.interfaceapi.handling.InterfaceListener;
+import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 
 public interface ElementMap extends Element, DisplayableDisabled, Selectable, Iterable<Displayable> {
-	
+
 	public abstract void setColor(Color color);
 	
 	public abstract void setPage(int page);
@@ -42,9 +45,19 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	
 	public abstract void deselect(boolean fireEvent);
 	
+	public abstract void setFilter(Predicate<Displayable> filter);
+	
+	public abstract void registerNextPageFliper(Element element);
+	
+	public abstract void registerPreviousPageFliper(Element element);
+	
+	public abstract void unregisterFliper(Element element);
+	
 	public abstract boolean isFirstPage();
 	
 	public abstract boolean isLastPage();
+	
+	public abstract boolean isFiltered();
 	
 	public abstract Color getColor();
 	
@@ -58,7 +71,13 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	
 	public abstract int getFirstIndex(int page);
 	
+	public abstract int size();
+	
 	public abstract Point getPoint(int index);
+	
+	public abstract InterfaceListener<ElementInteractEvent> newFlipListener(int offset);
+	
+	public abstract Predicate<Displayable> getFilter();
 	
 	public abstract <T> T get(Point point);
 	

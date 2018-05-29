@@ -79,6 +79,8 @@ public abstract interface Element extends EventBased, UserMemory {
 	
 	public abstract boolean isEnabled();
 	
+	public abstract boolean isElementComponentEnabled(ElementComponentType<?> component);
+	
 	public abstract int getWidth();
 	
 	public abstract int getHeight();

@@ -33,6 +33,28 @@ public class Point implements Comparable<Point>, Cloneable {
 		}
 	}
 	
+	public static Point calculate(int position, int width, int height) {
+		if (width <= 0) {
+			throw new IllegalArgumentException("The width is smaller than 1");
+		}
+		
+		if (height <= 0) {
+			throw new IllegalArgumentException("The height is smaller than 1");
+		}
+		
+		if (position < 0) {
+			return null;
+		}
+		
+		Point point = new Point(position % width, position / width);
+		
+		if (point.y >= height) {
+			return null;
+		} else {
+			return point;
+		}
+	}
+	
 	private final int x;
 	private final int y;
 

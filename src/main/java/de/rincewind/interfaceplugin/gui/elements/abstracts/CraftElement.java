@@ -134,6 +134,11 @@ public abstract class CraftElement implements Element {
 	public boolean isEnabled() {
 		return this.getComponent(Element.ENABLED).getValue();
 	}
+	
+	@Override
+	public boolean isElementComponentEnabled(ElementComponentType<?> component) {
+		return this.getComponent(component).isEnabled();
+	}
 
 	@Override
 	public int getWidth() {
