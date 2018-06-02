@@ -12,6 +12,7 @@ import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
+import de.rincewind.interfaceapi.handling.element.MapChangeSelectEvent;
 import de.rincewind.interfaceapi.util.HeadsDatabase;
 
 public class WindowMapSelector<T> extends WindowSelector<T> {
@@ -42,6 +43,9 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 		this.typeMap = this.elementCreator().newMap();
 		this.typeMap.registerNextPageFliper(this.buttonNext);
 		this.typeMap.registerPreviousPageFliper(this.buttonPrevious);
+		this.typeMap.getEventManager().registerListener(MapChangeSelectEvent.class, (event) -> {
+			this.select(event.getClicked());
+		}).monitor();
 
 		for (T element : typeElements) {
 			this.typeMap.addItem(Displayable.of(element));

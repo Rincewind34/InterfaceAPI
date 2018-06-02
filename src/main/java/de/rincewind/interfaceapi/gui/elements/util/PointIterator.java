@@ -3,15 +3,17 @@ package de.rincewind.interfaceapi.gui.elements.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
 
 public class PointIterator implements Iterator<Point>, Iterable<Point>, Cloneable {
 	
-	public static <T> Iterable<Content<T>> iterate(Iterable<Point> points, Iterable<T> contents) {
+	public static <T> Iterable<Pair<Point, T>> iterate(Iterable<Point> points, Iterable<T> contents) {
 		return new Iterable<>() {
 			
 			@Override
-			public Iterator<Content<T>> iterator() {
+			public Iterator<Pair<Point, T>> iterator() {
 				return new Iterator<>() {
 					
 					private Iterator<Point> pointIterator = points.iterator();
@@ -23,8 +25,8 @@ public class PointIterator implements Iterator<Point>, Iterable<Point>, Cloneabl
 					}
 
 					@Override
-					public Content<T> next() {
-						return new Content<>(this.pointIterator.next(), this.contentIterator.next());
+					public Pair<Point, T> next() {
+						return Pair.of(this.pointIterator.next(), this.contentIterator.next());
 					}
 				};
 			}
@@ -121,19 +123,6 @@ public class PointIterator implements Iterator<Point>, Iterable<Point>, Cloneabl
 
 	public Point current() {
 		return this.current;
-	}
-	
-	public static class Content<T> {
-		
-		public final Point point;
-		
-		public T content;
-		
-		public Content(Point point, T content) {
-			this.point = point;
-			this.content = content;
-		}
-		
 	}
 
 }

@@ -4,13 +4,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
+import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.exceptions.SetupException;
 import de.rincewind.interfaceapi.gui.windows.WindowAnvil;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowContainer;
+import de.rincewind.interfaceapi.gui.windows.selectors.WindowSelector;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
 import de.rincewind.interfaceapi.handling.window.WindowOpenEvent;
@@ -200,6 +204,19 @@ public class CraftSetup implements Setup {
 	@Override
 	public Player getOwner() {
 		return this.owner;
+	}
+	
+	@Override
+	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Iterable<T> elements, Consumer<T> action) {
+		// Let InterfaceAPI#newSelector(...) validate the parameters
+		WindowSelector<T> window = InterfaceAPI.newSelector(typeClass, plugin, elements, action);
+		
+		if (window == null) {
+			return null;
+		}
+		
+		this.open(window);
+		return window;
 	}
 
 }

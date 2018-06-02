@@ -19,6 +19,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
+import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementContentSlot;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementCounter;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementInput;
@@ -48,10 +49,8 @@ public class ElementCreator {
 	}
 
 	public <T extends Element> T newElement(Class<T> elementCls) {
-		if (elementCls == null) {
-			throw new IllegalArgumentException("The element class cannot be null");
-		}
-
+		Validate.notNull(elementCls, "The element class cannot be null");
+		
 		if (elementCls.isInterface() || Modifier.isAbstract(elementCls.getModifiers())) {
 			throw new IllegalArgumentException("The element class " + elementCls + " is abstract");
 		}

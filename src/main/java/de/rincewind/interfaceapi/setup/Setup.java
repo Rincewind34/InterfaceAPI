@@ -1,11 +1,14 @@
 package de.rincewind.interfaceapi.setup;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
+import de.rincewind.interfaceapi.gui.windows.selectors.WindowSelector;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.EventManager;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
@@ -176,5 +179,7 @@ public interface Setup {
 	 * @throws NullPointerException if the player is <b>null</b>
 	 */
 	public abstract void minimize();
+	
+	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Iterable<T> elements, Consumer<T> action);
 	
 }

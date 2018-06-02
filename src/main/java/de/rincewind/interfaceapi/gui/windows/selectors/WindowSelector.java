@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import org.bukkit.plugin.Plugin;
 
+import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceplugin.gui.windows.CraftWindowSizeable;
 
 public abstract class WindowSelector<T> extends CraftWindowSizeable {
@@ -28,8 +29,13 @@ public abstract class WindowSelector<T> extends CraftWindowSizeable {
 		return this.typeElements;
 	}
 
-	protected final Consumer<T> getOnSelect() {
-		return this.onSelect;
+	protected final void select(T select) {
+		if (this.getUser() == null) {
+			throw new IllegalStateException("The window is not open");
+		}
+		
+		InterfaceAPI.getSetup(this.getUser()).close(this);
+		this.onSelect.accept(select);
 	}
 
 }
