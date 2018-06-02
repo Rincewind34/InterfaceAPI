@@ -180,7 +180,13 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	@Override
 	public void setFilter(Predicate<Displayable> filter) {
 		this.filter = filter == null ? CraftElementMap.defaultFilter : filter;
-		this.update();
+		int maxPage = this.getMaxPage();
+
+		if (maxPage < this.page) {
+			this.setPage(maxPage);
+		} else {
+			this.update();
+		}
 	}
 
 	@Override
@@ -199,7 +205,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		element.setComponentValue(Element.ENABLED, !this.isLastPage());
 		element.getEventManager().registerListener(ElementInteractEvent.class, this.new FlipListener(1));
 	}
-	
+
 	@Override
 	public void registerPreviousPageFliper(Element element) {
 		Validate.notNull(element, "Element cannot be null");
@@ -216,11 +222,11 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		element.setComponentValue(Element.ENABLED, !this.isFirstPage());
 		element.getEventManager().registerListener(ElementInteractEvent.class, this.new FlipListener(-1));
 	}
-	
+
 	@Override
 	public void unregisterFliper(Element element) {
 		Validate.notNull(element, "Element cannot be null");
-		
+
 		this.nextFliper.remove(element);
 		this.previousFliper.remove(element);
 	}
@@ -273,7 +279,8 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	@Override
 	public int getMaxPage() {
 		int count = this.getCountPerPage();
-		return this.items.size() / count + (this.items.size() % count == 0 ? 0 : 1);
+		int size = this.filteredSize();
+		return size / count + (size % count == 0 ? 0 : 1);
 	}
 
 	@Override
@@ -284,6 +291,11 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	@Override
 	public int size() {
 		return this.items.size();
+	}
+
+	@Override
+	public int filteredSize() {
+		return this.items.stream().filter(this.filter).mapToInt(item -> 1).sum();
 	}
 
 	@Override

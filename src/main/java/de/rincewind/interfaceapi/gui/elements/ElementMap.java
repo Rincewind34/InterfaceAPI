@@ -73,6 +73,8 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	
 	public abstract int size();
 	
+	public abstract int filteredSize();
+	
 	public abstract Point getPoint(int index);
 	
 	public abstract InterfaceListener<ElementInteractEvent> newFlipListener(int offset);
