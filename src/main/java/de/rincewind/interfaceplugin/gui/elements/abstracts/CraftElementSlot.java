@@ -14,7 +14,7 @@ import de.rincewind.interfaceapi.util.InterfaceUtils;
 
 public abstract class CraftElementSlot extends CraftElement implements ElementSlot {
 
-	private Icon disabledIcon;
+	private Displayable disabledIcon;
 
 	private ItemStack content;
 
@@ -42,7 +42,7 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 
 	@Override
 	public void setDisabledIcon(Displayable icon) {
-		this.disabledIcon = Displayable.validate(icon);
+		this.disabledIcon = icon;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 
 	@Override
 	public Icon getDisabledIcon() {
-		return this.disabledIcon;
+		return Displayable.validate(this.disabledIcon);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 				return new Icon(this.content);
 			}
 		} else {
-			return this.disabledIcon;
+			return this.getDisabledIcon();
 		}
 	}
 

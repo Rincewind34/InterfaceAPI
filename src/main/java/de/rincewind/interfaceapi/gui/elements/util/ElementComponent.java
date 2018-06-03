@@ -1,5 +1,7 @@
 package de.rincewind.interfaceapi.gui.elements.util;
 
+import java.util.function.BiConsumer;
+
 import de.rincewind.interfaceapi.exceptions.ElementComponentException;
 
 public class ElementComponent<T> {
@@ -7,14 +9,17 @@ public class ElementComponent<T> {
 	private boolean enabled;
 	private boolean allowNull;
 
-	private Runnable onChange;
-
 	private T value;
 	private T defaultValue;
 
 	private Class<T> cls;
 
-	public ElementComponent(Class<T> cls, T defaultValue, Runnable onChange) {
+	private BiConsumer<T, T> onChange;
+
+	public ElementComponent(Class<T> cls, T defaultValue, BiConsumer<T, T> onChange) {
+		assert cls != null : "Class is null";
+		assert onChange != null : "Callback is null";
+		
 		this.defaultValue = defaultValue;
 		this.value = defaultValue;
 		this.onChange = onChange;
@@ -35,8 +40,9 @@ public class ElementComponent<T> {
 		}
 
 		if (this.value != value) {
+			T valueOld = this.value;
 			this.value = value;
-			this.onChange.run();
+			this.onChange.accept(valueOld, this.value);
 		}
 	}
 
@@ -74,7 +80,7 @@ public class ElementComponent<T> {
 
 	public static class PositiveNumberElementComponent<T extends Number> extends ElementComponent<T> {
 
-		public PositiveNumberElementComponent(Class<T> cls, T defaultValue, Runnable onChange) {
+		public PositiveNumberElementComponent(Class<T> cls, T defaultValue, BiConsumer<T, T> onChange) {
 			super(cls, defaultValue, onChange);
 		}
 		

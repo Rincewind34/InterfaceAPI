@@ -33,7 +33,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	private int page;
 	private int selected;
 
-	private Icon disabledIcon;
+	private Displayable disabledIcon;
 
 	private Predicate<Displayable> filter;
 	private List<Displayable> items;
@@ -47,7 +47,6 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		this.page = 1;
 		this.selected = -1;
 		this.color = Color.TRANSLUCENT;
-		this.disabledIcon = Icon.AIR;
 		this.filter = CraftElementMap.defaultFilter;
 		this.nextFliper = new ArrayList<>();
 		this.previousFliper = new ArrayList<>();
@@ -64,7 +63,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public void setDisabledIcon(Displayable icon) {
-		this.disabledIcon = Displayable.validate(icon);
+		this.disabledIcon = icon;
 	}
 
 	@Override
@@ -299,7 +298,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public Icon getDisabledIcon() {
-		return this.disabledIcon;
+		return Displayable.validate(this.disabledIcon);
 	}
 
 	@Override
@@ -356,7 +355,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 				return this.color.asIcon();
 			}
 		} else {
-			return this.disabledIcon;
+			return this.getDisabledIcon();
 		}
 	}
 

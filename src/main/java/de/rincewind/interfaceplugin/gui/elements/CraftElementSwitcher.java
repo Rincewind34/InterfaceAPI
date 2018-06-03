@@ -17,13 +17,11 @@ import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
 public class CraftElementSwitcher extends CraftElement implements ElementSwitcher {
 
-	public static String ELEMENT_INFO = "§7§lLK: §7§oNächster Wert \\n§7§lRK: §7§oVorheriger Wert\\n§7§l+S: §7§oEinen Wert überspringen";
-
-	private boolean elementInfoEnabled;
+	public static String INSTRUCTIONS = "§7§lLK: §7§oNächster Wert \\n§7§lRK: §7§oVorheriger Wert\\n§7§l+S: §7§oEinen Wert überspringen";
 
 	private int switchIndex;
 
-	private Icon disabledIcon;
+	private Displayable disabledIcon;
 
 	private final List<Displayable> items;
 
@@ -31,11 +29,11 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		super(handle);
 
 		this.switchIndex = -1;
-		this.elementInfoEnabled = true;
 		this.disabledIcon = Icon.AIR;
 		this.items = new ArrayList<>();
 
 		this.getComponent(Element.ENABLED).setEnabled(true);
+		this.getComponent(Element.INSTRUCTIONS).setEnabled(true);
 
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			if (event.isRightClick()) {
@@ -56,7 +54,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 	@Override
 	public void setDisabledIcon(Displayable icon) {
-		this.disabledIcon = Displayable.validate(icon);
+		this.disabledIcon = icon;
 	}
 
 	@Override
@@ -125,8 +123,8 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 		this.items.add(item);
 
-		if (this.elementInfoEnabled && item.hasStaticIcon()) {
-			item.getIcon().getLore().setEnd(CraftElementSwitcher.ELEMENT_INFO);
+		if (this.showInstructions() && item.hasStaticIcon()) {
+			item.getIcon().getLore().setEnd(CraftElementSwitcher.INSTRUCTIONS);
 		}
 
 		if (this.switchIndex == -1) {
@@ -147,7 +145,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	public void removeSwitch(Displayable item) {
 		Validate.notNull(item, "The switchitem cannot be null");
 
-		if (this.elementInfoEnabled && item.hasStaticIcon() && CraftElementSwitcher.ELEMENT_INFO.equals(item.getIcon().getLore().getEnd())) {
+		if (this.hasInstructionsSet(item, CraftElementSwitcher.INSTRUCTIONS)) {
 			item.getIcon().getLore().setEnd(null);
 		}
 
@@ -160,35 +158,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		this.items.clear();
 		this.update();
 	}
-
-	@Override
-	public void setElementInfoEnabled(boolean value) {
-		if (this.elementInfoEnabled == value) {
-			return;
-		}
-
-		this.elementInfoEnabled = value;
-
-		if (this.elementInfoEnabled) {
-			for (Displayable displayable : this.items) {
-				if (displayable.hasStaticIcon()) {
-					displayable.getIcon().getLore().setEnd(CraftElementSwitcher.ELEMENT_INFO);
-				}
-			}
-		} else {
-			for (Displayable displayable : this.items) {
-				if (displayable.hasStaticIcon() && CraftElementSwitcher.ELEMENT_INFO.equals(displayable.getIcon().getLore().getEnd())) {
-					displayable.getIcon().getLore().setEnd(null);
-				}
-			}
-		}
-	}
-
-	@Override
-	public boolean isElementInfoEnabled() {
-		return this.elementInfoEnabled;
-	}
-
+	
 	@Override
 	public int size() {
 		return this.items.size();
@@ -196,7 +166,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 	@Override
 	public Icon getDisabledIcon() {
-		return this.disabledIcon;
+		return Displayable.validate(this.disabledIcon);
 	}
 
 	@Override
@@ -238,9 +208,9 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 			if (this.switchIndex != -1) {
 				Displayable displayable = this.items.get(this.switchIndex);
 
-				if (this.elementInfoEnabled && !displayable.hasStaticIcon()) {
+				if (this.showInstructions() && !displayable.hasStaticIcon()) {
 					Icon icon = displayable.getIcon();
-					icon.getLore().setEnd(CraftElementSwitcher.ELEMENT_INFO);
+					icon.getLore().setEnd(CraftElementSwitcher.INSTRUCTIONS);
 					return icon;
 				} else {
 					return displayable.getIcon();
@@ -249,7 +219,24 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 				return Icon.AIR; /* TODO Error Icon */
 			}
 		} else {
-			return this.disabledIcon;
+			return this.getDisabledIcon();
+		}
+	}
+	
+	@Override
+	protected void onInstructionDisplayChange(boolean oldValue, boolean newValue) {
+		if (newValue) {
+			for (Displayable displayable : this.items) {
+				if (displayable.hasStaticIcon()) {
+					displayable.getIcon().getLore().setEnd(CraftElementSwitcher.INSTRUCTIONS);
+				}
+			}
+		} else {
+			for (Displayable displayable : this.items) {
+				if (this.hasInstructionsSet(displayable, CraftElementSwitcher.INSTRUCTIONS)) {
+					displayable.getIcon().getLore().setEnd(null);
+				}
+			}
 		}
 	}
 

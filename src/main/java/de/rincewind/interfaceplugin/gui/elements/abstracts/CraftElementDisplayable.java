@@ -9,8 +9,8 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 
 public abstract class CraftElementDisplayable extends CraftElement implements ElementDisplayable {
 	
-	private Icon icon;
-	private Icon disabledIcon;
+	private Displayable icon;
+	private Displayable disabledIcon;
 	
 	public CraftElementDisplayable(WindowEditor handle) {
 		super(handle);
@@ -23,24 +23,24 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 	
 	@Override
 	public void setIcon(Displayable icon) {
-		this.icon = Displayable.validate(icon);
+		this.icon = icon;
 		this.update();
 	}
 	
 	@Override
 	public void setDisabledIcon(Displayable icon) {
-		this.disabledIcon = Displayable.validate(icon);
+		this.disabledIcon = icon;
 		this.update();
 	}
 	
 	@Override
 	public Icon getIcon() {
-		return this.icon;
+		return Displayable.validate(this.icon);
 	}
 
 	@Override
 	public Icon getDisabledIcon() {
-		return this.disabledIcon;
+		return Displayable.validate(this.disabledIcon);
 	}
 	
 	@Override
@@ -50,6 +50,14 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 		} else {
 			return this.getDisabledIcon();
 		}
+	}
+	
+	protected Displayable getDisplayableEnabled() {
+		return this.icon;
+	}
+	
+	protected Displayable getDisplayableDisabled() {
+		return this.disabledIcon;
 	}
 	
 }

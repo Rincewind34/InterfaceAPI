@@ -28,7 +28,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 	private int selected;
 	private int startIndex;
 
-	private Icon disabledIcon;
+	private Displayable disabledIcon;
 
 	private Directionality type;
 
@@ -42,7 +42,6 @@ public class CraftElementList extends CraftElement implements ElementList {
 		this.startIndex = 0;
 		this.type = Directionality.VERTICAL;
 		this.color = Color.TRANSLUCENT;
-		this.disabledIcon = Icon.AIR;
 		this.items = new ArrayList<>();
 
 		this.modifier = (icon) -> {
@@ -74,7 +73,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void setDisabledIcon(Displayable icon) {
-		this.disabledIcon = Displayable.validate(icon);
+		this.disabledIcon = icon;
 	}
 
 	@Override
@@ -103,7 +102,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public Icon getDisabledIcon() {
-		return this.disabledIcon;
+		return Displayable.validate(this.disabledIcon);
 	}
 
 	@Override
@@ -259,7 +258,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 	@Override
 	protected Icon getIcon0(Point point) {
 		if (!this.isEnabled()) {
-			return this.disabledIcon;
+			return this.getDisabledIcon();
 		}
 
 		int offset;

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
 import de.rincewind.interfaceapi.gui.elements.util.ElementComponent;
@@ -47,29 +48,35 @@ public abstract class CraftElement implements Element {
 
 		this.blocker.lock();
 
-		this.registerComponent(Element.ENABLED, new ElementComponent<>(Boolean.class, true, () -> {
+		this.registerComponent(Element.ENABLED, new ElementComponent<>(Boolean.class, true, (oldValue, newValue) -> {
 			this.update();
 		}));
 
-		this.registerComponent(Element.WIDTH, new PositiveNumberElementComponent<>(Integer.class, 1, () -> {
+		this.registerComponent(Element.INSTRUCTIONS, new ElementComponent<>(Boolean.class, true, (oldValue, newValue) -> {
+			this.onInstructionDisplayChange(oldValue, newValue);
 			this.update();
 		}));
 
-		this.registerComponent(Element.HEIGHT, new PositiveNumberElementComponent<>(Integer.class, 1, () -> {
+		this.registerComponent(Element.WIDTH, new PositiveNumberElementComponent<>(Integer.class, 1, (oldValue, newValue) -> {
+			this.update();
+		}));
+
+		this.registerComponent(Element.HEIGHT, new PositiveNumberElementComponent<>(Integer.class, 1, (oldValue, newValue) -> {
 			this.update();
 		}));
 
 		this.getComponent(Element.ENABLED).setEnabled(false);
 		this.getComponent(Element.WIDTH).setEnabled(false);
 		this.getComponent(Element.HEIGHT).setEnabled(false);
-		
+		this.getComponent(Element.INSTRUCTIONS).setEnabled(false);
+
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			if (!this.isEnabled()) {
 				event.cancel();
 				event.consume();
 			}
 		}).addAfter();
-		
+
 		this.getEventManager().registerListener(ElementStackChangeEvent.class, (event) -> {
 			if (!this.getBlocker().allows(event.getAction())) {
 				event.cancel();
@@ -125,7 +132,7 @@ public abstract class CraftElement implements Element {
 	public void setUserObject(Object obj) {
 		this.userObject = obj;
 	}
-	
+
 	@Override
 	public void dependsOn(Element element) {
 		element.getEventManager().registerListener(ElementValueChangeEvent.class, (event) -> {
@@ -142,7 +149,12 @@ public abstract class CraftElement implements Element {
 	public boolean isEnabled() {
 		return this.getComponent(Element.ENABLED).getValue();
 	}
-	
+
+	@Override
+	public boolean showInstructions() {
+		return this.getComponent(Element.INSTRUCTIONS).getValue();
+	}
+
 	@Override
 	public boolean isElementComponentEnabled(ElementComponentType<?> component) {
 		return this.getComponent(component).isEnabled();
@@ -217,19 +229,29 @@ public abstract class CraftElement implements Element {
 
 		return null;
 	}
-	
+
 	public void onElementAdded() {
-		
+
 	}
-	
+
 	public void onElementRemoved() {
-		
+
 	}
 
 	protected abstract Icon getIcon0(Point point);
+	
+	protected void onInstructionDisplayChange(boolean oldValue, boolean newValue) {
+		
+	}
 
 	protected <T> void registerComponent(ElementComponentType<T> type, ElementComponent<T> component) {
 		this.components.put(type, component);
+	}
+
+	protected boolean hasInstructionsSet(Displayable item, String instructions) {
+		assert instructions != null : "The instructions are null";
+		
+		return this.showInstructions() && item.hasStaticIcon() && instructions.equals(item.getIcon().getLore().getEnd());
 	}
 
 }

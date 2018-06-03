@@ -29,14 +29,14 @@ import de.rincewind.interfaceplugin.gui.elements.CraftElementSwitcher;
  */
 public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<Displayable> {
 	
-	public static void setElementInfo(String info) {
-		Validate.notNull(info, "The info cannot be null");
+	public static void setInstructions(String instructions) {
+		Validate.notNull(instructions, "The instructions cannot be null");
 		
-		CraftElementSwitcher.ELEMENT_INFO = info;
+		CraftElementSwitcher.INSTRUCTIONS = instructions;
 	}
 	
-	public static String getElementInfo() {
-		return CraftElementSwitcher.ELEMENT_INFO;
+	public static String getInstructions() {
+		return CraftElementSwitcher.INSTRUCTIONS;
 	}
 	
 	/**
@@ -85,8 +85,6 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 	 */
 	public abstract void clear();
 	
-	public abstract void setElementInfoEnabled(boolean value);
-
 	/**
 	 * Sets the index switched to. If the new index does not match the frame of
 	 * 0 and the length of the entrylist, the index will be adapted.
@@ -105,8 +103,6 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 	
 	public abstract <T> void setSwitch(T switchItem, boolean fireEvent);
 	
-	public abstract boolean isElementInfoEnabled();
-
 	/**
 	 * Returns the size of the entrylist.
 	 * 
