@@ -15,6 +15,7 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.EventManager;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ElementStackChangeEvent;
+import de.rincewind.interfaceapi.handling.element.ElementValueChangeEvent;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.util.CraftClickBlocker;
 import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
@@ -123,6 +124,13 @@ public abstract class CraftElement implements Element {
 	@Override
 	public void setUserObject(Object obj) {
 		this.userObject = obj;
+	}
+	
+	@Override
+	public void dependsOn(Element element) {
+		element.getEventManager().registerListener(ElementValueChangeEvent.class, (event) -> {
+			this.update();
+		}).monitor();
 	}
 
 	@Override

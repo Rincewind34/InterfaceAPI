@@ -93,13 +93,13 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	@Override
 	public void removeItem(int index) {
 		this.items.remove(index);
-		this.update();
+		this.validateCurrentPage();
 	}
 
 	@Override
 	public void removeItem(Displayable item) {
 		this.items.remove(item);
-		this.update();
+		this.validateCurrentPage();
 	}
 
 	@Override
@@ -180,13 +180,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	@Override
 	public void setFilter(Predicate<Displayable> filter) {
 		this.filter = filter == null ? CraftElementMap.defaultFilter : filter;
-		int maxPage = this.getMaxPage();
-
-		if (maxPage < this.page) {
-			this.setPage(maxPage);
-		} else {
-			this.update();
-		}
+		this.validateCurrentPage();
 	}
 
 	@Override
@@ -377,6 +371,16 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 		while (iterator.hasNext()) {
 			iterator.next().setComponentValue(Element.ENABLED, !this.isFirstPage());
+		}
+	}
+	
+	private void validateCurrentPage() {
+		int maxPage = this.getMaxPage();
+
+		if (maxPage < this.page) {
+			this.setPage(maxPage);
+		} else {
+			this.update();
 		}
 	}
 

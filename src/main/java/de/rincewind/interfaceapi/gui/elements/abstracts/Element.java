@@ -68,6 +68,8 @@ public abstract interface Element extends EventBased, UserMemory {
 	 */
 	public abstract void setVisible(boolean visible);
 	
+	public abstract void dependsOn(Element element);
+	
 	/**
 	 * Returns <code>true</code> if this element is visible and 
 	 * <code>false</code> if not.
