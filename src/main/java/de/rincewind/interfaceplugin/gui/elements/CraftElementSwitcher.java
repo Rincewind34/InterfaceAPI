@@ -186,8 +186,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 	@Override
 	public boolean isElementInfoEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.elementInfoEnabled;
 	}
 
 	@Override
