@@ -166,6 +166,7 @@ public final class Lore implements Iterable<String>, Cloneable {
 	public Lore setPrefix(String prefix) {
 		if (!Objects.equals(this.prefix, prefix)) {
 			this.prefix = prefix == null ? "" : prefix;
+			this.dirty = true;
 		}
 
 		return this;
@@ -174,6 +175,7 @@ public final class Lore implements Iterable<String>, Cloneable {
 	public Lore setEnd(String end) {
 		if (!Objects.equals(this.end, end)) {
 			this.end = end;
+			this.dirty = true;
 		}
 
 		return this;
