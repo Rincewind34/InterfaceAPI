@@ -31,6 +31,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		super(handle);
 
 		this.switchIndex = -1;
+		this.elementInfoEnabled = true;
 		this.disabledIcon = Icon.AIR;
 		this.items = new ArrayList<>();
 
