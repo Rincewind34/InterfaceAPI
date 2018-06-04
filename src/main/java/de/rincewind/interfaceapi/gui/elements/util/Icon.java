@@ -68,7 +68,7 @@ public final class Icon implements Displayable, Cloneable {
 			throw new IllegalArgumentException("Itemtype cannot be Material#AIR");
 		}
 
-		this.item = item;
+		this.item = item.clone();
 
 		ItemMeta meta = this.item.getItemMeta();
 
