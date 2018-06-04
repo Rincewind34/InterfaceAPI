@@ -48,7 +48,7 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 		}).monitor();
 
 		for (T element : typeElements) {
-			this.typeMap.addItem(Displayable.of(element));
+			this.typeMap.addItem(this.displayableOf(element));
 		}
 
 		int height = WindowSizeable.calculateHeight(this.typeMap.size());
@@ -87,6 +87,10 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 
 	public boolean isShowControlStrip() {
 		return this.barrier.isVisible();
+	}
+	
+	protected Displayable displayableOf(T value) {
+		return Displayable.of(value);
 	}
 
 }
