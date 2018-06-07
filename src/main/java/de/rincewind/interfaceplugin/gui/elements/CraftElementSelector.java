@@ -30,6 +30,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	private boolean canUnselect;
 	private boolean canCollect;
 	private boolean copyAmount;
+	private boolean displaySelectedItem;
 
 	private ItemStack selected;
 
@@ -63,7 +64,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	public void canUnselect(boolean value) {
 		if (this.canUnselect != value) {
 			this.canUnselect = value;
-			this.updateInstructions(this.getDisplayableEnabled());
+			this.updateInstructions();
 		}
 	}
 
@@ -76,8 +77,13 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	public void canCollect(boolean value) {
 		if (this.canCollect != value) {
 			this.canCollect = value;
-			this.updateInstructions(this.getDisplayableEnabled());
+			this.updateInstructions();
 		}
+	}
+	
+	@Override
+	public void displaySelectedItem(boolean value) {
+		this.displaySelectedItem = value;
 	}
 
 	@Override
@@ -100,6 +106,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 		}
 
 		this.selected = item;
+		this.updateInstructions();
 		this.update();
 
 		if (fireEvent) {
@@ -121,6 +128,11 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	public boolean canCollect() {
 		return this.canCollect;
 	}
+	
+	@Override
+	public boolean displaySelectedItem() {
+		return this.displaySelectedItem;
+	}
 
 	@Override
 	public boolean isItemSelected() {
@@ -136,13 +148,13 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	public void setIcon(Displayable item) {
 		if (this.showInstructions()) {
 			if (this.getDisplayableEnabled().hasStaticIcon()
-					&& this.hasInstructionsSet(this.getDisplayableEnabled(), CraftElementSelector.INSTRUCTIONS_SELECT)) {
+					&& this.hasInstructionsSet(this.getDisplayableEnabled(), this.currentInstructions())) {
 
 				this.getDisplayableEnabled().getIcon().getLore().setEnd(null);
 			}
 
 			if (item.hasStaticIcon()) {
-				item.getIcon().getLore().setEnd(CraftElementSelector.INSTRUCTIONS_SELECT);
+				item.getIcon().getLore().setEnd(this.currentInstructions());
 			}
 		}
 
@@ -152,26 +164,30 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	@Override
 	protected Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
-			if (this.selected != null) {
-				return new Icon(this.selected); // TODO Append Instructions
+			if (this.selected != null && this.displaySelectedItem) {
+				return new Icon(this.selected);
 			} else if (this.showInstructions() && !this.getDisplayableEnabled().hasStaticIcon()) {
 				Icon icon = this.getDisplayableEnabled().getIcon();
-				icon.getLore().setEnd(CraftElementSelector.INSTRUCTIONS_SELECT);
+				icon.getLore().setEnd(this.currentInstructions());
 				return icon;
 			}
 		}
 
 		return super.getIcon0(point);
 	}
-
-	private void updateInstructions(Displayable display) {
-		if (display.hasStaticIcon()) {
-			if (this.selected != null) {
-				display.getIcon().getLore().setEnd((this.canUnselect ? CraftElementSelector.INSTRUCTIONS_UNSELECT : "")
-						+ (this.canCollect ? CraftElementSelector.INSTRUCTIONS_COLLECT : ""));
-			} else {
-				display.getIcon().getLore().setEnd(CraftElementSelector.INSTRUCTIONS_SELECT);
-			}
+	
+	private void updateInstructions() {
+		if (this.showInstructions() && this.getDisplayableEnabled().hasStaticIcon()) {
+			this.getDisplayableEnabled().getIcon().getLore().setEnd(this.currentInstructions());
+		}
+	}
+	
+	private String currentInstructions() {
+		if (this.selected != null) {
+			return (this.canUnselect ? CraftElementSelector.INSTRUCTIONS_UNSELECT : "")
+					+ (this.canCollect ? CraftElementSelector.INSTRUCTIONS_COLLECT : "");
+		} else {
+			return CraftElementSelector.INSTRUCTIONS_SELECT;
 		}
 	}
 

@@ -56,6 +56,8 @@ public interface ElementSelector extends ElementDisplayable {
 	
 	public abstract void canCollect(boolean value);
 	
+	public abstract void displaySelectedItem(boolean value);
+	
 	public abstract void setSelected(ItemStack item);
 
 	public abstract void setSelected(ItemStack item, boolean fireEvent);
@@ -65,6 +67,8 @@ public interface ElementSelector extends ElementDisplayable {
 	public abstract boolean copyAmount();
 	
 	public abstract boolean canCollect();
+	
+	public abstract boolean displaySelectedItem();
 	
 	public abstract boolean isItemSelected();
 
