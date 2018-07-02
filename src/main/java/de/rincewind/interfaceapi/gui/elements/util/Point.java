@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 import de.rincewind.interfaceplugin.Validate;
 
-public class Point implements Comparable<Point>, Cloneable {
+public class Point implements Comparable<Point> {
 
 	public static final Point NULL = new Point(0, 0);
 
@@ -100,17 +100,7 @@ public class Point implements Comparable<Point>, Cloneable {
 	public String toString() {
 		return "Point{x=" + this.x + ";y=" + this.y + "}";
 	}
-
-	@Override
-	public Point clone() {
-		try {
-			return (Point) super.clone();
-		} catch (CloneNotSupportedException exception) {
-			assert false : "Unreachable code";
-			return null;
-		}
-	}
-
+	
 	public final int getX() {
 		return this.x;
 	}

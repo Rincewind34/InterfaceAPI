@@ -5,8 +5,9 @@ import java.util.Set;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceapi.gui.elements.util.ElementCreator;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
+import de.rincewind.interfaceapi.gui.util.creators.ElementCreatorBlank;
 import de.rincewind.interfaceapi.gui.windows.WindowEnchanter;
 
 /**
@@ -39,6 +40,8 @@ public abstract interface WindowEditor extends WindowContainer {
 	 * @throws APIException if the element is not added in this object.
 	 */
 	public abstract void removeElement(Element element);
+	
+	public abstract void removeElements(Iterable<Element> elements);
 	
 	/**
 	 * Priorizes an element in this object. After invoking this method,
@@ -88,9 +91,9 @@ public abstract interface WindowEditor extends WindowContainer {
 	public abstract Element getVisibleElementAt(Point point);
 	
 	/**
-	 * Returns the {@link ElementCreator} of this object.
+	 * Returns the {@link ElementCreatorBlank} of this object.
 	 * 
-	 * @return the {@link ElementCreator} of this object
+	 * @return the {@link ElementCreatorBlank} of this object
 	 */
 	public abstract ElementCreator elementCreator();
 	

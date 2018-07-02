@@ -134,12 +134,17 @@ public class CraftElementList extends CraftElement implements ElementList {
 	public void removeItem(Displayable item) {
 		Validate.notNull(item, "The item cannot be null");
 		
+		if (this.getSelectedItem() == item) {
+			this.deselect();
+		}
+		
 		this.items.remove(item);
 		this.update();
 	}
 
 	@Override
 	public void clear() {
+		this.deselect();
 		this.items.clear();
 		this.update();
 	}
@@ -200,6 +205,10 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void select(int index, boolean fireEvent) {
+		if (this.selected == index) {
+			return;
+		}
+		
 		if (fireEvent) {
 			this.getEventManager().callEvent(ListChangeSelectEvent.class, new ListChangeSelectEvent(this, index));
 		}

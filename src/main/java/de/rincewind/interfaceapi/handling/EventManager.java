@@ -28,6 +28,8 @@ public interface EventManager {
 
 	public abstract <E extends Event> void callEvent(Class<E> eventCls, E event);
 
+	public abstract <E extends Event> ListenerBase registerListener(Class<E> eventCls, Runnable listener);
+
 	public abstract <E extends Event> ListenerBase registerListener(Class<E> eventCls, InterfaceListener<E> listener);
 
 	/**

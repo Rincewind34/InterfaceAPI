@@ -29,8 +29,13 @@ public class EventManagerTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testRegisterNullParameter() {
-		this.manager.registerListener(ElementInteractEvent.class, null);
+	public void testRegisterNullParameter1() {
+		this.manager.registerListener(ElementInteractEvent.class, (InterfaceListener<ElementInteractEvent>) null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testRegisterNullParameter2() {
+		this.manager.registerListener(ElementInteractEvent.class, (Runnable) null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

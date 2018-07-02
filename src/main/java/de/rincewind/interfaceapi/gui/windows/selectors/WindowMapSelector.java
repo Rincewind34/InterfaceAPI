@@ -77,7 +77,7 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 		if (!value) {
 			this.typeMap.setComponentValue(Element.HEIGHT, this.getHeight());
 		} else {
-			this.typeMap.setComponentValue(Element.HEIGHT, this.getHeight() - 3);
+			this.typeMap.setComponentValue(Element.HEIGHT, this.getHeight() - 2);
 
 			this.barrier.setPoint(new Point(0, this.getHeight() - 2));
 			this.buttonNext.setPoint(new Point(this.buttonNext.getPoint().getX(), this.getHeight() - 1));

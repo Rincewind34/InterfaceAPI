@@ -65,8 +65,17 @@ public final class CraftEventManager implements EventManager {
 		if (event.isInMonitor()) {
 			throw new IllegalArgumentException("The event is in monitor");
 		}
-
+		
 		this.callEvent0(eventCls, event);
+	}
+	
+	@Override
+	public <E extends Event> ListenerBase registerListener(Class<E> eventCls, Runnable listener) {
+		Validate.notNull(listener, "The listener cannot be null");
+		
+		return this.registerListener(eventCls, (event) -> {
+			listener.run();
+		});
 	}
 
 	@Override

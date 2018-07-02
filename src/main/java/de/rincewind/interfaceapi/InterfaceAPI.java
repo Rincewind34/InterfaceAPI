@@ -12,26 +12,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.exceptions.SelectorInterfaceException;
+import de.rincewind.interfaceapi.gui.elements.sets.ElementSelectorSetCreator;
 import de.rincewind.interfaceapi.gui.windows.selectors.WindowSelector;
-import de.rincewind.interfaceapi.item.categorys.Categorys;
 import de.rincewind.interfaceapi.setup.Setup;
-import de.rincewind.interfaceapi.util.recipes.RecipeManager;
-import de.rincewind.interfaceapi.util.recipes.RecipePacket;
 import de.rincewind.interfaceplugin.InterfacePlugin;
 import de.rincewind.interfaceplugin.Validate;
-import de.rincewind.interfaceplugin.recipes.CraftRecipeManager;
-import de.rincewind.interfaceplugin.recipes.CraftRecipePacket;
 import de.rincewind.interfaceplugin.setup.CraftSetup;
 
 public class InterfaceAPI {
 
 	private static Map<Player, Setup> setups;
-	private static Map<Class<?>, Constructor<? extends WindowSelector<?>>> selectors;
+	private static Map<Class<?>, Constructor<? extends WindowSelector<?>>> windowSelectors;
+	private static Map<Class<?>, ElementSelectorSetCreator<?>> inlineSelectors;
 
 	public static void enable() {
 		InterfaceAPI.setups = new HashMap<>();
-
-		new Categorys();
+		InterfaceAPI.windowSelectors = new HashMap<>();
+		InterfaceAPI.inlineSelectors = new HashMap<>();
 	}
 
 	public static void cleanUpSetup(Player owner) {
@@ -71,7 +68,7 @@ public class InterfaceAPI {
 					Constructor<? extends WindowSelector<T>> target = selectorClass.getConstructor(constructor.getParameterTypes());
 					target.setAccessible(true);
 
-					InterfaceAPI.selectors.put(typeClass, target);
+					InterfaceAPI.windowSelectors.put(typeClass, target);
 					return;
 				} catch (NoSuchMethodException | SecurityException | IllegalArgumentException exception) {
 					assert false : "Should be unreachable: " + exception.getMessage();
@@ -81,6 +78,13 @@ public class InterfaceAPI {
 		}
 
 		throw new IllegalArgumentException("The selector class " + selectorClass + " does not provide a valid constructor");
+	}
+	
+	public static <T> void registerSelector(Class<T> typeClass, ElementSelectorSetCreator<T> creator) {
+		Validate.notNull(typeClass, "The type class cannot be null");
+		Validate.notNull(creator, "The creator cannot be null");
+		
+		InterfaceAPI.inlineSelectors.put(typeClass, creator);
 	}
 
 	public static int getSetupAmount() {
@@ -105,18 +109,17 @@ public class InterfaceAPI {
 		return InterfaceAPI.setups.get(player);
 	}
 
-	public static RecipeManager createRecipeManager() {
-		return new CraftRecipeManager();
-	}
-
 	public static int getActiveWindowId(Player player) {
 		return ((CraftPlayer) player).getHandle().activeContainer.windowId;
 	}
-
-	public static RecipePacket createRecipePacket() {
-		return new CraftRecipePacket();
+	
+	@SuppressWarnings("unchecked")
+	public static <T> ElementSelectorSetCreator<T> getCreator(Class<T> typeClass) {
+		Validate.notNull(typeClass, "The type class cannot be null");
+		
+		return (ElementSelectorSetCreator<T>) InterfaceAPI.inlineSelectors.get(typeClass);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public static <T> WindowSelector<T> newSelector(Class<T> typeClass, Plugin plugin, Iterable<T> elements, Consumer<T> action) {
 		Validate.notNull(typeClass, "The type class cannot be null");
@@ -125,7 +128,7 @@ public class InterfaceAPI {
 		Validate.notNull(action, "The action cannot be null");
 
 		try {
-			Constructor<? extends WindowSelector<T>> constructor = (Constructor<? extends WindowSelector<T>>) InterfaceAPI.selectors.get(typeClass);
+			Constructor<? extends WindowSelector<T>> constructor = (Constructor<? extends WindowSelector<T>>) InterfaceAPI.windowSelectors.get(typeClass);
 
 			if (constructor == null) {
 				return null;

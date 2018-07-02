@@ -11,9 +11,10 @@ import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.exceptions.ElementEditorException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceapi.gui.elements.util.ElementCreator;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
+import de.rincewind.interfaceapi.gui.util.creators.ElementCreatorBlank;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ElementStackChangeEvent;
@@ -31,7 +32,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		super(plugin);
 
 		this.elements = new ArrayList<>();
-		this.creator = new ElementCreator(this);
+		this.creator = new ElementCreatorBlank(this);
 
 		this.getEventManager().registerListener(WindowClickEvent.class, (event) -> {
 			if (event.isInInterface()) {
@@ -104,6 +105,15 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		}
 
 		this.removeElement((CraftElement) element, true);
+	}
+	
+	@Override
+	public void removeElements(Iterable<Element> elements) {
+		Validate.notNull(elements, "The elements cannot be null!");
+		
+		for (Element element : elements) {
+			this.removeElement(element);
+		}
 	}
 
 	@Override
