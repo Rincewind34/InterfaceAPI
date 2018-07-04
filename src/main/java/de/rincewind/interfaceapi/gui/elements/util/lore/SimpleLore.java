@@ -21,15 +21,15 @@ public final class SimpleLore implements Iterable<String>, Cloneable, Lore {
 
 	private final List<String> lore;
 
-	public SimpleLore() {
+	SimpleLore() {
 		this(new ArrayList<>());
 	}
 
-	public SimpleLore(String... array) {
+	SimpleLore(String... array) {
 		this(Lists.newArrayList(array));
 	}
 
-	public SimpleLore(List<String> lore) {
+	SimpleLore(List<String> lore) {
 		this.lore = lore;
 		this.prefix = "§7";
 	}

@@ -38,11 +38,6 @@ public final class Icon implements Displayable, Cloneable {
 
 	private ItemStack item;
 
-	{
-		this.amount = 1;
-		this.name = "§7";
-	}
-
 	private Icon() {
 		this.item = new ItemStack(Material.AIR);
 		this.amount = 0;
@@ -62,6 +57,11 @@ public final class Icon implements Displayable, Cloneable {
 
 	public Icon(Material type, int data, String name) {
 		this.item = new ItemStack(Material.BEDROCK);
+
+		this.amount = 1;
+		this.name = "§7";
+		this.showInfo = true;
+		this.lore = Lore.create();
 		this.typecast(type);
 		this.damage(data);
 		this.rename(name);
@@ -84,15 +84,9 @@ public final class Icon implements Displayable, Cloneable {
 		this.damage = item.getDurability();
 		this.amount = item.getAmount();
 		this.enchantet = meta.hasEnchants();
-
-		if (meta.hasDisplayName()) {
-			this.name = meta.getDisplayName();
-		}
-
-		if (meta.hasLore()) {
-			this.lore = Lore.create(meta.getLore());
-		}
-
+		this.name = meta.hasDisplayName() ? meta.getDisplayName() : "§7";
+		this.lore = meta.hasLore() ? Lore.create(meta.getLore()) : Lore.create();
+		
 		for (ItemFlag flag : ItemFlag.values()) {
 			if (!meta.hasItemFlag(flag)) {
 				this.showInfo = true;
@@ -116,17 +110,17 @@ public final class Icon implements Displayable, Cloneable {
 		if (this == obj) {
 			return true;
 		}
-		
+
 		if (obj == null) {
 			return false;
 		}
-		
+
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
 
 		Icon other = (Icon) obj;
-		
+
 		// TODO try to avoid using toItem
 		return this.toItem().equals(other.toItem());
 	}
@@ -135,7 +129,7 @@ public final class Icon implements Displayable, Cloneable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		
+
 		// TODO try to avoid using toItem
 		result = prime * result + this.toItem().hashCode();
 		return result;
@@ -217,7 +211,7 @@ public final class Icon implements Displayable, Cloneable {
 		return this.rename("§7");
 	}
 
-	public Icon describe(SimpleLore lore) {
+	public Icon describe(Lore lore) {
 		if (!this.isAir()) {
 			if (!Objects.equals(this.lore, lore)) {
 				this.dirty = true;
@@ -304,8 +298,12 @@ public final class Icon implements Displayable, Cloneable {
 	public ItemStack toItem() {
 		assert !(this.isAir() && this.dirty) : "Icon#AIR is dirty";
 
+		if (this.isAir()) {
+			return this.item;
+		}
+
 		SimpleLore lore = (SimpleLore) this.lore;
-		
+
 		if (!this.dirty) {
 			if (this.lore != null && lore.isDirty()) {
 				return this.item = ItemLibrary.refactor().loreItem(this.item, lore.toList());
@@ -314,23 +312,23 @@ public final class Icon implements Displayable, Cloneable {
 			}
 		} else {
 			this.item = new ItemStack(this.type, this.amount, (short) this.damage);
-
+			
 			if (this.name != null) {
 				this.item = ItemLibrary.refactor().renameItem(this.item, this.name);
 			}
-
+			
 			if (this.lore != null) {
 				this.item = ItemLibrary.refactor().loreItem(this.item, lore.toList());
 			}
-
+			
 			if (!this.showInfo) {
 				this.item = ItemLibrary.refactor().addAllFlags(this.item);
 			}
-
+			
 			if (this.enchantet) {
 				this.item = ItemLibrary.refactor().enchantItem(this.item, Enchantment.WATER_WORKER, 1, false);
 			}
-
+			
 			this.dirty = false;
 			return this.item;
 		}

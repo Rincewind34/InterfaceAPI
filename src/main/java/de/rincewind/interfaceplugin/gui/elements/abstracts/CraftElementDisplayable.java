@@ -23,7 +23,7 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 	
 	@Override
 	public void setIcon(Displayable icon) {
-		CraftElement.clearInstructions(icon);
+		CraftElement.clearInstructions(this.display);
 		this.display = Displayable.checkNull(icon);
 		this.update();
 	}
