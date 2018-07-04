@@ -8,6 +8,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.ElementMultiButton;
+import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
@@ -45,6 +46,8 @@ public interface ElementCreator {
 	public abstract ElementMap newMap();
 
 	public abstract ElementContentSlot newContentSlot();
+	
+	public abstract ElementObjectSelector newObjectSelector();
 	
 	public default ElementSwitcher newBooleanSwitcher(String disabledDisplay, String enabledDisplay) {
 		return this.newBooleanSwitcher(disabledDisplay, enabledDisplay, false);

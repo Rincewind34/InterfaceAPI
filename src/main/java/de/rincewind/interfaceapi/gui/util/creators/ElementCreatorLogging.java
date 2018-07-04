@@ -10,6 +10,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.ElementMultiButton;
+import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
@@ -92,6 +93,13 @@ public class ElementCreatorLogging implements ElementCreator {
 	@Override
 	public ElementSelector newSelector() {
 		ElementSelector element = this.wrapper.newSelector();
+		this.log.add(element);
+		return element;
+	}
+	
+	@Override
+	public ElementObjectSelector newObjectSelector() {
+		ElementObjectSelector element = this.wrapper.newObjectSelector();
 		this.log.add(element);
 		return element;
 	}

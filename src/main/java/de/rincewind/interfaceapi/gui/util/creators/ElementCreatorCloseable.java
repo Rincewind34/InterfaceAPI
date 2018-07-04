@@ -8,6 +8,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.ElementMultiButton;
+import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
@@ -77,6 +78,12 @@ public class ElementCreatorCloseable implements ElementCreator {
 	public ElementSelector newSelector() {
 		this.validateClosed();
 		return this.wrapper.newSelector();
+	}
+
+	@Override
+	public ElementObjectSelector newObjectSelector() {
+		this.validateClosed();
+		return this.wrapper.newObjectSelector();
 	}
 
 	@Override

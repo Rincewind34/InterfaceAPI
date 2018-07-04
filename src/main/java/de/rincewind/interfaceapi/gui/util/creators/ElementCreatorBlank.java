@@ -12,6 +12,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.ElementMultiButton;
+import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
@@ -25,6 +26,7 @@ import de.rincewind.interfaceplugin.gui.elements.CraftElementItem;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementList;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementMap;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementMultiButton;
+import de.rincewind.interfaceplugin.gui.elements.CraftElementObjectSelector;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementOutput;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementSelector;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementSwitcher;
@@ -124,6 +126,13 @@ public class ElementCreatorBlank implements ElementCreator {
 	@Override
 	public ElementSelector newSelector() {
 		ElementSelector element = new CraftElementSelector(this.handle);
+		this.handle.addElement(element);
+		return element;
+	}
+
+	@Override
+	public ElementObjectSelector newObjectSelector() {
+		ElementObjectSelector element = new CraftElementObjectSelector(this.handle);
 		this.handle.addElement(element);
 		return element;
 	}
