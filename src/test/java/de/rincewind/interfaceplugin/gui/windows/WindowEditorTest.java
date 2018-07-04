@@ -59,12 +59,12 @@ public class WindowEditorTest {
 		Assert.assertSame(item, this.window.getElementsAt(Point.NULL).iterator().next());
 
 		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(Point.of(0, 0)));
-		this.assertIcons(Icon.AIR, Point.NULL);
-
+		this.assertIcons(null, Point.NULL);
+		
 		item.setPoint(Point.of(1, 1));
-
+		
 		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(Point.of(1, 1)));
-		this.assertIcons(Icon.AIR, Point.of(1, 1));
+		this.assertIcons(null, Point.of(1, 1));
 	}
 
 	@Test(expected = ElementEditorException.class)
@@ -88,10 +88,10 @@ public class WindowEditorTest {
 		item.setIcon(new Icon(Material.APPLE));
 		
 		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(Point.of(0, 0)));
-		this.assertIcons(Icon.AIR, Point.NULL);
+		this.assertIcons(null, Point.NULL);
 
 		this.window.removeElement(item);
-		this.assertIcons(Icon.AIR);
+		this.assertIcons(null);
 	}
 	
 	@Test(expected = Success.class)
@@ -150,7 +150,7 @@ public class WindowEditorTest {
 			occupiedPoints.add(point);
 		}
 
-		this.assertIcons(Icon.AIR, occupiedPoints.toArray(new Point[0]));
+		this.assertIcons(null, occupiedPoints.toArray(new Point[0]));
 
 		item2.priorize();
 
@@ -171,7 +171,7 @@ public class WindowEditorTest {
 			occupiedPoints.add(point);
 		}
 
-		this.assertIcons(Icon.AIR, occupiedPoints.toArray(new Point[0]));
+		this.assertIcons(null, occupiedPoints.toArray(new Point[0]));
 
 		item1.priorize();
 
@@ -192,7 +192,7 @@ public class WindowEditorTest {
 			occupiedPoints.add(point);
 		}
 
-		this.assertIcons(Icon.AIR, occupiedPoints.toArray(new Point[0]));
+		this.assertIcons(null, occupiedPoints.toArray(new Point[0]));
 	}
 
 	@Test
