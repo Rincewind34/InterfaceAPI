@@ -9,7 +9,7 @@ import java.util.stream.Collector;
 import org.bukkit.Material;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
-import de.rincewind.interfaceapi.gui.elements.util.Lore;
+import de.rincewind.interfaceapi.gui.elements.util.lore.SimpleLore;
 import de.rincewind.interfaceplugin.Validate;
 
 public interface Displayable {
@@ -40,16 +40,23 @@ public interface Displayable {
 
 		return Displayable.converters.containsKey(cls);
 	}
-
-	public static Icon validate(Displayable icon) {
-		return icon == null ? Icon.AIR : icon.getIcon();
+	
+	public static Displayable checkNull(Displayable input) {
+		return input == null ? Icon.AIR : input;
 	}
+
+//	public static Icon validate(Displayable icon) {
+//		return icon == null ? Icon.AIR : icon.getIcon();
+//	}
 
 	public static Displayable of(Object payload) {
 		if (payload instanceof Displayable) {
 			return (Displayable) payload;
 		} else if (payload != null && Displayable.converters.containsKey(payload.getClass())) {
-			return Displayable.converters.get(payload.getClass()).apply(payload);
+			Icon icon = Displayable.converters.get(payload.getClass()).apply(payload);
+			
+			assert icon != null : "The converted icon is null";
+			return icon;
 		} else {
 			return Displayable.of(new Icon(Material.BEDROCK, 0, payload != null ? payload.toString() : "null"), payload);
 		}
@@ -66,7 +73,7 @@ public interface Displayable {
 		return result;
 	}
 
-	public static Displayable of(Object payload, String name, Lore lore) {
+	public static Displayable of(Object payload, String name, SimpleLore lore) {
 		Displayable result = Displayable.of(payload, name);
 		result.getIcon().describe(lore);
 

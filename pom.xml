@@ -9,7 +9,7 @@
 		<spigot.version>1.12.2</spigot.version>
 		<junit.version>4.8.2</junit.version>
 
-		<jdk.version>9</jdk.version>
+		<jdk.version>10</jdk.version>
 		<outputTarget>${project.basedir}/target</outputTarget>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>${jdk.version}</maven.compiler.source>
@@ -108,6 +108,7 @@
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
+					<compilerVersion>${jdk.version}</compilerVersion>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<compilerArgs>
 						<arg>-parameters</arg>	

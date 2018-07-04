@@ -19,7 +19,7 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutWindowData;
 
 public class CraftWindowFurnace extends CraftWindowActivatable implements WindowFurnace {
 
-	public static final Set<Point> final_points = Collections.unmodifiableSet(Sets.newHashSet(new Point(0, 0), new Point(0, 2), new Point(1, 1)));
+	public static final Set<Point> final_points = Collections.unmodifiableSet(Sets.newHashSet(Point.of(0, 0), Point.of(0, 2), Point.of(1, 1)));
 
 	public CraftWindowFurnace(Plugin plugin) {
 		super(plugin);
@@ -51,11 +51,11 @@ public class CraftWindowFurnace extends CraftWindowActivatable implements Window
 	@Override
 	public Point getPoint(int bukkitSlot) {
 		if (bukkitSlot == 0) {
-			return new Point(0, 0);
+			return Point.of(0, 0);
 		} else if (bukkitSlot == 1) {
-			return new Point(0, 2);
+			return Point.of(0, 2);
 		} else if (bukkitSlot == 2) {
-			return new Point(1, 1);
+			return Point.of(1, 1);
 		} else {
 			assert false : "The bukkit slot " + bukkitSlot + " is undefined for window furnace";
 			return null;
@@ -75,7 +75,7 @@ public class CraftWindowFurnace extends CraftWindowActivatable implements Window
 				return 2;
 			}
 		}
-		
+
 		assert false : "The point " + point + " is undefined for window furnace";
 		return -1;
 	}

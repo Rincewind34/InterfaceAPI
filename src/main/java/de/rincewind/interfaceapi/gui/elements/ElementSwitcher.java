@@ -29,14 +29,14 @@ import de.rincewind.interfaceplugin.gui.elements.CraftElementSwitcher;
  */
 public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<Displayable> {
 	
-	public static void setInstructions(String instructions) {
+	public static void setDefaultInstructions(String instructions) {
 		Validate.notNull(instructions, "The instructions cannot be null");
 		
-		CraftElementSwitcher.INSTRUCTIONS = instructions;
+		CraftElementSwitcher.DEFAULT_INSTRUCTIONS = instructions;
 	}
 	
-	public static String getInstructions() {
-		return CraftElementSwitcher.INSTRUCTIONS;
+	public static String getDefaultInstructions() {
+		return CraftElementSwitcher.DEFAULT_INSTRUCTIONS;
 	}
 	
 	/**

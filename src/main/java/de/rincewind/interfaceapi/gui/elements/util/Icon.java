@@ -9,6 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
+import de.rincewind.interfaceapi.gui.elements.util.lore.EmptyLore;
+import de.rincewind.interfaceapi.gui.elements.util.lore.Lore;
+import de.rincewind.interfaceapi.gui.elements.util.lore.SimpleLore;
 import de.rincewind.interfaceapi.item.ItemLibrary;
 
 /**
@@ -42,6 +45,11 @@ public final class Icon implements Displayable, Cloneable {
 
 	private Icon() {
 		this.item = new ItemStack(Material.AIR);
+		this.amount = 0;
+		this.damage = 0;
+		this.type = Material.AIR;
+		this.name = null;
+		this.lore = EmptyLore.INSTANCE;
 	}
 
 	public Icon(Material type) {
@@ -82,7 +90,7 @@ public final class Icon implements Displayable, Cloneable {
 		}
 
 		if (meta.hasLore()) {
-			this.lore = new Lore(meta.getLore());
+			this.lore = Lore.create(meta.getLore());
 		}
 
 		for (ItemFlag flag : ItemFlag.values()) {
@@ -209,7 +217,7 @@ public final class Icon implements Displayable, Cloneable {
 		return this.rename("§7");
 	}
 
-	public Icon describe(Lore lore) {
+	public Icon describe(SimpleLore lore) {
 		if (!this.isAir()) {
 			if (!Objects.equals(this.lore, lore)) {
 				this.dirty = true;
@@ -296,9 +304,11 @@ public final class Icon implements Displayable, Cloneable {
 	public ItemStack toItem() {
 		assert !(this.isAir() && this.dirty) : "Icon#AIR is dirty";
 
+		SimpleLore lore = (SimpleLore) this.lore;
+		
 		if (!this.dirty) {
-			if (this.lore != null && this.lore.isDirty()) {
-				return this.item = ItemLibrary.refactor().loreItem(this.item, this.lore.toList());
+			if (this.lore != null && lore.isDirty()) {
+				return this.item = ItemLibrary.refactor().loreItem(this.item, lore.toList());
 			} else {
 				return this.item;
 			}
@@ -310,7 +320,7 @@ public final class Icon implements Displayable, Cloneable {
 			}
 
 			if (this.lore != null) {
-				this.item = ItemLibrary.refactor().loreItem(this.item, this.lore.toList());
+				this.item = ItemLibrary.refactor().loreItem(this.item, lore.toList());
 			}
 
 			if (!this.showInfo) {

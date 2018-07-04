@@ -13,32 +13,32 @@ public class PointTest {
 	
 	@Test
 	public void testCalculate1() {
-		Assert.assertEquals(new Point(0, 0), Point.calculate(0, 1, 1));
+		Assert.assertEquals(Point.of(0, 0), Point.calculate(0, 1, 1));
 	}
 	
 	@Test
 	public void testCalculate2() {
-		Assert.assertEquals(new Point(0, 0), Point.calculate(0, 4, 3));
+		Assert.assertEquals(Point.of(0, 0), Point.calculate(0, 4, 3));
 	}
 	
 	@Test
 	public void testCalculate3() {
-		Assert.assertEquals(new Point(1, 0), Point.calculate(1, 4, 3));
+		Assert.assertEquals(Point.of(1, 0), Point.calculate(1, 4, 3));
 	}
 	
 	@Test
 	public void testCalculate4() {
-		Assert.assertEquals(new Point(3, 0), Point.calculate(3, 4, 3));
+		Assert.assertEquals(Point.of(3, 0), Point.calculate(3, 4, 3));
 	}
 	
 	@Test
 	public void testCalculate5() {
-		Assert.assertEquals(new Point(0, 1), Point.calculate(4, 4, 3));
+		Assert.assertEquals(Point.of(0, 1), Point.calculate(4, 4, 3));
 	}
 	
 	@Test
 	public void testCalculate6() {
-		Assert.assertEquals(new Point(3, 2), Point.calculate(11, 4, 3));
+		Assert.assertEquals(Point.of(3, 2), Point.calculate(11, 4, 3));
 	}
 	
 	@Test
@@ -48,18 +48,18 @@ public class PointTest {
 	
 	@Test
 	public void testPointEquals() {
-		Point point1 = new Point(0, 0);
-		Point point2 = new Point(0, 0);
+		Point point1 = Point.of(0, 0);
+		Point point2 = Point.of(0, 0);
 		
 		Assert.assertTrue(point1.equals(point2));
 		Assert.assertTrue(point2.equals(point1));
 		
-		point1 = new Point(1, 2);
+		point1 = Point.of(1, 2);
 		
 		Assert.assertFalse(point1.equals(point2));
 		Assert.assertFalse(point2.equals(point1));
 		
-		point2 = new Point(1, 2);
+		point2 = Point.of(1, 2);
 		
 		Assert.assertTrue(point1.equals(point2));
 		Assert.assertTrue(point2.equals(point1));
@@ -75,14 +75,14 @@ public class PointTest {
 		Assert.assertFalse(point1.isBiggerThan(point2));
 		Assert.assertFalse(point2.isBiggerThan(point1));
 		
-		point1 = new Point(1, 2);
+		point1 = Point.of(1, 2);
 		
 		Assert.assertTrue(point1.compareTo(point2) > 0);
 		Assert.assertTrue(point2.compareTo(point1) < 0);
 		Assert.assertTrue(point1.isBiggerThan(point2));
 		Assert.assertFalse(point2.isBiggerThan(point1));
 		
-		point2 = new Point(1, 2);
+		point2 = Point.of(1, 2);
 		
 		Assert.assertEquals(0, point1.compareTo(point2));
 		Assert.assertEquals(0, point2.compareTo(point1));
@@ -103,12 +103,12 @@ public class PointTest {
 		Assert.assertEquals(4, point.getX());
 		Assert.assertEquals(5, point.getY());
 		
-		point = point.add(new Point(-3, 7));
+		point = point.add(Point.of(-3, 7));
 		
 		Assert.assertEquals(1, point.getX());
 		Assert.assertEquals(12, point.getY());
 		
-		point = point.subtract(new Point(2, -4));
+		point = point.subtract(Point.of(2, -4));
 		
 		Assert.assertEquals(-1, point.getX());
 		Assert.assertEquals(16, point.getY());
@@ -116,7 +116,7 @@ public class PointTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testSquareSmaller() {
-		new Point(1, 0).square(Point.NULL);
+		Point.of(1, 0).square(Point.NULL);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -137,31 +137,31 @@ public class PointTest {
 	@Test
 	public void testSquareSame() {
 		Assert.assertEquals(Sets.newHashSet(Point.NULL), Point.NULL.square(Point.NULL));
-		Assert.assertEquals(Sets.newHashSet(new Point(3, 2)), new Point(3, 2).square(new Point(3, 2)));
-		Assert.assertEquals(Sets.newHashSet(new Point(-1, 4)), new Point(-1, 4).square(new Point(-1, 4)));
+		Assert.assertEquals(Sets.newHashSet(Point.of(3, 2)), Point.of(3, 2).square(Point.of(3, 2)));
+		Assert.assertEquals(Sets.newHashSet(Point.of(-1, 4)), Point.of(-1, 4).square(Point.of(-1, 4)));
 	}
 	
 	@Test
 	public void testSquarePositive() {
-		Set<Point> points = Point.NULL.square(new Point(2, 0));
+		Set<Point> points = Point.NULL.square(Point.of(2, 0));
 		Assert.assertEquals(3, points.size());
-		points.remove(new Point(2, 0));
-		points.remove(new Point(1, 0));
-		points.remove(new Point(0, 0));
+		points.remove(Point.of(2, 0));
+		points.remove(Point.of(1, 0));
+		points.remove(Point.of(0, 0));
 		Assert.assertEquals(0, points.size());
 		
-		points = Point.NULL.square(new Point(0, 1));
+		points = Point.NULL.square(Point.of(0, 1));
 		Assert.assertEquals(2, points.size());
-		points.remove(new Point(0, 1));
-		points.remove(new Point(0, 0));
+		points.remove(Point.of(0, 1));
+		points.remove(Point.of(0, 0));
 		Assert.assertEquals(0, points.size());
 		
-		points = new Point(1, 1).square(new Point(2, 2));
+		points = Point.of(1, 1).square(Point.of(2, 2));
 		Assert.assertEquals(4, points.size());
-		points.remove(new Point(1, 1));
-		points.remove(new Point(1, 2));
-		points.remove(new Point(2, 1));
-		points.remove(new Point(2, 2));
+		points.remove(Point.of(1, 1));
+		points.remove(Point.of(1, 2));
+		points.remove(Point.of(2, 1));
+		points.remove(Point.of(2, 2));
 		Assert.assertEquals(0, points.size());
 	}
 	

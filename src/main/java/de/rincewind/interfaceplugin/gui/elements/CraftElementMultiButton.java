@@ -10,8 +10,8 @@ import org.bukkit.Material;
 import de.rincewind.interfaceapi.gui.elements.ElementMultiButton;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
-import de.rincewind.interfaceapi.gui.elements.util.Lore;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.elements.util.lore.SimpleLore;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.MultiButtonPressEvent;
@@ -210,7 +210,7 @@ public class CraftElementMultiButton extends CraftElementItem implements Element
 		Icon icon = super.getIcon(point).clone();
 
 		if (this.isEnabled() && this.isSelected()) {
-			Lore lore = new Lore();
+			SimpleLore lore = new SimpleLore();
 
 			for (int i = 0; i < this.size(); i++) {
 				if (i == this.selectedIndex) {

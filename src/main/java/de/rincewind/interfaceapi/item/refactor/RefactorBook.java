@@ -7,7 +7,8 @@ import java.util.List;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
-import de.rincewind.interfaceapi.gui.elements.util.Lore;
+import de.rincewind.interfaceapi.gui.elements.util.lore.Lore;
+import de.rincewind.interfaceapi.gui.elements.util.lore.SimpleLore;
 
 public class RefactorBook {
 	
@@ -81,7 +82,7 @@ public class RefactorBook {
 		
 		public Lore addElement(String element) {
 			this.pages.add(element);
-			return new Lore(this.pages);
+			return new SimpleLore(this.pages);
 		}
 		
 		public List<String> asList() {

@@ -141,7 +141,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 		Element element = this.getVisibleElementAt(point);
 
 		if (element == null) {
-			return Icon.AIR;
+			return null;
 		} else {
 			return element.getIcon(point.subtract(element.getPoint()));
 		}

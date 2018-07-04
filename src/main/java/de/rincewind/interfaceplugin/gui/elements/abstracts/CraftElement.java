@@ -22,6 +22,13 @@ import de.rincewind.interfaceplugin.gui.util.CraftClickBlocker;
 import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
 
 public abstract class CraftElement implements Element {
+	
+	protected final static void clearInstructions(Displayable displayable) {
+		if (displayable != Icon.AIR && displayable.hasStaticIcon()) {
+			// Remove possibly set instructions
+			displayable.getIcon().getLore().setEnd(null);
+		}
+	}
 
 	private boolean visible;
 
@@ -38,7 +45,7 @@ public abstract class CraftElement implements Element {
 
 	public CraftElement(WindowEditor handle) {
 		Validate.notNull(handle, "The handle cannot be null");
-
+		
 		this.handle = handle;
 		this.visible = true;
 		this.point = Point.NULL;
@@ -240,6 +247,7 @@ public abstract class CraftElement implements Element {
 
 	protected abstract Icon getIcon0(Point point);
 	
+	@Deprecated
 	protected void onInstructionDisplayChange(boolean oldValue, boolean newValue) {
 		
 	}
@@ -247,11 +255,15 @@ public abstract class CraftElement implements Element {
 	protected <T> void registerComponent(ElementComponentType<T> type, ElementComponent<T> component) {
 		this.components.put(type, component);
 	}
-
-	protected boolean hasInstructionsSet(Displayable item, String instructions) {
-		assert instructions != null : "The instructions are null";
+	
+	protected final Icon updateInstructions(Icon icon, String instructions) {
+		if (this.showInstructions()) {
+			icon.getLore().setEnd(instructions);
+		} else {
+			icon.getLore().setEnd(null);
+		}
 		
-		return this.showInstructions() && item.hasStaticIcon() && instructions.equals(item.getIcon().getLore().getEnd());
+		return icon;
 	}
 
 }

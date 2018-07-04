@@ -23,7 +23,7 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutWindowData;
 
 public class CraftWindowEnchanter extends CraftWindowEditor implements WindowEnchanter {
 
-	private static final Set<Point> final_points = Collections.unmodifiableSet(Sets.newHashSet(new Point(0, 0), new Point(1, 0)));
+	private static final Set<Point> final_points = Collections.unmodifiableSet(Sets.newHashSet(Point.of(0, 0), Point.of(1, 0)));
 
 	private int[] lvls;
 
@@ -95,7 +95,7 @@ public class CraftWindowEnchanter extends CraftWindowEditor implements WindowEnc
 			throw new IllegalCoordinatesException("Invalid slot");
 		}
 
-		return new Point(bukkitSlot, 0);
+		return Point.of(bukkitSlot, 0);
 	}
 
 	@Override

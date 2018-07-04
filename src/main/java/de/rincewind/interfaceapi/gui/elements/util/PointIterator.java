@@ -81,9 +81,9 @@ public class PointIterator implements Iterator<Point>, Iterable<Point>, Cloneabl
 		}
 
 		if (this.current == null) {
-			return this.current = new Point(this.minX, this.minY);
+			return this.current = Point.of(this.minX, this.minY);
 		} else {
-			return this.current = new Point(this.current.getX() == this.maxX ? this.minX : this.current.getX() + 1,
+			return this.current = Point.of(this.current.getX() == this.maxX ? this.minX : this.current.getX() + 1,
 					this.current.getX() == this.maxX ? this.current.getY() + 1 : this.current.getY());
 		}
 	}

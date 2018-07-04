@@ -28,16 +28,16 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 		super(plugin, onSelect, typeElements, typeClass);
 
 		this.buttonNext = this.elementCreator().newItem();
-		this.buttonNext.setPoint(new Point(8, 0));
+		this.buttonNext.setPoint(Point.of(8, 0));
 		this.buttonNext.setIcon(HeadsDatabase.arrowWoodRight());
 		this.buttonNext.setDisabledIcon(HeadsDatabase.arrowStoneRight());
 		this.buttonPrevious = this.elementCreator().newItem();
 		this.buttonPrevious.setIcon(HeadsDatabase.arrowWoodLeft());
 		this.buttonPrevious.setDisabledIcon(HeadsDatabase.arrowStoneLeft());
-		this.buttonPrevious.setPoint(new Point(0, 0));
+		this.buttonPrevious.setPoint(Point.NULL);
 		this.barrier = this.elementCreator().newItem();
 		this.barrier.setIcon(new Icon(Material.BARRIER));
-		this.barrier.setPoint(new Point(0, 0));
+		this.barrier.setPoint(Point.NULL);
 		this.barrier.setComponentValue(Element.WIDTH, 9);
 
 		this.typeMap = this.elementCreator().newMap();
@@ -79,9 +79,9 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 		} else {
 			this.typeMap.setComponentValue(Element.HEIGHT, this.getHeight() - 2);
 
-			this.barrier.setPoint(new Point(0, this.getHeight() - 2));
-			this.buttonNext.setPoint(new Point(this.buttonNext.getPoint().getX(), this.getHeight() - 1));
-			this.buttonPrevious.setPoint(new Point(this.buttonPrevious.getPoint().getX(), this.getHeight() - 1));
+			this.barrier.setPoint(Point.of(0, this.getHeight() - 2));
+			this.buttonNext.setPoint(Point.of(this.buttonNext.getPoint().getX(), this.getHeight() - 1));
+			this.buttonPrevious.setPoint(Point.of(this.buttonPrevious.getPoint().getX(), this.getHeight() - 1));
 		}
 	}
 

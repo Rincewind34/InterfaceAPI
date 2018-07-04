@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
@@ -64,7 +63,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	public void canUnselect(boolean value) {
 		if (this.canUnselect != value) {
 			this.canUnselect = value;
-			this.updateInstructions();
+			this.update();
 		}
 	}
 
@@ -77,10 +76,10 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	public void canCollect(boolean value) {
 		if (this.canCollect != value) {
 			this.canCollect = value;
-			this.updateInstructions();
+			this.update();
 		}
 	}
-	
+
 	@Override
 	public void displaySelectedItem(boolean value) {
 		this.displaySelectedItem = value;
@@ -106,7 +105,6 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 		}
 
 		this.selected = item;
-		this.updateInstructions();
 		this.update();
 
 		if (fireEvent) {
@@ -128,7 +126,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	public boolean canCollect() {
 		return this.canCollect;
 	}
-	
+
 	@Override
 	public boolean displaySelectedItem() {
 		return this.displaySelectedItem;
@@ -145,50 +143,21 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	}
 
 	@Override
-	public void setIcon(Displayable item) {
-		if (this.showInstructions()) {
-			if (this.getDisplayableEnabled().hasStaticIcon()
-					&& this.hasInstructionsSet(this.getDisplayableEnabled(), this.currentInstructions())) {
-
-				this.getDisplayableEnabled().getIcon().getLore().setEnd(null);
-			}
-
-			if (item.hasStaticIcon()) {
-				item.getIcon().getLore().setEnd(this.currentInstructions());
-			}
+	protected String currentInstructions() {
+		if (this.selected != null) {
+			return (this.canUnselect ? CraftElementSelector.INSTRUCTIONS_UNSELECT : "") + (this.canCollect ? CraftElementSelector.INSTRUCTIONS_COLLECT : "");
+		} else {
+			return CraftElementSelector.INSTRUCTIONS_SELECT;
 		}
-
-		super.setIcon(item);
 	}
 
 	@Override
 	protected Icon getIcon0(Point point) {
-		if (this.isEnabled()) {
-			if (this.selected != null && this.displaySelectedItem) {
-				return new Icon(this.selected);
-			} else if (this.showInstructions() && !this.getDisplayableEnabled().hasStaticIcon()) {
-				Icon icon = this.getDisplayableEnabled().getIcon();
-				icon.getLore().setEnd(this.currentInstructions());
-				return icon;
-			}
+		if (this.isEnabled() && this.selected != null && this.displaySelectedItem) {
+			return new Icon(this.selected);
 		}
 
 		return super.getIcon0(point);
-	}
-	
-	private void updateInstructions() {
-		if (this.showInstructions() && this.getDisplayableEnabled().hasStaticIcon()) {
-			this.getDisplayableEnabled().getIcon().getLore().setEnd(this.currentInstructions());
-		}
-	}
-	
-	private String currentInstructions() {
-		if (this.selected != null) {
-			return (this.canUnselect ? CraftElementSelector.INSTRUCTIONS_UNSELECT : "")
-					+ (this.canCollect ? CraftElementSelector.INSTRUCTIONS_COLLECT : "");
-		} else {
-			return CraftElementSelector.INSTRUCTIONS_SELECT;
-		}
 	}
 
 }

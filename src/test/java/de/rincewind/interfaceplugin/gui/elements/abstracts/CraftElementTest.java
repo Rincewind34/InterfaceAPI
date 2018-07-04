@@ -135,16 +135,16 @@ public class CraftElementTest {
 
 		this.element.setComponentValue(Element.WIDTH, 2);
 
-		Assert.assertEquals(Sets.newHashSet(Point.NULL, new Point(1, 0)), this.element.getPoints());
+		Assert.assertEquals(Sets.newHashSet(Point.NULL, Point.of(1, 0)), this.element.getPoints());
 
 		this.element.setComponentValue(Element.WIDTH, 4);
 
-		Assert.assertEquals(Sets.newHashSet(Point.NULL, new Point(1, 0), new Point(2, 0), new Point(3, 0)), this.element.getPoints());
+		Assert.assertEquals(Sets.newHashSet(Point.NULL, Point.of(1, 0), Point.of(2, 0), Point.of(3, 0)), this.element.getPoints());
 
 		this.element.setComponentValue(Element.WIDTH, 2);
 		this.element.setComponentValue(Element.HEIGHT, 3);
 
-		Assert.assertEquals(Sets.newHashSet(Point.NULL, new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2), new Point(1, 2)),
+		Assert.assertEquals(Sets.newHashSet(Point.NULL, Point.of(1, 0), Point.of(0, 1), Point.of(1, 1), Point.of(0, 2), Point.of(1, 2)),
 				this.element.getPoints());
 	}
 	
@@ -154,49 +154,49 @@ public class CraftElementTest {
 		this.element.getComponent(Element.HEIGHT).setEnabled(true);
 		
 		Assert.assertTrue(this.element.isInside(Point.NULL));
-		Assert.assertFalse(this.element.isInside(new Point(0, 1)));
-		Assert.assertFalse(this.element.isInside(new Point(1, 0)));
-		Assert.assertFalse(this.element.isInside(new Point(1, 1)));
-		Assert.assertFalse(this.element.isInside(new Point(0, -1)));
-		Assert.assertFalse(this.element.isInside(new Point(-1, 0)));
-		Assert.assertFalse(this.element.isInside(new Point(-1, -1)));
-		Assert.assertFalse(this.element.isInside(new Point(6, -71)));
-		Assert.assertFalse(this.element.isInside(new Point(-45, 33)));
-		Assert.assertFalse(this.element.isInside(new Point(45, 26)));
-		Assert.assertFalse(this.element.isInside(new Point(-56, -64)));
+		Assert.assertFalse(this.element.isInside(Point.of(0, 1)));
+		Assert.assertFalse(this.element.isInside(Point.of(1, 0)));
+		Assert.assertFalse(this.element.isInside(Point.of(1, 1)));
+		Assert.assertFalse(this.element.isInside(Point.of(0, -1)));
+		Assert.assertFalse(this.element.isInside(Point.of(-1, 0)));
+		Assert.assertFalse(this.element.isInside(Point.of(-1, -1)));
+		Assert.assertFalse(this.element.isInside(Point.of(6, -71)));
+		Assert.assertFalse(this.element.isInside(Point.of(-45, 33)));
+		Assert.assertFalse(this.element.isInside(Point.of(45, 26)));
+		Assert.assertFalse(this.element.isInside(Point.of(-56, -64)));
 		
 		this.element.setComponentValue(Element.HEIGHT, 3);
 		
 		Assert.assertTrue(this.element.isInside(Point.NULL));
-		Assert.assertTrue(this.element.isInside(new Point(0, 1)));
-		Assert.assertTrue(this.element.isInside(new Point(0, 2)));
-		Assert.assertFalse(this.element.isInside(new Point(0, 3)));
-		Assert.assertFalse(this.element.isInside(new Point(1, 0)));
-		Assert.assertFalse(this.element.isInside(new Point(1, 1)));
-		Assert.assertFalse(this.element.isInside(new Point(0, -1)));
-		Assert.assertFalse(this.element.isInside(new Point(-1, 0)));
-		Assert.assertFalse(this.element.isInside(new Point(-1, -1)));
-		Assert.assertFalse(this.element.isInside(new Point(6, -71)));
-		Assert.assertFalse(this.element.isInside(new Point(-45, 33)));
-		Assert.assertFalse(this.element.isInside(new Point(45, 26)));
-		Assert.assertFalse(this.element.isInside(new Point(-56, -64)));
+		Assert.assertTrue(this.element.isInside(Point.of(0, 1)));
+		Assert.assertTrue(this.element.isInside(Point.of(0, 2)));
+		Assert.assertFalse(this.element.isInside(Point.of(0, 3)));
+		Assert.assertFalse(this.element.isInside(Point.of(1, 0)));
+		Assert.assertFalse(this.element.isInside(Point.of(1, 1)));
+		Assert.assertFalse(this.element.isInside(Point.of(0, -1)));
+		Assert.assertFalse(this.element.isInside(Point.of(-1, 0)));
+		Assert.assertFalse(this.element.isInside(Point.of(-1, -1)));
+		Assert.assertFalse(this.element.isInside(Point.of(6, -71)));
+		Assert.assertFalse(this.element.isInside(Point.of(-45, 33)));
+		Assert.assertFalse(this.element.isInside(Point.of(45, 26)));
+		Assert.assertFalse(this.element.isInside(Point.of(-56, -64)));
 		
 		this.element.setComponentValue(Element.WIDTH, 2);
 		
 		Assert.assertTrue(this.element.isInside(Point.NULL));
-		Assert.assertTrue(this.element.isInside(new Point(0, 1)));
-		Assert.assertTrue(this.element.isInside(new Point(0, 2)));
-		Assert.assertTrue(this.element.isInside(new Point(1, 0)));
-		Assert.assertTrue(this.element.isInside(new Point(1, 1)));
-		Assert.assertTrue(this.element.isInside(new Point(1, 2)));
-		Assert.assertFalse(this.element.isInside(new Point(0, 3)));
-		Assert.assertFalse(this.element.isInside(new Point(0, -1)));
-		Assert.assertFalse(this.element.isInside(new Point(-1, 0)));
-		Assert.assertFalse(this.element.isInside(new Point(-1, -1)));
-		Assert.assertFalse(this.element.isInside(new Point(6, -71)));
-		Assert.assertFalse(this.element.isInside(new Point(-45, 33)));
-		Assert.assertFalse(this.element.isInside(new Point(45, 26)));
-		Assert.assertFalse(this.element.isInside(new Point(-56, -64)));
+		Assert.assertTrue(this.element.isInside(Point.of(0, 1)));
+		Assert.assertTrue(this.element.isInside(Point.of(0, 2)));
+		Assert.assertTrue(this.element.isInside(Point.of(1, 0)));
+		Assert.assertTrue(this.element.isInside(Point.of(1, 1)));
+		Assert.assertTrue(this.element.isInside(Point.of(1, 2)));
+		Assert.assertFalse(this.element.isInside(Point.of(0, 3)));
+		Assert.assertFalse(this.element.isInside(Point.of(0, -1)));
+		Assert.assertFalse(this.element.isInside(Point.of(-1, 0)));
+		Assert.assertFalse(this.element.isInside(Point.of(-1, -1)));
+		Assert.assertFalse(this.element.isInside(Point.of(6, -71)));
+		Assert.assertFalse(this.element.isInside(Point.of(-45, 33)));
+		Assert.assertFalse(this.element.isInside(Point.of(45, 26)));
+		Assert.assertFalse(this.element.isInside(Point.of(-56, -64)));
 	}
 	
 	private static class TestElement extends CraftElement {

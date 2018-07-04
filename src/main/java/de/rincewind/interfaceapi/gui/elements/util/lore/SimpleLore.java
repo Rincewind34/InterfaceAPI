@@ -1,4 +1,4 @@
-package de.rincewind.interfaceapi.gui.elements.util;
+package de.rincewind.interfaceapi.gui.elements.util.lore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,24 +12,24 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
 
-public final class Lore implements Iterable<String>, Cloneable {
+public final class SimpleLore implements Iterable<String>, Cloneable, Lore {
 
 	private boolean dirty;
-
+	
 	private String prefix;
 	private String end;
 
 	private final List<String> lore;
 
-	public Lore() {
+	public SimpleLore() {
 		this(new ArrayList<>());
 	}
 
-	public Lore(String... array) {
+	public SimpleLore(String... array) {
 		this(Lists.newArrayList(array));
 	}
 
-	public Lore(List<String> lore) {
+	public SimpleLore(List<String> lore) {
 		this.lore = lore;
 		this.prefix = "§7";
 	}
@@ -37,6 +37,107 @@ public final class Lore implements Iterable<String>, Cloneable {
 	@Override
 	public Iterator<String> iterator() {
 		return this.toList().iterator();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return this.lore.isEmpty();
+	}
+
+	@Override
+	public int size() {
+		return this.lore.size();
+	}
+
+	@Override
+	public String getPrefix() {
+		return this.prefix;
+	}
+
+	@Override
+	public String getEnd() {
+		return this.end;
+	}
+
+	@Override
+	public String getLine(int index) {
+		return this.lore.get(index);
+	}
+
+	@Override
+	public Lore clear() {
+		this.lore.clear();
+		this.dirty = true;
+		return this;
+	}
+
+	@Override
+	public Lore expand() {
+		return this.expand("");
+	}
+
+	@Override
+	public Lore expand(String line) {
+		if (this.lore.addAll(Stream.of(line.split(Pattern.quote("\\n"))).map((lineElement) -> {
+			return this.prefix + line;
+		}).collect(Collectors.toList()))) {
+			this.dirty = true;
+		}
+
+		return this;
+	}
+
+	@Override
+	public Lore insert(int index, String line) {
+		if (this.lore.addAll(index, Stream.of(line.split(Pattern.quote("\\n"))).map((lineElement) -> {
+			return this.prefix + line;
+		}).collect(Collectors.toList()))) {
+			this.dirty = true;
+		}
+		return this;
+	}
+
+	@Override
+	public Lore delete(int index) {
+		this.lore.remove(index);
+		this.dirty = true;
+		return this;
+	}
+
+	@Override
+	public Lore setPrefix(String prefix) {
+		if (!Objects.equals(this.prefix, prefix)) {
+			this.prefix = prefix == null ? "" : prefix;
+			this.dirty = true;
+		}
+
+		return this;
+	}
+
+	@Override
+	public Lore setEnd(String end) {
+		if (!Objects.equals(this.end, end)) {
+			this.end = end;
+			this.dirty = true;
+		}
+
+		return this;
+	}
+
+	@Override
+	public List<String> asList() {
+		List<String> dummy = new ArrayList<>();
+		dummy.addAll(this.lore);
+
+		if (this.end != null) {
+			if (this.size() > 0) {
+				dummy.add(this.prefix);
+			}
+			
+			dummy.addAll(Arrays.asList(this.end.split(Pattern.quote("\\n"))));
+		}
+		
+		return dummy;
 	}
 
 	@Override
@@ -53,7 +154,7 @@ public final class Lore implements Iterable<String>, Cloneable {
 			return false;
 		}
 		
-		Lore other = (Lore) obj;
+		SimpleLore other = (SimpleLore) obj;
 		
 		if (this.end == null) {
 			if (other.end != null) {
@@ -93,9 +194,9 @@ public final class Lore implements Iterable<String>, Cloneable {
 	}
 
 	@Override
-	public Lore clone() {
+	public SimpleLore clone() {
 		try {
-			Lore lore = (Lore) super.clone();
+			SimpleLore lore = (SimpleLore) super.clone();
 			Collections.copy(lore.lore, this.lore);
 			return lore;
 		} catch (CloneNotSupportedException exception) {
@@ -103,103 +204,15 @@ public final class Lore implements Iterable<String>, Cloneable {
 			return null;
 		}
 	}
-
-	public boolean isEmpty() {
-		return this.lore.isEmpty();
-	}
-
+	
 	public boolean isDirty() {
 		return this.dirty;
-	}
-
-	public int size() {
-		return this.lore.size();
-	}
-
-	public String getPrefix() {
-		return this.prefix;
-	}
-
-	public String getEnd() {
-		return this.end;
-	}
-
-	public String getLine(int index) {
-		return this.lore.get(index);
-	}
-
-	public Lore clear() {
-		this.lore.clear();
-		this.dirty = true;
-		return this;
-	}
-
-	public Lore expand() {
-		return this.expand("");
-	}
-
-	public Lore expand(String line) {
-		if (this.lore.addAll(Stream.of(line.split(Pattern.quote("\\n"))).map((lineElement) -> {
-			return this.prefix + line;
-		}).collect(Collectors.toList()))) {
-			this.dirty = true;
-		}
-
-		return this;
-	}
-
-	public Lore insert(int index, String line) {
-		if (this.lore.addAll(index, Stream.of(line.split(Pattern.quote("\\n"))).map((lineElement) -> {
-			return this.prefix + line;
-		}).collect(Collectors.toList()))) {
-			this.dirty = true;
-		}
-		return this;
-	}
-
-	public Lore delete(int index) {
-		this.lore.remove(index);
-		this.dirty = true;
-		return this;
-	}
-
-	public Lore setPrefix(String prefix) {
-		if (!Objects.equals(this.prefix, prefix)) {
-			this.prefix = prefix == null ? "" : prefix;
-			this.dirty = true;
-		}
-
-		return this;
-	}
-
-	public Lore setEnd(String end) {
-		if (!Objects.equals(this.end, end)) {
-			this.end = end;
-			this.dirty = true;
-		}
-
-		return this;
-	}
-	
-	public List<String> asList() {
-		List<String> dummy = new ArrayList<>();
-		dummy.addAll(this.lore);
-
-		if (this.end != null) {
-			if (this.size() > 0) {
-				dummy.add(this.prefix);
-			}
-			
-			dummy.addAll(Arrays.asList(this.end.split(Pattern.quote("\\n"))));
-		}
-		
-		return dummy;
 	}
 	
 	/*
 	 * Only called by Icon
 	 */
-	protected List<String> toList() {
+	public List<String> toList() {
 		this.dirty = false;
 		return this.asList();
 	}

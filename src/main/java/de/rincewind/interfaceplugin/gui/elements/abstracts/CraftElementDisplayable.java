@@ -9,55 +9,56 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 
 public abstract class CraftElementDisplayable extends CraftElement implements ElementDisplayable {
 	
-	private Displayable icon;
-	private Displayable disabledIcon;
+	private Displayable display;
+	private Displayable disabledDisplay;
 	
 	public CraftElementDisplayable(WindowEditor handle) {
 		super(handle);
 		
-		this.icon = Icon.AIR;
-		this.disabledIcon = Icon.AIR;
+		this.display = Icon.AIR;
+		this.disabledDisplay = Icon.AIR;
 		
 		this.getComponent(Element.ENABLED).setEnabled(true);
 	}
 	
 	@Override
 	public void setIcon(Displayable icon) {
-		this.icon = icon;
+		CraftElement.clearInstructions(icon);
+		this.display = Displayable.checkNull(icon);
 		this.update();
 	}
 	
 	@Override
 	public void setDisabledIcon(Displayable icon) {
-		this.disabledIcon = icon;
+		this.disabledDisplay = Displayable.checkNull(icon);
 		this.update();
 	}
 	
 	@Override
 	public Icon getIcon() {
-		return Displayable.validate(this.icon);
+		return this.display.getIcon();
 	}
 
 	@Override
 	public Icon getDisabledIcon() {
-		return Displayable.validate(this.disabledIcon);
+		return this.disabledDisplay.getIcon();
 	}
 	
 	@Override
 	protected Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
-			return this.getIcon();
+			return this.updateInstructions(this.getIcon());
 		} else {
 			return this.getDisabledIcon();
 		}
 	}
 	
-	protected Displayable getDisplayableEnabled() {
-		return this.icon;
+	protected final Icon updateInstructions(Icon icon) {
+		return this.updateInstructions(icon, this.currentInstructions());
 	}
 	
-	protected Displayable getDisplayableDisabled() {
-		return this.disabledIcon;
+	protected String currentInstructions() {
+		return null;
 	}
 	
 }

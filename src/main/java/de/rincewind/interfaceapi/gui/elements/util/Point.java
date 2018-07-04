@@ -55,14 +55,23 @@ public class Point implements Comparable<Point> {
 		}
 	}
 	
+	public static Point of(int x, int y) {
+		if (x == 0 && y == 0) {
+			return Point.NULL;
+		} else {
+			return new Point(x, y);
+		}
+	}
+	
 	private final int x;
 	private final int y;
-
+	
+	@Deprecated
 	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
-
+	
 	@Override
 	public int compareTo(Point other) {
 		int yCompare = Integer.compare(this.y, other.y);

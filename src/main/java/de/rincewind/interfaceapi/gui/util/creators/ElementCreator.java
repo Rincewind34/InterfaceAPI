@@ -12,7 +12,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceapi.gui.elements.util.Lore;
+import de.rincewind.interfaceapi.gui.elements.util.lore.SimpleLore;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 
 /**
@@ -58,7 +58,7 @@ public interface ElementCreator {
 		return switcher;
 	}
 
-	public default ElementSwitcher newBooleanSwitcher(String disabledDisplay, Lore disabledLore, String enabledDisplay, Lore enabledLore, boolean current) {
+	public default ElementSwitcher newBooleanSwitcher(String disabledDisplay, SimpleLore disabledLore, String enabledDisplay, SimpleLore enabledLore, boolean current) {
 		ElementSwitcher switcher = this.newSwitcher();
 		switcher.addSwitch(Displayable.of(false, "§c" + disabledDisplay, disabledLore));
 		switcher.addSwitch(Displayable.of(true, "§a" + enabledDisplay, enabledLore));

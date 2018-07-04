@@ -86,9 +86,25 @@ public class InterfaceAPI {
 		
 		InterfaceAPI.inlineSelectors.put(typeClass, creator);
 	}
+	
+	public static boolean isWindowSelectorRegistered(Class<?> typeClass) {
+		Validate.notNull(typeClass, "The type class cannot be null");
+		
+		return InterfaceAPI.windowSelectors.containsKey(typeClass);
+	}
+	
+	public static boolean isInlineSelectorRegistered(Class<?> typeClass) {
+		Validate.notNull(typeClass, "The type class cannot be null");
+		
+		return InterfaceAPI.inlineSelectors.containsKey(typeClass);
+	}
 
 	public static int getSetupAmount() {
 		return InterfaceAPI.setups.size();
+	}
+
+	public static int getActiveWindowId(Player player) {
+		return ((CraftPlayer) player).getHandle().activeContainer.windowId;
 	}
 
 	public static Setup getSetup(Player player) {
@@ -107,10 +123,6 @@ public class InterfaceAPI {
 		}
 
 		return InterfaceAPI.setups.get(player);
-	}
-
-	public static int getActiveWindowId(Player player) {
-		return ((CraftPlayer) player).getHandle().activeContainer.windowId;
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -17,7 +17,7 @@ import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
 public class CraftElementSwitcher extends CraftElement implements ElementSwitcher {
 
-	public static String INSTRUCTIONS = "§7§lLK: §7§oNächster Wert \\n§7§lRK: §7§oVorheriger Wert\\n§7§l+S: §7§oEinen Wert überspringen";
+	public static String DEFAULT_INSTRUCTIONS = "§7§lLK: §7§oNächster Wert \\n§7§lRK: §7§oVorheriger Wert\\n§7§l+S: §7§oEinen Wert überspringen";
 
 	private int switchIndex;
 
@@ -54,7 +54,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 	@Override
 	public void setDisabledIcon(Displayable icon) {
-		this.disabledIcon = icon;
+		this.disabledIcon = Displayable.checkNull(icon);
 	}
 
 	@Override
@@ -121,11 +121,11 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	public void addSwitch(Displayable item) {
 		Validate.notNull(item, "The switchitem cannot be null");
 
-		this.items.add(item);
-
-		if (this.showInstructions() && item.hasStaticIcon()) {
-			item.getIcon().getLore().setEnd(CraftElementSwitcher.INSTRUCTIONS);
+		if (this.items.contains(item)) {
+			return;
 		}
+
+		this.items.add(item);
 
 		if (this.switchIndex == -1) {
 			this.setSwitchIndex(0);
@@ -145,12 +145,14 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	public void removeSwitch(Displayable item) {
 		Validate.notNull(item, "The switchitem cannot be null");
 
-		if (this.hasInstructionsSet(item, CraftElementSwitcher.INSTRUCTIONS)) {
-			item.getIcon().getLore().setEnd(null);
-		}
+		if (this.items.contains(item)) {
+			if (item.hasStaticIcon()) {
+				item.getIcon().getLore().setEnd(null);
+			}
 
-		this.items.remove(item);
-		this.setSwitchIndex(this.switchIndex);
+			this.items.remove(item);
+			this.setSwitchIndex(this.switchIndex);
+		}
 	}
 
 	@Override
@@ -158,7 +160,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		this.items.clear();
 		this.update();
 	}
-	
+
 	@Override
 	public int size() {
 		return this.items.size();
@@ -166,7 +168,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 	@Override
 	public Icon getDisabledIcon() {
-		return Displayable.validate(this.disabledIcon);
+		return this.disabledIcon.getIcon();
 	}
 
 	@Override
@@ -206,15 +208,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	protected Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
 			if (this.switchIndex != -1) {
-				Displayable displayable = this.items.get(this.switchIndex);
-
-				if (this.showInstructions() && !displayable.hasStaticIcon()) {
-					Icon icon = displayable.getIcon();
-					icon.getLore().setEnd(CraftElementSwitcher.INSTRUCTIONS);
-					return icon;
-				} else {
-					return displayable.getIcon();
-				}
+				return this.updateInstructions(this.items.get(this.switchIndex).getIcon(), CraftElementSwitcher.DEFAULT_INSTRUCTIONS);
 			} else {
 				return Icon.AIR; /* TODO Error Icon */
 			}
@@ -223,21 +217,4 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		}
 	}
 	
-	@Override
-	protected void onInstructionDisplayChange(boolean oldValue, boolean newValue) {
-		if (newValue) {
-			for (Displayable displayable : this.items) {
-				if (displayable.hasStaticIcon()) {
-					displayable.getIcon().getLore().setEnd(CraftElementSwitcher.INSTRUCTIONS);
-				}
-			}
-		} else {
-			for (Displayable displayable : this.items) {
-				if (this.hasInstructionsSet(displayable, CraftElementSwitcher.INSTRUCTIONS)) {
-					displayable.getIcon().getLore().setEnd(null);
-				}
-			}
-		}
-	}
-
 }

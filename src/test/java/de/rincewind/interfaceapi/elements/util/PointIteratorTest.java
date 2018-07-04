@@ -43,7 +43,7 @@ public class PointIteratorTest {
 	
 	@Test
 	public void testIterateZero() {
-		Set<Point> points = PointIteratorTest.newSet(new Point(2, 1));
+		Set<Point> points = PointIteratorTest.newSet(Point.of(2, 1));
 		int carry = 0;
 		
 		for (Point point : new PointIterator(2, 1, 2, 1)) {
@@ -57,7 +57,7 @@ public class PointIteratorTest {
 	
 	@Test
 	public void testIterateX() {
-		Set<Point> points = PointIteratorTest.newSet(new Point(-1, 1), new Point(0, 1), new Point(1, 1));
+		Set<Point> points = PointIteratorTest.newSet(Point.of(-1, 1), Point.of(0, 1), Point.of(1, 1));
 		int carry = 0;
 		
 		for (Point point : new PointIterator(-1, 1, 1, 1)) {
@@ -71,7 +71,7 @@ public class PointIteratorTest {
 	
 	@Test
 	public void testIterateY() {
-		Set<Point> points = PointIteratorTest.newSet(new Point(0, -3), new Point(0, -2), new Point(0, -1));
+		Set<Point> points = PointIteratorTest.newSet(Point.of(0, -3), Point.of(0, -2), Point.of(0, -1));
 		int carry = 0;
 		
 		for (Point point : new PointIterator(0, -3, 0, -1)) {
@@ -85,7 +85,7 @@ public class PointIteratorTest {
 	
 	@Test
 	public void testIterateSquare() {
-		Set<Point> points = PointIteratorTest.newSet(new Point(-1, -3), new Point(-1, -2), new Point(0, -3), new Point(0, -2));
+		Set<Point> points = PointIteratorTest.newSet(Point.of(-1, -3), Point.of(-1, -2), Point.of(0, -3), Point.of(0, -2));
 		int carry = 0;
 		
 		for (Point point : new PointIterator(-1, -3, 0, -2)) {

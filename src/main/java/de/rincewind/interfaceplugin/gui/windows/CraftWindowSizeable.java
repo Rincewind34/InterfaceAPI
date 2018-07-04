@@ -86,7 +86,7 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 		int y = (int) ((double) bukkitSlot / (double) this.getWidth());
 		int x = bukkitSlot - (y * this.getWidth());
 
-		return new Point(x, y);
+		return Point.of(x, y);
 	}
 
 	@Override

@@ -53,7 +53,8 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 	}
 
 	protected void renderPoint(Point point) {
-		this.inventory.setItem(this.getSlot(point), this.getIcon(point).toItem());
+		Icon icon = this.getIcon(point);
+		this.inventory.setItem(this.getSlot(point), icon != null ? icon.toItem() : null);
 	}
 
 	protected void renderPoints(Iterable<Point> points) {

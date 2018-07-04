@@ -58,13 +58,13 @@ public class WindowEditorTest {
 		Assert.assertEquals(1, this.window.getElementsAt(Point.NULL).size());
 		Assert.assertSame(item, this.window.getElementsAt(Point.NULL).iterator().next());
 
-		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(new Point(0, 0)));
+		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(Point.of(0, 0)));
 		this.assertIcons(Icon.AIR, Point.NULL);
 
-		item.setPoint(new Point(1, 1));
+		item.setPoint(Point.of(1, 1));
 
-		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(new Point(1, 1)));
-		this.assertIcons(Icon.AIR, new Point(1, 1));
+		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(Point.of(1, 1)));
+		this.assertIcons(Icon.AIR, Point.of(1, 1));
 	}
 
 	@Test(expected = ElementEditorException.class)
@@ -87,7 +87,7 @@ public class WindowEditorTest {
 		ElementItem item = this.window.elementCreator().newItem();
 		item.setIcon(new Icon(Material.APPLE));
 		
-		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(new Point(0, 0)));
+		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(Point.of(0, 0)));
 		this.assertIcons(Icon.AIR, Point.NULL);
 
 		this.window.removeElement(item);
@@ -121,31 +121,31 @@ public class WindowEditorTest {
 		item1.setIcon(new Icon(Material.APPLE));
 		item1.setComponentValue(Element.WIDTH, 2);
 		item1.setComponentValue(Element.HEIGHT, 3);
-		item1.setPoint(new Point(2, 1));
+		item1.setPoint(Point.of(2, 1));
 
 		ElementItem item2 = this.window.elementCreator().newItem();
 		item2.setIcon(new Icon(Material.ARROW));
-		item2.setPoint(new Point(6, 1));
+		item2.setPoint(Point.of(6, 1));
 		item2.setComponentValue(Element.HEIGHT, 4);
 
 		ElementItem item3 = this.window.elementCreator().newItem();
 		item3.setIcon(new Icon(Material.BEACON));
-		item3.setPoint(new Point(3, 2));
+		item3.setPoint(Point.of(3, 2));
 		item3.setComponentValue(Element.WIDTH, 5);
 
 		Set<Point> occupiedPoints = new HashSet<>();
 
-		for (Point point : Arrays.asList(new Point(2, 1), new Point(3, 1), new Point(2, 2), new Point(2, 3), new Point(3, 3))) {
+		for (Point point : Arrays.asList(Point.of(2, 1), Point.of(3, 1), Point.of(2, 2), Point.of(2, 3), Point.of(3, 3))) {
 			Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(point));
 			occupiedPoints.add(point);
 		}
 
-		for (Point point : Arrays.asList(new Point(6, 1), new Point(6, 3), new Point(6, 4))) {
+		for (Point point : Arrays.asList(Point.of(6, 1), Point.of(6, 3), Point.of(6, 4))) {
 			Assert.assertEquals(new Icon(Material.ARROW), this.window.getIcon(point));
 			occupiedPoints.add(point);
 		}
 
-		for (Point point : Arrays.asList(new Point(3, 2), new Point(4, 2), new Point(5, 2), new Point(6, 2), new Point(7, 2))) {
+		for (Point point : Arrays.asList(Point.of(3, 2), Point.of(4, 2), Point.of(5, 2), Point.of(6, 2), Point.of(7, 2))) {
 			Assert.assertEquals(new Icon(Material.BEACON), this.window.getIcon(point));
 			occupiedPoints.add(point);
 		}
@@ -156,17 +156,17 @@ public class WindowEditorTest {
 
 		occupiedPoints = new HashSet<>();
 
-		for (Point point : Arrays.asList(new Point(2, 1), new Point(3, 1), new Point(2, 2), new Point(2, 3), new Point(3, 3))) {
+		for (Point point : Arrays.asList(Point.of(2, 1), Point.of(3, 1), Point.of(2, 2), Point.of(2, 3), Point.of(3, 3))) {
 			Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(point));
 			occupiedPoints.add(point);
 		}
 
-		for (Point point : Arrays.asList(new Point(6, 1), new Point(6, 2), new Point(6, 3), new Point(6, 4))) {
+		for (Point point : Arrays.asList(Point.of(6, 1), Point.of(6, 2), Point.of(6, 3), Point.of(6, 4))) {
 			Assert.assertEquals(new Icon(Material.ARROW), this.window.getIcon(point));
 			occupiedPoints.add(point);
 		}
 
-		for (Point point : Arrays.asList(new Point(3, 2), new Point(4, 2), new Point(5, 2), new Point(7, 2))) {
+		for (Point point : Arrays.asList(Point.of(3, 2), Point.of(4, 2), Point.of(5, 2), Point.of(7, 2))) {
 			Assert.assertEquals(new Icon(Material.BEACON), this.window.getIcon(point));
 			occupiedPoints.add(point);
 		}
@@ -177,17 +177,17 @@ public class WindowEditorTest {
 
 		occupiedPoints = new HashSet<>();
 
-		for (Point point : Arrays.asList(new Point(2, 1), new Point(3, 1), new Point(2, 2), new Point(3, 2), new Point(2, 3), new Point(3, 3))) {
+		for (Point point : Arrays.asList(Point.of(2, 1), Point.of(3, 1), Point.of(2, 2), Point.of(3, 2), Point.of(2, 3), Point.of(3, 3))) {
 			Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(point));
 			occupiedPoints.add(point);
 		}
 
-		for (Point point : Arrays.asList(new Point(6, 1), new Point(6, 2), new Point(6, 3), new Point(6, 4))) {
+		for (Point point : Arrays.asList(Point.of(6, 1), Point.of(6, 2), Point.of(6, 3), Point.of(6, 4))) {
 			Assert.assertEquals(new Icon(Material.ARROW), this.window.getIcon(point));
 			occupiedPoints.add(point);
 		}
 
-		for (Point point : Arrays.asList(new Point(4, 2), new Point(5, 2), new Point(7, 2))) {
+		for (Point point : Arrays.asList(Point.of(4, 2), Point.of(5, 2), Point.of(7, 2))) {
 			Assert.assertEquals(new Icon(Material.BEACON), this.window.getIcon(point));
 			occupiedPoints.add(point);
 		}
@@ -201,37 +201,37 @@ public class WindowEditorTest {
 		item1.setIcon(new Icon(Material.APPLE));
 		item1.setComponentValue(Element.WIDTH, 2);
 		item1.setComponentValue(Element.HEIGHT, 3);
-		item1.setPoint(new Point(2, 1));
+		item1.setPoint(Point.of(2, 1));
 
 		ElementItem item2 = this.window.elementCreator().newItem();
 		item2.setIcon(new Icon(Material.ARROW));
-		item2.setPoint(new Point(6, 1));
+		item2.setPoint(Point.of(6, 1));
 		item2.setComponentValue(Element.HEIGHT, 4);
 
 		ElementItem item3 = this.window.elementCreator().newItem();
 		item3.setIcon(new Icon(Material.BEACON));
-		item3.setPoint(new Point(3, 2));
+		item3.setPoint(Point.of(3, 2));
 		item3.setComponentValue(Element.WIDTH, 5);
 
-		Assert.assertEquals(Sets.newHashSet(new Point(2, 1), new Point(3, 1), new Point(2, 2), new Point(2, 3), new Point(3, 3)),
+		Assert.assertEquals(Sets.newHashSet(Point.of(2, 1), Point.of(3, 1), Point.of(2, 2), Point.of(2, 3), Point.of(3, 3)),
 				this.window.getOccupiedPoints(item1));
-		Assert.assertEquals(Sets.newHashSet(new Point(6, 1), new Point(6, 3), new Point(6, 4)), this.window.getOccupiedPoints(item2));
-		Assert.assertEquals(Sets.newHashSet(new Point(3, 2), new Point(4, 2), new Point(5, 2), new Point(6, 2), new Point(7, 2)),
+		Assert.assertEquals(Sets.newHashSet(Point.of(6, 1), Point.of(6, 3), Point.of(6, 4)), this.window.getOccupiedPoints(item2));
+		Assert.assertEquals(Sets.newHashSet(Point.of(3, 2), Point.of(4, 2), Point.of(5, 2), Point.of(6, 2), Point.of(7, 2)),
 				this.window.getOccupiedPoints(item3));
 
 		item2.priorize();
 
-		Assert.assertEquals(Sets.newHashSet(new Point(2, 1), new Point(3, 1), new Point(2, 2), new Point(2, 3), new Point(3, 3)),
+		Assert.assertEquals(Sets.newHashSet(Point.of(2, 1), Point.of(3, 1), Point.of(2, 2), Point.of(2, 3), Point.of(3, 3)),
 				this.window.getOccupiedPoints(item1));
-		Assert.assertEquals(Sets.newHashSet(new Point(6, 1), new Point(6, 2), new Point(6, 3), new Point(6, 4)), this.window.getOccupiedPoints(item2));
-		Assert.assertEquals(Sets.newHashSet(new Point(3, 2), new Point(4, 2), new Point(5, 2), new Point(7, 2)), this.window.getOccupiedPoints(item3));
+		Assert.assertEquals(Sets.newHashSet(Point.of(6, 1), Point.of(6, 2), Point.of(6, 3), Point.of(6, 4)), this.window.getOccupiedPoints(item2));
+		Assert.assertEquals(Sets.newHashSet(Point.of(3, 2), Point.of(4, 2), Point.of(5, 2), Point.of(7, 2)), this.window.getOccupiedPoints(item3));
 		
 		item1.priorize();
 
-		Assert.assertEquals(Sets.newHashSet(new Point(2, 1), new Point(3, 1), new Point(2, 2), new Point(3, 2), new Point(2, 3), new Point(3, 3)),
+		Assert.assertEquals(Sets.newHashSet(Point.of(2, 1), Point.of(3, 1), Point.of(2, 2), Point.of(3, 2), Point.of(2, 3), Point.of(3, 3)),
 				this.window.getOccupiedPoints(item1));
-		Assert.assertEquals(Sets.newHashSet(new Point(6, 1), new Point(6, 2), new Point(6, 3), new Point(6, 4)), this.window.getOccupiedPoints(item2));
-		Assert.assertEquals(Sets.newHashSet(new Point(4, 2), new Point(5, 2), new Point(7, 2)), this.window.getOccupiedPoints(item3));
+		Assert.assertEquals(Sets.newHashSet(Point.of(6, 1), Point.of(6, 2), Point.of(6, 3), Point.of(6, 4)), this.window.getOccupiedPoints(item2));
+		Assert.assertEquals(Sets.newHashSet(Point.of(4, 2), Point.of(5, 2), Point.of(7, 2)), this.window.getOccupiedPoints(item3));
 	}
 
 	@Test
@@ -240,37 +240,37 @@ public class WindowEditorTest {
 		item1.setIcon(new Icon(Material.APPLE));
 		item1.setComponentValue(Element.WIDTH, 2);
 		item1.setComponentValue(Element.HEIGHT, 3);
-		item1.setPoint(new Point(2, 1));
+		item1.setPoint(Point.of(2, 1));
 
 		ElementItem item2 = this.window.elementCreator().newItem();
 		item2.setIcon(new Icon(Material.ARROW));
-		item2.setPoint(new Point(6, 1));
+		item2.setPoint(Point.of(6, 1));
 		item2.setComponentValue(Element.HEIGHT, 4);
 
 		ElementItem item3 = this.window.elementCreator().newItem();
 		item3.setIcon(new Icon(Material.BEACON));
-		item3.setPoint(new Point(3, 2));
+		item3.setPoint(Point.of(3, 2));
 		item3.setComponentValue(Element.WIDTH, 5);
 
-		Assert.assertEquals(Sets.newHashSet(new Point(2, 1), new Point(3, 1), new Point(2, 2), new Point(2, 3), new Point(3, 3)),
+		Assert.assertEquals(Sets.newHashSet(Point.of(2, 1), Point.of(3, 1), Point.of(2, 2), Point.of(2, 3), Point.of(3, 3)),
 				this.window.getOccupiedPoints(item1));
-		Assert.assertEquals(Sets.newHashSet(new Point(6, 1), new Point(6, 3), new Point(6, 4)), this.window.getOccupiedPoints(item2));
-		Assert.assertEquals(Sets.newHashSet(new Point(3, 2), new Point(4, 2), new Point(5, 2), new Point(6, 2), new Point(7, 2)),
+		Assert.assertEquals(Sets.newHashSet(Point.of(6, 1), Point.of(6, 3), Point.of(6, 4)), this.window.getOccupiedPoints(item2));
+		Assert.assertEquals(Sets.newHashSet(Point.of(3, 2), Point.of(4, 2), Point.of(5, 2), Point.of(6, 2), Point.of(7, 2)),
 				this.window.getOccupiedPoints(item3));
 
 		item2.priorize();
 
-		Assert.assertEquals(Sets.newHashSet(new Point(2, 1), new Point(3, 1), new Point(2, 2), new Point(2, 3), new Point(3, 3)),
+		Assert.assertEquals(Sets.newHashSet(Point.of(2, 1), Point.of(3, 1), Point.of(2, 2), Point.of(2, 3), Point.of(3, 3)),
 				this.window.getOccupiedPoints(item1));
-		Assert.assertEquals(Sets.newHashSet(new Point(6, 1), new Point(6, 2), new Point(6, 3), new Point(6, 4)), this.window.getOccupiedPoints(item2));
-		Assert.assertEquals(Sets.newHashSet(new Point(3, 2), new Point(4, 2), new Point(5, 2), new Point(7, 2)), this.window.getOccupiedPoints(item3));
+		Assert.assertEquals(Sets.newHashSet(Point.of(6, 1), Point.of(6, 2), Point.of(6, 3), Point.of(6, 4)), this.window.getOccupiedPoints(item2));
+		Assert.assertEquals(Sets.newHashSet(Point.of(3, 2), Point.of(4, 2), Point.of(5, 2), Point.of(7, 2)), this.window.getOccupiedPoints(item3));
 		
 		item1.priorize();
 
-		Assert.assertEquals(Sets.newHashSet(new Point(2, 1), new Point(3, 1), new Point(2, 2), new Point(3, 2), new Point(2, 3), new Point(3, 3)),
+		Assert.assertEquals(Sets.newHashSet(Point.of(2, 1), Point.of(3, 1), Point.of(2, 2), Point.of(3, 2), Point.of(2, 3), Point.of(3, 3)),
 				this.window.getOccupiedPoints(item1));
-		Assert.assertEquals(Sets.newHashSet(new Point(6, 1), new Point(6, 2), new Point(6, 3), new Point(6, 4)), this.window.getOccupiedPoints(item2));
-		Assert.assertEquals(Sets.newHashSet(new Point(4, 2), new Point(5, 2), new Point(7, 2)), this.window.getOccupiedPoints(item3));
+		Assert.assertEquals(Sets.newHashSet(Point.of(6, 1), Point.of(6, 2), Point.of(6, 3), Point.of(6, 4)), this.window.getOccupiedPoints(item2));
+		Assert.assertEquals(Sets.newHashSet(Point.of(4, 2), Point.of(5, 2), Point.of(7, 2)), this.window.getOccupiedPoints(item3));
 	}
 
 	private void assertIcons(Icon icon, Point... occupiedSlots) {
@@ -308,7 +308,7 @@ public class WindowEditorTest {
 			int y = (int) ((double) bukkitSlot / 9.0D);
 			int x = bukkitSlot - (y * 9);
 
-			return new Point(x, y);
+			return Point.of(x, y);
 		}
 
 		@Override

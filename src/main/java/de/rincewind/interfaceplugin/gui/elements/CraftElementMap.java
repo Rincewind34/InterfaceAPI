@@ -63,7 +63,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public void setDisabledIcon(Displayable icon) {
-		this.disabledIcon = icon;
+		this.disabledIcon = Displayable.checkNull(icon);
 	}
 
 	@Override
@@ -298,7 +298,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public Icon getDisabledIcon() {
-		return Displayable.validate(this.disabledIcon);
+		return this.disabledIcon.getIcon();
 	}
 
 	@Override

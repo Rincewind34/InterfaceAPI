@@ -20,7 +20,7 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutWindowData;
 public class CraftWindowBrewing extends CraftWindowActivatable implements WindowBrewing {
 
 	public static final Set<Point> final_points = Collections
-			.unmodifiableSet(Sets.newHashSet(new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(1, 0)));
+			.unmodifiableSet(Sets.newHashSet(Point.of(0, 1), Point.of(1, 1), Point.of(2, 1), Point.of(1, 0)));
 
 	public CraftWindowBrewing(Plugin plugin) {
 		super(plugin);
@@ -44,9 +44,9 @@ public class CraftWindowBrewing extends CraftWindowActivatable implements Window
 	@Override
 	public Point getPoint(int bukkitSlot) {
 		if (0 <= bukkitSlot && bukkitSlot <= 2) {
-			return new Point(bukkitSlot, 1);
+			return Point.of(bukkitSlot, 1);
 		} else if (bukkitSlot == 3) {
-			return new Point(1, 0);
+			return Point.of(1, 0);
 		} else {
 			assert false : "The bukkit slot " + bukkitSlot + " is undifined for window brewing";
 			return null;
