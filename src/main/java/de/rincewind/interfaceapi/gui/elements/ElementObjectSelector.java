@@ -1,21 +1,25 @@
 package de.rincewind.interfaceapi.gui.elements;
 
+import java.util.Collection;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
 
-public interface ElementObjectSelector extends ElementDisplayable {
+public interface ElementObjectSelector<T> extends ElementDisplayable {
 	
-	public abstract void setObjectClass(Class<?> objectClass);
+	public abstract void setObjectClass(Class<T> objectClass);
 	
-	public abstract void setConverter(Function<Object, Displayable> converter);
+	public abstract void setConverter(Function<T, Displayable> converter);
+	
+	public abstract void setSelectableElements(Supplier<Collection<? extends T>> getter);
 	
 	public abstract void setCanUnselect(boolean value);
 	
-	public abstract void select(Object value);
+	public abstract void select(T value);
 	
-	public abstract void select(Object value, boolean fireEvent);
+	public abstract void select(T value, boolean fireEvent);
 	
 	public abstract void unselect();
 	
@@ -23,12 +27,8 @@ public interface ElementObjectSelector extends ElementDisplayable {
 	
 	public abstract boolean canUnselect();
 	
-	public abstract Class<?> getObjectClass();
+	public abstract T getSelectedObject();
 	
-	public abstract <T> T getSelectedObject();
-	
-	public default <T> T getSelectedObject(Class<T> cls) {
-		return this.getSelectedObject();
-	}
+	public abstract Class<T> getObjectClass();
 	
 }

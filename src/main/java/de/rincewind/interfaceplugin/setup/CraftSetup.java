@@ -2,6 +2,7 @@ package de.rincewind.interfaceplugin.setup;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -14,10 +15,10 @@ import de.rincewind.interfaceapi.exceptions.SetupException;
 import de.rincewind.interfaceapi.gui.windows.WindowAnvil;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowContainer;
-import de.rincewind.interfaceapi.gui.windows.selectors.WindowSelector;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
 import de.rincewind.interfaceapi.handling.window.WindowOpenEvent;
+import de.rincewind.interfaceapi.selectors.window.WindowSelector;
 import de.rincewind.interfaceapi.setup.FileBrowser;
 import de.rincewind.interfaceapi.setup.Setup;
 import de.rincewind.interfaceplugin.InterfacePlugin;
@@ -90,7 +91,9 @@ public class CraftSetup implements Setup {
 	@Override
 	public void open(Window window) {
 		Validate.notNull(window, "The window cannot be null!");
-
+		
+		// TODO maximize already opened window to avoid things like QuestSystem ChapterWindow
+		
 		if (window.getUser() != null) {
 			throw new SetupException("The window is already opend!");
 		}
@@ -105,7 +108,7 @@ public class CraftSetup implements Setup {
 	public void close(Window window) {
 		Validate.notNull(window, "The window cannot be null!");
 
-		if (!this.hasOpenWindow(window)) {
+		if (!this.windows.contains(window)) {
 			throw new SetupException("The window is not opend by this player!");
 		}
 
@@ -133,7 +136,7 @@ public class CraftSetup implements Setup {
 	public void maximize(Window window) {
 		Validate.notNull(window, "The window cannot be null!");
 
-		if (!this.hasOpenWindow(window)) {
+		if (!this.windows.contains(window)) {
 			throw new SetupException("The window is not opend by this player!");
 		}
 
@@ -207,9 +210,22 @@ public class CraftSetup implements Setup {
 	}
 	
 	@Override
-	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Iterable<T> elements, Consumer<T> action) {
-		// Let InterfaceAPI#newSelector(...) validate the parameters
-		WindowSelector<T> window = InterfaceAPI.newSelector(typeClass, plugin, elements, action);
+	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Consumer<T> action) {
+		// Let WindowSelectorCreator#newWindow(...) validate the parameters
+		WindowSelector<T> window = InterfaceAPI.getWindowCreator(typeClass).newWindow(plugin, action);
+		
+		if (window == null) {
+			return null;
+		}
+		
+		this.open(window);
+		return window;
+	}
+	
+	@Override
+	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Collection<T> elements, Consumer<T> action) {
+		// Let WindowSelectorCreator#newWindow(...) validate the parameters
+		WindowSelector<T> window = InterfaceAPI.getWindowCreator(typeClass).newWindow(plugin, action, elements);
 		
 		if (window == null) {
 			return null;

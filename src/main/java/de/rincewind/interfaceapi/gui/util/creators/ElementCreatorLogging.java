@@ -98,8 +98,8 @@ public class ElementCreatorLogging implements ElementCreator {
 	}
 	
 	@Override
-	public ElementObjectSelector newObjectSelector() {
-		ElementObjectSelector element = this.wrapper.newObjectSelector();
+	public <T> ElementObjectSelector<T> newObjectSelector() {
+		ElementObjectSelector<T> element = this.wrapper.newObjectSelector();
 		this.log.add(element);
 		return element;
 	}

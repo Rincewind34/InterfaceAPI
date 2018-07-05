@@ -1,15 +1,14 @@
-package de.rincewind.interfaceapi.gui.windows.selectors;
+package de.rincewind.interfaceapi.selectors.window;
 
+import java.util.Collection;
 import java.util.function.Consumer;
 
-import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
 import de.rincewind.interfaceapi.handling.element.MapChangeSelectEvent;
@@ -24,8 +23,8 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 
 	protected final ElementMap typeMap;
 
-	public WindowMapSelector(Plugin plugin, Consumer<T> onSelect, Iterable<T> typeElements, Class<T> typeClass) {
-		super(plugin, onSelect, typeElements, typeClass);
+	public WindowMapSelector(Plugin plugin, Consumer<T> onSelect, Collection<T> typeElements, boolean defaultSet, T defaultValue, Class<T> typeClass) {
+		super(plugin, onSelect, typeElements, defaultSet, defaultValue, typeClass);
 
 		this.buttonNext = this.elementCreator().newItem();
 		this.buttonNext.setPoint(Point.of(8, 0));
@@ -35,10 +34,7 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 		this.buttonPrevious.setIcon(HeadsDatabase.arrowWoodLeft());
 		this.buttonPrevious.setDisabledIcon(HeadsDatabase.arrowStoneLeft());
 		this.buttonPrevious.setPoint(Point.NULL);
-		this.barrier = this.elementCreator().newItem();
-		this.barrier.setIcon(new Icon(Material.BARRIER));
-		this.barrier.setPoint(Point.NULL);
-		this.barrier.setComponentValue(Element.WIDTH, 9);
+		this.barrier = this.elementCreator().newBarrier(Point.NULL, 9);
 
 		this.typeMap = this.elementCreator().newMap();
 		this.typeMap.registerNextPageFliper(this.buttonNext);
@@ -58,11 +54,15 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 
 		this.showControlStrip(height > 6);
 	}
-	
+
 	@Override
 	public void setSize(int width, int height) {
 		super.setSize(width, height);
-		
+
+		this.updateControlStrip();
+	}
+
+	public void updateControlStrip() {
 		this.showControlStrip(this.isShowControlStrip());
 	}
 
@@ -88,7 +88,7 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 	public boolean isShowControlStrip() {
 		return this.barrier.isVisible();
 	}
-	
+
 	protected Displayable displayableOf(T value) {
 		return Displayable.of(value);
 	}

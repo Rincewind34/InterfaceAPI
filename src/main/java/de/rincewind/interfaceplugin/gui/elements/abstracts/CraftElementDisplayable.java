@@ -8,6 +8,8 @@ import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 
 public abstract class CraftElementDisplayable extends CraftElement implements ElementDisplayable {
+
+	private boolean workInstructions;
 	
 	private Displayable display;
 	private Displayable disabledDisplay;
@@ -17,13 +19,17 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 		
 		this.display = Icon.AIR;
 		this.disabledDisplay = Icon.AIR;
+		this.workInstructions = true;
 		
 		this.getComponent(Element.ENABLED).setEnabled(true);
 	}
 	
 	@Override
 	public void setIcon(Displayable icon) {
-		CraftElement.clearInstructions(this.display);
+		if (this.workInstructions) {
+			CraftElement.clearInstructions(this.display);
+		}
+		
 		this.display = Displayable.checkNull(icon);
 		this.update();
 	}
@@ -47,18 +53,32 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 	@Override
 	protected Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
-			return this.updateInstructions(this.getIcon());
+			Icon icon = this.getIcon();
+			
+			if (this.workInstructions) {
+				return this.updateInstructions(icon);
+			} else {
+				return icon;
+			}
 		} else {
 			return this.getDisabledIcon();
 		}
 	}
 	
-	protected final Icon updateInstructions(Icon icon) {
-		return this.updateInstructions(icon, this.currentInstructions());
+	protected void setWorkInstructions(boolean workInstructions) {
+		this.workInstructions = workInstructions;
+	}
+	
+	protected boolean isWorkInstructions() {
+		return this.workInstructions;
 	}
 	
 	protected String currentInstructions() {
 		return null;
+	}
+	
+	protected final Icon updateInstructions(Icon icon) {
+		return this.updateInstructions(icon, this.currentInstructions());
 	}
 	
 }

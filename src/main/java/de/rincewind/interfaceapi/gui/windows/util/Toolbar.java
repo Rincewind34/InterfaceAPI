@@ -24,6 +24,12 @@ public class Toolbar {
 		element.setVisible(this.elements.get(element).contains(this.toolset));
 	}
 	
+	public void addElements(Iterable<Element> elements, String... toolsets) {
+		for (Element element : elements) {
+			this.addElement(element, toolsets);
+		}
+	}
+	
 	public void removeElement(Element element) {
 		element.setVisible(true);
 		this.elements.remove(element);

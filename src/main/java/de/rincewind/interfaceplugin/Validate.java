@@ -1,6 +1,5 @@
 package de.rincewind.interfaceplugin;
 
-
 import java.util.Collection;
 
 public class Validate {
@@ -16,4 +15,5 @@ public class Validate {
 			throw new IllegalArgumentException(error);
 		}
 	}
+	
 }

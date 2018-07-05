@@ -81,7 +81,7 @@ public class ElementCreatorCloseable implements ElementCreator {
 	}
 
 	@Override
-	public ElementObjectSelector newObjectSelector() {
+	public <T> ElementObjectSelector<T> newObjectSelector() {
 		this.validateClosed();
 		return this.wrapper.newObjectSelector();
 	}

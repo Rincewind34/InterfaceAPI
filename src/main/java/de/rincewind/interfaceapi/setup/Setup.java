@@ -1,5 +1,6 @@
 package de.rincewind.interfaceapi.setup;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -8,11 +9,11 @@ import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.windows.abstracts.Window;
-import de.rincewind.interfaceapi.gui.windows.selectors.WindowSelector;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.EventManager;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
 import de.rincewind.interfaceapi.handling.window.WindowOpenEvent;
+import de.rincewind.interfaceapi.selectors.window.WindowSelector;
 
 public interface Setup {
 	
@@ -180,6 +181,8 @@ public interface Setup {
 	 */
 	public abstract void minimize();
 	
-	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Iterable<T> elements, Consumer<T> action);
+	public abstract <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Consumer<T> action);
+	
+	public abstract <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Collection<T> elements, Consumer<T> action);
 	
 }

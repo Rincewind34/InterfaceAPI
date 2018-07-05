@@ -8,6 +8,7 @@ import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.EventManager;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
 import de.rincewind.interfaceapi.handling.window.WindowOpenEvent;
+import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.util.CraftEventManager;
 
 public abstract class CraftWindow implements Window {
@@ -19,6 +20,8 @@ public abstract class CraftWindow implements Window {
 	private EventManager eventManager;
 
 	public CraftWindow(Plugin plugin) {
+		Validate.notNull(plugin, "The plugin cannot be null");
+		
 		this.plugin = plugin;
 		
 		this.state = WindowState.CLOSED;

@@ -1,6 +1,8 @@
 package de.rincewind.interfaceplugin.gui.elements;
 
+import java.util.Collection;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.gui.components.Displayable;
@@ -9,23 +11,24 @@ import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
-import de.rincewind.interfaceapi.gui.windows.selectors.WindowSelector;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ObjectSelectEvent;
+import de.rincewind.interfaceapi.selectors.window.WindowSelector;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementDisplayable;
 
-public class CraftElementObjectSelector extends CraftElementDisplayable implements ElementObjectSelector {
-	
+public class CraftElementObjectSelector<T> extends CraftElementDisplayable implements ElementObjectSelector<T> {
+
 	public static String DEFAULT_INSTRUCTIONS = "TODO";
 
 	private boolean canUnselect;
 
-	private Object selected;
+	private T selected;
 	private Displayable cachedDisplay;
 
-	private Class<?> objectClass;
-	private Function<Object, Displayable> converter;
+	private Class<T> objectClass;
+	private Supplier<Collection<? extends T>> selectableElements;
+	private Function<T, Displayable> converter;
 
 	public CraftElementObjectSelector(WindowEditor handle) {
 		super(handle);
@@ -40,10 +43,15 @@ public class CraftElementObjectSelector extends CraftElementDisplayable implemen
 						this.unselect();
 					}
 				} else {
-					WindowSelector<?> window = InterfaceAPI.newSelector(null, handle.getPlugin(), null, (selected) -> {
-						this.select(selected);
-					});
-					
+					WindowSelector<?> window;
+
+					if (this.selectableElements != null) {
+						window = InterfaceAPI.getWindowCreator(this.objectClass).newWindow(handle.getPlugin(), this::select, this.selectableElements.get(),
+								this.selected);
+					} else {
+						window = InterfaceAPI.getWindowCreator(this.objectClass).newWindow(handle.getPlugin(), this::select, this.selected);
+					}
+
 					InterfaceAPI.getSetup(event.getPlayer()).open(window);
 				}
 			}
@@ -51,7 +59,7 @@ public class CraftElementObjectSelector extends CraftElementDisplayable implemen
 	}
 
 	@Override
-	public void setObjectClass(Class<?> objectClass) {
+	public void setObjectClass(Class<T> objectClass) {
 		Validate.notNull(objectClass, "The object class cannot be null");
 
 		if (!InterfaceAPI.isWindowSelectorRegistered(objectClass)) {
@@ -66,12 +74,16 @@ public class CraftElementObjectSelector extends CraftElementDisplayable implemen
 	}
 
 	@Override
-	public void setConverter(Function<Object, Displayable> converter) {
+	public void setConverter(Function<T, Displayable> converter) {
 		if (converter == null) {
 			this.converter = Displayable::of;
 		} else {
 			this.converter = converter;
 		}
+	}
+	
+	public void setSelectableElements(Supplier<Collection<? extends T>> getter) {
+		this.selectableElements = getter;
 	}
 
 	@Override
@@ -80,12 +92,12 @@ public class CraftElementObjectSelector extends CraftElementDisplayable implemen
 	}
 
 	@Override
-	public void select(Object value) {
+	public void select(T value) {
 		this.select(value, true);
 	}
 
 	@Override
-	public void select(Object value, boolean fireEvent) {
+	public void select(T value, boolean fireEvent) {
 		if (this.objectClass == null) {
 			throw new IllegalStateException("The object class is null");
 		}
@@ -96,13 +108,13 @@ public class CraftElementObjectSelector extends CraftElementDisplayable implemen
 
 		Object oldValue = this.selected;
 		this.selected = value;
-		
+
 		if (this.selected != null) {
 			this.cachedDisplay = this.converter.apply(this.selected);
 		} else {
 			this.cachedDisplay = null;
 		}
-		
+
 		if (fireEvent) {
 			this.getEventManager().callEvent(ObjectSelectEvent.class, new ObjectSelectEvent(this, oldValue));
 		}
@@ -117,23 +129,22 @@ public class CraftElementObjectSelector extends CraftElementDisplayable implemen
 	public boolean isObjectSelected() {
 		return this.selected != null;
 	}
-	
+
 	@Override
 	public boolean canUnselect() {
 		return this.canUnselect;
 	}
 
 	@Override
-	public Class<?> getObjectClass() {
+	public Class<T> getObjectClass() {
 		return this.objectClass;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public <T> T getSelectedObject() {
-		return (T) this.selected;
+	public T getSelectedObject() {
+		return this.selected;
 	}
-	
+
 	@Override
 	protected String currentInstructions() {
 		return CraftElementObjectSelector.DEFAULT_INSTRUCTIONS;
@@ -144,8 +155,8 @@ public class CraftElementObjectSelector extends CraftElementDisplayable implemen
 		if (this.isEnabled() && this.selected != null) {
 			return this.cachedDisplay.getIcon();
 		}
-		
+
 		return super.getIcon0(point);
 	}
-	
+
 }

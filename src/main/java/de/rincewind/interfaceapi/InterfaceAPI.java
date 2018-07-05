@@ -1,19 +1,13 @@
 package de.rincewind.interfaceapi;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-import de.rincewind.interfaceapi.exceptions.SelectorInterfaceException;
-import de.rincewind.interfaceapi.gui.elements.sets.ElementSelectorSetCreator;
-import de.rincewind.interfaceapi.gui.windows.selectors.WindowSelector;
+import de.rincewind.interfaceapi.selectors.element.SelectorElementSetCreator;
+import de.rincewind.interfaceapi.selectors.window.WindowSelectorCreator;
 import de.rincewind.interfaceapi.setup.Setup;
 import de.rincewind.interfaceplugin.InterfacePlugin;
 import de.rincewind.interfaceplugin.Validate;
@@ -22,8 +16,8 @@ import de.rincewind.interfaceplugin.setup.CraftSetup;
 public class InterfaceAPI {
 
 	private static Map<Player, Setup> setups;
-	private static Map<Class<?>, Constructor<? extends WindowSelector<?>>> windowSelectors;
-	private static Map<Class<?>, ElementSelectorSetCreator<?>> inlineSelectors;
+	private static Map<Class<?>, WindowSelectorCreator<?, ?>> windowSelectors;
+	private static Map<Class<?>, SelectorElementSetCreator<?>> inlineSelectors;
 
 	public static void enable() {
 		InterfaceAPI.setups = new HashMap<>();
@@ -52,50 +46,29 @@ public class InterfaceAPI {
 		InterfaceAPI.setups = null;
 	}
 
-	public static <T> void registerSelector(Class<T> typeClass, Class<? extends WindowSelector<T>> selectorClass) {
-		Validate.notNull(typeClass, "The type class cannot be null");
-		Validate.notNull(selectorClass, "The window class cannot be null");
-
-		if (selectorClass.isInterface() || Modifier.isAbstract(selectorClass.getModifiers())) {
-			throw new IllegalArgumentException("The selector class " + selectorClass + " is abstract");
-		}
-
-		for (Constructor<?> constructor : selectorClass.getDeclaredConstructors()) {
-			if (constructor.getParameterTypes().length == 3 && constructor.getParameterTypes()[0] == Plugin.class
-					&& constructor.getParameterTypes()[1] == Consumer.class && constructor.getParameterTypes()[2] == Iterable.class) {
-
-				try {
-					Constructor<? extends WindowSelector<T>> target = selectorClass.getConstructor(constructor.getParameterTypes());
-					target.setAccessible(true);
-
-					InterfaceAPI.windowSelectors.put(typeClass, target);
-					return;
-				} catch (NoSuchMethodException | SecurityException | IllegalArgumentException exception) {
-					assert false : "Should be unreachable: " + exception.getMessage();
-					return;
-				}
-			}
-		}
-
-		throw new IllegalArgumentException("The selector class " + selectorClass + " does not provide a valid constructor");
-	}
-	
-	public static <T> void registerSelector(Class<T> typeClass, ElementSelectorSetCreator<T> creator) {
+	public static <T> void registerSelector(Class<T> typeClass, WindowSelectorCreator<T, ?> creator) {
 		Validate.notNull(typeClass, "The type class cannot be null");
 		Validate.notNull(creator, "The creator cannot be null");
-		
+
+		InterfaceAPI.windowSelectors.put(typeClass, creator);
+	}
+
+	public static <T> void registerSelector(Class<T> typeClass, SelectorElementSetCreator<T> creator) {
+		Validate.notNull(typeClass, "The type class cannot be null");
+		Validate.notNull(creator, "The creator cannot be null");
+
 		InterfaceAPI.inlineSelectors.put(typeClass, creator);
 	}
-	
+
 	public static boolean isWindowSelectorRegistered(Class<?> typeClass) {
 		Validate.notNull(typeClass, "The type class cannot be null");
-		
+
 		return InterfaceAPI.windowSelectors.containsKey(typeClass);
 	}
-	
+
 	public static boolean isInlineSelectorRegistered(Class<?> typeClass) {
 		Validate.notNull(typeClass, "The type class cannot be null");
-		
+
 		return InterfaceAPI.inlineSelectors.containsKey(typeClass);
 	}
 
@@ -124,38 +97,19 @@ public class InterfaceAPI {
 
 		return InterfaceAPI.setups.get(player);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static <T> ElementSelectorSetCreator<T> getCreator(Class<T> typeClass) {
+	public static <T> SelectorElementSetCreator<T> getElementCreator(Class<T> typeClass) {
 		Validate.notNull(typeClass, "The type class cannot be null");
-		
-		return (ElementSelectorSetCreator<T>) InterfaceAPI.inlineSelectors.get(typeClass);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T> WindowSelector<T> newSelector(Class<T> typeClass, Plugin plugin, Iterable<T> elements, Consumer<T> action) {
-		Validate.notNull(typeClass, "The type class cannot be null");
-		Validate.notNull(plugin, "The plugin cannot be null");
-		Validate.notNull(elements, "The element interable cannot be null");
-		Validate.notNull(action, "The action cannot be null");
 
-		try {
-			Constructor<? extends WindowSelector<T>> constructor = (Constructor<? extends WindowSelector<T>>) InterfaceAPI.windowSelectors.get(typeClass);
-
-			if (constructor == null) {
-				return null;
-			}
-
-			return constructor.newInstance(plugin, elements, action);
-		} catch (ClassCastException exception) {
-			assert false : "Failed with ClassCastException that should have been caught in register method";
-			throw exception;
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException exception) {
-			assert false : "Failed with reflective exception that should have been caught in register method";
-			throw new SelectorInterfaceException(exception);
-		} catch (InvocationTargetException exception) {
-			throw new SelectorInterfaceException(exception);
-		}
+		return (SelectorElementSetCreator<T>) InterfaceAPI.inlineSelectors.get(typeClass);
 	}
 
+	@SuppressWarnings("unchecked")
+	public static <T> WindowSelectorCreator<T, ?> getWindowCreator(Class<T> typeClass) {
+		Validate.notNull(typeClass, "The type class cannot be null");
+
+		return (WindowSelectorCreator<T, ?>) InterfaceAPI.windowSelectors.get(typeClass);
+	}
+	
 }

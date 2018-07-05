@@ -9,7 +9,7 @@ import java.util.stream.Collector;
 import org.bukkit.Material;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
-import de.rincewind.interfaceapi.gui.elements.util.lore.SimpleLore;
+import de.rincewind.interfaceapi.gui.elements.util.lore.Lore;
 import de.rincewind.interfaceplugin.Validate;
 
 public interface Displayable {
@@ -73,7 +73,7 @@ public interface Displayable {
 		return result;
 	}
 
-	public static Displayable of(Object payload, String name, SimpleLore lore) {
+	public static Displayable of(Object payload, String name, Lore lore) {
 		Displayable result = Displayable.of(payload, name);
 		result.getIcon().describe(lore);
 

@@ -131,8 +131,8 @@ public class ElementCreatorBlank implements ElementCreator {
 	}
 
 	@Override
-	public ElementObjectSelector newObjectSelector() {
-		ElementObjectSelector element = new CraftElementObjectSelector(this.handle);
+	public <T> ElementObjectSelector<T> newObjectSelector() {
+		ElementObjectSelector<T> element = new CraftElementObjectSelector<>(this.handle);
 		this.handle.addElement(element);
 		return element;
 	}
