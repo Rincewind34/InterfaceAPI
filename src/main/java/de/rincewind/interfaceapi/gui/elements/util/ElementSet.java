@@ -4,10 +4,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
+import de.rincewind.interfaceapi.gui.util.Bounds;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreatorCloseable;
@@ -16,21 +17,21 @@ import de.rincewind.interfaceplugin.Validate;
 
 public class ElementSet implements Iterable<Element> {
 
-	public static ElementSet wrapCreation(ElementCreator creator, Consumer<ElementCreator> action) {
-		return ElementSet.wrapCreation(creator, action, new HashSet<>());
+	public static ElementSet wrapCreation(ElementCreator creator, Bounds bounds, BiConsumer<ElementCreator, Bounds> action) {
+		return ElementSet.wrapCreation(creator, bounds, action, new HashSet<>());
 	}
 
-	public static ElementSet wrapCreation(ElementCreator creator, Consumer<ElementCreator> action, Collection<Element> initial) {
-		return ElementSet.wrapCreation(creator, action, initial, ElementSet::new);
+	public static ElementSet wrapCreation(ElementCreator creator, Bounds bounds, BiConsumer<ElementCreator, Bounds> action, Collection<Element> initial) {
+		return ElementSet.wrapCreation(creator, bounds, action, initial, ElementSet::new);
 	}
 
-	public static <T extends ElementSet> T wrapCreation(ElementCreator creator, Consumer<ElementCreator> action,
+	public static <T extends ElementSet> T wrapCreation(ElementCreator creator, Bounds bounds, BiConsumer<ElementCreator, Bounds> action,
 			Function<? super Collection<Element>, T> setCreator) {
-		
-		return ElementSet.wrapCreation(creator, action, new HashSet<>(), setCreator);
+
+		return ElementSet.wrapCreation(creator, bounds, action, new HashSet<>(), setCreator);
 	}
 
-	public static <T extends ElementSet> T wrapCreation(ElementCreator creator, Consumer<ElementCreator> action, Collection<Element> initial,
+	public static <T extends ElementSet> T wrapCreation(ElementCreator creator, Bounds bounds, BiConsumer<ElementCreator, Bounds> action, Collection<Element> initial,
 			Function<? super Collection<Element>, T> setCreator) {
 
 		Validate.notNull(creator, "The creator cannot be null");
@@ -44,7 +45,7 @@ public class ElementSet implements Iterable<Element> {
 		ElementCreatorLogging logger = new ElementCreatorLogging(creator);
 		ElementCreatorCloseable closeableCreator = new ElementCreatorCloseable(logger);
 
-		action.accept(closeableCreator);
+		action.accept(closeableCreator, bounds);
 		closeableCreator.close();
 
 		return setCreator.apply(Collections.unmodifiableCollection(logger.getLog()));

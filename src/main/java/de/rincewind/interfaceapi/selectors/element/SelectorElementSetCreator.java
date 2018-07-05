@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import de.rincewind.interfaceapi.gui.elements.util.ElementSet;
+import de.rincewind.interfaceapi.gui.util.Bounds;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceplugin.Validate;
 
@@ -24,37 +25,37 @@ public abstract class SelectorElementSetCreator<T> {
 		this.elementGetter = elementGetter;
 	}
 
-	public SelectorElementSet<T> newSelector(ElementCreator creator, Consumer<? super T> action) {
+	public SelectorElementSet<T> newSelector(ElementCreator creator, Bounds bounds, Consumer<? super T> action) {
 		if (this.elementGetter == null) {
 			throw new UnsupportedOperationException("No default element getter set");
 		}
 
-		return this.newSelector(creator, action, this.elementGetter.get());
+		return this.newSelector(creator, bounds, action, this.elementGetter.get());
 	}
 
-	public SelectorElementSet<T> newSelector(ElementCreator creator, Consumer<? super T> action, T currentValue) {
+	public SelectorElementSet<T> newSelector(ElementCreator creator, Bounds bounds, Consumer<? super T> action, T currentValue) {
 		if (this.elementGetter == null) {
 			throw new UnsupportedOperationException("No default element getter set");
 		}
 
-		return this.newSelector(creator, action, this.elementGetter.get(), currentValue);
+		return this.newSelector(creator, bounds, action, this.elementGetter.get(), currentValue);
 	}
 
-	public SelectorElementSet<T> newSelector(ElementCreator creator, Consumer<? super T> action, Collection<? extends T> elements) {
-		return this.newSelector(creator, action, elements, false, null);
+	public SelectorElementSet<T> newSelector(ElementCreator creator, Bounds bounds, Consumer<? super T> action, Collection<? extends T> elements) {
+		return this.newSelector(creator, bounds, action, elements, false, null);
 	}
 
-	public SelectorElementSet<T> newSelector(ElementCreator creator, Consumer<? super T> action, Collection<? extends T> elements, T currentValue) {
-		return this.newSelector(creator, action, elements, true, currentValue);
+	public SelectorElementSet<T> newSelector(ElementCreator creator, Bounds bounds, Consumer<? super T> action, Collection<? extends T> elements, T currentValue) {
+		return this.newSelector(creator, bounds, action, elements, true, currentValue);
 	}
 
-	protected abstract void setup(ElementCreator creator, boolean defaultSet, T defaultValue);
+	protected abstract void setup(ElementCreator creator, Bounds bounds, boolean defaultSet, T defaultValue);
 
-	private SelectorElementSet<T> newSelector(ElementCreator creator, Consumer<? super T> action, Collection<? extends T> elements, boolean defaultSet,
+	private SelectorElementSet<T> newSelector(ElementCreator creator, Bounds bounds, Consumer<? super T> action, Collection<? extends T> elements, boolean defaultSet,
 			T current) {
 
-		return ElementSet.wrapCreation(creator, (wrappedCreator) -> {
-			this.setup(wrappedCreator, defaultSet, current);
+		return ElementSet.wrapCreation(creator, bounds, (wrappedCreator, wrappedBounds) -> {
+			this.setup(wrappedCreator, wrappedBounds, defaultSet, current);
 		}, (windowElements) -> {
 			return new SelectorElementSet<>(windowElements, action, elements, this.selectingClass, defaultSet, current);
 		});
