@@ -9,7 +9,7 @@ import com.google.common.collect.Sets;
 import de.rincewind.interfaceapi.exceptions.ElementComponentException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.test.TestWindowSizeable;
 import junit.framework.Assert;

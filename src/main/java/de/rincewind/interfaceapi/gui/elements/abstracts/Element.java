@@ -7,11 +7,13 @@ import java.util.function.Consumer;
 import org.bukkit.event.inventory.InventoryAction;
 
 import de.rincewind.interfaceapi.gui.components.EventBased;
+import de.rincewind.interfaceapi.gui.components.Sized;
 import de.rincewind.interfaceapi.gui.components.UserMemory;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
 import de.rincewind.interfaceapi.gui.elements.util.ElementComponentType;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Bounds;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
 
 /**
@@ -25,7 +27,7 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
  * @see ElementDisplayable
  * @see ElementSlot
  */
-public abstract interface Element extends EventBased, UserMemory {
+public abstract interface Element extends EventBased, UserMemory, Sized {
 
 	public static final ElementComponentType<Boolean> ENABLED = new ElementComponentType<>(boolean.class, "enabled");
 
@@ -93,10 +95,6 @@ public abstract interface Element extends EventBased, UserMemory {
 
 	public abstract boolean isElementComponentEnabled(ElementComponentType<?> component);
 
-	public abstract int getWidth();
-
-	public abstract int getHeight();
-
 	/**
 	 * Returns the position of this element.
 	 * 
@@ -114,6 +112,11 @@ public abstract interface Element extends EventBased, UserMemory {
 	public abstract ClickBlocker getBlocker();
 
 	public abstract <T> void setComponentValue(ElementComponentType<T> type, T value);
+	
+	@Override
+	public default Bounds getBounds() {
+		return Bounds.of(this.getWidth(), this.getHeight());
+	}
 
 	public default void iterate(Consumer<Point> action) {
 		this.getPoints().forEach(action);
@@ -126,5 +129,5 @@ public abstract interface Element extends EventBased, UserMemory {
 	public default Set<Point> getPoints() {
 		return Collections.unmodifiableSet(Point.NULL.square(this.getWidth(), this.getHeight()));
 	}
-
+	
 }

@@ -9,7 +9,7 @@ import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
 import de.rincewind.interfaceapi.handling.element.MapChangeSelectEvent;
 import de.rincewind.interfaceapi.util.HeadsDatabase;

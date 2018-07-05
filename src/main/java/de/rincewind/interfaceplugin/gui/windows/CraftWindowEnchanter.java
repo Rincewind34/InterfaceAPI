@@ -14,7 +14,7 @@ import com.google.common.collect.Sets;
 import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.exceptions.IllegalCoordinatesException;
 import de.rincewind.interfaceapi.exceptions.InvalidSlotException;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowEnchanter;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;

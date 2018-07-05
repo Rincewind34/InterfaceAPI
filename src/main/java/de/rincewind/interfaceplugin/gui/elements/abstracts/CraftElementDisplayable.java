@@ -4,7 +4,7 @@ import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 
 public abstract class CraftElementDisplayable extends CraftElement implements ElementDisplayable {

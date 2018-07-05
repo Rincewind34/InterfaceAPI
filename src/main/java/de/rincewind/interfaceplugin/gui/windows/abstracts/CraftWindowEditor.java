@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 import de.rincewind.interfaceapi.exceptions.ElementEditorException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreatorBlank;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;

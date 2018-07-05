@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 import com.google.common.collect.Sets;
 
 import de.rincewind.interfaceapi.InterfaceAPI;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowFurnace;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowActivatable;
 import net.minecraft.server.v1_12_R1.PacketPlayOutWindowData;

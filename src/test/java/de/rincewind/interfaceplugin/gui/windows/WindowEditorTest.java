@@ -18,7 +18,7 @@ import de.rincewind.interfaceapi.exceptions.ElementEditorException;
 import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementItem;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;

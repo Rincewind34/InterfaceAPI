@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.elements.util.PointIterator;
+import de.rincewind.interfaceapi.gui.util.Point;
 import junit.framework.Assert;
 
 public class PointIteratorTest {

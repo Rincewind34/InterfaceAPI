@@ -2,7 +2,7 @@ package de.rincewind.interfaceapi.gui.windows;
 
 import java.util.function.Consumer;
 
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 
 public interface WindowPointer extends WindowSizeable {
 	

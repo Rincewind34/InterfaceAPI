@@ -5,7 +5,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Bounds;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
 import de.rincewind.test.TestServer;
 
@@ -73,18 +74,14 @@ public class WindowSizeableTest {
 	
 	@Test
 	public void testCheckSize() {
-		Assert.assertFalse(this.window.checkSize(-1, 0));
-		Assert.assertFalse(this.window.checkSize(Integer.MIN_VALUE, Integer.MAX_VALUE));
-		Assert.assertFalse(this.window.checkSize(0, 0));
-		Assert.assertFalse(this.window.checkSize(0, 2));
-		Assert.assertFalse(this.window.checkSize(5, 0));
-		Assert.assertFalse(this.window.checkSize(1, 1));
-		Assert.assertFalse(this.window.checkSize(9, 7));
-		Assert.assertFalse(this.window.checkSize(4, 6));
+		Assert.assertFalse(this.window.checkSize(Bounds.of(5, 0)));
+		Assert.assertFalse(this.window.checkSize(Bounds.of(1, 1)));
+		Assert.assertFalse(this.window.checkSize(Bounds.of(9, 7)));
+		Assert.assertFalse(this.window.checkSize(Bounds.of(4, 6)));
 
-		Assert.assertTrue(this.window.checkSize(5, 1));
-		Assert.assertTrue(this.window.checkSize(3, 3));
-		Assert.assertTrue(this.window.checkSize(9, 4));
+		Assert.assertTrue(this.window.checkSize(Bounds.of(5, 1)));
+		Assert.assertTrue(this.window.checkSize(Bounds.of(3, 3)));
+		Assert.assertTrue(this.window.checkSize(Bounds.of(9, 4)));
 	}
 	
 	@Test

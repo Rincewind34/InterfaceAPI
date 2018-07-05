@@ -1,4 +1,4 @@
-package de.rincewind.interfaceapi.gui.elements.util;
+package de.rincewind.interfaceapi.gui.util;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 import de.rincewind.interfaceplugin.Validate;
 
-public class Point implements Comparable<Point> {
+public final class Point extends Pair2D implements Comparable<Point> {
 
 	public static final Point NULL = new Point(0, 0);
 
@@ -48,7 +48,7 @@ public class Point implements Comparable<Point> {
 		
 		Point point = new Point(position % width, position / width);
 		
-		if (point.y >= height) {
+		if (point.first >= height) {
 			return null;
 		} else {
 			return point;
@@ -63,67 +63,35 @@ public class Point implements Comparable<Point> {
 		}
 	}
 	
-	private final int x;
-	private final int y;
-	
-	@Deprecated
 	public Point(int x, int y) {
-		this.x = x;
-		this.y = y;
+		super(x, y);
 	}
 	
 	@Override
 	public int compareTo(Point other) {
-		int yCompare = Integer.compare(this.y, other.y);
-		return yCompare == 0 ? Integer.compare(this.x, other.x) : yCompare;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null || this.getClass() != obj.getClass()) {
-			return false;
-		}
-
-		Point other = (Point) obj;
-
-		if (this.x != other.x || this.y != other.y) {
-			return false;
-		}
-
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + this.x;
-		result = prime * result + this.y;
-		return result;
+		int firstCompare = Integer.compare(this.first, other.first);
+		return firstCompare == 0 ? Integer.compare(this.second, other.second) : firstCompare;
 	}
 
 	@Override
 	public String toString() {
-		return "Point{x=" + this.x + ";y=" + this.y + "}";
-	}
-	
-	public final int getX() {
-		return this.x;
-	}
-
-	public final int getY() {
-		return this.y;
+		return "Point{x=" + this.first + ";y=" + this.second + "}";
 	}
 	
 	public boolean isPositive() {
-		return this.x >= 0 && this.y >= 0;
+		return this.first >= 0 && this.second >= 0;
 	}
 
 	public boolean isBiggerThan(Point point) {
 		return this.compareTo(point) > 0;
+	}
+	
+	public int getX() {
+		return this.first;
+	}
+
+	public int getY() {
+		return this.second;
 	}
 
 	public Point add(int x, int y) {
@@ -131,7 +99,7 @@ public class Point implements Comparable<Point> {
 	}
 
 	public Point add(Point point) {
-		return new Point(this.x + point.getX(), this.y + point.getY());
+		return new Point(this.first + point.getX(), this.second + point.getY());
 	}
 
 	public Point subtract(int x, int y) {
@@ -149,7 +117,13 @@ public class Point implements Comparable<Point> {
 			throw new IllegalArgumentException("The target point is smaller than this point!");
 		}
 		
-		return this.square(target.getX() - this.x + 1, target.getY() - this.y + 1);
+		return this.square(target.getX() - this.first + 1, target.getY() - this.second + 1);
+	}
+	
+	public Set<Point> square(Bounds bounds) {
+		Validate.notNull(bounds, "The bounds cannot be null");
+		
+		return this.square(bounds.getWidth(), bounds.getHeight());
 	}
 
 	public Set<Point> square(int width, int height) {
@@ -163,8 +137,8 @@ public class Point implements Comparable<Point> {
 		
 		Set<Point> result = new HashSet<>();
 		
-		for (int x = this.x; x < this.x + width; x++) {
-			for (int y = this.y; y < this.y + height; y++) {
+		for (int x = this.first; x < this.first + width; x++) {
+			for (int y = this.second; y < this.second + height; y++) {
 				result.add(new Point(x, y));
 			}
 		}

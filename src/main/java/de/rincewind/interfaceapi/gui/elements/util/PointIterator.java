@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
 
 public class PointIterator implements Iterator<Point>, Iterable<Point>, Cloneable {

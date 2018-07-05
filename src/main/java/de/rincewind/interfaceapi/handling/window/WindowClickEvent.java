@@ -5,7 +5,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.elements.util.ClickAction;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowContainer;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowContainer;
 

@@ -1,7 +1,7 @@
 package de.rincewind.interfaceapi.handling.element;
 
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 
 public class MapChangeSelectEvent extends ElementValueChangeEvent<ElementMap> {
 

@@ -10,8 +10,8 @@ import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.components.Selectable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.util.Color;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.google.common.collect.Sets;
 
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import junit.framework.Assert;
 
 public class PointTest {

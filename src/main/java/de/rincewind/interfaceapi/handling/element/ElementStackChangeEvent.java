@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.ClickAction;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 
 public class ElementStackChangeEvent extends PlayerElementEvent<Element> {
 	

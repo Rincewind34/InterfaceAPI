@@ -4,7 +4,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowContainer;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;

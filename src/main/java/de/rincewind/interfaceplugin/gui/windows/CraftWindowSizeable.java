@@ -9,58 +9,47 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.exceptions.InvalidSizeException;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Bounds;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
+import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowColorable;
 
 public class CraftWindowSizeable extends CraftWindowColorable implements WindowSizeable {
 
-	private int width;
-	private int height;
+	private Bounds bounds;
 	
 	public CraftWindowSizeable(Plugin plugin) {
 		super(plugin);
 		
-		this.width = 9;
-		this.height = 3;
+		this.bounds = Bounds.of(9, 3);
 		
 		this.createBukkitInventory();
 	}
 
 	@Override
-	public void setSize(int width, int height) {
-		if (this.width == width && this.height == height) {
+	public void setSize(Bounds bounds) {
+		Validate.notNull(bounds, "The bounds cannot be null");
+		
+		if (this.bounds.equals(bounds)) {
 			return;
 		}
 
-		if (!this.checkSize(width, height)) {
-			throw new InvalidSizeException(width, height, WindowSizeable.class);
+		if (!this.checkSize(bounds)) {
+			throw new InvalidSizeException(bounds, WindowSizeable.class);
 		}
 
-		this.width = width;
-		this.height = height;
+		this.bounds = bounds;
 		this.reconfigurate();
 	}
 
 	@Override
-	public int getWidth() {
-		return this.width;
-	}
-
-	@Override
-	public int getHeight() {
-		return this.height;
-	}
-
-	@Override
-	public boolean checkSize(int width, int height) {
-		if (width <= 0 || height <= 0) {
-			return false;
-		} else if (width == 3 && height == 3) {
+	public boolean checkSize(Bounds bounds) {
+		if (bounds.getWidth() == 3 && bounds.getHeight() == 3) {
 			return true;
-		} else if (width == 5 && height == 1) {
+		} else if (bounds.getWidth() == 5 && bounds.getHeight() == 1) {
 			return true;
-		} else if (width == 9 && width * height <= 54) {
+		} else if (bounds.getWidth() == 9 && bounds.getWidth() * bounds.getHeight() <= 54) {
 			return true;
 		} else {
 			return false;
@@ -68,15 +57,15 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 	}
 
 	@Override
-	public Set<Point> getPoints() {
-		return Collections.unmodifiableSet(Point.NULL.square(this.width, this.height));
-	}
-
-	@Override
 	public int getSlot(Point point) {
 		assert this.isInside(point) : "The point " + point + " is undefined for window sizeable";
 
-		return point.getX() + (this.width * point.getY());
+		return point.getX() + (this.bounds.getWidth() * point.getY());
+	}
+	
+	@Override
+	public Bounds getBounds() {
+		return this.bounds;
 	}
 
 	@Override
@@ -91,16 +80,21 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 
 	@Override
 	public Inventory newInventory() {
-		if (this.width == 3) {
+		if (this.bounds.getWidth() == 3) {
 			return Bukkit.createInventory(null, InventoryType.DISPENSER, this.getName());
-		} else if (this.width == 5) {
+		} else if (this.bounds.getWidth() == 5) {
 			return Bukkit.createInventory(null, InventoryType.HOPPER, this.getName());
-		} else if (this.width == 9) {
+		} else if (this.bounds.getWidth() == 9) {
 			return Bukkit.createInventory(null, this.getHeight() * 9, this.getName());
 		} else {
-			assert false : "Tried to build invalid size w=" + this.width + ";h=" + this.height;
+			assert false : "Tried to build invalid size w=" + this.bounds;
 			return null;
 		}
+	}
+
+	@Override
+	public Set<Point> getPoints() {
+		return Collections.unmodifiableSet(Point.NULL.square(this.bounds));
 	}
 
 }

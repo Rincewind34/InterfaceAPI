@@ -5,7 +5,7 @@ import java.util.Set;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreatorBlank;
 import de.rincewind.interfaceapi.gui.windows.WindowEnchanter;

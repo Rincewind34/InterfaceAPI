@@ -3,7 +3,7 @@ package de.rincewind.interfaceapi.gui.windows.abstracts;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.util.Point;
 
 /**
  * This window is InventoryGUI. If you change the name or 

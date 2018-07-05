@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreatorCloseable;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreatorLogging;

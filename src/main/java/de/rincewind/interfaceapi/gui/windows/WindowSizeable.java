@@ -1,7 +1,8 @@
 package de.rincewind.interfaceapi.gui.windows;
 
-import de.rincewind.interfaceapi.exceptions.InvalidSizeException;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
+import de.rincewind.interfaceapi.gui.components.Sized;
+import de.rincewind.interfaceapi.gui.util.Bounds;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
 
 /**
@@ -19,7 +20,7 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
  * @author Rincewind34
  * @since 2.3.3
  */
-public interface WindowSizeable extends WindowColorable {
+public interface WindowSizeable extends WindowColorable, Sized {
 
 	public static int calculateHeight(int objectAmount) {
 		if (objectAmount <= 0) {
@@ -28,6 +29,8 @@ public interface WindowSizeable extends WindowColorable {
 
 		return (objectAmount + (objectAmount % 9 == 0 ? 0 : 9)) / 9;
 	}
+
+	public abstract void setSize(Bounds bounds);
 
 	/**
 	 * Returns <code>true</code> if the size is valid and <code>false</code> if
@@ -41,38 +44,25 @@ public interface WindowSizeable extends WindowColorable {
 	 * @return <code>true</code> if the size is valid and <code>false</code> if
 	 *         not
 	 */
-	public abstract boolean checkSize(int width, int height);
-
-	/**
-	 * Returns the width of this object.
-	 * 
-	 * @return the width of this object
-	 */
-	public abstract int getWidth();
-
-	/**
-	 * Returns the height of this object.
-	 * 
-	 * @return the height of this object
-	 */
-	public abstract int getHeight();
-
-	/**
-	 * Sets the size of this element.
-	 * 
-	 * @param width
-	 *            to set
-	 * @param higth
-	 *            to set
-	 * 
-	 * @throws InvalidSizeException
-	 *             if the size is invalid for this object
-	 */
-	public abstract void setSize(int width, int higth);
-
+	public abstract boolean checkSize(Bounds bounds);
+	
+	@Override
+	public default int getWidth() {
+		return this.getBounds().getWidth();
+	}
+	
+	@Override
+	public default int getHeight() {
+		return this.getBounds().getHeight();
+	}
+	
 	@Override
 	public default boolean isInside(Point point) {
-		return point.isPositive() && point.getX() < this.getWidth() && point.getY() < this.getHeight();
+		return this.getBounds().includes(point);
+	}
+	
+	public default void setSize(int width, int height) {
+		this.setSize(Bounds.of(width, height));
 	}
 
 }

@@ -3,8 +3,8 @@ package de.rincewind.interfaceplugin.gui.windows.abstracts;
 import org.bukkit.plugin.Plugin;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
-import de.rincewind.interfaceapi.gui.elements.util.Point;
 import de.rincewind.interfaceapi.gui.util.Color;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowColorable;
 import de.rincewind.interfaceplugin.Validate;
 
