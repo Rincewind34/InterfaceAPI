@@ -35,8 +35,8 @@ public class ElementCreatorLogging implements ElementCreator {
 	}
 
 	@Override
-	public <T extends Element> T newElement(Class<T> elementCls) {
-		T element = this.wrapper.newElement(elementCls);
+	public <T extends Element> T newElement(Class<T> elementCls, Object... parameters) {
+		T element = this.wrapper.newElement(elementCls, parameters);
 		this.log.add(element);
 		return element;
 	}
@@ -98,8 +98,8 @@ public class ElementCreatorLogging implements ElementCreator {
 	}
 	
 	@Override
-	public <T> ElementObjectSelector<T> newObjectSelector() {
-		ElementObjectSelector<T> element = this.wrapper.newObjectSelector();
+	public <T> ElementObjectSelector<T> newObjectSelector(Class<T> objectClass) {
+		ElementObjectSelector<T> element = this.wrapper.newObjectSelector(objectClass);
 		this.log.add(element);
 		return element;
 	}

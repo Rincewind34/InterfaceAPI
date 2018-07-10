@@ -58,6 +58,12 @@ public class Toolbar {
 		return this.toolset;
 	}
 	
+	public Runnable actiovationListener(String toolset) {
+		return () -> {
+			this.activateToolSet(toolset);
+		};
+	}
+	
 	public Set<Element> getElements() {
 		return Collections.unmodifiableSet(this.elements.keySet());
 	}

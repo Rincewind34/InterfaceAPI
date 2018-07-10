@@ -9,8 +9,6 @@ import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
 
 public interface ElementObjectSelector<T> extends ElementDisplayable {
 	
-	public abstract void setObjectClass(Class<T> objectClass);
-	
 	public abstract void setConverter(Function<T, Displayable> converter);
 	
 	public abstract void setSelectableElements(Supplier<Collection<? extends T>> getter);

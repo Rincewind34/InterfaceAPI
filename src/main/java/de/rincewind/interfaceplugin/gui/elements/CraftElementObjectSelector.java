@@ -26,12 +26,20 @@ public class CraftElementObjectSelector<T> extends CraftElementDisplayable imple
 	private T selected;
 	private Displayable cachedDisplay;
 
-	private Class<T> objectClass;
+	private final Class<T> objectClass;
 	private Supplier<Collection<? extends T>> selectableElements;
 	private Function<T, Displayable> converter;
 
-	public CraftElementObjectSelector(WindowEditor handle) {
+	public CraftElementObjectSelector(WindowEditor handle, Class<T> objectClass) {
 		super(handle);
+		
+		Validate.notNull(objectClass, "The object class cannot be null");
+
+		if (!InterfaceAPI.isWindowSelectorRegistered(objectClass)) {
+			throw new IllegalArgumentException("The object class has no registered window selector");
+		}
+
+		this.objectClass = objectClass;
 
 		this.converter = Displayable::of;
 		this.getComponent(Element.INSTRUCTIONS).setEnabled(true);
@@ -56,21 +64,6 @@ public class CraftElementObjectSelector<T> extends CraftElementDisplayable imple
 				}
 			}
 		}).monitor();
-	}
-
-	@Override
-	public void setObjectClass(Class<T> objectClass) {
-		Validate.notNull(objectClass, "The object class cannot be null");
-
-		if (!InterfaceAPI.isWindowSelectorRegistered(objectClass)) {
-			throw new IllegalArgumentException("The object class has no registered window selector");
-		}
-
-		if (this.selected != null && !objectClass.isInstance(this.selected)) {
-			throw new IllegalArgumentException("The new object class is not assignable to currently selected value");
-		}
-
-		this.objectClass = objectClass;
 	}
 
 	@Override

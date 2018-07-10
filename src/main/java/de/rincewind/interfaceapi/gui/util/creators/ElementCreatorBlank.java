@@ -41,15 +41,28 @@ public class ElementCreatorBlank implements ElementCreator {
 	}
 
 	@Override
-	public <T extends Element> T newElement(Class<T> elementCls) {
+	public <T extends Element> T newElement(Class<T> elementCls, Object... parameters) {
 		Validate.notNull(elementCls, "The element class cannot be null");
-		
+
 		if (elementCls.isInterface() || Modifier.isAbstract(elementCls.getModifiers())) {
 			throw new IllegalArgumentException("The element class " + elementCls + " is abstract");
 		}
 
 		for (Constructor<?> constructor : elementCls.getDeclaredConstructors()) {
-			if (constructor.getParameterTypes().length == 1 && WindowEditor.class.isAssignableFrom(constructor.getParameterTypes()[0])) {
+			if (constructor.getParameterTypes().length == (1 + parameters.length) && WindowEditor.class.isAssignableFrom(constructor.getParameterTypes()[0])) {
+				boolean invalid = false;
+				
+				for (int i = 0; i < parameters.length; i++) {
+					if (!parameters[i].getClass().isAssignableFrom(constructor.getParameterTypes()[i + 1])) {
+						invalid = true;
+						break;
+					}
+				}
+				
+				if (invalid) {
+					continue;
+				}
+				
 				try {
 					Constructor<T> target = elementCls.getConstructor(constructor.getParameterTypes());
 					target.setAccessible(true);
@@ -101,7 +114,7 @@ public class ElementCreatorBlank implements ElementCreator {
 		this.handle.addElement(counter);
 		return counter;
 	}
-	
+
 	@Override
 	public ElementSwitcher newSwitcher() {
 		ElementSwitcher element = new CraftElementSwitcher(this.handle);
@@ -115,7 +128,7 @@ public class ElementCreatorBlank implements ElementCreator {
 		this.handle.addElement(element);
 		return element;
 	}
-	
+
 	@Override
 	public ElementMultiButton newMultiButton() {
 		ElementMultiButton element = new CraftElementMultiButton(this.handle);
@@ -131,8 +144,8 @@ public class ElementCreatorBlank implements ElementCreator {
 	}
 
 	@Override
-	public <T> ElementObjectSelector<T> newObjectSelector() {
-		ElementObjectSelector<T> element = new CraftElementObjectSelector<>(this.handle);
+	public <T> ElementObjectSelector<T> newObjectSelector(Class<T> objectClass) {
+		ElementObjectSelector<T> element = new CraftElementObjectSelector<>(this.handle, objectClass);
 		this.handle.addElement(element);
 		return element;
 	}
@@ -150,5 +163,5 @@ public class ElementCreatorBlank implements ElementCreator {
 		this.handle.addElement(slot);
 		return slot;
 	}
-	
+
 }

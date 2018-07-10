@@ -29,7 +29,7 @@ import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
  */
 public interface ElementCreator {
 
-	public abstract <T extends Element> T newElement(Class<T> elementCls);
+	public abstract <T extends Element> T newElement(Class<T> elementCls, Object... parameters);
 
 	public abstract ElementCounter newCounter();
 
@@ -51,7 +51,7 @@ public interface ElementCreator {
 
 	public abstract ElementContentSlot newContentSlot();
 	
-	public abstract <T> ElementObjectSelector<T> newObjectSelector();
+	public abstract <T> ElementObjectSelector<T> newObjectSelector(Class<T> objectClass);
 	
 	public default ElementSwitcher newBooleanSwitcher(String disabledDisplay, String enabledDisplay) {
 		return this.newBooleanSwitcher(disabledDisplay, enabledDisplay, false);
@@ -85,8 +85,4 @@ public interface ElementCreator {
 		return item;
 	}
 	
-	public default <T> ElementObjectSelector<T> newObjectSelector(Class<T> cls) {
-		return this.newObjectSelector();
-	}
-
 }

@@ -27,9 +27,9 @@ public class ElementCreatorCloseable implements ElementCreator {
 	}
 
 	@Override
-	public <T extends Element> T newElement(Class<T> elementCls) {
+	public <T extends Element> T newElement(Class<T> elementCls, Object... parameters) {
 		this.validateClosed();
-		return this.wrapper.newElement(elementCls);
+		return this.wrapper.newElement(elementCls, parameters);
 	}
 
 	@Override
@@ -81,9 +81,9 @@ public class ElementCreatorCloseable implements ElementCreator {
 	}
 
 	@Override
-	public <T> ElementObjectSelector<T> newObjectSelector() {
+	public <T> ElementObjectSelector<T> newObjectSelector(Class<T> objectClass) {
 		this.validateClosed();
-		return this.wrapper.newObjectSelector();
+		return this.wrapper.newObjectSelector(objectClass);
 	}
 
 	@Override
