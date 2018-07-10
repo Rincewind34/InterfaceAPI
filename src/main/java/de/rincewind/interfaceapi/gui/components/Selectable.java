@@ -1,7 +1,6 @@
 package de.rincewind.interfaceapi.gui.components;
 
 import de.rincewind.interfaceapi.gui.elements.ElementList;
-import de.rincewind.interfaceapi.gui.elements.ElementMultiButton;
 
 /**
  * This interface is implemented when an object can be selected and unselected.
@@ -10,7 +9,6 @@ import de.rincewind.interfaceapi.gui.elements.ElementMultiButton;
  * @since 2.3.3
  * 
  * @see ElementList
- * @see ElementMultiButton
  */
 public interface Selectable {
 	

@@ -9,7 +9,6 @@ import de.rincewind.interfaceapi.gui.elements.ElementInput;
 import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
-import de.rincewind.interfaceapi.gui.elements.ElementMultiButton;
 import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
@@ -42,8 +41,6 @@ public interface ElementCreator {
 	public abstract ElementSwitcher newSwitcher();
 
 	public abstract ElementItem newItem();
-
-	public abstract ElementMultiButton newMultiButton();
 
 	public abstract ElementSelector newSelector();
 

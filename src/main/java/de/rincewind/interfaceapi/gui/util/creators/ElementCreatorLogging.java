@@ -9,7 +9,6 @@ import de.rincewind.interfaceapi.gui.elements.ElementInput;
 import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
-import de.rincewind.interfaceapi.gui.elements.ElementMultiButton;
 import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
@@ -82,14 +81,7 @@ public class ElementCreatorLogging implements ElementCreator {
 		this.log.add(element);
 		return element;
 	}
-
-	@Override
-	public ElementMultiButton newMultiButton() {
-		ElementMultiButton element = this.wrapper.newMultiButton();
-		this.log.add(element);
-		return element;
-	}
-
+	
 	@Override
 	public ElementSelector newSelector() {
 		ElementSelector element = this.wrapper.newSelector();
