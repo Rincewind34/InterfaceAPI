@@ -1,17 +1,18 @@
 package de.rincewind.interfaceapi.gui.windows.util;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.google.common.collect.Sets;
 
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 
 public class Toolbar {
 	
-	private Map<Element, List<String>> elements;
+	private Map<Element, Set<String>> elements;
 	
 	private String toolset;
 	
@@ -20,7 +21,7 @@ public class Toolbar {
 	}
 	
 	public void addElement(Element element, String... toolsets) {
-		this.elements.put(element, Arrays.asList(toolsets));
+		this.elements.put(element, Sets.newHashSet(toolsets));
 		element.setVisible(this.elements.get(element).contains(this.toolset));
 	}
 	
@@ -33,6 +34,12 @@ public class Toolbar {
 	public void removeElement(Element element) {
 		element.setVisible(true);
 		this.elements.remove(element);
+	}
+	
+	public void removeElements(Iterable<Element> elements) {
+		for (Element element : elements) {
+			this.removeElement(element);
+		}
 	}
 	
 	public void activateToolSet(String toolset) {
@@ -51,14 +58,14 @@ public class Toolbar {
 		return this.toolset;
 	}
 	
-	public List<Element> getElements() {
-		return Collections.unmodifiableList(this.elements.keySet().stream().collect(Collectors.toList()));
+	public Set<Element> getElements() {
+		return Collections.unmodifiableSet(this.elements.keySet());
 	}
 	
-	public List<Element> getElements(String toolset) {
-		return Collections.unmodifiableList(this.elements.keySet().stream().filter((element) -> {
-			return this.elements.get(element).contains(toolset);
-		}).collect(Collectors.toList()));
+	public Set<Element> getElements(String toolset) {
+		return Collections.unmodifiableSet(this.elements.entrySet().stream().filter((entry) -> {
+			return entry.getValue().contains(toolset);
+		}).map(Map.Entry::getKey).collect(Collectors.toSet()));
 	}
 	
 }

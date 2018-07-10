@@ -1,5 +1,6 @@
 package de.rincewind.interfaceapi.gui.elements.util;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -56,6 +57,10 @@ public class ElementSet implements Iterable<Element> {
 	public ElementSet() {
 		this(new HashSet<>());
 	}
+	
+	public ElementSet(Element... elements) {
+		this(Arrays.asList(elements));
+	}
 
 	public ElementSet(Collection<Element> elements) {
 		Validate.notNull(elements, "The collection cannot be null");
@@ -68,34 +73,42 @@ public class ElementSet implements Iterable<Element> {
 		return this.elements.iterator();
 	}
 
-	public void updateElements() {
+	public ElementSet updateElements() {
 		for (Element element : this) {
 			element.update();
 		}
+		
+		return this;
 	}
 
-	public void moveElements(Point offset) {
-		this.moveElements(offset.getX(), offset.getY());
+	public ElementSet moveElements(Point offset) {
+		return this.moveElements(offset.getX(), offset.getY());
 	}
 
-	public void moveElements(int offsetX, int offsetY) {
+	public ElementSet moveElements(int offsetX, int offsetY) {
 		for (Element element : this) {
 			element.setPoint(element.getPoint().add(offsetX, offsetY));
 		}
+		
+		return this;
 	}
 
-	public void setElementsEnabled(boolean value) {
+	public ElementSet setElementsEnabled(boolean value) {
 		for (Element element : this) {
 			if (element.isElementComponentEnabled(Element.ENABLED)) {
 				element.setComponentValue(Element.ENABLED, value);
 			}
 		}
+		
+		return this;
 	}
 
-	public void setElementsVisible(boolean value) {
+	public ElementSet setElementsVisible(boolean value) {
 		for (Element element : this) {
 			element.setVisible(value);
 		}
+		
+		return this;
 	}
 
 	public Collection<Element> getElements() {
