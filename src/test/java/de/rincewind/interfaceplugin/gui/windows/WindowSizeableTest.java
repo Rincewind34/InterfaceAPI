@@ -74,7 +74,7 @@ public class WindowSizeableTest {
 	
 	@Test
 	public void testCheckSize() {
-		Assert.assertFalse(this.window.checkSize(Bounds.of(5, 0)));
+		Assert.assertFalse(this.window.checkSize(Bounds.of(5, 2)));
 		Assert.assertFalse(this.window.checkSize(Bounds.of(1, 1)));
 		Assert.assertFalse(this.window.checkSize(Bounds.of(9, 7)));
 		Assert.assertFalse(this.window.checkSize(Bounds.of(4, 6)));

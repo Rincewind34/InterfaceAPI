@@ -2,7 +2,7 @@ package de.rincewind.interfaceapi.gui.elements;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import de.rincewind.interfaceapi.exceptions.APIException;
@@ -12,7 +12,7 @@ import de.rincewind.interfaceapi.gui.components.Selectable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.util.Color;
-import de.rincewind.interfaceapi.gui.util.Directionality;
+import de.rincewind.interfaceapi.gui.util.Direction;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
 
@@ -22,10 +22,10 @@ import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
  * 
  * The list can be resized, and perhaps the entries will be resized too. You can
  * only scroll in one direction through the list. This depends on the type of
- * this list. If the type is {@link Directionality#HORIZONTAL} the entries will
+ * this list. If the type is {@link Direction#HORIZONTAL} the entries will
  * be rendered laying from the right to the left (Horizontal), so they will be
  * added to the list from the top to the bottom. With
- * {@link Directionality#VERTICAL} the same but you scroll the right to the
+ * {@link Direction#VERTICAL} the same but you scroll the right to the
  * left.
  * 
  * This element contains its own color. This color will be displayed, when there
@@ -98,7 +98,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 
 	/**
 	 * Changes the type of this list. By the default it is
-	 * {@link Directionality#VERTICAL}.
+	 * {@link Direction#VERTICAL}.
 	 * 
 	 * @param type
 	 *            to set
@@ -106,7 +106,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 * @throws NullPointerException
 	 *             if the type is <code>null</code>
 	 */
-	public abstract void setType(Directionality type);
+	public abstract void setType(Direction type);
 
 	/**
 	 * Sets the index of the first displayed entry. If the index does not match
@@ -140,7 +140,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 * @throws NullPointerException
 	 *             if the modifier is <code>null</code>
 	 */
-	public abstract void setSelectModifyer(Function<Icon, Icon> modifier);
+	public abstract void setSelectModifyer(UnaryOperator<Icon> modifier);
 
 	/**
 	 * Adds to an {@link Element} a listener to scroll through this element. The
@@ -184,22 +184,11 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 */
 	public abstract Color getColor();
 
-	/**
-	 * Modifies an item like the selected one and returns the modified item.
-	 * 
-	 * @param item
-	 *            to modify
-	 * 
-	 * @return the modified item.
-	 * 
-	 * @throws NullPointerException
-	 *             if the item is <code>null</code>
-	 */
-	public abstract Icon modifyToSelect(Icon item);
-
 	public abstract Displayable getSelectedItem();
 
 	public abstract Displayable getItem(int index);
+	
+	public abstract UnaryOperator<Icon> getSelectModifier();
 	
 	public abstract <T> T getSelected();
 

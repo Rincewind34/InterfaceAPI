@@ -37,8 +37,6 @@ public class CraftWindowEnchanter extends CraftWindowEditor implements WindowEnc
 				this.renderFrame();
 			}
 		}).addAfter();
-
-		this.createBukkitInventory();
 	}
 
 	@Override

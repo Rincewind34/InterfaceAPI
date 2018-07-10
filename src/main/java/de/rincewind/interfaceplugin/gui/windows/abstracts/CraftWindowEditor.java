@@ -16,6 +16,7 @@ import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreatorBlank;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
+import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ElementStackChangeEvent;
 import de.rincewind.interfaceapi.handling.window.WindowClickEvent;
@@ -53,7 +54,7 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 								event.getCourserItem(), event.getClickedItem());
 						element.getEventManager().callEvent(ElementStackChangeEvent.class, elementStackEvent);
 						event.setCourserItem(elementStackEvent.getCourserItem());
-						
+
 						if (elementStackEvent.isCancelled()) {
 							event.cancelInteraction();
 						} else {
@@ -69,11 +70,13 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 	@Override
 	public void renderAll() {
-		for (Element element : this.elements) {
-			this.renderElement(element, false);
-		}
+		if (this.isRenderClosed() || this.getState() == WindowState.MAXIMIZED) {
+			for (Element element : this.elements) {
+				this.renderElement(element, false);
+			}
 
-		this.updateInventory();
+			this.updateInventory();
+		}
 	}
 
 	@Override
@@ -106,11 +109,11 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 		this.removeElement((CraftElement) element, true);
 	}
-	
+
 	@Override
 	public void removeElements(Iterable<Element> elements) {
 		Validate.notNull(elements, "The elements cannot be null!");
-		
+
 		for (Element element : elements) {
 			this.removeElement(element);
 		}
@@ -202,17 +205,23 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 	@Override
 	public void renderFrame() {
-		super.renderFrame();
+		if (this.isRenderClosed() || this.getState() == WindowState.MAXIMIZED) {
+			super.renderFrame();
+		}
 	}
 
 	@Override
 	public void renderPoint(Point point) {
-		super.renderPoint(point);
+		if (this.isRenderClosed() || this.getState() == WindowState.MAXIMIZED) {
+			super.renderPoint(point);
+		}
 	}
 
 	@Override
 	public void renderPoints(Iterable<Point> points) {
-		super.renderPoints(points);
+		if (this.isRenderClosed() || this.getState() == WindowState.MAXIMIZED) {
+			super.renderPoints(points);
+		}
 	}
 
 	public void addElement(Element element) {
@@ -233,14 +242,16 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 	}
 
 	private void renderElement(Element element, boolean update) {
-		this.renderPoints(element.getPoints().stream().map((point) -> {
-			return point.add(element.getPoint());
-		}).filter((point) -> {
-			return this.isInside(point);
-		}).collect(Collectors.toSet()));
+		if (this.isRenderClosed() || this.getState() == WindowState.MAXIMIZED) {
+			this.renderPoints(element.getPoints().stream().map((point) -> {
+				return point.add(element.getPoint());
+			}).filter((point) -> {
+				return this.isInside(point);
+			}).collect(Collectors.toSet()));
 
-		if (update) {
-			this.updateInventory();
+			if (update) {
+				this.updateInventory();
+			}
 		}
 	}
 

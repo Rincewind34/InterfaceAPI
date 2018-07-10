@@ -289,8 +289,6 @@ public class WindowEditorTest {
 
 		public TestWindow() {
 			super(null);
-			
-			this.createBukkitInventory();
 		}
 
 		@Override

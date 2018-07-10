@@ -3,6 +3,7 @@ package de.rincewind.interfaceplugin.gui.elements.abstracts;
 import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
+import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementSlot;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
@@ -22,7 +23,7 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 		super(handle);
 
 		this.content = null;
-		this.disabledIcon = Icon.AIR;
+		this.disabledIcon = DisplayableDisabled.default_icon;
 
 		this.getComponent(Element.ENABLED).setEnabled(true);
 

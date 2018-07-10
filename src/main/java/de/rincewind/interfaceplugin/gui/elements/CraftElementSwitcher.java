@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
+import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
@@ -29,7 +30,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		super(handle);
 
 		this.switchIndex = -1;
-		this.disabledIcon = Icon.AIR;
+		this.disabledIcon = DisplayableDisabled.default_icon;
 		this.items = new ArrayList<>();
 
 		this.getComponent(Element.ENABLED).setEnabled(true);
@@ -55,6 +56,10 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	@Override
 	public void setDisabledIcon(Displayable icon) {
 		this.disabledIcon = Displayable.checkNull(icon);
+
+		if (!this.isEnabled()) {
+			this.update();
+		}
 	}
 
 	@Override

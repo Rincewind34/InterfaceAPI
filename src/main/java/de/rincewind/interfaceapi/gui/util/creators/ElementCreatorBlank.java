@@ -15,6 +15,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
+import de.rincewind.interfaceapi.gui.elements.ElementToolbar;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceplugin.Validate;
@@ -28,6 +29,7 @@ import de.rincewind.interfaceplugin.gui.elements.CraftElementObjectSelector;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementOutput;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementSelector;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementSwitcher;
+import de.rincewind.interfaceplugin.gui.elements.CraftElementToolbar;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowEditor;
 
 public class ElementCreatorBlank implements ElementCreator {
@@ -143,16 +145,23 @@ public class ElementCreatorBlank implements ElementCreator {
 
 	@Override
 	public ElementMap newMap() {
-		ElementMap map = new CraftElementMap(this.handle);
-		this.handle.addElement(map);
-		return map;
+		ElementMap element = new CraftElementMap(this.handle);
+		this.handle.addElement(element);
+		return element;
 	}
 
 	@Override
 	public ElementContentSlot newContentSlot() {
-		ElementContentSlot slot = new CraftElementContentSlot(this.handle);
-		this.handle.addElement(slot);
-		return slot;
+		ElementContentSlot element = new CraftElementContentSlot(this.handle);
+		this.handle.addElement(element);
+		return element;
+	}
+	
+	@Override
+	public ElementToolbar newToolbar() {
+		ElementToolbar element = new CraftElementToolbar(this.handle);
+		this.handle.addElement(element);
+		return element;
 	}
 
 }

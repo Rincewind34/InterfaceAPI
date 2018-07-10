@@ -18,6 +18,10 @@ import de.rincewind.interfaceapi.gui.util.Point;
  */
 public abstract interface WindowContainer extends WindowNameable {
 	
+	public abstract void setRenderClosed(boolean value);
+	
+	public abstract boolean isRenderClosed();
+	
 	public abstract Set<Point> getPoints();
 	
 	public default void iterate(Consumer<Point> action) {

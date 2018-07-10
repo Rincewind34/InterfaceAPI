@@ -3,16 +3,16 @@ package de.rincewind.interfaceplugin.gui.elements;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
-
-import org.bukkit.Material;
+import java.util.function.UnaryOperator;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
+import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
+import de.rincewind.interfaceapi.gui.elements.util.SelectModifiers;
 import de.rincewind.interfaceapi.gui.util.Color;
-import de.rincewind.interfaceapi.gui.util.Directionality;
+import de.rincewind.interfaceapi.gui.util.Direction;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
@@ -30,39 +30,29 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	private Displayable disabledIcon;
 
-	private Directionality type;
+	private Direction type;
 
 	private List<Displayable> items;
-	private Function<Icon, Icon> modifier;
+	private UnaryOperator<Icon> modifier;
 	
 	public CraftElementList(WindowEditor handle) {
 		super(handle);
 
 		this.selected = -1;
 		this.startIndex = 0;
-		this.type = Directionality.VERTICAL;
+		this.type = Direction.HORIZONTAL;
 		this.color = Color.TRANSLUCENT;
+		this.modifier = SelectModifiers.MAGENTA_GLASS;
+		this.disabledIcon = DisplayableDisabled.default_icon;
 		this.items = new ArrayList<>();
-
-		this.modifier = (icon) -> {
-			return icon.typecast(Material.STAINED_GLASS).damage(2);
-		};
 
 		this.getComponent(Element.ENABLED).setEnabled(true);
 		this.getComponent(Element.WIDTH).setEnabled(true);
 		this.getComponent(Element.HEIGHT).setEnabled(true);
 
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
-			int index;
-
-			if (this.type == Directionality.HORIZONTAL) {
-				index = event.getPoint().getY();
-			} else {
-				index = event.getPoint().getX();
-			}
-
-			index = index + this.startIndex;
-
+			int index = event.getPoint().getCoord(this.type) + this.startIndex;
+			
 			if (index == this.getSelectedIndex()) {
 				this.deselect();
 			} else if (index < this.getSize()) {
@@ -74,6 +64,10 @@ public class CraftElementList extends CraftElement implements ElementList {
 	@Override
 	public void setDisabledIcon(Displayable icon) {
 		this.disabledIcon = Displayable.checkNull(icon);
+
+		if (!this.isEnabled()) {
+			this.update();
+		}
 	}
 
 	@Override
@@ -82,7 +76,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 
 	@Override
-	public void setSelectModifyer(Function<Icon, Icon> modifier) {
+	public void setSelectModifyer(UnaryOperator<Icon> modifier) {
 		Validate.notNull(modifier, "The modifier cannot be null!");
 
 		this.modifier = modifier;
@@ -91,13 +85,6 @@ public class CraftElementList extends CraftElement implements ElementList {
 	@Override
 	public Color getColor() {
 		return this.color;
-	}
-
-	@Override
-	public Icon modifyToSelect(Icon item) {
-		Validate.notNull(item, "The item cannot be null!");
-
-		return this.modifier.apply(item);
 	}
 
 	@Override
@@ -150,7 +137,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 
 	@Override
-	public void setType(Directionality type) {
+	public void setType(Direction type) {
 		Validate.notNull(type, "The type cannot be null");
 		
 		this.type = type;
@@ -240,6 +227,11 @@ public class CraftElementList extends CraftElement implements ElementList {
 	public Displayable getItem(int index) {
 		return this.items.get(index);
 	}
+	
+	@Override
+	public UnaryOperator<Icon> getSelectModifier() {
+		return this.modifier;
+	}
 
 	@Override
 	public <T> T getSelected() {
@@ -270,15 +262,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 			return this.getDisabledIcon();
 		}
 
-		int offset;
-
-		if (this.type == Directionality.HORIZONTAL) {
-			offset = point.getY();
-		} else {
-			offset = point.getX();
-		}
-
-		int index = this.startIndex + offset;
+		int index = this.startIndex + point.getCoord(this.type);
 
 		if (index >= this.getSize()) {
 			return this.color.asIcon();

@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import de.rincewind.interfaceapi.exceptions.EventPipelineException;
 import de.rincewind.interfaceapi.gui.components.Displayable;
+import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
@@ -48,6 +49,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		this.selected = -1;
 		this.color = Color.TRANSLUCENT;
 		this.filter = CraftElementMap.defaultFilter;
+		this.disabledIcon = DisplayableDisabled.default_icon;
 		this.nextFliper = new ArrayList<>();
 		this.previousFliper = new ArrayList<>();
 		this.items = new ArrayList<>();
@@ -64,6 +66,10 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	@Override
 	public void setDisabledIcon(Displayable icon) {
 		this.disabledIcon = Displayable.checkNull(icon);
+
+		if (!this.isEnabled()) {
+			this.update();
+		}
 	}
 
 	@Override

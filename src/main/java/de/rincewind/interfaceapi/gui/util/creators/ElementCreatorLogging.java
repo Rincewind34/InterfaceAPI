@@ -13,6 +13,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
+import de.rincewind.interfaceapi.gui.elements.ElementToolbar;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 
 public class ElementCreatorLogging implements ElementCreator {
@@ -106,6 +107,13 @@ public class ElementCreatorLogging implements ElementCreator {
 	@Override
 	public ElementContentSlot newContentSlot() {
 		ElementContentSlot element = this.wrapper.newContentSlot();
+		this.log.add(element);
+		return element;
+	}
+	
+	@Override
+	public ElementToolbar newToolbar() {
+		ElementToolbar element = this.wrapper.newToolbar();
 		this.log.add(element);
 		return element;
 	}

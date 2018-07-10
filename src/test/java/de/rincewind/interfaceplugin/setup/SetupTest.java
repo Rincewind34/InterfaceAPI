@@ -70,7 +70,7 @@ public class SetupTest {
 		Assert.assertEquals(0, InterfaceAPI.getSetup(player).getOpenWindows().size());
 
 		InterfaceAPI.getSetup(player).open(window);
-
+		
 		Assert.assertSame(window.getReference(), player.getSynthInventory());
 		Assert.assertSame(player, window.getUser());
 		Assert.assertEquals(WindowState.MAXIMIZED, window.getState());

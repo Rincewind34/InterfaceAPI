@@ -23,8 +23,6 @@ public class CraftWindowFurnace extends CraftWindowActivatable implements Window
 
 	public CraftWindowFurnace(Plugin plugin) {
 		super(plugin);
-
-		this.createBukkitInventory();
 	}
 
 	@Override

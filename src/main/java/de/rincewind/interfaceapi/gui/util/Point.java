@@ -48,7 +48,7 @@ public final class Point extends Pair2D implements Comparable<Point> {
 		
 		Point point = new Point(position % width, position / width);
 		
-		if (point.first >= height) {
+		if (point.second >= height) {
 			return null;
 		} else {
 			return point;
@@ -92,6 +92,14 @@ public final class Point extends Pair2D implements Comparable<Point> {
 
 	public int getY() {
 		return this.second;
+	}
+	
+	public int getCoord(Direction direction) {
+		if (direction == Direction.HORIZONTAL) {
+			return this.first;
+		} else {
+			return this.second;
+		}
 	}
 
 	public Point add(int x, int y) {

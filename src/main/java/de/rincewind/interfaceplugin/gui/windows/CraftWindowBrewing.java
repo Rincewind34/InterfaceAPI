@@ -26,7 +26,6 @@ public class CraftWindowBrewing extends CraftWindowActivatable implements Window
 		super(plugin);
 
 		this.setProgress(6);
-		this.createBukkitInventory();
 	}
 
 	@Override

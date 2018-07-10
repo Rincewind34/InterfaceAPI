@@ -12,25 +12,24 @@ import de.rincewind.interfaceapi.exceptions.InvalidSizeException;
 import de.rincewind.interfaceapi.gui.util.Bounds;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
+import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowColorable;
 
 public class CraftWindowSizeable extends CraftWindowColorable implements WindowSizeable {
 
 	private Bounds bounds;
-	
+
 	public CraftWindowSizeable(Plugin plugin) {
 		super(plugin);
-		
+
 		this.bounds = Bounds.of(9, 3);
-		
-		this.createBukkitInventory();
 	}
 
 	@Override
 	public void setSize(Bounds bounds) {
 		Validate.notNull(bounds, "The bounds cannot be null");
-		
+
 		if (this.bounds.equals(bounds)) {
 			return;
 		}
@@ -40,7 +39,10 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 		}
 
 		this.bounds = bounds;
-		this.reconfigurate();
+
+		if (this.isRenderClosed() || this.getState() == WindowState.MAXIMIZED) {
+			this.reconfigure();
+		}
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 
 		return point.getX() + (this.bounds.getWidth() * point.getY());
 	}
-	
+
 	@Override
 	public Bounds getBounds() {
 		return this.bounds;

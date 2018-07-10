@@ -18,6 +18,14 @@ public final class Bounds extends Pair2D implements Comparable<Bounds> {
 		}
 	}
 	
+	public static Bounds of(Direction direction, int length) {
+		if (direction == Direction.HORIZONTAL) {
+			return Bounds.of(length, 1);
+		} else {
+			return Bounds.of(1, length);
+		}
+	}
+	
 	private Bounds(int width, int height) {
 		super(width, height);
 		
@@ -62,6 +70,14 @@ public final class Bounds extends Pair2D implements Comparable<Bounds> {
 	
 	public int getHeight() {
 		return this.second;
+	}
+	
+	public int getLength(Direction direction) {
+		if (direction == Direction.HORIZONTAL) {
+			return this.first;
+		} else {
+			return this.second;
+		}
 	}
 	
 	public Bounds resize(int offsetWidth, int offsetHeight) {

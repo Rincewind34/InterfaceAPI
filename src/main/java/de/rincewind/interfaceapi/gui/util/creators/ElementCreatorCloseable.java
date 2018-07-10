@@ -11,6 +11,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
+import de.rincewind.interfaceapi.gui.elements.ElementToolbar;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 
 public class ElementCreatorCloseable implements ElementCreator {
@@ -89,6 +90,12 @@ public class ElementCreatorCloseable implements ElementCreator {
 	public ElementContentSlot newContentSlot() {
 		this.validateClosed();
 		return this.wrapper.newContentSlot();
+	}
+
+	@Override
+	public ElementToolbar newToolbar() {
+		this.validateClosed();
+		return this.wrapper.newToolbar();
 	}
 
 	public void close() {

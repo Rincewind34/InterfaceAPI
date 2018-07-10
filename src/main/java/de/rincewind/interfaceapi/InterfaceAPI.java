@@ -6,11 +6,13 @@ import java.util.Map;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import de.rincewind.interfaceapi.gui.windows.util.Toolbar;
 import de.rincewind.interfaceapi.selectors.element.SelectorElementSetCreator;
 import de.rincewind.interfaceapi.selectors.window.WindowSelectorCreator;
 import de.rincewind.interfaceapi.setup.Setup;
 import de.rincewind.interfaceplugin.InterfacePlugin;
 import de.rincewind.interfaceplugin.Validate;
+import de.rincewind.interfaceplugin.gui.util.CraftToolbar;
 import de.rincewind.interfaceplugin.setup.CraftSetup;
 
 public class InterfaceAPI {
@@ -78,6 +80,10 @@ public class InterfaceAPI {
 
 	public static int getActiveWindowId(Player player) {
 		return ((CraftPlayer) player).getHandle().activeContainer.windowId;
+	}
+	
+	public static Toolbar createToolbar() {
+		return new CraftToolbar();
 	}
 
 	public static Setup getSetup(Player player) {

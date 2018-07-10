@@ -60,7 +60,6 @@ public abstract class CraftElement implements Element {
 		}));
 
 		this.registerComponent(Element.INSTRUCTIONS, new ElementComponent<>(Boolean.class, true, (oldValue, newValue) -> {
-			this.onInstructionDisplayChange(oldValue, newValue);
 			this.update();
 		}));
 
@@ -244,14 +243,15 @@ public abstract class CraftElement implements Element {
 	public void onElementRemoved() {
 
 	}
+	
+	protected void updateEnabled() {
+		if (this.isEnabled()) {
+			this.update();
+		}
+	}
 
 	protected abstract Icon getIcon0(Point point);
 	
-	@Deprecated
-	protected void onInstructionDisplayChange(boolean oldValue, boolean newValue) {
-		
-	}
-
 	protected <T> void registerComponent(ElementComponentType<T> type, ElementComponent<T> component) {
 		this.components.put(type, component);
 	}
