@@ -45,11 +45,7 @@ public interface Displayable {
 	public static Displayable checkNull(Displayable input) {
 		return input == null ? Icon.AIR : input;
 	}
-
-//	public static Icon validate(Displayable icon) {
-//		return icon == null ? Icon.AIR : icon.getIcon();
-//	}
-
+	
 	public static Displayable of(Object payload) {
 		if (payload instanceof Displayable) {
 			return (Displayable) payload;

@@ -63,7 +63,7 @@ public final class Point extends Pair2D implements Comparable<Point> {
 		}
 	}
 	
-	public Point(int x, int y) {
+	private Point(int x, int y) {
 		super(x, y);
 	}
 	
