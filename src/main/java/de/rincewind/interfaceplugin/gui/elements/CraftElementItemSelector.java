@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import de.rincewind.interfaceapi.gui.elements.ElementSelector;
+import de.rincewind.interfaceapi.gui.elements.ElementItemSelector;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.util.Point;
@@ -16,7 +16,7 @@ import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ItemSelectEvent;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementDisplayable;
 
-public class CraftElementSelector extends CraftElementDisplayable implements ElementSelector {
+public class CraftElementItemSelector extends CraftElementDisplayable implements ElementItemSelector {
 
 	public static String INSTRUCTIONS_SELECT = "§7§lLK: §7§oItem auf Courser auswählen";
 	public static String INSTRUCTIONS_UNSELECT = "§7§lLK: §7§oAusgwähltes Item abwählen";
@@ -33,7 +33,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 
 	private ItemStack selected;
 
-	public CraftElementSelector(WindowEditor handle) {
+	public CraftElementItemSelector(WindowEditor handle) {
 		super(handle);
 
 		this.canUnselect = true;
@@ -53,7 +53,7 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 				}
 			} else if (event.getClickType() == ClickType.MIDDLE) {
 				if (this.canCollect && this.selected != null && event.getCourserItem() == null) {
-					event.setCourserItem(CraftElementSelector.cloneFunction.apply(this.selected));
+					event.setCourserItem(CraftElementItemSelector.cloneFunction.apply(this.selected));
 				}
 			}
 		}).monitor();
@@ -145,9 +145,9 @@ public class CraftElementSelector extends CraftElementDisplayable implements Ele
 	@Override
 	protected String currentInstructions() {
 		if (this.selected != null) {
-			return (this.canUnselect ? CraftElementSelector.INSTRUCTIONS_UNSELECT : "") + (this.canCollect ? CraftElementSelector.INSTRUCTIONS_COLLECT : "");
+			return (this.canUnselect ? CraftElementItemSelector.INSTRUCTIONS_UNSELECT : "") + (this.canCollect ? CraftElementItemSelector.INSTRUCTIONS_COLLECT : "");
 		} else {
-			return CraftElementSelector.INSTRUCTIONS_SELECT;
+			return CraftElementItemSelector.INSTRUCTIONS_SELECT;
 		}
 	}
 

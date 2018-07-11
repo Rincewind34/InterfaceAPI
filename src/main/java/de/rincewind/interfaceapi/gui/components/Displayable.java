@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.bukkit.Material;
@@ -90,18 +91,24 @@ public interface Displayable {
 		return result;
 	}
 
-	public static <T extends Collection<Displayable>> T of(Collection<Object> payloads, Collector<Displayable, ?, T> collector) {
-		return payloads.stream().map((payload) -> {
-			return Displayable.of(payload);
-		}).collect(collector);
-	}
-
 	public static Displayable of(Icon icon, Object payload) {
 		if (icon == null) {
 			throw new IllegalArgumentException();
 		}
 
 		return new SimpleDisplay(icon, payload);
+	}
+
+	public static <T extends Collection<Displayable>> T of(Collection<Object> payloads, Collector<Displayable, ?, T> collector) {
+		return payloads.stream().map((payload) -> {
+			return Displayable.of(payload);
+		}).collect(collector);
+	}
+	
+	public static Displayable wrap(Supplier<? extends Displayable> supplier) {
+		return () -> {
+			return supplier.get().getIcon();
+		};
 	}
 
 	@SuppressWarnings("unchecked")

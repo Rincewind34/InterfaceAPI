@@ -11,7 +11,8 @@ import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
-import de.rincewind.interfaceapi.gui.elements.ElementSelector;
+import de.rincewind.interfaceapi.gui.elements.ElementPager;
+import de.rincewind.interfaceapi.gui.elements.ElementItemSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.ElementToolbar;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
@@ -84,8 +85,8 @@ public class ElementCreatorLogging implements ElementCreator {
 	}
 	
 	@Override
-	public ElementSelector newSelector() {
-		ElementSelector element = this.wrapper.newSelector();
+	public ElementItemSelector newItemSelector() {
+		ElementItemSelector element = this.wrapper.newItemSelector();
 		this.log.add(element);
 		return element;
 	}
@@ -114,6 +115,13 @@ public class ElementCreatorLogging implements ElementCreator {
 	@Override
 	public ElementToolbar newToolbar() {
 		ElementToolbar element = this.wrapper.newToolbar();
+		this.log.add(element);
+		return element;
+	}
+	
+	@Override
+	public ElementPager newPager() {
+		ElementPager element = this.wrapper.newPager();
 		this.log.add(element);
 		return element;
 	}

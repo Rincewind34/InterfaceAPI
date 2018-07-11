@@ -11,7 +11,8 @@ import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
-import de.rincewind.interfaceapi.gui.elements.ElementSelector;
+import de.rincewind.interfaceapi.gui.elements.ElementPager;
+import de.rincewind.interfaceapi.gui.elements.ElementItemSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.ElementToolbar;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
@@ -43,13 +44,15 @@ public interface ElementCreator {
 
 	public abstract ElementItem newItem();
 
-	public abstract ElementSelector newSelector();
+	public abstract ElementItemSelector newItemSelector();
 
 	public abstract ElementMap newMap();
 
 	public abstract ElementContentSlot newContentSlot();
 
 	public abstract ElementToolbar newToolbar();
+	
+	public abstract ElementPager newPager();
 	
 	public abstract <T> ElementObjectSelector<T> newObjectSelector(Class<T> objectClass);
 	

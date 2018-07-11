@@ -9,11 +9,12 @@ import de.rincewind.interfaceapi.gui.elements.ElementContentSlot;
 import de.rincewind.interfaceapi.gui.elements.ElementCounter;
 import de.rincewind.interfaceapi.gui.elements.ElementInput;
 import de.rincewind.interfaceapi.gui.elements.ElementItem;
+import de.rincewind.interfaceapi.gui.elements.ElementItemSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
-import de.rincewind.interfaceapi.gui.elements.ElementSelector;
+import de.rincewind.interfaceapi.gui.elements.ElementPager;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.ElementToolbar;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
@@ -23,11 +24,12 @@ import de.rincewind.interfaceplugin.gui.elements.CraftElementContentSlot;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementCounter;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementInput;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementItem;
+import de.rincewind.interfaceplugin.gui.elements.CraftElementItemSelector;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementList;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementMap;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementObjectSelector;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementOutput;
-import de.rincewind.interfaceplugin.gui.elements.CraftElementSelector;
+import de.rincewind.interfaceplugin.gui.elements.CraftElementPager;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementSwitcher;
 import de.rincewind.interfaceplugin.gui.elements.CraftElementToolbar;
 import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowEditor;
@@ -130,8 +132,8 @@ public class ElementCreatorBlank implements ElementCreator {
 	}
 
 	@Override
-	public ElementSelector newSelector() {
-		ElementSelector element = new CraftElementSelector(this.handle);
+	public ElementItemSelector newItemSelector() {
+		ElementItemSelector element = new CraftElementItemSelector(this.handle);
 		this.handle.addElement(element);
 		return element;
 	}
@@ -160,6 +162,13 @@ public class ElementCreatorBlank implements ElementCreator {
 	@Override
 	public ElementToolbar newToolbar() {
 		ElementToolbar element = new CraftElementToolbar(this.handle);
+		this.handle.addElement(element);
+		return element;
+	}
+	
+	@Override
+	public ElementPager newPager() {
+		ElementPager element = new CraftElementPager(this.handle);
 		this.handle.addElement(element);
 		return element;
 	}

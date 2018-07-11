@@ -1,10 +1,10 @@
 package de.rincewind.interfaceapi.handling.element;
 
-import de.rincewind.interfaceapi.gui.elements.ElementSelector;
+import de.rincewind.interfaceapi.gui.elements.ElementItemSelector;
 
-public class ItemSelectEvent extends ElementValueChangeEvent<ElementSelector> {
+public class ItemSelectEvent extends ElementValueChangeEvent<ElementItemSelector> {
 
-	public ItemSelectEvent(ElementSelector element) {
+	public ItemSelectEvent(ElementItemSelector element) {
 		super(element);
 	}
 

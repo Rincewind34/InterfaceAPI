@@ -3,8 +3,11 @@ package de.rincewind.interfaceplugin.gui.elements;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -39,8 +42,8 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	private Predicate<Displayable> filter;
 	private List<Displayable> items;
 
-	private List<Element> nextFliper;
-	private List<Element> previousFliper;
+	private Set<Element> nextFliper;
+	private Set<Element> previousFliper;
 
 	public CraftElementMap(WindowEditor handle) {
 		super(handle);
@@ -50,8 +53,8 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		this.color = Color.TRANSLUCENT;
 		this.filter = CraftElementMap.defaultFilter;
 		this.disabledIcon = DisplayableDisabled.default_icon;
-		this.nextFliper = new ArrayList<>();
-		this.previousFliper = new ArrayList<>();
+		this.nextFliper = new HashSet<>();
+		this.previousFliper = new HashSet<>();
 		this.items = new ArrayList<>();
 
 		this.getComponent(Element.ENABLED).setEnabled(true);
@@ -81,7 +84,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	@Override
 	public void setPage(int page) {
 		if (this.getMaxPage() < page || page <= 0) {
-			throw new IllegalArgumentException("The page is invalid");
+			throw new NoSuchElementException("The page " + page + " is invalid");
 		}
 
 		this.page = page;
@@ -284,6 +287,10 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public int getFirstIndex(int page) {
+		if (this.getMaxPage() < page || page <= 0) {
+			throw new NoSuchElementException("The page " + page + " is invalid");
+		}
+		
 		return (page - 1) * this.getCountPerPage();
 	}
 
@@ -340,7 +347,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends Displayable> T getItem(Point point, int page) {
-		return (T) this.items.get(this.convert(point));
+		return (T) this.items.get(this.convert(point) + this.getFirstIndex(page));
 	}
 
 	@Override
@@ -403,7 +410,15 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 		@Override
 		public void onAction(ElementInteractEvent event) throws EventPipelineException {
-			CraftElementMap.this.setPage(CraftElementMap.this.getPage() + this.pageOffset);
+			int newPage = CraftElementMap.this.getPage() + (this.pageOffset * (event.isShiftClick() ? 2 : 1));
+			
+			if (newPage < 0) {
+				newPage = 0;
+			} else if (newPage > CraftElementMap.this.getMaxPage()) {
+				newPage = CraftElementMap.this.getMaxPage();
+			}
+			
+			CraftElementMap.this.setPage(newPage);
 		}
 
 	}

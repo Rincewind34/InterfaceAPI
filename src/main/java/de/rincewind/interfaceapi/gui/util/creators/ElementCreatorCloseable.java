@@ -9,7 +9,8 @@ import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
-import de.rincewind.interfaceapi.gui.elements.ElementSelector;
+import de.rincewind.interfaceapi.gui.elements.ElementPager;
+import de.rincewind.interfaceapi.gui.elements.ElementItemSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.ElementToolbar;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
@@ -69,9 +70,9 @@ public class ElementCreatorCloseable implements ElementCreator {
 	}
 	
 	@Override
-	public ElementSelector newSelector() {
+	public ElementItemSelector newItemSelector() {
 		this.validateClosed();
-		return this.wrapper.newSelector();
+		return this.wrapper.newItemSelector();
 	}
 
 	@Override
@@ -96,6 +97,12 @@ public class ElementCreatorCloseable implements ElementCreator {
 	public ElementToolbar newToolbar() {
 		this.validateClosed();
 		return this.wrapper.newToolbar();
+	}
+	
+	@Override
+	public ElementPager newPager() {
+		this.validateClosed();
+		return this.wrapper.newPager();
 	}
 
 	public void close() {
