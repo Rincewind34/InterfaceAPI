@@ -55,7 +55,7 @@ public interface Displayable {
 			assert icon != null : "The converted icon is null";
 			return icon;
 		} else {
-			return Displayable.of(new Icon(Material.BEDROCK, 0, payload != null ? payload.toString() : "null"), payload);
+			return Displayable.of(new Icon(Material.BEDROCK, payload != null ? payload.toString() : "null"), payload);
 		}
 	}
 

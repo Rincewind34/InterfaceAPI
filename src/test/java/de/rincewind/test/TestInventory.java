@@ -29,12 +29,6 @@ public class TestInventory implements Inventory {
 	}
 	
 	@Override
-	@Deprecated
-	public HashMap<Integer, ? extends ItemStack> all(int arg0) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public HashMap<Integer, ? extends ItemStack> all(Material arg0) throws IllegalArgumentException {
 		throw new UnsupportedOperationException();
 	}
@@ -57,24 +51,12 @@ public class TestInventory implements Inventory {
 	}
 
 	@Override
-	@Deprecated
-	public boolean contains(int arg0) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public boolean contains(Material arg0) throws IllegalArgumentException {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean contains(ItemStack arg0) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Deprecated
-	public boolean contains(int arg0, int arg1) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -90,12 +72,6 @@ public class TestInventory implements Inventory {
 
 	@Override
 	public boolean containsAtLeast(ItemStack arg0, int arg1) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Deprecated
-	public int first(int arg0) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -176,12 +152,6 @@ public class TestInventory implements Inventory {
 
 	@Override
 	public ListIterator<ItemStack> iterator(int arg0) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	@Deprecated
-	public void remove(int typeId) {
 		throw new UnsupportedOperationException();
 	}
 

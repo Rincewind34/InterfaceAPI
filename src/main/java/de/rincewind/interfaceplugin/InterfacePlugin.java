@@ -29,7 +29,7 @@ public class InterfacePlugin extends JavaPlugin {
 		Displayable.put(PotionEffectType.class, InterfaceUtils::convertPotionEffectType);
 		Displayable.put(PotionType.class, InterfaceUtils::convertPotionType);
 		Displayable.put(Boolean.class, (input) -> {
-			return input ? new Icon(Material.CONCRETE, 13, "§aTrue") : new Icon(Material.CONCRETE, 14, "§cFalse");
+			return input ? new Icon(Material.GREEN_CONCRETE, "§aTrue") : new Icon(Material.RED_CONCRETE, "§cFalse");
 		});
 		
 		Displayable.copy(Boolean.class, boolean.class);

@@ -42,7 +42,7 @@ public class CraftElementItemSelector extends CraftElementDisplayable implements
 
 		this.getComponent(Element.INSTRUCTIONS).setEnabled(true);
 
-		this.setIcon(new Icon(Material.FISHING_ROD, 0, "§eWähle ein Item aus"));
+		this.setIcon(new Icon(Material.FISHING_ROD, "§eWähle ein Item aus"));
 
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			if (event.getClickType() == ClickType.LEFT) {

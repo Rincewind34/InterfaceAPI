@@ -6,39 +6,37 @@ import de.rincewind.interfaceapi.gui.elements.util.Icon;
 
 public enum Color {
 
-	WHITE(0),
-	ORANGE(1),
-	MAGENTA(2),
-	LIGHT_BLUE(3),
-	YELLOW(4),
-	LIME(5),
-	PINK(6),
-	GRAY(7),
-	LIGHT_GRAY(8),
-	CYAN(9),
-	PURPLE(10),
-	BLUE(11),
-	BROWN(12),
-	GREEN(13),
-	RED(14),
-	BLACK(15),
+	WHITE(Material.WHITE_STAINED_GLASS_PANE),
+	ORANGE(Material.ORANGE_STAINED_GLASS_PANE),
+	MAGENTA(Material.MAGENTA_STAINED_GLASS_PANE),
+	LIGHT_BLUE(Material.LIGHT_BLUE_STAINED_GLASS_PANE),
+	YELLOW(Material.YELLOW_STAINED_GLASS_PANE),
+	LIME(Material.LIME_STAINED_GLASS_PANE),
+	PINK(Material.PINK_STAINED_GLASS_PANE),
+	GRAY(Material.GRAY_STAINED_GLASS_PANE),
+	LIGHT_GRAY(Material.LIGHT_GRAY_STAINED_GLASS_PANE),
+	CYAN(Material.CYAN_STAINED_GLASS_PANE),
+	PURPLE(Material.PURPLE_STAINED_GLASS_PANE),
+	BLUE(Material.BLUE_STAINED_GLASS_PANE),
+	BROWN(Material.BROWN_STAINED_GLASS_PANE),
+	GREEN(Material.GREEN_STAINED_GLASS_PANE),
+	RED(Material.RED_STAINED_GLASS_PANE),
+	BLACK(Material.BLACK_STAINED_GLASS_PANE),
 
-	TRANSLUCENT(-1),
-	NONE(-1);
+	TRANSLUCENT(Material.GLASS_PANE),
+	NONE(null);
 
-	private int data;
+	private Material type;
 
-	private Color(int data) {
-		this.data = data;
+	private Color(Material type) {
+		this.type = type;
 	}
 
 	public Icon asIcon() {
-		if (this == Color.TRANSLUCENT) {
-			return new Icon(Material.THIN_GLASS, 0);
-		} else if(this == Color.NONE) {
+		if (this == Color.NONE) {
 			return Icon.AIR;
 		} else {
-			return new Icon(Material.STAINED_GLASS_PANE, this.data);
+			return new Icon(this.type);
 		}
 	}
 

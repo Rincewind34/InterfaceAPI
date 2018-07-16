@@ -3,7 +3,7 @@ package de.rincewind.interfaceapi;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import de.rincewind.interfaceapi.gui.windows.util.Toolbar;

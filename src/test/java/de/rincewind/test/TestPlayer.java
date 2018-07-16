@@ -28,6 +28,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.entity.Entity;
@@ -1453,11 +1454,6 @@ public class TestPlayer implements Player {
 	}
 
 	@Override
-	public void sendBlockChange(Location arg0, int arg1, byte arg2) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public boolean sendChunkChange(Location arg0, int arg1, int arg2, int arg3, byte[] arg4) {
 		throw new UnsupportedOperationException();
 	}
@@ -1737,6 +1733,31 @@ public class TestPlayer implements Player {
 
 	@Override
 	public void stopSound(String arg0, SoundCategory arg1) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean isSwimming() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setSwimming(boolean arg0) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void hidePlayer(Plugin arg0, Player arg1) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void sendBlockChange(Location arg0, BlockData arg1) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void showPlayer(Plugin arg0, Player arg1) {
 		throw new UnsupportedOperationException();
 	}
 

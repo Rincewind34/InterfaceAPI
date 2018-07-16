@@ -38,8 +38,8 @@ public class IconTest {
 	
 	@Test
 	public void testEqualsComplex() {
-		Icon icon1 = new Icon(Material.STONE, 0, "Mein Stein");
-		Icon icon2 = new Icon(Material.STONE, 0, "Mein Stein");
+		Icon icon1 = new Icon(Material.STONE, "Mein Stein");
+		Icon icon2 = new Icon(Material.STONE, "Mein Stein");
 		
 		Assert.assertTrue(icon1.equals(icon2));
 	}

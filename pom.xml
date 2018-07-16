@@ -6,7 +6,7 @@
 	<name>InterfaceAPI</name>
 
 	<properties>
-		<spigot.version>1.12.2</spigot.version>
+		<spigot.version>1.13-pre7</spigot.version>
 		<junit.version>4.8.2</junit.version>
 
 		<jdk.version>10</jdk.version>

@@ -84,7 +84,7 @@ public interface ElementCreator {
 		ElementItem item = this.newItem();
 		item.setPoint(point);
 		item.setComponentValue(Element.WIDTH, width);
-		item.setIcon(new Icon(Material.IRON_FENCE));
+		item.setIcon(new Icon(Material.IRON_BARS));
 		return item;
 	}
 	

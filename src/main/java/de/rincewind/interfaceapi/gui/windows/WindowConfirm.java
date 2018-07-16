@@ -24,7 +24,7 @@ public class WindowConfirm extends CraftWindowSizeable {
 	}
 
 	public WindowConfirm(Plugin plugin, String name, Consumer<Boolean> action, int width) {
-		this(plugin, name, action, width, new Icon(Material.STAINED_CLAY, 13, "§aConfirm"), new Icon(Material.STAINED_CLAY, 14, "§cNegate"));
+		this(plugin, name, action, width, new Icon(Material.GREEN_CONCRETE, "§aConfirm"), new Icon(Material.RED_CONCRETE, "§cNegate"));
 	}
 
 	public WindowConfirm(Plugin plugin, String name, Consumer<Boolean> action, int width, Supplier<Icon> iconConfirm, Supplier<Icon> iconDeny) {

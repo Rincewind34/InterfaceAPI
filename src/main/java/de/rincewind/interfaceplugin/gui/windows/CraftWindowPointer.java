@@ -61,14 +61,14 @@ public class CraftWindowPointer extends CraftWindowSizeable implements WindowPoi
 				if (target.equals(point)) {
 					ElementItem element = this.elementCreator().newItem();
 					element.setPoint(point);
-					element.setIcon(new Icon(Material.STAINED_GLASS_PANE, 14));
+					element.setIcon(new Icon(Material.RED_STAINED_GLASS_PANE));
 					return;
 				}
 			}
 
 			ElementItem element = this.elementCreator().newItem();
 			element.setPoint(point);
-			element.setIcon(new Icon(Material.STAINED_GLASS_PANE, 13));
+			element.setIcon(new Icon(Material.GREEN_STAINED_GLASS_PANE));
 			element.getEventManager().registerListener(ElementInteractEvent.class, new ActionHandler()).addAfter();
 		});
 	}

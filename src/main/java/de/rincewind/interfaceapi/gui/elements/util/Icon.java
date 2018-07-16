@@ -48,14 +48,10 @@ public final class Icon implements Displayable, Cloneable {
 	}
 
 	public Icon(Material type) {
-		this(type, 0);
+		this(type, "§7");
 	}
 
-	public Icon(Material type, int data) {
-		this(type, data, "§7");
-	}
-
-	public Icon(Material type, int data, String name) {
+	public Icon(Material type, String name) {
 		this.item = new ItemStack(Material.BEDROCK);
 
 		this.amount = 1;
@@ -63,7 +59,6 @@ public final class Icon implements Displayable, Cloneable {
 		this.showInfo = true;
 		this.lore = Lore.create();
 		this.typecast(type);
-		this.damage(data);
 		this.rename(name);
 	}
 
