@@ -12,8 +12,10 @@ import de.rincewind.interfaceapi.gui.components.Selectable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.util.Color;
 import de.rincewind.interfaceapi.gui.util.Point;
+import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
+import de.rincewind.interfaceapi.util.HeadsDatabase;
 
 public interface ElementMap extends Element, DisplayableDisabled, Selectable, Iterable<Displayable> {
 
@@ -96,6 +98,26 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	@Override
 	public default Iterator<Displayable> iterator() {
 		return this.getItems().iterator();
+	}
+	
+	public default ElementItem newNextFliper(ElementCreator creator, Point point) {
+		ElementItem item = creator.newItem();
+		item.setPoint(point);
+		item.setIcon(HeadsDatabase.arrowWoodRight());
+		item.setDisabledIcon(HeadsDatabase.arrowStoneRight());
+		
+		this.registerNextPageFliper(item);
+		return item;
+	}
+	
+	public default ElementItem newPreviousFliper(ElementCreator creator, Point point) {
+		ElementItem item = creator.newItem();
+		item.setPoint(point);
+		item.setIcon(HeadsDatabase.arrowWoodLeft());
+		item.setDisabledIcon(HeadsDatabase.arrowStoneLeft());
+		
+		this.registerPreviousPageFliper(item);
+		return item;
 	}
 	
 	public default <T> T get(Class<T> cls, Point point) {

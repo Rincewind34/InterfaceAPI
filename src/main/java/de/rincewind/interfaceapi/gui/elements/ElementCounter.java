@@ -2,6 +2,11 @@ package de.rincewind.interfaceapi.gui.elements;
 
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
+import de.rincewind.interfaceapi.gui.util.Point;
+import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
+import de.rincewind.interfaceapi.handling.InterfaceListener;
+import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
+import de.rincewind.interfaceapi.util.HeadsDatabase;
 
 /**
  * With this element you can count
@@ -13,8 +18,12 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	
 	public static final int MAXIMUM_COUNT = 64;
 	
-	public static final int MINIMUM_COUNT = 1;
+	public static final int MINIMUM_COUNT = 0;
 	
+	
+	public abstract void setFallback(Integer value);
+	
+	public abstract Integer getFallback();
 	
 	/**
 	 * Returns the current count of this element.
@@ -59,7 +68,7 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	 * 
 	 * @param count change to
 	 */
-	public abstract void setCount(int count);
+	public abstract void setCount(int count, boolean fireEvent);
 	
 	/**
 	 * Adds to the current count 1. To set the new count {@link ElementCounter#setCount(int)}
@@ -81,11 +90,41 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	 * You can also set the value to a number smaller than 0 to subtract counts from this element
 	 * by clicking the button.
 	 * 
-	 * @param btn add the listener to
+	 * @param element add the listener to
 	 * @param value incremented by clicking
 	 * 
 	 * @throws NullPointerException if the button is <code>null</code>
 	 */
-	public abstract void addIncrementer(Element btn, int value);
+	public abstract void registerIncrementer(Element element, int value);
+
+	public abstract void registerDecrementer(Element element, int value);
+
+	public abstract void unregisterFliper(Element element);
+	
+	public abstract InterfaceListener<ElementInteractEvent> newIncrementListener(int value);
+	
+	public default void setCount(int count) {
+		this.setCount(count, true);
+	}
+	
+	public default ElementItem newIncrementor(ElementCreator creator, Point point, int value) {
+		ElementItem item = creator.newItem();
+		item.setPoint(point);
+		item.setIcon(HeadsDatabase.arrowWoodUp());
+		item.setDisabledIcon(HeadsDatabase.arrowStoneUp());
+		
+		this.registerIncrementer(item, value);
+		return item;
+	}
+	
+	public default ElementItem newDecrementor(ElementCreator creator, Point point, int value) {
+		ElementItem item = creator.newItem();
+		item.setPoint(point);
+		item.setIcon(HeadsDatabase.arrowWoodDown());
+		item.setDisabledIcon(HeadsDatabase.arrowStoneDown());
+		
+		this.registerDecrementer(item, value);
+		return item;
+	}
 	
 }

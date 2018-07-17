@@ -13,8 +13,11 @@ import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.util.Color;
 import de.rincewind.interfaceapi.gui.util.Direction;
+import de.rincewind.interfaceapi.gui.util.Point;
+import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
+import de.rincewind.interfaceapi.util.HeadsDatabase;
 
 /**
  * With this element you can create a list of entries and you are able to scroll
@@ -212,6 +215,15 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 
 	public default int getSize() {
 		return this.getItems().size();
+	}
+	
+	public default ElementItem newScroller(ElementCreator creator, Point point, int value) {
+		ElementItem item = creator.newItem();
+		item.setPoint(point);
+		item.setIcon(value < 0 ? HeadsDatabase.arrowWoodLeft() : HeadsDatabase.arrowWoodRight());
+		
+		this.addScroler(item, value);
+		return item;
 	}
 
 	public default <T> T getSelected(Class<T> cls) {
