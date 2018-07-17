@@ -3,6 +3,7 @@ package de.rincewind.interfaceapi.gui.windows.abstracts;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.gui.components.EventBased;
 import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.setup.Setup;
@@ -47,5 +48,13 @@ public abstract interface Window extends EventBased {
 	public abstract boolean isOpened();
 	
 	public abstract Plugin getPlugin();
+	
+	public default void close() {
+		if (this.getState() == WindowState.CLOSED) {
+			throw new IllegalStateException("The window is already closed");
+		}
+		
+		InterfaceAPI.getSetup(this.getUser()).close(this);
+	}
 	
 }
