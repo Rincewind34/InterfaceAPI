@@ -41,7 +41,7 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 		this.typeMap.registerPreviousPageFliper(this.buttonPrevious);
 		this.typeMap.getEventManager().registerListener(MapChangeSelectEvent.class, (event) -> {
 			this.select(event.getClicked());
-		}).monitor();
+		}).addAfter();
 
 		for (T element : typeElements) {
 			this.typeMap.addItem(this.displayableOf(element));

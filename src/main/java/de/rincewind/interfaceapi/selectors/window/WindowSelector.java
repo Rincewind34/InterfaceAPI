@@ -25,7 +25,7 @@ public class WindowSelector<T> extends CraftWindowSizeable implements Selector<T
 		Validate.notNull(action, "The action cannot be null");
 		
 		this.action = action;
-		this.handler = new SelectHandler<>(this, elements, selectingType, defaultSet, current);
+		this.handler = new SelectHandler<>(this, elements, true, selectingType, defaultSet, current);
 	}
 
 	@Override
@@ -47,6 +47,11 @@ public class WindowSelector<T> extends CraftWindowSizeable implements Selector<T
 	@Override
 	public final boolean isDefaultSet() {
 		return this.handler.isDefaultSet();
+	}
+	
+	@Override
+	public final boolean allowCreation() {
+		return this.handler.allowCreation();
 	}
 
 	@Override

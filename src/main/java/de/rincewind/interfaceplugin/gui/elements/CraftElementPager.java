@@ -219,7 +219,7 @@ public class CraftElementPager extends CraftElement implements ElementPager {
 		}
 
 		this.nextFliper.add(element);
-		element.setComponentValue(Element.ENABLED, !this.isLastPage());
+		element.setComponentValue(Element.ENABLED, this.isEnabled() && !this.isLastPage());
 		element.getEventManager().registerListener(ElementInteractEvent.class, this.new FlipListener(1));
 	}
 
@@ -236,7 +236,7 @@ public class CraftElementPager extends CraftElement implements ElementPager {
 		}
 
 		this.previousFliper.add(element);
-		element.setComponentValue(Element.ENABLED, !this.isFirstPage());
+		element.setComponentValue(Element.ENABLED, this.isEnabled() && !this.isFirstPage());
 		element.getEventManager().registerListener(ElementInteractEvent.class, this.new FlipListener(-1));
 	}
 
@@ -319,18 +319,23 @@ public class CraftElementPager extends CraftElement implements ElementPager {
 			return this.disabledIcon.getIcon();
 		}
 	}
+	
+	@Override
+	protected void onEnabledChange() {
+		this.updateFliper();
+	}
 
 	private void updateFliper() {
 		Iterator<Element> iterator = this.nextFliper.iterator();
 
 		while (iterator.hasNext()) {
-			iterator.next().setComponentValue(Element.ENABLED, !this.isLastPage());
+			iterator.next().setComponentValue(Element.ENABLED, this.isEnabled() && !this.isLastPage());
 		}
 
 		iterator = this.previousFliper.iterator();
 
 		while (iterator.hasNext()) {
-			iterator.next().setComponentValue(Element.ENABLED, !this.isFirstPage());
+			iterator.next().setComponentValue(Element.ENABLED, this.isEnabled() && !this.isFirstPage());
 		}
 	}
 

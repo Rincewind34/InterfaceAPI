@@ -1,6 +1,7 @@
 package de.rincewind.interfaceapi.gui.components;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -14,7 +15,17 @@ import de.rincewind.interfaceapi.gui.elements.util.lore.Lore;
 import de.rincewind.interfaceplugin.Validate;
 
 public interface Displayable {
-
+	
+	public static final Comparator<Displayable> comparator_name = (icon1, icon2) -> {
+		if (icon1 == Icon.AIR) {
+			return icon2 == Icon.AIR ? 0 : 1;
+		} else if (icon2 == Icon.AIR) {
+			return -1;
+		} else {
+			return icon1.getIcon().getName().compareTo(icon2.getIcon().getName());
+		}
+	};
+	
 	public static final Map<Class<?>, Function<Object, Icon>> converters = new HashMap<>();
 
 	public static void copy(Class<?> cls, Class<?> other) {

@@ -79,7 +79,7 @@ public final class CraftEventManager implements EventManager {
 	}
 
 	@Override
-	public <E extends Event> ListenerBase registerListener(Class<E> eventCls, InterfaceListener<E> listener) {
+	public <E extends Event> ListenerBase registerListener(Class<E> eventCls, InterfaceListener<? super E> listener) {
 		Validate.notNull(eventCls, "The event class cannot be null");
 		Validate.notNull(listener, "The listener cannot be null");
 
@@ -122,8 +122,8 @@ public final class CraftEventManager implements EventManager {
 
 		private final Class<E> eventCls;
 
-		protected List<InterfaceListener<E>> listeners;
-		protected Set<InterfaceListener<E>> monitors;
+		protected List<InterfaceListener<? super E>> listeners;
+		protected Set<InterfaceListener<? super E>> monitors;
 
 		public Entry(Class<E> eventCls) {
 			this.eventCls = eventCls;
@@ -136,7 +136,7 @@ public final class CraftEventManager implements EventManager {
 			assert !event.isConsumed() : "The event is already consumed";
 			assert !event.isInMonitor() : "The event is already in monitor";
 
-			for (InterfaceListener<E> listener : this.listeners) {
+			for (InterfaceListener<? super E> listener : this.listeners) {
 				try {
 					listener.onAction(event);
 				} catch (Exception exception) {
@@ -162,7 +162,7 @@ public final class CraftEventManager implements EventManager {
 			assert event != null : "The event is null";
 			assert event.isInMonitor() : "The event is not in monitor";
 
-			for (InterfaceListener<E> listener : this.monitors) {
+			for (InterfaceListener<? super E> listener : this.monitors) {
 				try {
 					listener.onAction(event);
 				} catch (Exception exception) {
@@ -179,9 +179,9 @@ public final class CraftEventManager implements EventManager {
 		private boolean added;
 
 		private Class<E> eventCls;
-		private InterfaceListener<E> listener;
+		private InterfaceListener<? super E> listener;
 
-		public ListenerBaseImpl(Class<E> eventCls, InterfaceListener<E> listener) {
+		public ListenerBaseImpl(Class<E> eventCls, InterfaceListener<? super E> listener) {
 			assert eventCls != null : "Event class is null";
 			assert listener != null : "Listener class is null";
 

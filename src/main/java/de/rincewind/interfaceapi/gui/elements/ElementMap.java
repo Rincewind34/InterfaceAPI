@@ -25,11 +25,15 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	
 	public abstract void addItem(Displayable item);
 	
+	public abstract void addItems(Iterable<? extends Displayable> items);
+	
 	public abstract void removeItem(Displayable item);
 	
 	public abstract void removeItem(int index);
 	
 	public abstract void clear();
+
+	public abstract void sortItems();
 	
 	public abstract void sortItems(Comparator<Displayable> comperator);
 	

@@ -35,7 +35,7 @@ import de.rincewind.interfaceapi.exceptions.SelectorInterfaceException;
  *            The type of selectable objects
  */
 public interface Selector<T> {
-	
+
 	/**
 	 * Selected a specific value to this {@link Selector}. The exact handling of
 	 * the value if the selections was successful is not specified. After
@@ -114,6 +114,15 @@ public interface Selector<T> {
 	public abstract boolean selectSameValue();
 
 	/**
+	 * Returns <code>true</code> if the selector is allowed to select newly
+	 * created objects and <code>false</code> if not.
+	 * 
+	 * @return <code>true</code> if the selector is allowed to select newly
+	 *         created objects
+	 */
+	public abstract boolean allowCreation();
+
+	/**
 	 * Returns the currently selected value. The result takes the default value
 	 * into account. Therefore, if {@link #isSelected()} returns
 	 * <code>false</code> the default value will be returned. If
@@ -165,7 +174,7 @@ public interface Selector<T> {
 	 * @return if the <code>value</code> is selectable
 	 */
 	public default boolean isSelectable(T value) {
-		return (value == null && this.isNullSelectable()) || this.getSelectableObjects().contains(value);
+		return (value == null && this.isNullSelectable()) || (value != null && (this.getSelectableObjects().contains(value) || this.allowCreation()));
 	}
 
 	/**

@@ -9,9 +9,9 @@ import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
 import de.rincewind.interfaceapi.gui.elements.util.ElementComponent;
 import de.rincewind.interfaceapi.gui.elements.util.ElementComponent.PositiveNumberElementComponent;
-import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.elements.util.ElementComponentType;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
+import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.EventManager;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
@@ -57,6 +57,7 @@ public abstract class CraftElement implements Element {
 
 		this.registerComponent(Element.ENABLED, new ElementComponent<>(Boolean.class, true, (oldValue, newValue) -> {
 			this.update();
+			this.onEnabledChange();
 		}));
 
 		this.registerComponent(Element.INSTRUCTIONS, new ElementComponent<>(Boolean.class, true, (oldValue, newValue) -> {
@@ -248,6 +249,10 @@ public abstract class CraftElement implements Element {
 		if (this.isEnabled()) {
 			this.update();
 		}
+	}
+	
+	protected void onEnabledChange() {
+		
 	}
 
 	protected abstract Icon getIcon0(Point point);

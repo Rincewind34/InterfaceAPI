@@ -97,7 +97,16 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		this.items.add(item);
 		this.update();
 	}
+	
+	@Override
+	public void addItems(Iterable<? extends Displayable> items) {
+		Validate.notNull(items, "The iterable cannot be null");
 
+		for (Displayable item : items) {
+			this.addItem(item);
+		}
+	}
+	
 	@Override
 	public void removeItem(int index) {
 		this.items.remove(index);
@@ -112,17 +121,24 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public void clear() {
+		this.deselect();
 		this.items.clear();
 		this.update();
 	}
 
 	@Override
-	public void sortItems(Comparator<Displayable> comperator) {
+	public void sortItems() {
 		this.items.sort((value1, value2) -> {
-			return comperator.compare(value1, value2);
+			Comparable<?> compare1 = Displayable.readPayload(value1);
+			return compare1.compareTo(Displayable.readPayload(value2));
 		});
+		this.updateEnabled();
+	}
 
-		this.update();
+	@Override
+	public void sortItems(Comparator<Displayable> comperator) {
+		this.items.sort(comperator);
+		this.updateEnabled();
 	}
 
 	@Override
@@ -204,7 +220,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		}
 
 		this.nextFliper.add(element);
-		element.setComponentValue(Element.ENABLED, !this.isLastPage());
+		element.setComponentValue(Element.ENABLED, this.isEnabled() && !this.isLastPage());
 		element.getEventManager().registerListener(ElementInteractEvent.class, this.new FlipListener(1));
 	}
 
@@ -221,7 +237,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		}
 
 		this.previousFliper.add(element);
-		element.setComponentValue(Element.ENABLED, !this.isFirstPage());
+		element.setComponentValue(Element.ENABLED, this.isEnabled() && !this.isFirstPage());
 		element.getEventManager().registerListener(ElementInteractEvent.class, this.new FlipListener(-1));
 	}
 
@@ -371,18 +387,23 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 			return this.getDisabledIcon();
 		}
 	}
+	
+	@Override
+	protected void onEnabledChange() {
+		this.updateFliper();
+	}
 
 	private void updateFliper() {
 		Iterator<Element> iterator = this.nextFliper.iterator();
 
 		while (iterator.hasNext()) {
-			iterator.next().setComponentValue(Element.ENABLED, !this.isLastPage());
+			iterator.next().setComponentValue(Element.ENABLED, this.isEnabled() && !this.isLastPage());
 		}
 
 		iterator = this.previousFliper.iterator();
 
 		while (iterator.hasNext()) {
-			iterator.next().setComponentValue(Element.ENABLED, !this.isFirstPage());
+			iterator.next().setComponentValue(Element.ENABLED, this.isEnabled() && !this.isFirstPage());
 		}
 	}
 	

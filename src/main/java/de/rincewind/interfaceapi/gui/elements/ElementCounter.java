@@ -95,35 +95,35 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	 * 
 	 * @throws NullPointerException if the button is <code>null</code>
 	 */
-	public abstract void registerIncrementer(Element element, int value);
+	public abstract void registerIncrementer(Element element, int value, int shiftedValue);
 
-	public abstract void registerDecrementer(Element element, int value);
+	public abstract void registerDecrementer(Element element, int value, int shiftedValue);
 
 	public abstract void unregisterFliper(Element element);
 	
-	public abstract InterfaceListener<ElementInteractEvent> newIncrementListener(int value);
+	public abstract InterfaceListener<ElementInteractEvent> newIncrementListener(int value, int shiftedValue);
 	
 	public default void setCount(int count) {
 		this.setCount(count, true);
 	}
 	
-	public default ElementItem newIncrementor(ElementCreator creator, Point point, int value) {
+	public default ElementItem newIncrementor(ElementCreator creator, Point point, int value, int shiftedValue) {
 		ElementItem item = creator.newItem();
 		item.setPoint(point);
-		item.setIcon(HeadsDatabase.arrowWoodUp());
+		item.setIcon(HeadsDatabase.arrowWoodUp().rename("§7§o+" + value + " / +" + shiftedValue));
 		item.setDisabledIcon(HeadsDatabase.arrowStoneUp());
 		
-		this.registerIncrementer(item, value);
+		this.registerIncrementer(item, value, shiftedValue);
 		return item;
 	}
 	
-	public default ElementItem newDecrementor(ElementCreator creator, Point point, int value) {
+	public default ElementItem newDecrementor(ElementCreator creator, Point point, int value, int shiftedValue) {
 		ElementItem item = creator.newItem();
 		item.setPoint(point);
-		item.setIcon(HeadsDatabase.arrowWoodDown());
+		item.setIcon(HeadsDatabase.arrowWoodDown().rename("§7§o-" + value + " / -" + shiftedValue));
 		item.setDisabledIcon(HeadsDatabase.arrowStoneDown());
 		
-		this.registerDecrementer(item, value);
+		this.registerDecrementer(item, value, shiftedValue);
 		return item;
 	}
 	

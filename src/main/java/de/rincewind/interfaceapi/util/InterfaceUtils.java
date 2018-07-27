@@ -4,6 +4,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.boss.BarColor;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
@@ -17,6 +18,29 @@ import de.rincewind.interfaceplugin.Validate;
 import net.minecraft.server.v1_13_R1.NBTTagCompound;
 
 public class InterfaceUtils {
+	
+	public static Icon convertBarColor(BarColor color) {
+		Validate.notNull(color, "The color cannot be null");
+		
+		switch (color) {
+		case BLUE:
+			return new Icon(Material.BLUE_CONCRETE, "§7Bossbar-Farbe: §9Blau");
+		case GREEN:
+			return new Icon(Material.GREEN_CONCRETE, "§7Bossbar-Farbe: §2Grün");
+		case PINK:
+			return new Icon(Material.MAGENTA_CONCRETE, "§7Bossbar-Farbe: §dPink");
+		case PURPLE:
+			return new Icon(Material.PURPLE_CONCRETE, "§7Bossbar-Farbe: §5Lila");
+		case RED:
+			return new Icon(Material.RED_CONCRETE, "§7Bossbar-Farbe: §cRot");
+		case WHITE:
+			return new Icon(Material.WHITE_CONCRETE, "§7Bossbar-Farbe: §fWeiß");
+		case YELLOW:
+			return new Icon(Material.YELLOW_CONCRETE, "§7Bossbar-Farbe: §eGelb");
+		default:
+			throw new IllegalArgumentException(color.name());
+		}
+	}
 
 	public static Icon convertGameMode(GameMode gameMode) {
 		Validate.notNull(gameMode, "The gamemode cannot be null");
@@ -85,7 +109,7 @@ public class InterfaceUtils {
 							+ "JhZnQubmV0L3RleHR1cmUvYjc4ZWYyZTRjZjJjNDFhMmQxNGJ" + "mZGU5Y2FmZjEwMjE5ZjViMWJmNWIzNWE0OWViNTFjNjQ2Nzg4MmNiNWYwIn19fQ=="))
 									.rename("§7Lohe");
 		case BOAT:
-			return null;
+			return new Icon(Material.OAK_BOAT, "§7Boot");
 		case CAVE_SPIDER:
 			return new Icon(InterfaceUtils.buildHead("39173a7a-c957-4ec1-ac1a-43e5a64983df", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5"
 					+ "lY3JhZnQubmV0L3RleHR1cmUvNDE2NDVkZmQ3N2QwOTkyMzEwN2" + "IzNDk2ZTk0ZWViNWMzMDMyOWY5N2VmYzk2ZWQ3NmUyMjZlOTgyMjQifX19"))
@@ -330,24 +354,49 @@ public class InterfaceUtils {
 							+ "hZnQubmV0L3RleHR1cmUvYzJlYzVhNTE2NjE3Zm" + "YxNTczY2QyZjlkNWYzOTY5ZjU2ZDU1NzVjNGZmNGVmZWZhYmQyYTE4ZGM3YWI5OGNkIn19fQ=="))
 									.rename("§7Vex");
 		case VINDICATOR:
-			new Icon(InterfaceUtils.buildHead("dbde9ab3-cd6e-4822-af69-e5a2be8bd73d", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy"
-					+ "5taW5lY3JhZnQubmV0L3RleHR1cmUvZjB" + "iZmE4NTBmNWRlNGIyOTgxY2NlNzhmNTJmYzJjYzdjZDdiNWM2MmNhZWZlZGRlYjljZjMxMWU4M2Q5MDk3In19fQ=="))
-							.rename("§7Papagei"); // TODO
+			return new Icon(InterfaceUtils.buildHead("3eca1bb8-97a9-43e0-816c-95a5fd2a8f4e",
+					"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGY2ZmI4OWQxYzYzMWJkN2U3OWZlMTg1Y"
+							+ "mExYTY3MDU0MjVmNWMzMWE1ZmY2MjY1MjFlMzk1ZDRhNmY3ZTIifX19")).rename("§7Vindicator");
 		case WITHER_SKELETON:
 			return new Icon(Material.WITHER_SKELETON_SKULL, "§7Witherskelett");
 		case ZOMBIE_HORSE:
-			new Icon(InterfaceUtils.buildHead("dbde9ab3-cd6e-4822-af69-e5a2be8bd73d", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy"
-					+ "5taW5lY3JhZnQubmV0L3RleHR1cmUvZjB" + "iZmE4NTBmNWRlNGIyOTgxY2NlNzhmNTJmYzJjYzdjZDdiNWM2MmNhZWZlZGRlYjljZjMxMWU4M2Q5MDk3In19fQ=="))
-							.rename("§7Papagei"); // TODO
+			return new Icon(InterfaceUtils.buildHead("ab9ea02c-4fd1-4895-85c9-d2b407d5d6f2",
+					"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDIyOTUwZjJkM2VmZGRiMThkZTg2ZjhmNT"
+							+ "VhYzUxOGRjZTczZjEyYTZlMGY4NjM2ZDU1MWQ4ZWI0ODBjZWVjIn19fQ==")).rename("§7Zombiepferd");
 		case ZOMBIE_VILLAGER:
-			new Icon(InterfaceUtils.buildHead("dbde9ab3-cd6e-4822-af69-e5a2be8bd73d", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy"
-					+ "5taW5lY3JhZnQubmV0L3RleHR1cmUvZjB" + "iZmE4NTBmNWRlNGIyOTgxY2NlNzhmNTJmYzJjYzdjZDdiNWM2MmNhZWZlZGRlYjljZjMxMWU4M2Q5MDk3In19fQ=="))
-							.rename("§7Papagei"); // TODO
+			return new Icon(InterfaceUtils.buildHead("dd1b157c-d732-4d1c-8185-da205188a8cf",
+					"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTVlMDhhODc3NmMxNzY0YzNmZTZhNmRkZ"
+							+ "DQxMmRmY2I4N2Y0MTMzMWRhZDQ3OWFjOTZjMjFkZjRiZjNhYzg5YyJ9fX0=")).rename("§7Zombiebewohner");
+		case COD:
+			return new Icon(Material.COD, "§7Kabeljau");
+		case SALMON:
+			return new Icon(Material.SALMON, "§7Lachs");
+		case PUFFERFISH:
+			return new Icon(Material.PUFFERFISH, "§7Pufferfisch");
+		case TROPICAL_FISH:
+			return new Icon(Material.TROPICAL_FISH, "§7Tropischer Fisch");
+		case TRIDENT:
+			return new Icon(Material.TRIDENT, "§7Dreizack");
+		case DOLPHIN:
+			return new Icon(InterfaceUtils.buildHead("8b7ccd6d-36de-47e0-8d5a-6f6799c6feb8",
+					"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU5Njg4Yjk1MGQ4ODBiNTViN2FhMmNmY"
+							+ "2Q3NmU1YTBmYTk0YWFjNmQxNmY3OGU4MzNmNzQ0M2VhMjlmZWQzIn19fQ==")).rename("§7Delfin");
+		case DROWNED:
+			return new Icon(InterfaceUtils.buildHead("2f169660-61be-46bd-acb5-1abef9fe5731",
+					"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzNmN2NjZjYxZGJjM2Y5ZmU5YTYzMzNjZ"
+							+ "GUwYzBlMTQzOTllYjJlZWE3MWQzNGNmMjIzYjNhY2UyMjA1MSJ9fX0=")).rename("§7Ertrunkener");
+		case PHANTOM:
+			return new Icon(InterfaceUtils.buildHead("ca68563c-bc0b-40a7-9874-91a35fca8124",
+					"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzQ2ODMwZGE1ZjgzYTNhYWVkODM4YTk5M"
+							+ "TU2YWQ3ODFhNzg5Y2ZjZjEzZTI1YmVlZjdmNTRhODZlNGZhNCJ9fX0=")).rename("§7Phantom");
+		case TURTLE:
+			return new Icon(InterfaceUtils.buildHead("245f22b4-2c7c-4a9c-86fa-9ec64c54e4fa",
+					"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMGE0MDUwZTdhYWNjNDUzOTIwMjY1OGZkY"
+							+ "zMzOWRkMTgyZDdlMzIyZjlmYmNjNGQ1Zjk5YjU3MThhIn19fQ==")).rename("§7Schildkröte");
 		default:
 			assert false : "Ignored entity type " + type.name();
+			return null;
 		}
-
-		return null;
 	}
 
 	public static Icon convertPotionEffectType(PotionEffectType type) {
@@ -409,6 +458,12 @@ public class InterfaceUtils {
 			return new Icon(Material.EMERALD, "§2Glück §7(Buff)");
 		} else if (type.equals(PotionEffectType.UNLUCK)) {
 			return new Icon(Material.DIRT, "§ePech §7(Debuff)");
+		} else if (type.equals(PotionEffectType.SLOW_FALLING)) {
+			return new Icon(Material.PHANTOM_MEMBRANE, "§fLangsamer Fallen §7(Buff)");
+		} else if (type.equals(PotionEffectType.DOLPHINS_GRACE)) {
+			return InterfaceUtils.convertEntityType(EntityType.DOLPHIN).rename("§bDelfin's Güte §7(Buff)");
+		} else if (type.equals(PotionEffectType.CONDUIT_POWER)) {
+			return new Icon(Material.CONDUIT, "§9Conduit §7(Buff)");
 		} else {
 			assert false : "Ignored potion effect type " + type.getName();
 			return null;
@@ -455,12 +510,16 @@ public class InterfaceUtils {
 			return InterfaceUtils.convertPotionEffectType(PotionEffectType.WATER_BREATHING);
 		case WEAKNESS:
 			return InterfaceUtils.convertPotionEffectType(PotionEffectType.WEAKNESS);
+		case SLOW_FALLING:
+			return InterfaceUtils.convertPotionEffectType(PotionEffectType.SLOW_FALLING);
+		case TURTLE_MASTER:
+			return new Icon(Material.TURTLE_HELMET, "§5Schilkrötenmeister §7(Buff)");
 		default:
 			assert false : "Ignored potion type " + potionType.name();
 			return null;
 		}
 	}
-	
+
 	public static ItemStack buildHead(Player player) {
 		String value = ((CraftPlayer) player).getHandle().getProfile().getProperties().get("textures").iterator().next().getValue();
 

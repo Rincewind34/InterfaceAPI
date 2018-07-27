@@ -8,7 +8,7 @@ public class MapChangeSelectEvent extends ElementValueChangeEvent<ElementMap> {
 	private int newIndex;
 
 	public MapChangeSelectEvent(ElementMap element, int newIndex) {
-		super(element);
+		super(element, element.getSelectedIndex()); // TODO Use ElementMap#getSelected
 
 		this.newIndex = newIndex;
 	}

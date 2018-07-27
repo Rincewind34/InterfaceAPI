@@ -22,7 +22,7 @@ public class SelectorElementSet<T> extends ElementSet implements Selector<T> {
 		Validate.notNull(action, "The action cannot be null");
 
 		this.action = action;
-		this.handler = new SelectHandler<>(this, elements, selectingType, defaultSet, current);
+		this.handler = new SelectHandler<>(this, elements, false, selectingType, defaultSet, current);
 	}
 
 	@Override
@@ -45,6 +45,11 @@ public class SelectorElementSet<T> extends ElementSet implements Selector<T> {
 	@Override
 	public boolean selectMultipleTimes() {
 		return true;
+	}
+	
+	@Override
+	public boolean allowCreation() {
+		return this.handler.allowCreation();
 	}
 
 	@Override

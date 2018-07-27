@@ -7,7 +7,7 @@ public class ObjectSelectEvent extends ElementValueChangeEvent<ElementObjectSele
 	private Object oldSelection;
 	
 	public ObjectSelectEvent(ElementObjectSelector<?> element, Object oldSelection) {
-		super(element);
+		super(element, element.getSelectedObject());
 		
 		this.oldSelection = oldSelection;
 	}

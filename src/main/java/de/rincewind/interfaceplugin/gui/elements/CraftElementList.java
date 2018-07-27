@@ -34,7 +34,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	private List<Displayable> items;
 	private UnaryOperator<Icon> modifier;
-	
+
 	public CraftElementList(WindowEditor handle) {
 		super(handle);
 
@@ -52,7 +52,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			int index = event.getPoint().getCoord(this.type) + this.startIndex;
-			
+
 			if (index == this.getSelectedIndex()) {
 				this.deselect();
 			} else if (index < this.getSize()) {
@@ -105,26 +105,42 @@ public class CraftElementList extends CraftElement implements ElementList {
 		Validate.notNull(item, "The item cannot be null!");
 
 		this.items.add(index, item);
+
+		if (index <= this.selected) {
+			this.selected = this.selected + 1;
+		}
+
 		this.update();
 	}
 
 	@Override
 	public <T extends Enum<?>> void addItems(Class<T> cls) {
 		Validate.notNull(cls, "The class cannot be null");
-		
+
 		for (T enumInstance : cls.getEnumConstants()) {
 			this.items.add(Displayable.of(enumInstance));
 		}
 	}
-	
+
+	@Override
+	public void removeSelected() {
+		if (!this.isSelected()) {
+			throw new IllegalStateException("No item selected");
+		}
+
+		this.items.remove(this.selected);
+		this.deselect();
+		this.update();
+	}
+
 	@Override
 	public void removeItem(Displayable item) {
 		Validate.notNull(item, "The item cannot be null");
-		
+
 		if (this.getSelectedItem() == item) {
 			this.deselect();
 		}
-		
+
 		this.items.remove(item);
 		this.update();
 	}
@@ -139,7 +155,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 	@Override
 	public void setType(Direction type) {
 		Validate.notNull(type, "The type cannot be null");
-		
+
 		this.type = type;
 		this.update();
 	}
@@ -167,7 +183,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public boolean isSelected() {
-		return this.selected >= 0;
+		return this.selected != -1;
 	}
 
 	@Override
@@ -186,6 +202,25 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 
 	@Override
+	public void selectLast() {
+		this.select(this.items.size() - 1, true);
+	}
+
+	@Override
+	public void select(Object item) {
+		this.select(item, true);
+	}
+
+	@Override
+	public void select(Object item, boolean fireEvent) {
+		int index = this.items.indexOf(item);
+
+		if (index != -1) {
+			this.select(this.items.indexOf(item), fireEvent);
+		}
+	}
+
+	@Override
 	public void select(int index) {
 		this.select(index, true);
 	}
@@ -195,12 +230,21 @@ public class CraftElementList extends CraftElement implements ElementList {
 		if (this.selected == index) {
 			return;
 		}
-		
+
+		this.selected = index;
+
+		if (this.selected != -1) {
+			if (this.selected < this.startIndex) {
+				this.startIndex = this.selected;
+			} else if (this.selected >= this.startIndex + this.getBounds().getLength(this.type)) {
+				this.startIndex = this.selected - (this.getBounds().getLength(this.type) - 1);
+			}
+		}
+
 		if (fireEvent) {
 			this.getEventManager().callEvent(ListChangeSelectEvent.class, new ListChangeSelectEvent(this, index));
 		}
 
-		this.selected = index;
 		this.update();
 	}
 
@@ -213,7 +257,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 	public void deselect(boolean fireEvent) {
 		this.select(-1, fireEvent);
 	}
-	
+
 	@Override
 	public Displayable getSelectedItem() {
 		if (!this.isSelected()) {
@@ -222,12 +266,12 @@ public class CraftElementList extends CraftElement implements ElementList {
 			return this.items.get(this.selected);
 		}
 	}
-	
+
 	@Override
 	public Displayable getItem(int index) {
 		return this.items.get(index);
 	}
-	
+
 	@Override
 	public UnaryOperator<Icon> getSelectModifier() {
 		return this.modifier;
@@ -247,10 +291,10 @@ public class CraftElementList extends CraftElement implements ElementList {
 		if (index < 0 || this.items.size() >= index) {
 			throw new IllegalArgumentException("Invalid index");
 		}
-		
+
 		return Displayable.readPayload(this.items.get(index));
 	}
-	
+
 	@Override
 	public List<Displayable> getItems() {
 		return Collections.unmodifiableList(this.items);

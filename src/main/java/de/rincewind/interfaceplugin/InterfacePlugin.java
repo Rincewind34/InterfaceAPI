@@ -28,6 +28,9 @@ public class InterfacePlugin extends JavaPlugin {
 		Displayable.put(EntityType.class, InterfaceUtils::convertEntityType);
 		Displayable.put(PotionEffectType.class, InterfaceUtils::convertPotionEffectType);
 		Displayable.put(PotionType.class, InterfaceUtils::convertPotionType);
+		Displayable.put(Material.class, (material) -> {
+			return new Icon(material, "§7" + material.name());
+		});
 		Displayable.put(Boolean.class, (input) -> {
 			return input ? new Icon(Material.GREEN_CONCRETE, "§aTrue") : new Icon(Material.RED_CONCRETE, "§cFalse");
 		});

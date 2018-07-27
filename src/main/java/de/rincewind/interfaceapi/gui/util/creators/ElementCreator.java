@@ -7,12 +7,12 @@ import de.rincewind.interfaceapi.gui.elements.ElementContentSlot;
 import de.rincewind.interfaceapi.gui.elements.ElementCounter;
 import de.rincewind.interfaceapi.gui.elements.ElementInput;
 import de.rincewind.interfaceapi.gui.elements.ElementItem;
+import de.rincewind.interfaceapi.gui.elements.ElementItemSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
 import de.rincewind.interfaceapi.gui.elements.ElementMap;
 import de.rincewind.interfaceapi.gui.elements.ElementObjectSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementOutput;
 import de.rincewind.interfaceapi.gui.elements.ElementPager;
-import de.rincewind.interfaceapi.gui.elements.ElementItemSelector;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
 import de.rincewind.interfaceapi.gui.elements.ElementToolbar;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
@@ -51,11 +51,11 @@ public interface ElementCreator {
 	public abstract ElementContentSlot newContentSlot();
 
 	public abstract ElementToolbar newToolbar();
-	
+
 	public abstract ElementPager newPager();
-	
+
 	public abstract <T> ElementObjectSelector<T> newObjectSelector(Class<T> objectClass);
-	
+
 	public default ElementSwitcher newBooleanSwitcher(String disabledDisplay, String enabledDisplay) {
 		return this.newBooleanSwitcher(disabledDisplay, enabledDisplay, false);
 	}
@@ -75,11 +75,11 @@ public interface ElementCreator {
 		switcher.setSwitchIndex(current ? 1 : 0);
 		return switcher;
 	}
-	
+
 	public default ElementItem newBarrier(int y, int width) {
 		return this.newBarrier(Point.of(0, y), width);
 	}
-	
+
 	public default ElementItem newBarrier(Point point, int width) {
 		ElementItem item = this.newItem();
 		item.setPoint(point);
@@ -87,5 +87,5 @@ public interface ElementCreator {
 		item.setIcon(new Icon(Material.IRON_BARS));
 		return item;
 	}
-	
+
 }

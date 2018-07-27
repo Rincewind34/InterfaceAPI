@@ -14,13 +14,14 @@ public final class SelectHandler<T> {
 	private T lastSelection;
 
 	private final boolean defaultSet;
+	private final boolean allowCreation;
 	private final T defaultValue;
 
 	private final Selector<T> handler;
 	private final Class<T> selectingClass;
 	private final Collection<? extends T> elements;
 
-	public SelectHandler(Selector<T> handler, Collection<? extends T> elements, Class<T> selectingType, boolean defaultSet, T current) {
+	public SelectHandler(Selector<T> handler, Collection<? extends T> elements, boolean allowCreation, Class<T> selectingType, boolean defaultSet, T current) {
 		Validate.notNull(elements, "The element collection cannot be null");
 		Validate.notNull(selectingType, "The type class cannot be null");
 		Validate.notNull(handler, "The handler cannot be null");
@@ -30,6 +31,7 @@ public final class SelectHandler<T> {
 		this.selectingClass = selectingType;
 		this.handler = handler;
 		
+		this.allowCreation = allowCreation;
 		this.elements = Collections.unmodifiableCollection(elements);
 
 		if (!this.handler.isNullSelectable()) {
@@ -73,7 +75,11 @@ public final class SelectHandler<T> {
 	public boolean isDefaultSet() {
 		return this.defaultSet;
 	}
-
+	
+	public boolean allowCreation() {
+		return this.allowCreation;
+	}
+	
 	public T getCurrentlySelected() {
 		if (this.selected) {
 			return this.lastSelection;

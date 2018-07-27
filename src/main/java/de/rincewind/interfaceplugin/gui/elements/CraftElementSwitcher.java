@@ -81,6 +81,10 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 	@Override
 	public void setSwitchIndex(int index, boolean fireEvent) {
+		if (this.switchIndex == index) {
+			return;
+		}
+		
 		if (this.size() == 0) {
 			index = -1;
 		}
@@ -103,12 +107,12 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 	}
 
 	@Override
-	public <T> void setSwitch(T switchItem) {
+	public void setSwitch(Object switchItem) {
 		this.setSwitch(switchItem, true);
 	}
 
 	@Override
-	public <T> void setSwitch(T switchItem, boolean fireEvent) {
+	public void setSwitch(Object switchItem, boolean fireEvent) {
 		for (int index = 0; index < this.items.size(); index++) {
 			if (Displayable.readPayload(this.getSwitch(index)) == switchItem) {
 				this.setSwitchIndex(index, fireEvent);

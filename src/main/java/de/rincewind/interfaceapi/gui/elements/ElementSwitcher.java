@@ -99,9 +99,9 @@ public interface ElementSwitcher extends Element, DisplayableDisabled, Iterable<
 
 	public abstract void setSwitchIndex(int index, boolean fireEvent);
 	
-	public abstract <T> void setSwitch(T switchItem);
+	public abstract void setSwitch(Object switchItem);
 	
-	public abstract <T> void setSwitch(T switchItem, boolean fireEvent);
+	public abstract void setSwitch(Object switchItem, boolean fireEvent);
 	
 	/**
 	 * Returns the size of the entrylist.

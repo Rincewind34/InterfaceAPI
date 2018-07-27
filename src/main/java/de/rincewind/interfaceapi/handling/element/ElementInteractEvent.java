@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.util.Point;
+import de.rincewind.interfaceapi.util.InterfaceUtils;
 
 public class ElementInteractEvent extends PlayerElementEvent<Element> {
 	
@@ -32,9 +33,23 @@ public class ElementInteractEvent extends PlayerElementEvent<Element> {
 		this.cancelled = true;
 	}
 	
+	public void pullCourserItem() {
+		this.validateMonitor();
+		
+		if (this.courserItem == null) {
+			throw new IllegalStateException("The courser item is not present");
+		}
+		
+		this.courserItem.setAmount(this.courserItem.getAmount() - 1);
+		
+		if (this.courserItem.getAmount() == 0) {
+			this.courserItem = null;
+		}
+	}
+	
 	public void setCourserItem(ItemStack courserItem) {
 		this.validateMonitor();
-		this.courserItem = courserItem;
+		this.courserItem = InterfaceUtils.normalize(courserItem);
 	}
 
 	public boolean isRightClick() {

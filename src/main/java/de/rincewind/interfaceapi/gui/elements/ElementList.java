@@ -84,6 +84,8 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void addItem(int index, Displayable item);
 
 	public abstract <T extends Enum<?>> void addItems(Class<T> cls);
+	
+	public abstract void removeSelected();
 
 	/**
 	 * Removes an entry from this list. The list will be automatically updated
@@ -121,6 +123,8 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 */
 	public abstract void setStartIndex(int index);
 
+	public abstract void selectLast();
+
 	/**
 	 * Selects a specified index. If the index is not selectable, this method
 	 * will do nothing.
@@ -131,6 +135,10 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void select(int index);
 
 	public abstract void select(int index, boolean fireEvent);
+	
+	public abstract void select(Object item);
+	
+	public abstract void select(Object item, boolean fireEvent);
 
 	public abstract void deselect(boolean fireEvent);
 

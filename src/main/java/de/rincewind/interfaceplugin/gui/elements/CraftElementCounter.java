@@ -119,10 +119,11 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 		}
 
 		if (count != this.count) {
+			int previous = this.count;
 			this.count = count;
 			
 			if (fireEvent) {
-				this.getEventManager().callEvent(CountChangeEvent.class, new CountChangeEvent(this));
+				this.getEventManager().callEvent(CountChangeEvent.class, new CountChangeEvent(this, previous));
 			}
 			
 			this.update();
@@ -141,7 +142,7 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 	}
 
 	@Override
-	public void registerIncrementer(Element element, int value) {
+	public void registerIncrementer(Element element, int value, int shiftedValue) {
 		Validate.notNull(element, "The element cannot be null");
 
 		if (value <= 0) {
@@ -158,12 +159,12 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 
 		this.incrementingElements.add(element);
 		
-		element.setComponentValue(Element.ENABLED, this.count < this.maxCount);
-		element.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(value));
+		element.setComponentValue(Element.ENABLED, this.isEnabled() && this.count < this.maxCount);
+		element.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(value, shiftedValue));
 	}
 
 	@Override
-	public void registerDecrementer(Element element, int value) {
+	public void registerDecrementer(Element element, int value, int shiftedValue) {
 		Validate.notNull(element, "The element cannot be null");
 
 		if (value <= 0) {
@@ -180,8 +181,8 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 
 		this.decrementingElements.add(element);
 		
-		element.setComponentValue(Element.ENABLED, this.count > this.minCount);
-		element.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(-value));
+		element.setComponentValue(Element.ENABLED, this.isEnabled() && this.count > this.minCount);
+		element.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(-value, -shiftedValue));
 	}
 
 	@Override
@@ -193,8 +194,8 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 	}
 	
 	@Override
-	public InterfaceListener<ElementInteractEvent> newIncrementListener(int value) {
-		return this.new ActionHandler(value);
+	public InterfaceListener<ElementInteractEvent> newIncrementListener(int value, int shiftedValue) {
+		return this.new ActionHandler(value, shiftedValue);
 	}
 
 	@Override
@@ -207,32 +208,34 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 			return icon;
 		}
 	}
-
+	
 	private void updateFliper() {
 		Iterator<Element> iterator = this.incrementingElements.iterator();
 
 		while (iterator.hasNext()) {
-			iterator.next().setComponentValue(Element.ENABLED, this.count < this.maxCount);
+			iterator.next().setComponentValue(Element.ENABLED, this.isEnabled() && this.count < this.maxCount);
 		}
 
 		iterator = this.decrementingElements.iterator();
 
 		while (iterator.hasNext()) {
-			iterator.next().setComponentValue(Element.ENABLED, this.count > this.minCount);
+			iterator.next().setComponentValue(Element.ENABLED, this.isEnabled() && this.count > this.minCount);
 		}
 	}
 
 	private class ActionHandler implements InterfaceListener<ElementInteractEvent> {
 
 		private int value;
+		private int shiftedValue;
 
-		private ActionHandler(int value) {
+		private ActionHandler(int value, int shiftedValue) {
 			this.value = value;
+			this.shiftedValue = shiftedValue;
 		}
 
 		@Override
 		public void onAction(ElementInteractEvent event) {
-			CraftElementCounter.this.setCount(CraftElementCounter.this.getCount() + this.value * (event.isShiftClick() ? 2 : 1));
+			CraftElementCounter.this.setCount(CraftElementCounter.this.getCount() + (event.isShiftClick() ? this.shiftedValue : this.value));
 		}
 
 	}

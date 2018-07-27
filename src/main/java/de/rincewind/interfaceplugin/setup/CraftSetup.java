@@ -1,6 +1,5 @@
 package de.rincewind.interfaceplugin.setup;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,14 +18,12 @@ import de.rincewind.interfaceapi.gui.windows.util.WindowState;
 import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
 import de.rincewind.interfaceapi.handling.window.WindowOpenEvent;
 import de.rincewind.interfaceapi.selectors.window.WindowSelector;
-import de.rincewind.interfaceapi.setup.FileBrowser;
 import de.rincewind.interfaceapi.setup.Setup;
 import de.rincewind.interfaceplugin.InterfacePlugin;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.listener.InventoryCloseListener;
 
-@SuppressWarnings("deprecation")
-public class CraftSetup implements Setup {
+public class CraftSetup implements Setup { // TODO cache maximized window
 
 	private List<Window> windows;
 
@@ -36,13 +33,10 @@ public class CraftSetup implements Setup {
 
 	private String clipBoard;
 
-	private FileBrowser browser;
-
 	public CraftSetup(Player player, InterfacePlugin plugin) {
 		this.windows = new ArrayList<>();
 		this.plugin = plugin;
 		this.owner = player;
-		this.browser = new CraftFileBrowser(this, new File("plugins"));
 	}
 
 	@Override
@@ -91,9 +85,9 @@ public class CraftSetup implements Setup {
 	@Override
 	public void open(Window window) {
 		Validate.notNull(window, "The window cannot be null!");
-		
+
 		// TODO maximize already opened window to avoid things like QuestSystem ChapterWindow
-		
+
 		if (window.getUser() != null) {
 			throw new SetupException("The window is already opend!");
 		}
@@ -126,6 +120,15 @@ public class CraftSetup implements Setup {
 	}
 
 	@Override
+	public void closeMaximized() {
+		if (this.hasMaximizedWindow()) {
+			this.close(this.getMaximizedWindow());
+		} else {
+			throw new SetupException("No window is maximized");
+		}
+	}
+
+	@Override
 	public void closeAll() {
 		while (this.windows.size() > 0) {
 			this.close(this.windows.get(0));
@@ -152,7 +155,7 @@ public class CraftSetup implements Setup {
 				this.sendClosePacket();
 			}
 		}
-		
+
 		window.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.MAXIMIZED));
 	}
 
@@ -199,38 +202,58 @@ public class CraftSetup implements Setup {
 	}
 
 	@Override
-	@Deprecated
-	public FileBrowser getFileBrowser() {
-		return this.browser;
-	}
-
-	@Override
 	public Player getOwner() {
 		return this.owner;
 	}
-	
+
 	@Override
-	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Consumer<T> action) {
+	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Consumer<? super T> action) {
 		// Let WindowSelectorCreator#newWindow(...) validate the parameters
 		WindowSelector<T> window = InterfaceAPI.getWindowCreator(typeClass).newWindow(plugin, action);
-		
+
 		if (window == null) {
 			return null;
 		}
-		
+
 		this.open(window);
 		return window;
 	}
-	
+
 	@Override
-	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Collection<T> elements, Consumer<T> action) {
+	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Collection<? extends T> elements, Consumer<? super T> action) {
 		// Let WindowSelectorCreator#newWindow(...) validate the parameters
 		WindowSelector<T> window = InterfaceAPI.getWindowCreator(typeClass).newWindow(plugin, action, elements);
-		
+
 		if (window == null) {
 			return null;
 		}
-		
+
+		this.open(window);
+		return window;
+	}
+
+	@Override
+	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, T current, Consumer<? super T> action) {
+		// Let WindowSelectorCreator#newWindow(...) validate the parameters
+		WindowSelector<T> window = InterfaceAPI.getWindowCreator(typeClass).newWindow(plugin, action, current);
+
+		if (window == null) {
+			return null;
+		}
+
+		this.open(window);
+		return window;
+	}
+
+	@Override
+	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, T current, Collection<? extends T> elements, Consumer<? super T> action) {
+		// Let WindowSelectorCreator#newWindow(...) validate the parameters
+		WindowSelector<T> window = InterfaceAPI.getWindowCreator(typeClass).newWindow(plugin, action, elements, current);
+
+		if (window == null) {
+			return null;
+		}
+
 		this.open(window);
 		return window;
 	}

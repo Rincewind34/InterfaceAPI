@@ -10,7 +10,7 @@ public class ElementSlotChangeEvent extends ElementValueChangeEvent<ElementSlot>
 	private ItemStack item;
 
 	public ElementSlotChangeEvent(ElementSlot element, ItemStack previousItem, ItemStack item) {
-		super(element);
+		super(element, item);
 
 		this.previousItem = previousItem;
 		this.item = item;

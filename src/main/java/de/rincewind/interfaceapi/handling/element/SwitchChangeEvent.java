@@ -7,7 +7,7 @@ public class SwitchChangeEvent extends ElementValueChangeEvent<ElementSwitcher> 
 	private int newIndex;
 	
 	public SwitchChangeEvent(ElementSwitcher element, int newIndex) {
-		super(element);
+		super(element, element.getCurrent());
 		
 		this.newIndex = newIndex;
 	}

@@ -50,12 +50,32 @@ public interface ElementItemSelector extends ElementDisplayable {
 		return CraftElementItemSelector.INSTRUCTIONS_COLLECT;
 	}
 	
+	/**
+	 * Item is unselectable after selection
+	 * 
+	 * @param value
+	 */
 	public abstract void canUnselect(boolean value);
 	
+	/**
+	 * Copies the amount of the item to select
+	 * 
+	 * @param value
+	 */
 	public abstract void copyAmount(boolean value);
 	
+	/**
+	 * Is the player allowed to grep the item using the middle mouse key
+	 * 
+	 * @param value
+	 */
 	public abstract void canCollect(boolean value);
 	
+	/**
+	 * Display the selected item and not the instructions icon
+	 * 
+	 * @param value
+	 */
 	public abstract void displaySelectedItem(boolean value);
 	
 	public abstract void setSelected(ItemStack item);

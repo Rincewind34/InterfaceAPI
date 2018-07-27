@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
-import de.rincewind.interfaceapi.exceptions.InvalidSizeException;
+import de.rincewind.interfaceapi.exceptions.InvalidBoundsException;
 import de.rincewind.interfaceapi.gui.util.Bounds;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowSizeable;
@@ -35,7 +35,7 @@ public class CraftWindowSizeable extends CraftWindowColorable implements WindowS
 		}
 
 		if (!this.checkSize(bounds)) {
-			throw new InvalidSizeException(bounds, WindowSizeable.class);
+			throw new InvalidBoundsException(bounds, WindowSizeable.class);
 		}
 
 		this.bounds = bounds;

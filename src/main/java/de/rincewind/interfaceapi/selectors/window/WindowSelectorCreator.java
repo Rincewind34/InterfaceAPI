@@ -71,7 +71,7 @@ public class WindowSelectorCreator<T, U extends WindowSelector<T>> {
 		return this.constructor;
 	}
 	
-	public final U newWindow(Plugin plugin, Consumer<T> action) {
+	public final U newWindow(Plugin plugin, Consumer<? super T> action) {
 		if (this.elementGetter == null) {
 			throw new UnsupportedOperationException("The element getter was not set");
 		}
@@ -79,7 +79,7 @@ public class WindowSelectorCreator<T, U extends WindowSelector<T>> {
 		return this.newWindow(plugin, action, this.elementGetter.get());
 	}
 	
-	public final U newWindow(Plugin plugin, Consumer<T> action, T defaultValue) {
+	public final U newWindow(Plugin plugin, Consumer<? super T> action, T defaultValue) {
 		if (this.elementGetter == null) {
 			throw new UnsupportedOperationException("The element getter was not set");
 		}
@@ -87,15 +87,15 @@ public class WindowSelectorCreator<T, U extends WindowSelector<T>> {
 		return this.newWindow(plugin, action, this.elementGetter.get(), defaultValue);
 	}
 	
-	public final U newWindow(Plugin plugin, Consumer<T> action, Collection<? extends T> elements) {
+	public final U newWindow(Plugin plugin, Consumer<? super T> action, Collection<? extends T> elements) {
 		return this.newWindow(plugin, action, elements, false, null);
 	}
 	
-	public final U newWindow(Plugin plugin, Consumer<T> action, Collection<? extends T> elements, T defaultValue) {
+	public final U newWindow(Plugin plugin, Consumer<? super T> action, Collection<? extends T> elements, T defaultValue) {
 		return this.newWindow(plugin, action, elements, true, defaultValue);
 	}
 
-	private U newWindow(Plugin plugin, Consumer<T> action, Collection<? extends T> elements, boolean defaultSet, T defaultValue) {
+	private U newWindow(Plugin plugin, Consumer<? super T> action, Collection<? extends T> elements, boolean defaultSet, T defaultValue) {
 		// Let WindowSelector do null validation
 
 		try {

@@ -30,7 +30,7 @@ public interface EventManager {
 
 	public abstract <E extends Event> ListenerBase registerListener(Class<E> eventCls, Runnable listener);
 
-	public abstract <E extends Event> ListenerBase registerListener(Class<E> eventCls, InterfaceListener<E> listener);
+	public abstract <E extends Event> ListenerBase registerListener(Class<E> eventCls, InterfaceListener<? super E> listener);
 
 	/**
 	 * This class is a dummy to let the user decide if the listener to register
