@@ -62,7 +62,9 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		this.getComponent(Element.HEIGHT).setEnabled(true);
 
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
-			this.select(this.convert(event.getPoint()));
+			if (event.isLeftClick() && !event.isShiftClick()) {
+				this.select(this.convert(event.getPoint()));
+			}
 		}).addAfter();
 	}
 
