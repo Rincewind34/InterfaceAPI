@@ -341,6 +341,11 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	public InterfaceListener<ElementInteractEvent> newFlipListener(int offset) {
 		return this.new FlipListener(offset);
 	}
+	
+	@Override
+	public <T> T getSelected() {
+		return this.get(this.selected);
+	}
 
 	@Override
 	public <T> T get(Point point) {

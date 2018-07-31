@@ -87,6 +87,8 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 	
 	public abstract Predicate<Displayable> getFilter();
 	
+	public abstract <T> T getSelected();
+	
 	public abstract <T> T get(Point point);
 	
 	public abstract <T> T get(Point point, int page);
@@ -122,6 +124,10 @@ public interface ElementMap extends Element, DisplayableDisabled, Selectable, It
 		
 		this.registerPreviousPageFliper(item);
 		return item;
+	}
+	
+	public default <T> T getSelected(Class<T> cls) {
+		return this.getSelected();
 	}
 	
 	public default <T> T get(Class<T> cls, Point point) {

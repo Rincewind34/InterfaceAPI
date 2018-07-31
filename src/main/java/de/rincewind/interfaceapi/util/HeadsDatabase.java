@@ -3,7 +3,7 @@ package de.rincewind.interfaceapi.util;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 
 public class HeadsDatabase {
-	
+
 	public static Icon arrowWoodUp() {
 		return new Icon(InterfaceUtils.buildHead("478ca0c8-89b1-432c-932b-bb78eb462e06",
 				"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzNjZjE2NmE4MjZkODU1NDU0ZWQ0ZDRlYTVmZTMzZjNk"
@@ -27,13 +27,17 @@ public class HeadsDatabase {
 				"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWE0ZjY4YzhmYjI3OWU1MGFiNzg2ZjlmYT"
 						+ "U0Yzg4Y2E0ZWNmZTFlYjVmZDVmMGMzOGM1NGM5YjFjNzIwM2Q3YSJ9fX0=")).removeName().showInfo(false);
 	}
-	
-	public static Icon arrowStoneUp() { // TODO 
-		return null;
+
+	public static Icon arrowStoneUp() {
+		return new Icon(InterfaceUtils.buildHead("e4d7b07b-59fc-4f77-b08b-b0446048dcd4",
+				"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNThmZTI1MWE0MGU0MTY3ZDM1ZDA4MWMyNz"
+						+ "g2OWFjMTUxYWY5NmI2YmQxNmRkMjgzNGQ1ZGM3MjM1ZjQ3NzkxZCJ9fX0=")).removeName().showInfo(false);
 	}
-	
-	public static Icon arrowStoneDown() { // TODO 
-		return null;
+
+	public static Icon arrowStoneDown() {
+		return new Icon(InterfaceUtils.buildHead("ccd469f7-1df1-42f9-8915-15de387906e4",
+				"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWI3Y2U2ODNkMDg2OGFhNDM3OGFlYjYwY2"
+						+ "FhNWVhODA1OTZiY2ZmZGFiNmI1YWYyZDEyNTk1ODM3YTg0ODUzIn19fQ==")).removeName().showInfo(false);
 	}
 
 	public static Icon arrowStoneLeft() {
@@ -47,5 +51,5 @@ public class HeadsDatabase {
 				"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjJmM2EyZGZjZTBjM2RhYjdlZTEwZGIzOD"
 						+ "VlNTIyOWYxYTM5NTM0YThiYTI2NDYxNzhlMzdjNGZhOTNiIn19fQ==")).removeName().showInfo(false);
 	}
-	
+
 }
