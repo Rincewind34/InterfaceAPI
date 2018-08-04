@@ -138,7 +138,41 @@ public class TestPlayer implements Player {
 			}
 		};
 	}
+	
+	public void setPersistent(boolean value) {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public void setPlayerListFooter(String var1) {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public void setPlayerListHeader(String var1) {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public void setPlayerListHeaderFooter(String var1, String var2) {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public String getPlayerListFooter() {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public String getPlayerListHeader() {
+		throw new UnsupportedOperationException();
+	}
 
+	@Override
+	public boolean isPersistent() {
+		throw new UnsupportedOperationException();
+	}
+	
 	@Override
 	public int getCooldown(Material arg0) {
 		throw new UnsupportedOperationException();
@@ -1760,5 +1794,10 @@ public class TestPlayer implements Player {
 	public void showPlayer(Plugin arg0, Player arg1) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	@Override
+	public boolean isRiptiding() {
+		throw new UnsupportedOperationException();
+	}
+	
 }

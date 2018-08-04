@@ -1,5 +1,6 @@
 name: ${project.name}
 version: ${project.version}
 main: de.rincewind.interfaceplugin.InterfacePlugin
+api-version: "1.13"
 
 author: Rincewind
