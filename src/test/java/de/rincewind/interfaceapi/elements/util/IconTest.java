@@ -47,7 +47,23 @@ public class IconTest {
 	@Test
 	public void testImmutableAir() {
 		Icon icon = Icon.AIR.count(2).rename("My new name").enchant();
-		Assert.assertTrue(icon.toItem().equals(new ItemStack(Material.AIR)));
+		Assert.assertSame(Icon.AIR, icon);
+		Assert.assertEquals(new ItemStack(Material.AIR), icon.toItem());
+	}
+	
+	@Test
+	public void testCloneAir() {
+		Icon icon = Icon.AIR.clone();
+		Assert.assertSame(Icon.AIR, icon);
+	}
+	
+	@Test
+	public void testCloneComplex( ) {
+		Icon icon1 = new Icon(Material.STONE, "Mein Stein");
+		Icon icon2 = icon1.clone();
+
+		Assert.assertEquals(icon1.toItem(), icon2.toItem());
+		Assert.assertEquals(icon1, icon2);
 	}
 	
 }

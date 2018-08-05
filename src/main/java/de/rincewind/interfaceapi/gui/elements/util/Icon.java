@@ -52,7 +52,7 @@ public final class Icon implements Displayable, Cloneable {
 	}
 
 	public Icon(Material type, String name) {
-		this.item = new ItemStack(Material.BEDROCK);
+		this.item = ItemLibrary.refactor().renameItem(new ItemStack(Material.BEDROCK), "Blank icon");
 
 		this.amount = 1;
 		this.name = "§7";
@@ -148,6 +148,7 @@ public final class Icon implements Displayable, Cloneable {
 		icon.damage = this.damage;
 		icon.type = this.type;
 		icon.name = this.name;
+		icon.dirty = this.dirty;
 		icon.item = this.item != null ? this.item.clone() : null;
 		icon.lore = this.lore != null ? this.lore.clone() : null;
 		return icon;

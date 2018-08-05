@@ -44,6 +44,10 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 	}
 
 	public void removeClickedItem() {
+		if (this.isInInterface) {
+			throw new RuntimeException("The click was in interface!");
+		}
+		
 		this.validateMonitor();
 		this.removeItem = true;
 	}
@@ -58,10 +62,6 @@ public class WindowClickEvent extends WindowEvent<WindowContainer> {
 	}
 
 	public boolean removeItem() {
-		if (this.isInInterface) {
-			throw new RuntimeException("The click was in interface!");
-		}
-
 		return this.removeItem;
 	}
 

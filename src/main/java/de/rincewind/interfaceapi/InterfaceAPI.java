@@ -114,6 +114,10 @@ public class InterfaceAPI {
 	@SuppressWarnings("unchecked")
 	public static <T> WindowSelectorCreator<T, ?> getWindowCreator(Class<T> typeClass) {
 		Validate.notNull(typeClass, "The type class cannot be null");
+		
+		if (!InterfaceAPI.windowSelectors.containsKey(typeClass)) {
+			throw new IllegalArgumentException("The class " + typeClass + " does not provide a window-selector");
+		}
 
 		return (WindowSelectorCreator<T, ?>) InterfaceAPI.windowSelectors.get(typeClass);
 	}

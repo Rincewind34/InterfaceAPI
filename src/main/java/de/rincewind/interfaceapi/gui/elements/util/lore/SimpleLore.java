@@ -198,6 +198,9 @@ public final class SimpleLore implements Iterable<String>, Cloneable, Lore {
 		try {
 			SimpleLore lore = (SimpleLore) super.clone();
 			Collections.copy(lore.lore, this.lore);
+			lore.dirty = this.dirty;
+			lore.end = this.end;
+			lore.prefix = this.prefix;
 			return lore;
 		} catch (CloneNotSupportedException exception) {
 			assert false : "Unsupported cloning operation";
