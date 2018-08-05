@@ -42,7 +42,7 @@ public class InterfacePlugin extends JavaPlugin {
 	public void onEnable() {
 		InterfacePlugin.instance = this;
 		
-		InterfaceAPI.disable();
+		InterfaceAPI.enable();
 		
 		this.getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
 		this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);

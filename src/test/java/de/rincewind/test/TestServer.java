@@ -11,6 +11,7 @@ import org.bukkit.Server;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_13_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemFactory;
+import org.bukkit.craftbukkit.v1_13_R1.util.CraftMagicNumbers;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.PluginManager;
@@ -86,7 +87,13 @@ public class TestServer implements InvocationHandler {
 					return new TestInventory((String) args[2], ((InventoryType) args[1]).getDefaultSize());
 				}
 			});
-
+			methodMap.put(Server.class.getMethod("getUnsafe"), new MethodHandler() {
+				@Override
+				public Object handle(TestServer server, Object[] args) {
+					return CraftMagicNumbers.INSTANCE;
+				}
+			});
+			
 			methods = methodMap.build();
 
 			TestServer server = new TestServer();
