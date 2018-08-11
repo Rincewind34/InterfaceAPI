@@ -33,7 +33,9 @@ public final class SelectHandler<T> {
 		
 		this.allowCreation = allowCreation;
 		this.elements = Collections.unmodifiableCollection(elements);
-
+	}
+	
+	public void validateElements() throws IllegalArgumentException {
 		if (!this.handler.isNullSelectable()) {
 			if (this.elements.isEmpty()) {
 				throw new IllegalArgumentException("The elements are empty");
@@ -43,7 +45,7 @@ public final class SelectHandler<T> {
 				throw new IllegalArgumentException("Inconsistent null handling");
 			}
 		}
-
+		
 		// Do not check if default value is selectable
 	}
 

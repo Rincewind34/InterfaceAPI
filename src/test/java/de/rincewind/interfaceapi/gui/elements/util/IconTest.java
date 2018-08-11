@@ -1,4 +1,4 @@
-package de.rincewind.interfaceapi.elements.util;
+package de.rincewind.interfaceapi.gui.elements.util;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

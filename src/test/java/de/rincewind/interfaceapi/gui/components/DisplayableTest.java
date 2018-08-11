@@ -7,12 +7,14 @@ import org.junit.Test;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.util.InterfaceUtils;
+import de.rincewind.test.TestServer;
 import junit.framework.Assert;
 
 public class DisplayableTest {
 	
 	@BeforeClass
 	public static void initRegistry() {
+		TestServer.setup();
 		Displayable.put(GameMode.class, InterfaceUtils::convertGameMode);
 	}
 	

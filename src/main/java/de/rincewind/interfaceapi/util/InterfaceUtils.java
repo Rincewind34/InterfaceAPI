@@ -535,6 +535,7 @@ public class InterfaceUtils {
 		NBTTagCompound nbtTag;
 
 		try {
+			// TODO try not to use the parse function and check performance
 			nbtTag = NBTParser.parse(nbt);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);

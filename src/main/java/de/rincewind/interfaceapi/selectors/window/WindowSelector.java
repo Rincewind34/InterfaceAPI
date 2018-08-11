@@ -26,6 +26,7 @@ public class WindowSelector<T> extends CraftWindowSizeable implements Selector<T
 		
 		this.action = action;
 		this.handler = new SelectHandler<>(this, elements, true, selectingType, defaultSet, current);
+		this.handler.validateElements();
 	}
 
 	@Override

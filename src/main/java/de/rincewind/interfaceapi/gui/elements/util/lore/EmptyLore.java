@@ -86,6 +86,26 @@ public class EmptyLore implements Lore {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || !(obj instanceof SimpleLore)) {
+			return false;
+		}
+		
+		SimpleLore other = (SimpleLore) obj;
+		return other.getEnd() == null && other.getPrefix() == null && other.size() == 0;
+	}
+
+	@Override
+	public int hashCode() {
+		// Take a look at SimpleLore#hasCode()
+		return 29791;
+	}
+	
+	@Override
 	public Lore clone() {
 		return this;
 	}

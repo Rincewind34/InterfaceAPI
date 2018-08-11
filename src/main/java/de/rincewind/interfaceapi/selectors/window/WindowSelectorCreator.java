@@ -69,27 +69,27 @@ public class WindowSelectorCreator<T, U extends WindowSelector<T>> {
 	public final Constructor<U> getConstructor() {
 		return this.constructor;
 	}
-	
+
 	public final U newWindow(Plugin plugin, Consumer<? super T> action) {
 		if (this.elementGetter == null) {
 			throw new UnsupportedOperationException("The element getter was not set");
 		}
-		
+
 		return this.newWindow(plugin, action, this.elementGetter.get());
 	}
-	
+
 	public final U newWindow(Plugin plugin, Consumer<? super T> action, T defaultValue) {
 		if (this.elementGetter == null) {
 			throw new UnsupportedOperationException("The element getter was not set");
 		}
-		
+
 		return this.newWindow(plugin, action, this.elementGetter.get(), defaultValue);
 	}
-	
+
 	public final U newWindow(Plugin plugin, Consumer<? super T> action, Collection<? extends T> elements) {
 		return this.newWindow(plugin, action, elements, false, null);
 	}
-	
+
 	public final U newWindow(Plugin plugin, Consumer<? super T> action, Collection<? extends T> elements, T defaultValue) {
 		return this.newWindow(plugin, action, elements, true, defaultValue);
 	}
@@ -98,7 +98,7 @@ public class WindowSelectorCreator<T, U extends WindowSelector<T>> {
 		// Let WindowSelector do null validation
 
 		try {
-			U selector = this.constructor.newInstance(plugin, elements, action, defaultSet, defaultValue);
+			U selector = this.constructor.newInstance(plugin, action, elements, defaultSet, defaultValue);
 
 			assert selector.getSelectingClass() == this.selectingClass : "Type class of new selector window does not match request " + this.selectingClass;
 			return selector;
@@ -106,7 +106,8 @@ public class WindowSelectorCreator<T, U extends WindowSelector<T>> {
 			assert false : "Failed with ClassCastException that should have been caught in register method";
 			throw exception;
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException exception) {
-			assert false : "Failed with reflective exception that should have been caught in register method";
+			assert false : "Failed with reflective exception (" + exception.getClass().getSimpleName() + ") that should have been caught in register method: "
+					+ exception.getMessage();
 			throw new SelectorInterfaceException(exception);
 		} catch (InvocationTargetException exception) {
 			throw new SelectorInterfaceException(exception);

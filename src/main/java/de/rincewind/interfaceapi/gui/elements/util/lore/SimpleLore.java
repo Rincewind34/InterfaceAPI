@@ -150,6 +150,10 @@ public final class SimpleLore implements Iterable<String>, Cloneable, Lore {
 			return false;
 		}
 		
+		if (obj == EmptyLore.INSTANCE) {
+			return this.lore.size() == 0 && this.prefix == null && this.end == null;
+		}
+		
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
@@ -164,11 +168,7 @@ public final class SimpleLore implements Iterable<String>, Cloneable, Lore {
 			return false;
 		}
 		
-		if (this.lore == null) {
-			if (other.lore != null) {
-				return false;
-			}
-		} else if (!this.lore.equals(other.lore)) {
+		if (!this.lore.equals(other.lore)) {
 			return false;
 		}
 		
@@ -188,7 +188,7 @@ public final class SimpleLore implements Iterable<String>, Cloneable, Lore {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((this.end == null) ? 0 : this.end.hashCode());
-		result = prime * result + ((this.lore == null) ? 0 : this.lore.hashCode());
+		result = prime * result + this.lore.hashCode();
 		result = prime * result + ((this.prefix == null) ? 0 : this.prefix.hashCode());
 		return result;
 	}

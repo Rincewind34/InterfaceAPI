@@ -18,9 +18,9 @@ import de.rincewind.interfaceplugin.listener.InventoryCloseListener;
 import de.rincewind.interfaceplugin.listener.PlayerQuitListener;
 
 public class InterfacePlugin extends JavaPlugin {
-	
+
 	public static InterfacePlugin instance;
-	
+
 	static {
 		Displayable.put(GameMode.class, InterfaceUtils::convertGameMode);
 		Displayable.put(Environment.class, InterfaceUtils::convertEnvironment);
@@ -34,24 +34,27 @@ public class InterfacePlugin extends JavaPlugin {
 		Displayable.put(Boolean.class, (input) -> {
 			return input ? new Icon(Material.GREEN_CONCRETE, "§aTrue") : new Icon(Material.RED_CONCRETE, "§cFalse");
 		});
-		
+
 		Displayable.copy(Boolean.class, boolean.class);
 	}
-	
+
+	@Override
+	public void onLoad() {
+		InterfaceAPI.enable();
+	}
+
 	@Override
 	public void onEnable() {
 		InterfacePlugin.instance = this;
-		
-		InterfaceAPI.enable();
-		
+
 		this.getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
 		this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
 	}
-	
+
 	@Override
 	public void onDisable() {
 		InterfaceAPI.disable();
 	}
-	
+
 }
