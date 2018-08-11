@@ -30,6 +30,7 @@ local.properties
 
 ### Maven ###
 target/
+logs/
 etc/
 dependency-reduced-pom.xml
 pom.xml.releaseBackup
