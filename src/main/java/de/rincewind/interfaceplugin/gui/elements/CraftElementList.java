@@ -162,7 +162,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void setStartIndex(int index) {
-		if (0 > index || index > this.getSize() - 1) {
+		if (0 > index || index > this.getSize() - 1 || this.startIndex == index) {
 			return;
 		}
 
@@ -230,6 +230,10 @@ public class CraftElementList extends CraftElement implements ElementList {
 		if (this.selected == index) {
 			return;
 		}
+		
+		if (index < -1 || index >= this.items.size()) {
+			throw new IllegalArgumentException("Index out of range: " + index);
+		}
 
 		this.selected = index;
 
@@ -250,7 +254,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void deselect() {
-		this.deselect(true);
+		this.select(-1, true);
 	}
 
 	@Override

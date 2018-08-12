@@ -29,60 +29,55 @@ public class CraftElementTest {
 	}
 
 	@Test(expected = ElementComponentException.class)
-	public void testSetEnabled() {
-		this.element.setComponentValue(Element.ENABLED, true);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
 	public void testSetEnabledNull() {
 		this.element.getComponent(Element.ENABLED).setEnabled(true);
 		this.element.setComponentValue(Element.ENABLED, null);
 	}
-
+	
 	@Test(expected = ElementComponentException.class)
-	public void testSetWidth() {
-		this.element.setComponentValue(Element.WIDTH, 2);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
 	public void testSetWidthNull() {
 		this.element.getComponent(Element.WIDTH).setEnabled(true);
 		this.element.setComponentValue(Element.WIDTH, null);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = ElementComponentException.class)
 	public void testSetWidthZero() {
+		this.element.getComponent(Element.WIDTH).setEnabled(true);
 		this.element.setComponentValue(Element.WIDTH, 0);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = ElementComponentException.class)
 	public void testSetWidthNegative() {
+		this.element.getComponent(Element.WIDTH).setEnabled(true);
 		this.element.setComponentValue(Element.WIDTH, -6);
 	}
-	
-	@Test(expected = ElementComponentException.class)
-	public void testSetHeight() {
-		this.element.setComponentValue(Element.HEIGHT, 2);
-	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = ElementComponentException.class)
 	public void testSetHeightNull() {
 		this.element.getComponent(Element.HEIGHT).setEnabled(true);
 		this.element.setComponentValue(Element.HEIGHT, null);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = ElementComponentException.class)
 	public void testSetHeightZero() {
+		this.element.getComponent(Element.HEIGHT).setEnabled(true);
 		this.element.setComponentValue(Element.HEIGHT, 0);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = ElementComponentException.class)
 	public void testSetHeightNegative() {
+		this.element.getComponent(Element.HEIGHT).setEnabled(true);
 		this.element.setComponentValue(Element.HEIGHT, -2);
 	}
 
+	@Test(expected = ElementComponentException.class)
+	public void testSetInstructionsNull() {
+		this.element.getComponent(Element.INSTRUCTIONS).setEnabled(true);
+		this.element.setComponentValue(Element.INSTRUCTIONS, null);
+	}
+
 	@Test
-	public void testSetBasic() {
+	public void testBasics() {
 		Assert.assertEquals(1, this.element.getWidth());
 		Assert.assertEquals(1, this.element.getHeight());
 		Assert.assertEquals(true, this.element.isVisible());
@@ -197,6 +192,31 @@ public class CraftElementTest {
 		Assert.assertFalse(this.element.isInside(Point.of(-45, 33)));
 		Assert.assertFalse(this.element.isInside(Point.of(45, 26)));
 		Assert.assertFalse(this.element.isInside(Point.of(-56, -64)));
+	}
+	
+	@Test
+	public void testUpdateInstructionsDisabled() {
+		this.element.getComponent(Element.INSTRUCTIONS).setEnabled(true);
+		this.element.setComponentValue(Element.INSTRUCTIONS, false);
+		
+		Icon icon = new Icon(Material.APPLE);
+		icon.getLore().setEnd("Test");
+		
+		this.element.updateInstructions(icon, "Instructions");
+		
+		Assert.assertEquals(null, icon.getLore().getEnd());
+	}
+	
+	@Test
+	public void testUpdateInstructionsEnabled() {
+		this.element.getComponent(Element.INSTRUCTIONS).setEnabled(true);
+		
+		Icon icon = new Icon(Material.APPLE);
+		icon.getLore().setEnd("Test");
+		
+		this.element.updateInstructions(icon, "Instructions");
+		
+		Assert.assertEquals("Instructions", icon.getLore().getEnd());
 	}
 	
 	private static class TestElement extends CraftElement {

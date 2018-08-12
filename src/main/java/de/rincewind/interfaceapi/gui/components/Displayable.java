@@ -64,7 +64,7 @@ public interface Displayable {
 			Icon icon = Displayable.converters.get(payload.getClass()).apply(payload);
 			
 			assert icon != null : "The converted icon is null";
-			return icon;
+			return Displayable.of(icon, payload);
 		} else {
 			return Displayable.of(new Icon(Material.BEDROCK, payload != null ? payload.toString() : "null"), payload);
 		}

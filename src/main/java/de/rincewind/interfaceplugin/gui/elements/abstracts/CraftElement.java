@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import de.rincewind.interfaceapi.exceptions.ElementComponentException;
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.ClickBlocker;
@@ -45,7 +46,7 @@ public abstract class CraftElement implements Element {
 
 	public CraftElement(WindowEditor handle) {
 		Validate.notNull(handle, "The handle cannot be null");
-		
+
 		this.handle = handle;
 		this.visible = true;
 		this.point = Point.NULL;
@@ -208,7 +209,11 @@ public abstract class CraftElement implements Element {
 
 	@Override
 	public <T> void setComponentValue(ElementComponentType<T> type, T value) {
-		this.getComponent(type).setValue(value);
+		try {
+			this.getComponent(type).setValue(value);
+		} catch (Exception exception) {
+			throw new ElementComponentException("Failed to set component " + type + " to " + value + " in " + this.getClass().getName(), exception);
+		}
 	}
 
 	@Override
@@ -244,30 +249,30 @@ public abstract class CraftElement implements Element {
 	public void onElementRemoved() {
 
 	}
-	
+
 	protected void updateEnabled() {
 		if (this.isEnabled()) {
 			this.update();
 		}
 	}
-	
+
 	protected void onEnabledChange() {
-		
+
 	}
 
 	protected abstract Icon getIcon0(Point point);
-	
+
 	protected <T> void registerComponent(ElementComponentType<T> type, ElementComponent<T> component) {
 		this.components.put(type, component);
 	}
-	
+
 	protected final Icon updateInstructions(Icon icon, String instructions) {
 		if (this.showInstructions()) {
 			icon.getLore().setEnd(instructions);
 		} else {
 			icon.getLore().setEnd(null);
 		}
-		
+
 		return icon;
 	}
 

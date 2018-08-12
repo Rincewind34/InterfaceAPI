@@ -27,7 +27,7 @@ public class DisplayableTest {
 	@Test
 	public void testOfConvertable() {
 		Displayable displayable = Displayable.of(GameMode.SURVIVAL);
-		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.SURVIVAL), Displayable.readPayload(displayable));
+		Assert.assertEquals(GameMode.SURVIVAL, Displayable.readPayload(displayable));
 	}
 	
 	@Test

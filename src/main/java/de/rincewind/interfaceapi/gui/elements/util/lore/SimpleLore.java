@@ -73,18 +73,24 @@ public final class SimpleLore implements Iterable<String>, Cloneable, Lore {
 
 	@Override
 	public Lore expand() {
-		return this.expand("");
+		this.lore.add(this.prefix);
+		return this;
 	}
 
 	@Override
 	public Lore expand(String line) {
-		if (this.lore.addAll(Stream.of(line.split(Pattern.quote("\\n"))).map((lineElement) -> {
-			return this.prefix + line;
-		}).collect(Collectors.toList()))) {
-			this.dirty = true;
+		if (line != null) {
+			if (this.lore.addAll(Stream.of(line.split(Pattern.quote("\\n"))).map((lineElement) -> {
+				return this.prefix + lineElement;
+			}).collect(Collectors.toList()))) {
+				this.dirty = true;
+			}
+			
+			return this;
+		} else {
+			this.lore.add(this.prefix + "null");
+			return this;
 		}
-
-		return this;
 	}
 
 	@Override

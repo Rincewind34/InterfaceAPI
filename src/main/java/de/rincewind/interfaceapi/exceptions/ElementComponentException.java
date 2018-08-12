@@ -8,4 +8,8 @@ public class ElementComponentException extends RuntimeException {
 		super(messasge);
 	}
 	
+	public ElementComponentException(String message, Throwable cause) {
+		super(message, cause);
+	}
+	
 }

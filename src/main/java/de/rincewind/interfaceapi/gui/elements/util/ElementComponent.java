@@ -19,7 +19,7 @@ public class ElementComponent<T> {
 	public ElementComponent(Class<T> cls, T defaultValue, BiConsumer<T, T> onChange) {
 		assert cls != null : "Class is null";
 		assert onChange != null : "Callback is null";
-		
+
 		this.defaultValue = defaultValue;
 		this.value = defaultValue;
 		this.onChange = onChange;
@@ -83,13 +83,13 @@ public class ElementComponent<T> {
 		public PositiveNumberElementComponent(Class<T> cls, T defaultValue, BiConsumer<T, T> onChange) {
 			super(cls, defaultValue, onChange);
 		}
-		
+
 		@Override
 		public void setValue(T value) {
 			if (value != null && value.doubleValue() <= 0) {
 				throw new IllegalArgumentException("The value cannot be smaller than 1");
 			}
-			
+
 			super.setValue(value);
 		}
 

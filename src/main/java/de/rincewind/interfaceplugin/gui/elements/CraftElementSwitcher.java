@@ -64,13 +64,13 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 	@Override
 	public Displayable next() {
-		this.setSwitchIndex(this.switchIndex + 1);
+		this.setSwitchIndex(this.switchIndex + 1, true);
 		return this.getCurrentSwitch();
 	}
 
 	@Override
 	public Displayable back() {
-		this.setSwitchIndex(this.switchIndex - 1);
+		this.setSwitchIndex(this.switchIndex - 1, true);
 		return this.getCurrentSwitch();
 	}
 
@@ -88,12 +88,13 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		if (this.size() == 0) {
 			index = -1;
 		}
+		
+		int previousIndex = this.switchIndex;
+		this.switchIndex = index;
 
 		if (fireEvent) {
-			this.getEventManager().callEvent(SwitchChangeEvent.class, new SwitchChangeEvent(this, index));
+			this.getEventManager().callEvent(SwitchChangeEvent.class, new SwitchChangeEvent(this, previousIndex, index));
 		}
-
-		this.switchIndex = index;
 
 		if (this.size() != 0) {
 			if (this.switchIndex < 0) {
@@ -137,7 +138,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 		this.items.add(item);
 
 		if (this.switchIndex == -1) {
-			this.setSwitchIndex(0);
+			this.setSwitchIndex(0, true);
 		}
 	}
 
