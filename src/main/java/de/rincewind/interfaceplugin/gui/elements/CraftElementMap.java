@@ -300,7 +300,12 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	public int getMaxPage() {
 		int count = this.getCountPerPage();
 		int size = this.filteredSize();
-		return size / count + (size % count == 0 ? 0 : 1);
+		
+		if (size != 0) {
+			return size / count + (size % count == 0 ? 0 : 1);
+		} else {
+			return 1;
+		}
 	}
 
 	@Override
