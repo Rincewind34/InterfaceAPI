@@ -30,8 +30,10 @@ public final class SimpleLore implements Iterable<String>, Cloneable, Lore {
 	}
 
 	SimpleLore(List<String> lore) {
-		this.lore = lore;
 		this.prefix = "§7";
+		this.lore = lore.stream().map((line) -> {
+			return this.prefix + line;
+		}).collect(Collectors.toList());
 	}
 
 	@Override
