@@ -72,7 +72,6 @@ public final class Icon implements Displayable, Cloneable {
 		}
 
 		this.item = item.clone();
-
 		ItemMeta meta = this.item.getItemMeta();
 
 		this.type = item.getType();
@@ -81,7 +80,7 @@ public final class Icon implements Displayable, Cloneable {
 		this.enchantet = meta.hasEnchants();
 		this.name = meta.hasDisplayName() ? meta.getDisplayName() : "§7";
 		this.lore = meta.hasLore() ? Lore.create(meta.getLore()) : Lore.create();
-		
+
 		for (ItemFlag flag : ItemFlag.values()) {
 			if (!meta.hasItemFlag(flag)) {
 				this.showInfo = true;
@@ -307,24 +306,30 @@ public final class Icon implements Displayable, Cloneable {
 				return this.item;
 			}
 		} else {
-			this.item = new ItemStack(this.type, this.amount, (short) this.damage);
+			if (this.item == null) {
+				this.item = new ItemStack(this.type, this.amount, (short) this.damage);
+			} else {
+				this.item.setType(this.type);
+				this.item.setAmount(this.amount);
+				this.item.setDurability((short) this.damage);
+			}
 			
 			if (this.name != null) {
 				this.item = ItemLibrary.refactor().renameItem(this.item, this.name);
 			}
-			
+
 			if (this.lore != null) {
 				this.item = ItemLibrary.refactor().loreItem(this.item, lore.toList());
 			}
-			
+
 			if (!this.showInfo) {
 				this.item = ItemLibrary.refactor().addAllFlags(this.item);
 			}
-			
+
 			if (this.enchantet) {
 				this.item = ItemLibrary.refactor().enchantItem(this.item, Enchantment.WATER_WORKER, 1, false);
 			}
-			
+
 			this.dirty = false;
 			return this.item;
 		}

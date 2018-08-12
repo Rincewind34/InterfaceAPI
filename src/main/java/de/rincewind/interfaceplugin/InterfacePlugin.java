@@ -4,7 +4,10 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -12,6 +15,7 @@ import org.bukkit.potion.PotionType;
 import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
+import de.rincewind.interfaceapi.util.HeadsDatabase;
 import de.rincewind.interfaceapi.util.InterfaceUtils;
 import de.rincewind.interfaceplugin.listener.InventoryClickListener;
 import de.rincewind.interfaceplugin.listener.InventoryCloseListener;
@@ -55,6 +59,20 @@ public class InterfacePlugin extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		InterfaceAPI.disable();
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (command.getName().equals("interfacetest")) {
+			((Player) sender).getInventory()
+					.addItem(InterfaceUtils.buildHead("ccd469f7-1df1-42f9-8915-15de387906e4",
+							"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWI3Y2U2ODNkMDg2OGFhNDM3OGFlYjYwY2"
+									+ "FhNWVhODA1OTZiY2ZmZGFiNmI1YWYyZDEyNTk1ODM3YTg0ODUzIn19fQ=="));
+
+			((Player) sender).getInventory().addItem(HeadsDatabase.arrowStoneDown().toItem());
+		}
+
+		return true;
 	}
 
 }
