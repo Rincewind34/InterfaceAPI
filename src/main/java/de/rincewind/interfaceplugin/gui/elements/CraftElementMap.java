@@ -324,7 +324,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public int filteredSize() {
-		return this.items.stream().filter(this.filter).mapToInt(item -> 1).sum();
+		return (int) this.items.stream().filter(this.filter).count();
 	}
 
 	@Override
@@ -388,7 +388,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		Stream<Displayable> stream = this.items.stream().filter(this.filter);
 
 		if (this.isEnabled()) {
-			Displayable item = stream.skip(this.convert(point)).findAny().orElse(null);
+			Displayable item = stream.skip(this.convert(point)).findFirst().orElse(null);
 
 			if (item != null) {
 				return item.getIcon();
