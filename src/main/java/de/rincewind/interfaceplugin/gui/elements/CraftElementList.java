@@ -124,7 +124,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void removeSelected() {
-		if (!this.isSelected()) {
+		if (this.selected == -1) {
 			throw new IllegalStateException("No item selected");
 		}
 
@@ -264,7 +264,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public Displayable getSelectedItem() {
-		if (!this.isSelected()) {
+		if (this.selected == -1) {
 			return null;
 		} else {
 			return this.items.get(this.selected);
@@ -283,7 +283,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public <T> T getSelected() {
-		if (!this.isSelected()) {
+		if (this.selected == -1) {
 			return null;
 		} else {
 			return Displayable.readPayload(this.items.get(this.selected));

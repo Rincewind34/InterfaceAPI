@@ -96,6 +96,8 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public void addItem(Displayable item) {
+		Validate.notNull(item, "The item cannot be null");
+
 		this.items.add(item);
 		this.update();
 	}
@@ -223,7 +225,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 		this.nextFliper.add(element);
 		element.setComponentValue(Element.ENABLED, this.isEnabled() && !this.isLastPage());
-		element.getEventManager().registerListener(ElementInteractEvent.class, this.new FlipListener(1));
+		element.getEventManager().registerListener(ElementInteractEvent.class, this.new FlipListener(1)).addAfter();
 	}
 
 	@Override
@@ -240,7 +242,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 		this.previousFliper.add(element);
 		element.setComponentValue(Element.ENABLED, this.isEnabled() && !this.isFirstPage());
-		element.getEventManager().registerListener(ElementInteractEvent.class, this.new FlipListener(-1));
+		element.getEventManager().registerListener(ElementInteractEvent.class, this.new FlipListener(-1)).addAfter();
 	}
 
 	@Override
@@ -349,7 +351,11 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	
 	@Override
 	public <T> T getSelected() {
-		return this.get(this.selected);
+		if (this.selected == -1) {
+			return null;
+		} else {
+			return Displayable.readPayload(this.items.get(this.selected));
+		}
 	}
 
 	@Override

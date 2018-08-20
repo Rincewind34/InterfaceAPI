@@ -30,8 +30,8 @@ public class CraftElementListTest {
 	public void testVarient() {
 		Assert.assertEquals(0, this.element.getSize());
 		Assert.assertEquals(-1, this.element.getSelectedIndex());
-		Assert.assertEquals(null, this.element.getSelected());
-		Assert.assertEquals(null, this.element.getSelectedItem());
+		Assert.assertNull(this.element.getSelected());
+		Assert.assertNull(this.element.getSelectedItem());
 		Assert.assertEquals(DisplayableDisabled.default_icon, this.element.getDisabledIcon());
 		Assert.assertEquals(Color.TRANSLUCENT, this.element.getColor());
 
@@ -53,7 +53,7 @@ public class CraftElementListTest {
 
 		Assert.assertEquals(1, this.element.getSize());
 		Assert.assertEquals(-1, this.element.getSelectedIndex());
-		Assert.assertSame(null, this.element.getSelected());
+		Assert.assertNull(this.element.getSelected());
 
 		Assert.assertSame(icon, this.element.getIcon(Point.of(0, 0)));
 		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(1, 0)));
@@ -181,7 +181,7 @@ public class CraftElementListTest {
 		this.element.addItem(icon);
 		this.element.select(0);
 		
-		Assert.assertSame(SelectModifiers.MAGENTA_GLASS.apply(icon), this.element.getIcon(Point.of(0, 0)));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon), this.element.getIcon(Point.of(0, 0)));
 		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(1, 0)));
 		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(2, 0)));
 	}
@@ -198,7 +198,7 @@ public class CraftElementListTest {
 		this.element.addItem(new Icon(Material.DIRT));
 		this.element.select(0);
 		
-		Assert.assertSame(SelectModifiers.MAGENTA_GLASS.apply(icon1), this.element.getIcon(Point.of(0, 0)));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon1), this.element.getIcon(Point.of(0, 0)));
 		Assert.assertSame(icon2, this.element.getIcon(Point.of(1, 0)));
 		Assert.assertSame(icon3, this.element.getIcon(Point.of(2, 0)));
 	}
@@ -252,7 +252,7 @@ public class CraftElementListTest {
 		
 		Assert.assertSame(icon1, this.element.getIcon(Point.of(0, 0)));
 		Assert.assertSame(icon2, this.element.getIcon(Point.of(1, 0)));
-		Assert.assertSame(SelectModifiers.MAGENTA_GLASS.apply(icon3), this.element.getIcon(Point.of(2, 0)));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon3), this.element.getIcon(Point.of(2, 0)));
 		
 		this.element.deselect();
 		
@@ -263,7 +263,7 @@ public class CraftElementListTest {
 		this.element.select(1);
 		
 		Assert.assertSame(icon1, this.element.getIcon(Point.of(0, 0)));
-		Assert.assertSame(SelectModifiers.MAGENTA_GLASS.apply(icon2), this.element.getIcon(Point.of(1, 0)));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon2), this.element.getIcon(Point.of(1, 0)));
 		Assert.assertSame(icon3, this.element.getIcon(Point.of(2, 0)));
 	}
 
