@@ -65,14 +65,14 @@
 	<repositories>
 		<repository>
 			<id>aerion-group</id>
-			<url>http://dev.thejourneyofaerion.net:8081/repository/aerion-group/</url>
+			<url>https://dev.thejourneyofaerion.net/nexus/repository/aerion-group/</url>
 		</repository>
 	</repositories>
 
 	<distributionManagement>
 		<repository>
-			<id>aerion</id>
-			<url>http://dev.thejourneyofaerion.net:8081/repository/aerion</url>
+			<id>aerion-thirdparty</id>
+			<url>https://dev.thejourneyofaerion.net/nexus/repository/aerion-thirdparty</url>
 		</repository>
 	</distributionManagement>
 
@@ -92,8 +92,8 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:git:https://gitlab.com/journey_aerion/apis/InterfaceAPI.git</connection>
-		<developerConnection>scm:git:https://gitlab.com/journey_aerion/apis/InterfaceAPI.git</developerConnection>
+		<connection>scm:git:gitlab@dev.thejourneyofaerion.net:tjoa/apis/InterfaceAPI.git</connection>
+		<developerConnection>scm:git:gitlab@dev.thejourneyofaerion.net:tjoa/apis/InterfaceAPI.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
