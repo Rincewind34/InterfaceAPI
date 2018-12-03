@@ -4,6 +4,7 @@ import java.util.stream.Stream;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,8 +13,6 @@ import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.test.TestWindowSizeable;
-import junit.framework.Assert;
-
 public class CraftElementSwitcherTest {
 
 	private CraftElementSwitcher element;
@@ -27,8 +26,8 @@ public class CraftElementSwitcherTest {
 	public void testVarient() {
 		Assert.assertEquals(0, this.element.size());
 		Assert.assertEquals(-1, this.element.getSwitchIndex());
-		Assert.assertEquals(null, this.element.getCurrent());
-		Assert.assertEquals(null, this.element.getCurrentSwitch());
+		Assert.assertNull(this.element.getCurrent());
+		Assert.assertNull(this.element.getCurrentSwitch());
 		Assert.assertEquals(DisplayableDisabled.default_icon, this.element.getDisabledIcon());
 	}
 	

@@ -2,6 +2,7 @@ package de.rincewind.interfaceplugin.gui.elements;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,8 +15,6 @@ import de.rincewind.interfaceapi.gui.util.Direction;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.util.InterfaceUtils;
 import de.rincewind.test.TestWindowSizeable;
-import junit.framework.Assert;
-
 public class CraftElementListTest {
 
 	private CraftElementList element;

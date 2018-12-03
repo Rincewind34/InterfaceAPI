@@ -2,13 +2,12 @@ package de.rincewind.interfaceapi.gui.elements.util;
 
 import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
 
 import de.rincewind.interfaceapi.gui.util.Point;
-import junit.framework.Assert;
-
 public class PointTest {
 	
 	@Test

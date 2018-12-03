@@ -1,18 +1,17 @@
 package de.rincewind.interfaceapi.gui.elements.util;
 
 import org.bukkit.Material;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.rincewind.interfaceapi.exceptions.ElementCreationException;
 import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
-import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.WindowEnchanter;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 import de.rincewind.test.TestWindowSizeable;
-import junit.framework.Assert;
 
 public class ElementCreatorTest {
 	

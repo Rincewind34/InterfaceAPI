@@ -5,12 +5,10 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import de.rincewind.interfaceapi.gui.elements.util.PointIterator;
 import de.rincewind.interfaceapi.gui.util.Point;
-import junit.framework.Assert;
-
 public class PointIteratorTest {
 	
 	private static Set<Point> newSet(Point... points) {

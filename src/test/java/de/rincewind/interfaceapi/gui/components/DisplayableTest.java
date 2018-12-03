@@ -2,13 +2,13 @@ package de.rincewind.interfaceapi.gui.components;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.util.InterfaceUtils;
 import de.rincewind.test.TestServer;
-import junit.framework.Assert;
 
 public class DisplayableTest {
 	

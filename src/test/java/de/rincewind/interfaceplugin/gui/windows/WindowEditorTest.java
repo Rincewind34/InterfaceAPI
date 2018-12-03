@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,7 +27,6 @@ import de.rincewind.interfaceplugin.gui.windows.abstracts.CraftWindowEditor;
 import de.rincewind.test.Success;
 import de.rincewind.test.TestInventory;
 import de.rincewind.test.TestServer;
-import junit.framework.Assert;
 
 public class WindowEditorTest {
 
@@ -303,7 +303,7 @@ public class WindowEditorTest {
 
 		@Override
 		public Point getPoint(int bukkitSlot) {
-			int y = (int) ((double) bukkitSlot / 9.0D);
+			int y = (int) (bukkitSlot / 9.0D);
 			int x = bukkitSlot - (y * 9);
 
 			return Point.of(x, y);

@@ -2,12 +2,11 @@ package de.rincewind.interfaceapi.gui.elements.util;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.test.TestServer;
-import junit.framework.Assert;
 
 public class IconTest {
 	

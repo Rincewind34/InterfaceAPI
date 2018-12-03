@@ -1,10 +1,9 @@
 package de.rincewind.interfaceapi.gui.elements.util;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import de.rincewind.interfaceapi.gui.elements.util.lore.Lore;
-import junit.framework.Assert;
-
 public class LoreTest {
 	
 	@Test
