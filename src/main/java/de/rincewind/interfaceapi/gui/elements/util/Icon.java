@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
@@ -75,7 +76,7 @@ public final class Icon implements Displayable, Cloneable {
 		ItemMeta meta = this.item.getItemMeta();
 
 		this.type = item.getType();
-		this.damage = item.getDurability();
+		this.damage = (item.getItemMeta() instanceof Damageable) ? ((Damageable) item).getDamage() : 0;
 		this.amount = item.getAmount();
 		this.enchantet = meta.hasEnchants();
 		this.name = meta.hasDisplayName() ? meta.getDisplayName() : "§7";
@@ -307,13 +308,21 @@ public final class Icon implements Displayable, Cloneable {
 			}
 		} else {
 			if (this.item == null) {
-				this.item = new ItemStack(this.type, this.amount, (short) this.damage);
+				this.item = new ItemStack(this.type, this.amount);
 			} else {
 				this.item.setType(this.type);
 				this.item.setAmount(this.amount);
-				this.item.setDurability((short) this.damage);
 			}
+
+			ItemMeta meta = this.item.getItemMeta();
 			
+			if (meta instanceof Damageable) {
+				((Damageable) meta).setDamage(this.damage);
+				this.item.setItemMeta(meta);
+			} else if (this.damage != 0) {
+				// TODO handle exception
+			}
+
 			if (this.name != null) {
 				this.item = ItemLibrary.refactor().renameItem(this.item, this.name);
 			}

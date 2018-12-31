@@ -5,8 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.boss.BarColor;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +15,7 @@ import org.bukkit.potion.PotionType;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceplugin.Validate;
-import net.minecraft.server.v1_13_R1.NBTTagCompound;
+import net.minecraft.server.v1_13_R2.NBTTagCompound;
 
 public class InterfaceUtils {
 	
@@ -541,7 +541,7 @@ public class InterfaceUtils {
 			throw new RuntimeException(ex);
 		}
 
-		net.minecraft.server.v1_13_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_13_R2.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
 		if (nmsItem.getTag() == null) {
 			nmsItem.setTag(new NBTTagCompound());

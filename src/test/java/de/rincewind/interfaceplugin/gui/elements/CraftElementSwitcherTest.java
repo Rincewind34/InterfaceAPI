@@ -64,26 +64,22 @@ public class CraftElementSwitcherTest {
 	}
 	
 	@Test
-	public void testAddSwitches() {
-		Icon icon = new Icon(Material.APPLE);
-		
-		this.element.addSwitches(icon, Displayable.of(new Object()), Displayable.of(new Icon(Material.STONE)));
-		
-		Assert.assertEquals(3, this.element.size());
-		Assert.assertEquals(0, this.element.getSwitchIndex());
-		Assert.assertSame(icon, this.element.getCurrent());
-		Assert.assertSame(icon, this.element.getCurrentSwitch());
-		
-		Assert.assertSame(icon, this.element.getIcon(Point.NULL));
-	}
-	
-	@Test
-	public void testAddSwitches_Enum() {
+	public void testAddSwitche_Enum() {
 		Stream.of(GameMode.values()).map(Displayable::of).forEach(this.element::addSwitch);
 		
 		Assert.assertEquals(4, this.element.size());
 		Assert.assertEquals(0, this.element.getSwitchIndex());
 		Assert.assertSame(GameMode.CREATIVE, this.element.getCurrent());
+	}
+	
+	@Test
+	public void testAddSwitches_Empty() {
+		this.element.addSwitches();
+		
+		Assert.assertEquals(0, this.element.size());
+		Assert.assertSame(null, this.element.getCurrent());
+		Assert.assertSame(null, this.element.getCurrentSwitch());
+		Assert.assertSame(Icon.AIR, this.element.getIcon(Point.NULL));
 	}
 	
 }

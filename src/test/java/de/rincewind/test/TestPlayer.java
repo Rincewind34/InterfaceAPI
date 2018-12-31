@@ -10,10 +10,12 @@ import java.util.UUID;
 import org.bukkit.Achievement;
 import org.bukkit.Effect;
 import org.bukkit.EntityEffect;
+import org.bukkit.FluidCollisionMode;
 import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Note;
 import org.bukkit.Particle;
 import org.bukkit.Server;
@@ -27,6 +29,7 @@ import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.conversations.Conversation;
@@ -62,6 +65,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import de.rincewind.interfaceplugin.listener.InventoryClickListener;
@@ -139,6 +144,7 @@ public class TestPlayer implements Player {
 		};
 	}
 	
+	@Override
 	public void setPersistent(boolean value) {
 		throw new UnsupportedOperationException();
 	}
@@ -1797,6 +1803,66 @@ public class TestPlayer implements Player {
 	
 	@Override
 	public boolean isRiptiding() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean discoverRecipe(NamespacedKey var1) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int discoverRecipes(Collection<NamespacedKey> var1) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean undiscoverRecipe(NamespacedKey var1) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int undiscoverRecipes(Collection<NamespacedKey> var1) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Block getTargetBlockExact(int var1) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Block getTargetBlockExact(int var1, FluidCollisionMode var2) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public RayTraceResult rayTraceBlocks(double var1) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public RayTraceResult rayTraceBlocks(double var1, FluidCollisionMode var3) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public BoundingBox getBoundingBox() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public BlockFace getFacing() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int getClientViewDistance() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void updateCommands() {
 		throw new UnsupportedOperationException();
 	}
 	

@@ -9,17 +9,17 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import net.minecraft.server.v1_13_R1.NBTBase;
-import net.minecraft.server.v1_13_R1.NBTTagByte;
-import net.minecraft.server.v1_13_R1.NBTTagCompound;
-import net.minecraft.server.v1_13_R1.NBTTagDouble;
-import net.minecraft.server.v1_13_R1.NBTTagFloat;
-import net.minecraft.server.v1_13_R1.NBTTagInt;
-import net.minecraft.server.v1_13_R1.NBTTagIntArray;
-import net.minecraft.server.v1_13_R1.NBTTagList;
-import net.minecraft.server.v1_13_R1.NBTTagLong;
-import net.minecraft.server.v1_13_R1.NBTTagShort;
-import net.minecraft.server.v1_13_R1.NBTTagString;
+import net.minecraft.server.v1_13_R2.NBTBase;
+import net.minecraft.server.v1_13_R2.NBTTagByte;
+import net.minecraft.server.v1_13_R2.NBTTagCompound;
+import net.minecraft.server.v1_13_R2.NBTTagDouble;
+import net.minecraft.server.v1_13_R2.NBTTagFloat;
+import net.minecraft.server.v1_13_R2.NBTTagInt;
+import net.minecraft.server.v1_13_R2.NBTTagIntArray;
+import net.minecraft.server.v1_13_R2.NBTTagList;
+import net.minecraft.server.v1_13_R2.NBTTagLong;
+import net.minecraft.server.v1_13_R2.NBTTagShort;
+import net.minecraft.server.v1_13_R2.NBTTagString;
 
 public class NBTParser {
 
@@ -54,11 +54,11 @@ public class NBTParser {
 				}
 			} else if (!flag) {
 				if (c0 != '{' && c0 != '[') {
-					if (c0 == 125 && (stack.isEmpty() || ((Character) stack.pop()).charValue() != '{')) {
+					if (c0 == 125 && (stack.isEmpty() || stack.pop().charValue() != '{')) {
 						throw new Exception("Unbalanced curly brackets {}: " + s);
 					}
 
-					if (c0 == 93 && (stack.isEmpty() || ((Character) stack.pop()).charValue() != '[')) {
+					if (c0 == 93 && (stack.isEmpty() || stack.pop().charValue() != '[')) {
 						throw new Exception("Unbalanced square brackets []: " + s);
 					}
 				} else {
@@ -203,11 +203,11 @@ public class NBTParser {
 				}
 			} else if (!flag) {
 				if (c0 != '{' && c0 != '[') {
-					if (c0 == 125 && (stack.isEmpty() || ((Character) stack.pop()).charValue() != '{')) {
+					if (c0 == 125 && (stack.isEmpty() || stack.pop().charValue() != '{')) {
 						throw new Exception("Unbalanced curly brackets {}: " + s);
 					}
 
-					if (c0 == 93 && (stack.isEmpty() || ((Character) stack.pop()).charValue() != '[')) {
+					if (c0 == 93 && (stack.isEmpty() || stack.pop().charValue() != '[')) {
 						throw new Exception("Unbalanced square brackets []: " + s);
 					}
 
@@ -359,7 +359,7 @@ public class NBTParser {
 
 			if (this.b.startsWith("[") && this.b.endsWith("]")) {
 				String s = this.b.substring(1, this.b.length() - 1);
-				String[] astring = (String[]) Iterables.toArray(NBTParser.NBTPrimitiveParser.j.split(s), String.class);
+				String[] astring = Iterables.toArray(NBTParser.NBTPrimitiveParser.j.split(s), String.class);
 
 				try {
 					int[] aint = new int[astring.length];
@@ -408,7 +408,7 @@ public class NBTParser {
 			Iterator<NBTTypeParser> iterator = this.b.iterator();
 
 			while (iterator.hasNext()) {
-				NBTParser.NBTTypeParser NBTParser_mojangsontypeparser = (NBTParser.NBTTypeParser) iterator.next();
+				NBTParser.NBTTypeParser NBTParser_mojangsontypeparser = iterator.next();
 
 				nbttaglist.add(NBTParser_mojangsontypeparser.a());
 			}
@@ -431,7 +431,7 @@ public class NBTParser {
 			Iterator<NBTParser.NBTTypeParser> iterator = this.b.iterator();
 
 			while (iterator.hasNext()) {
-				NBTTypeParser NBTParser_mojangsontypeparser = (NBTTypeParser) iterator.next();
+				NBTTypeParser NBTParser_mojangsontypeparser = iterator.next();
 
 				nbttagcompound.set(NBTParser_mojangsontypeparser.a, NBTParser_mojangsontypeparser.a());
 			}

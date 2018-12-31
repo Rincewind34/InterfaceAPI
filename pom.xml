@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.rincewind</groupId>
 	<artifactId>interfaceapi</artifactId>
@@ -6,8 +8,9 @@
 	<name>InterfaceAPI</name>
 
 	<properties>
-		<spigot.version>1.13</spigot.version>
+		<spigot.version>1.13.2</spigot.version>
 		<junit.version>4.12</junit.version>
+		<jacoco.version>0.8.2</jacoco.version>
 
 		<jdk.version>10</jdk.version>
 		<outputTarget>${project.basedir}/target</outputTarget>
@@ -20,20 +23,20 @@
 	<profiles>
 		<profile>
 			<id>skiptests</id>
-			
+
 			<properties>
 				<maven.test.skip>true</maven.test.skip>
 			</properties>
 		</profile>
 		<profile>
 			<id>skipexec</id>
-			
+
 			<activation>
 				<os>
 					<family>windows</family>
 				</os>
 			</activation>
-			
+
 			<properties>
 				<maven.exec.skip>true</maven.exec.skip>
 			</properties>
@@ -111,7 +114,7 @@
 					<compilerVersion>${jdk.version}</compilerVersion>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<compilerArgs>
-						<arg>-parameters</arg>	
+						<arg>-parameters</arg>
 					</compilerArgs>
 				</configuration>
 			</plugin>
@@ -198,6 +201,47 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<!-- Sets the path to the file which contains the execution data. -->
+							<dataFile>target/jacoco.exec</dataFile>
+							<!-- Sets the output directory for the code coverage report. -->
+							<outputDirectory>target/jacoco-ut</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<systemPropertyVariables>
+						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+					</systemPropertyVariables>
+					<includes>
+						<include>de/rincewind/**</include>
+					</includes>
+				</configuration>
 			</plugin>
 		</plugins>
 		<resources>
