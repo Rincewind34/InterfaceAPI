@@ -1,10 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.rincewind</groupId>
 	<artifactId>interfaceapi</artifactId>
-	<version>3.0.18-SNAPSHOT</version>
+	<version>3.0.18</version>
 	<name>InterfaceAPI</name>
 
 	<properties>
@@ -97,7 +95,7 @@
 	<scm>
 		<connection>scm:git:gitlab@dev.thejourneyofaerion.net:tjoa/apis/InterfaceAPI.git</connection>
 		<developerConnection>scm:git:gitlab@dev.thejourneyofaerion.net:tjoa/apis/InterfaceAPI.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>v3.0.18</tag>
 	</scm>
 
 	<build>
