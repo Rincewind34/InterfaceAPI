@@ -76,7 +76,7 @@ public final class Icon implements Displayable, Cloneable {
 		ItemMeta meta = this.item.getItemMeta();
 
 		this.type = item.getType();
-		this.damage = (item.getItemMeta() instanceof Damageable) ? ((Damageable) item).getDamage() : 0;
+		this.damage = (item.getItemMeta() instanceof Damageable) ? ((Damageable) item.getItemMeta()).getDamage() : 0;
 		this.amount = item.getAmount();
 		this.enchantet = meta.hasEnchants();
 		this.name = meta.hasDisplayName() ? meta.getDisplayName() : "§7";
