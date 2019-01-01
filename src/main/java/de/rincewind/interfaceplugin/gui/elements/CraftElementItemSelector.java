@@ -40,10 +40,6 @@ public class CraftElementItemSelector extends CraftElementDisplayable implements
 		this.canCollect = true;
 		this.selected = null;
 
-		this.getComponent(Element.INSTRUCTIONS).setEnabled(true);
-
-		this.setIcon(new Icon(Material.FISHING_ROD, "§eWähle ein Item aus"));
-
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			if (event.getClickType() == ClickType.LEFT) {
 				if (event.getCourserItem() != null) {
@@ -57,6 +53,12 @@ public class CraftElementItemSelector extends CraftElementDisplayable implements
 				}
 			}
 		}).monitor();
+	}
+
+	@Override
+	public void onElementAdded() {
+		this.getComponent(Element.INSTRUCTIONS).setEnabled(true);
+		this.setIcon(new Icon(Material.FISHING_ROD, "§eWähle ein Item aus"));
 	}
 
 	@Override
@@ -145,7 +147,9 @@ public class CraftElementItemSelector extends CraftElementDisplayable implements
 	@Override
 	protected String currentInstructions() {
 		if (this.selected != null) {
-			return (this.canUnselect ? CraftElementItemSelector.INSTRUCTIONS_UNSELECT : "") + (this.canCollect ? CraftElementItemSelector.INSTRUCTIONS_COLLECT : "");
+			return (this.canUnselect ? CraftElementItemSelector.INSTRUCTIONS_UNSELECT : "")
+					+ (this.canUnselect && this.canCollect ? "\\n" : "")
+					+ (this.canCollect ? CraftElementItemSelector.INSTRUCTIONS_COLLECT : "");
 		} else {
 			return CraftElementItemSelector.INSTRUCTIONS_SELECT;
 		}

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import de.rincewind.interfaceapi.exceptions.EventPipelineException;
 import de.rincewind.interfaceapi.gui.components.Displayable;
@@ -100,6 +99,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 		this.items.add(item);
 		this.update();
+		this.updateFliper();
 	}
 	
 	@Override
@@ -209,6 +209,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	public void setFilter(Predicate<Displayable> filter) {
 		this.filter = filter == null ? CraftElementMap.defaultFilter : filter;
 		this.validateCurrentPage();
+		this.updateFliper();
 	}
 
 	@Override
@@ -391,11 +392,24 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	protected Icon getIcon0(Point point) {
-		Stream<Displayable> stream = this.items.stream().filter(this.filter);
-
 		if (this.isEnabled()) {
-			Displayable item = stream.skip(this.convert(point)).findFirst().orElse(null);
-
+			Displayable item = null;
+			int index = this.convert(point) + this.getCountPerPage() * (this.page - 1);
+			
+			Iterator<Displayable> iterator = this.items.iterator();
+			
+			while (index != -1 && iterator.hasNext()) {
+				item = iterator.next();
+				
+				if (this.filter.test(item)) {
+					index = index - 1;
+				}
+			}
+			
+			if (index != -1) {
+				item = null;
+			}
+			
 			if (item != null) {
 				return item.getIcon();
 			} else {
@@ -436,7 +450,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 
 	private int convert(Point point) {
-		return this.getHeight() * point.getY() + point.getX();
+		return this.getWidth() * point.getY() + point.getX();
 	}
 
 	private class FlipListener implements InterfaceListener<ElementInteractEvent> {
@@ -457,6 +471,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 				newPage = CraftElementMap.this.getMaxPage();
 			}
 			
+			System.out.println("SET PAGE: " + newPage);
 			CraftElementMap.this.setPage(newPage);
 		}
 

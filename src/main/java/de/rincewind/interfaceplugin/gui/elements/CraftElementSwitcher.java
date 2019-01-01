@@ -81,27 +81,23 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 
 	@Override
 	public void setSwitchIndex(int index, boolean fireEvent) {
-		if (this.switchIndex == index) {
+		if (this.switchIndex == index || this.size() == 0) {
 			return;
 		}
-		
-		if (this.size() == 0) {
-			index = -1;
-		}
-		
+
 		int previousIndex = this.switchIndex;
 		this.switchIndex = index;
-
-		if (fireEvent) {
-			this.getEventManager().callEvent(SwitchChangeEvent.class, new SwitchChangeEvent(this, previousIndex, index));
-		}
 
 		if (this.size() != 0) {
 			if (this.switchIndex < 0) {
 				this.switchIndex = this.size() - 1;
-			} else if (this.size() >= this.switchIndex) {
+			} else if (this.switchIndex >= this.size()) {
 				this.switchIndex = 0;
 			}
+		}
+		
+		if (fireEvent) {
+			this.getEventManager().callEvent(SwitchChangeEvent.class, new SwitchChangeEvent(this, previousIndex, this.switchIndex));
 		}
 
 		this.update();
@@ -226,5 +222,5 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 			return this.getDisabledIcon();
 		}
 	}
-	
+
 }

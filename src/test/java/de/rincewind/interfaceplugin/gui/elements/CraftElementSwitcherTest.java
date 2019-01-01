@@ -82,4 +82,159 @@ public class CraftElementSwitcherTest {
 		Assert.assertSame(Icon.AIR, this.element.getIcon(Point.NULL));
 	}
 	
+	@Test
+	public void testNext_Empty() {
+		this.element.next();
+		
+		Assert.assertSame(null, this.element.getCurrent());
+		Assert.assertSame(null, this.element.getCurrentSwitch());
+		Assert.assertSame(-1, this.element.getSwitchIndex());
+		Assert.assertSame(Icon.AIR, this.element.getIcon(Point.NULL));
+	}
+	
+	@Test
+	public void testNext_OneItem_OneCall() {
+		Icon icon1 = new Icon(Material.APPLE);
+		
+		this.element.addSwitch(icon1);
+		this.element.next();
+		
+		Assert.assertSame(icon1, this.element.getCurrent());
+		Assert.assertSame(icon1, this.element.getCurrentSwitch());
+		Assert.assertSame(0, this.element.getSwitchIndex());
+		Assert.assertSame(icon1, this.element.getIcon(Point.NULL));
+	}
+	
+	@Test
+	public void testNext_OneItem_MultipleCalls() {
+		Icon icon1 = new Icon(Material.APPLE);
+		
+		this.element.addSwitch(icon1);
+		this.element.next();
+		this.element.next();
+		this.element.next();
+		
+		Assert.assertSame(icon1, this.element.getCurrent());
+		Assert.assertSame(icon1, this.element.getCurrentSwitch());
+		Assert.assertSame(0, this.element.getSwitchIndex());
+		Assert.assertSame(icon1, this.element.getIcon(Point.NULL));
+	}
+	
+	@Test
+	public void testNext_TwoItems_OneCall() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.BEDROCK);
+		
+		this.element.addSwitches(icon1, icon2);
+		this.element.next();
+		
+		Assert.assertSame(icon2, this.element.getCurrent());
+		Assert.assertSame(icon2, this.element.getCurrentSwitch());
+		Assert.assertSame(1, this.element.getSwitchIndex());
+		Assert.assertSame(icon2, this.element.getIcon(Point.NULL));
+	}
+	
+	@Test
+	public void testNext_TwoItems_TwoCalls() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.BEDROCK);
+		
+		this.element.addSwitches(icon1, icon2);
+		this.element.next();
+		this.element.next();
+		
+		Assert.assertSame(icon1, this.element.getCurrent());
+		Assert.assertSame(icon1, this.element.getCurrentSwitch());
+		Assert.assertSame(0, this.element.getSwitchIndex());
+		Assert.assertSame(icon1, this.element.getIcon(Point.NULL));
+	}
+	
+	@Test
+	public void testNext_TwoItems_MultipleCalls() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.BEDROCK);
+		
+		this.element.addSwitches(icon1, icon2);
+		this.element.next();
+		this.element.next();
+		this.element.next();
+		this.element.next();
+		
+		Assert.assertSame(icon1, this.element.getCurrent());
+		Assert.assertSame(icon1, this.element.getCurrentSwitch());
+		Assert.assertSame(0, this.element.getSwitchIndex());
+		Assert.assertSame(icon1, this.element.getIcon(Point.NULL));
+	}
+	
+	@Test
+	public void testNext_MultipleItems_OneCall() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.BEDROCK);
+		Icon icon3 = new Icon(Material.RED_WOOL);
+		Icon icon4 = new Icon(Material.GREEN_WOOL);
+		
+		this.element.addSwitches(icon1, icon2, icon3, icon4);
+		this.element.next();
+		
+		Assert.assertSame(icon2, this.element.getCurrent());
+		Assert.assertSame(icon2, this.element.getCurrentSwitch());
+		Assert.assertSame(1, this.element.getSwitchIndex());
+		Assert.assertSame(icon2, this.element.getIcon(Point.NULL));
+	}
+	
+	@Test
+	public void testNext_MultipleItems_MultipleCalls() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.BEDROCK);
+		Icon icon3 = new Icon(Material.RED_WOOL);
+		Icon icon4 = new Icon(Material.GREEN_WOOL);
+		
+		this.element.addSwitches(icon1, icon2, icon3, icon4);
+		this.element.next();
+		this.element.next();
+		
+		Assert.assertSame(icon3, this.element.getCurrent());
+		Assert.assertSame(icon3, this.element.getCurrentSwitch());
+		Assert.assertSame(2, this.element.getSwitchIndex());
+		Assert.assertSame(icon3, this.element.getIcon(Point.NULL));
+	}
+	
+	@Test
+	public void testNext_MultipleItems_SkipThrough() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.BEDROCK);
+		Icon icon3 = new Icon(Material.RED_WOOL);
+		Icon icon4 = new Icon(Material.GREEN_WOOL);
+		
+		this.element.addSwitches(icon1, icon2, icon3, icon4);
+		this.element.next();
+		this.element.next();
+		this.element.next();
+		
+		Assert.assertSame(icon4, this.element.getCurrent());
+		Assert.assertSame(icon4, this.element.getCurrentSwitch());
+		Assert.assertSame(3, this.element.getSwitchIndex());
+		Assert.assertSame(icon4, this.element.getIcon(Point.NULL));
+	}
+	
+	@Test
+	public void testNext_MultipleItems_SkipOver() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.BEDROCK);
+		Icon icon3 = new Icon(Material.RED_WOOL);
+		Icon icon4 = new Icon(Material.GREEN_WOOL);
+		
+		this.element.addSwitches(icon1, icon2, icon3, icon4);
+		this.element.next();
+		this.element.next();
+		this.element.next();
+		this.element.next();
+		this.element.next();
+		
+		Assert.assertSame(icon2, this.element.getCurrent());
+		Assert.assertSame(icon2, this.element.getCurrentSwitch());
+		Assert.assertSame(1, this.element.getSwitchIndex());
+		Assert.assertSame(icon2, this.element.getIcon(Point.NULL));
+	}
+	
 }
