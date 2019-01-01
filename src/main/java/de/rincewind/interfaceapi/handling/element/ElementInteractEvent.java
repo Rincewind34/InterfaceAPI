@@ -1,6 +1,5 @@
 package de.rincewind.interfaceapi.handling.element;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +24,7 @@ public class ElementInteractEvent extends PlayerElementEvent<Element> {
 		this.point = point;
 		this.courserItem = courserItem;
 
-		assert this.courserItem == null || this.courserItem.getType() != Material.AIR : "The courser item is AIR";
+		assert this.courserItem == null || !this.courserItem.getType().name().contains("AIR") : "The courser item is AIR";
 	}
 	
 	public void cancel() {

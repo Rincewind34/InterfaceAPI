@@ -19,6 +19,7 @@ import de.rincewind.interfaceapi.util.HeadsDatabase;
 import de.rincewind.interfaceapi.util.InterfaceUtils;
 import de.rincewind.interfaceplugin.listener.InventoryClickListener;
 import de.rincewind.interfaceplugin.listener.InventoryCloseListener;
+import de.rincewind.interfaceplugin.listener.InventoryDragListener;
 import de.rincewind.interfaceplugin.listener.PlayerQuitListener;
 
 public class InterfacePlugin extends JavaPlugin {
@@ -52,6 +53,7 @@ public class InterfacePlugin extends JavaPlugin {
 		InterfacePlugin.instance = this;
 
 		this.getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
+		this.getServer().getPluginManager().registerEvents(new InventoryDragListener(), this);
 		this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
 	}

@@ -23,7 +23,8 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 
 	protected final ElementMap typeMap;
 
-	public WindowMapSelector(Plugin plugin, Consumer<T> onSelect, Collection<T> typeElements, boolean defaultSet, T defaultValue, Class<T> typeClass) {
+	public WindowMapSelector(Plugin plugin, Consumer<T> onSelect, Collection<T> typeElements, boolean defaultSet, T defaultValue,
+			Class<T> typeClass) {
 		super(plugin, onSelect, typeElements, defaultSet, defaultValue, typeClass);
 
 		this.buttonNext = this.elementCreator().newItem();
@@ -34,7 +35,6 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 		this.buttonPrevious.setIcon(HeadsDatabase.arrowWoodLeft());
 		this.buttonPrevious.setDisabledIcon(HeadsDatabase.arrowStoneLeft());
 		this.buttonPrevious.setPoint(Point.NULL);
-		this.barrier = this.elementCreator().newBarrier(Point.NULL, 9);
 
 		this.typeMap = this.elementCreator().newMap();
 		this.typeMap.registerNextPageFliper(this.buttonNext);
@@ -52,6 +52,7 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 		this.setSize(9, Math.min(height, 6));
 		this.typeMap.setComponentValue(Element.WIDTH, this.getWidth());
 
+		this.barrier = this.elementCreator().newBarrier(Point.NULL, 9);
 		this.showControlStrip(height > 6);
 	}
 
@@ -63,10 +64,14 @@ public class WindowMapSelector<T> extends WindowSelector<T> {
 	}
 
 	public void updateControlStrip() {
-		this.showControlStrip(this.isShowControlStrip());
+		if (this.barrier != null) {
+			this.showControlStrip(this.isShowControlStrip());
+		}
 	}
 
 	public void showControlStrip(boolean value) {
+		assert this.barrier != null : "The window is not fully loaded";
+
 		// Do not check if the control strip is currently visible so that it
 		// works as update method
 

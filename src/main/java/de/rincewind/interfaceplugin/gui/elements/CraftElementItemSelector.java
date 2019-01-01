@@ -52,7 +52,7 @@ public class CraftElementItemSelector extends CraftElementDisplayable implements
 					event.setCourserItem(CraftElementItemSelector.cloneFunction.apply(this.selected));
 				}
 			}
-		}).monitor();
+		}).addAfter();
 	}
 
 	@Override
@@ -147,9 +147,15 @@ public class CraftElementItemSelector extends CraftElementDisplayable implements
 	@Override
 	protected String currentInstructions() {
 		if (this.selected != null) {
-			return (this.canUnselect ? CraftElementItemSelector.INSTRUCTIONS_UNSELECT : "")
-					+ (this.canUnselect && this.canCollect ? "\\n" : "")
-					+ (this.canCollect ? CraftElementItemSelector.INSTRUCTIONS_COLLECT : "");
+			if (this.canUnselect && this.canCollect) {
+				return CraftElementItemSelector.INSTRUCTIONS_UNSELECT + "\\n" + CraftElementItemSelector.INSTRUCTIONS_COLLECT;
+			} else if (this.canUnselect) {
+				return CraftElementItemSelector.INSTRUCTIONS_UNSELECT;
+			} else if (this.canCollect) {
+				return CraftElementItemSelector.INSTRUCTIONS_COLLECT;
+			} else {
+				return CraftElementItemSelector.INSTRUCTIONS_SELECT;
+			}
 		} else {
 			return CraftElementItemSelector.INSTRUCTIONS_SELECT;
 		}
