@@ -21,6 +21,7 @@ import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
+import de.rincewind.interfaceapi.handling.element.ElementValueChangeEvent;
 import de.rincewind.interfaceapi.handling.element.MapChangeSelectEvent;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
@@ -62,7 +63,11 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			if (event.isLeftClick() && !event.isShiftClick()) {
-				this.select(this.convert(event.getPoint()));
+				int index = this.convert(event.getPoint());
+
+				if (index < this.items.size()) {
+					this.select(index);
+				}
 			}
 		}).addAfter();
 	}
@@ -101,7 +106,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		this.update();
 		this.updateFliper();
 	}
-	
+
 	@Override
 	public void addItems(Iterable<? extends Displayable> items) {
 		Validate.notNull(items, "The iterable cannot be null");
@@ -110,7 +115,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 			this.addItem(item);
 		}
 	}
-	
+
 	@Override
 	public void removeItem(int index) {
 		this.items.remove(index);
@@ -125,7 +130,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public void clear() {
-		this.deselect();
+		this.selected = -1;
 		this.items.clear();
 		this.update();
 	}
@@ -179,19 +184,20 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public void select(int index, boolean fireEvent) {
-		if (this.isSelected()) {
+		if (this.selected == index) {
 			throw new RuntimeException("This element is selected!");
 		}
 
-		if (this.items.isEmpty()) {
-			throw new RuntimeException("The items are empty!");
+		if (index != -1 && (index < 0 || index >= this.items.size())) {
+			throw new RuntimeException("The index is invalid");
 		}
+
+		this.selected = index;
 
 		if (fireEvent) {
 			this.getEventManager().callEvent(MapChangeSelectEvent.class, new MapChangeSelectEvent(this, index));
 		}
 
-		this.selected = index;
 		this.update();
 	}
 
@@ -303,7 +309,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	public int getMaxPage() {
 		int count = this.getCountPerPage();
 		int size = this.filteredSize();
-		
+
 		if (size != 0) {
 			return size / count + (size % count == 0 ? 0 : 1);
 		} else {
@@ -316,7 +322,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		if (this.getMaxPage() < page || page <= 0) {
 			throw new NoSuchElementException("The page " + page + " is invalid");
 		}
-		
+
 		return (page - 1) * this.getCountPerPage();
 	}
 
@@ -349,7 +355,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	public InterfaceListener<ElementInteractEvent> newFlipListener(int offset) {
 		return this.new FlipListener(offset);
 	}
-	
+
 	@Override
 	public <T> T getSelected() {
 		if (this.selected == -1) {
@@ -395,21 +401,21 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		if (this.isEnabled()) {
 			Displayable item = null;
 			int index = this.convert(point) + this.getCountPerPage() * (this.page - 1);
-			
+
 			Iterator<Displayable> iterator = this.items.iterator();
-			
+
 			while (index != -1 && iterator.hasNext()) {
 				item = iterator.next();
-				
+
 				if (this.filter.test(item)) {
 					index = index - 1;
 				}
 			}
-			
+
 			if (index != -1) {
 				item = null;
 			}
-			
+
 			if (item != null) {
 				return item.getIcon();
 			} else {
@@ -419,7 +425,16 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 			return this.getDisabledIcon();
 		}
 	}
-	
+
+	@Override
+	public void dependsOn(Element element) {
+		super.dependsOn(element);
+
+		element.getEventManager().registerListener(ElementValueChangeEvent.class, (event) -> {
+			this.updateFliper();
+		}).monitor();
+	}
+
 	@Override
 	protected void onEnabledChange() {
 		this.updateFliper();
@@ -438,7 +453,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 			iterator.next().setComponentValue(Element.ENABLED, this.isEnabled() && !this.isFirstPage());
 		}
 	}
-	
+
 	private void validateCurrentPage() {
 		int maxPage = this.getMaxPage();
 
@@ -464,13 +479,13 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		@Override
 		public void onAction(ElementInteractEvent event) throws EventPipelineException {
 			int newPage = CraftElementMap.this.getPage() + (this.pageOffset * (event.isShiftClick() ? 2 : 1));
-			
+
 			if (newPage < 0) {
 				newPage = 0;
 			} else if (newPage > CraftElementMap.this.getMaxPage()) {
 				newPage = CraftElementMap.this.getMaxPage();
 			}
-			
+
 			System.out.println("SET PAGE: " + newPage);
 			CraftElementMap.this.setPage(newPage);
 		}

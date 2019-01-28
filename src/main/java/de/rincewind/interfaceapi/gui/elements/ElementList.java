@@ -100,6 +100,8 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void removeItem(Displayable item);
 
 	public abstract void clear();
+	
+	public abstract void setMultiSelectionAllowed();
 
 	/**
 	 * Changes the type of this list. By the default it is
@@ -170,6 +172,10 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 *             if the button is <code>null</code>
 	 */
 	public abstract void addScroler(Element btn, int value);
+	
+	public abstract void setMultiSelectionBound(int index);
+	
+	public abstract boolean isMultiSelectionAllowed();
 
 	/**
 	 * Returns the index of the first displayed entry (at the beginning of this
@@ -186,6 +192,8 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 * @return the currently selected index of this element
 	 */
 	public abstract int getSelectedIndex();
+	
+	public abstract int getMultiSelectionBound();
 
 	/**
 	 * Returns the color of this element. By the default, it is
@@ -201,9 +209,13 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	
 	public abstract UnaryOperator<Icon> getSelectModifier();
 	
+	public abstract UnaryOperator<Icon> getMultiSelectModifier();
+	
 	public abstract <T> T getSelected();
 
 	public abstract <T> T get(int index);
+	
+	public abstract <T> List<T> getMultiSelected();
 	
 	public abstract List<Displayable> getItems();
 	

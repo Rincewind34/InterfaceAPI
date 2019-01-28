@@ -336,4 +336,40 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	}
 
+	@Override
+	public void setMultiSelectionAllowed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMultiSelectionBound(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isMultiSelectionAllowed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getMultiSelectionBound() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public UnaryOperator<Icon> getMultiSelectModifier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> List<T> getMultiSelected() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

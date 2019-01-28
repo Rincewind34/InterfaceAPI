@@ -18,6 +18,7 @@ import de.rincewind.interfaceapi.gui.util.Direction;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.gui.windows.util.Toolbar;
+import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
@@ -33,7 +34,7 @@ public class CraftElementToolbar extends CraftElement implements ElementToolbar 
 	private Displayable disabledIcon;
 
 	private final Toolbar toolbar;
-	
+
 	private UnaryOperator<Icon> modifier;
 	private final List<Button> buttons;
 
@@ -51,6 +52,16 @@ public class CraftElementToolbar extends CraftElement implements ElementToolbar 
 		this.getComponent(Element.WIDTH).setEnabled(true);
 		this.getComponent(Element.HEIGHT).setEnabled(true);
 		this.getComponent(Element.INSTRUCTIONS).setEnabled(true);
+
+		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
+			if (event.isLeftClick() && !event.isShiftClick()) {
+				int index = event.getPoint().getCoord(this.direction);
+
+				if (index < this.buttons.size()) {
+					this.toolbar.activateToolSet(this.buttons.get(index).toolset);
+				}
+			}
+		}).addAfter();
 	}
 
 	@Override
@@ -92,26 +103,26 @@ public class CraftElementToolbar extends CraftElement implements ElementToolbar 
 		this.direction = direction;
 		this.updateEnabled();
 	}
-	
+
 	@Override
 	public void setSelectModifyer(UnaryOperator<Icon> modifier) {
 		this.modifier = modifier;
-		
+
 		if (this.isEnabled() && this.toolbar.isToolsetActive()) {
 			this.update();
 		}
 	}
-	
+
 	@Override
 	public boolean canUnselect() {
 		return this.canUnselect;
 	}
-	
+
 	@Override
 	public Direction getDirection() {
 		return this.direction;
 	}
-	
+
 	@Override
 	public Icon getDisabledIcon() {
 		return this.disabledIcon.getIcon();
@@ -121,7 +132,7 @@ public class CraftElementToolbar extends CraftElement implements ElementToolbar 
 	public Toolbar getToolbar() {
 		return this.toolbar;
 	}
-	
+
 	@Override
 	public UnaryOperator<Icon> getSelectModifier() {
 		return this.modifier;
@@ -140,12 +151,14 @@ public class CraftElementToolbar extends CraftElement implements ElementToolbar 
 			if (index < this.buttons.size()) {
 				String instructions = CraftElementToolbar.INSTRUCTIONS_SELECT;
 				Button button = this.buttons.get(index);
+				Icon icon = button.icon.getIcon();
 
 				if (this.toolbar.isToolsetActive() && this.toolbar.getActiveToolset().equals(button.toolset)) {
 					instructions = this.canUnselect ? CraftElementToolbar.INSTRUCTIONS_UNSELECT : CraftElementToolbar.INSTRUCTIONS_SELECTED;
+					icon = this.modifier.apply(icon);
 				}
-				
-				return this.updateInstructions(this.modifier.apply(button.icon.getIcon()), instructions);
+
+				return this.updateInstructions(icon, instructions);
 			} else {
 				return Icon.AIR; // TODO Error icon
 			}

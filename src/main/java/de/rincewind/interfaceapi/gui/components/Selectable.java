@@ -18,7 +18,7 @@ public interface Selectable {
 	public abstract void select();
 	
 	/**
-	 * Deselects the object.
+	 * Unselects the object.
 	 */
 	public abstract void deselect();
 	

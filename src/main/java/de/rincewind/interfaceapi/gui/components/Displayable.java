@@ -13,19 +13,20 @@ import org.bukkit.Material;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.lore.Lore;
 import de.rincewind.interfaceplugin.Validate;
+import net.md_5.bungee.api.ChatColor;
 
 public interface Displayable {
-	
+
 	public static final Comparator<Displayable> comparator_name = (icon1, icon2) -> {
 		if (icon1 == Icon.AIR) {
 			return icon2 == Icon.AIR ? 0 : 1;
 		} else if (icon2 == Icon.AIR) {
 			return -1;
 		} else {
-			return icon1.getIcon().getName().compareTo(icon2.getIcon().getName());
+			return ChatColor.stripColor(icon1.getIcon().getName()).compareTo(ChatColor.stripColor(icon2.getIcon().getName()));
 		}
 	};
-	
+
 	public static final Map<Class<?>, Function<Object, Icon>> converters = new HashMap<>();
 
 	public static void copy(Class<?> cls, Class<?> other) {
@@ -52,17 +53,17 @@ public interface Displayable {
 
 		return Displayable.converters.containsKey(cls);
 	}
-	
+
 	public static Displayable checkNull(Displayable input) {
 		return input == null ? Icon.AIR : input;
 	}
-	
+
 	public static Displayable of(Object payload) {
 		if (payload instanceof Displayable) {
 			return (Displayable) payload;
 		} else if (payload != null && Displayable.converters.containsKey(payload.getClass())) {
 			Icon icon = Displayable.converters.get(payload.getClass()).apply(payload);
-			
+
 			assert icon != null : "The converted icon is null";
 			return Displayable.of(icon, payload);
 		} else {
@@ -111,7 +112,7 @@ public interface Displayable {
 			return Displayable.of(payload);
 		}).collect(collector);
 	}
-	
+
 	public static Displayable wrap(Supplier<? extends Displayable> supplier) {
 		return () -> {
 			return supplier.get().getIcon();

@@ -162,6 +162,36 @@ public class CraftElementMapTest {
 	}
 
 	@Test
+	public void testClear_Empty() {
+		this.element.clear();
+		
+		Assert.assertEquals(0, this.element.size());
+		Assert.assertFalse(this.element.isSelected());
+	}
+
+	@Test
+	public void testClear_OneElement() {
+		this.element.addItem(new Icon(Material.APPLE));
+		this.element.select(0);
+		this.element.clear();
+		
+		Assert.assertEquals(0, this.element.size());
+		Assert.assertFalse(this.element.isSelected());
+	}
+
+	@Test
+	public void testClear_MultipleElements() {
+		this.element.addItem(new Icon(Material.APPLE));
+		this.element.addItem(new Icon(Material.STONE));
+		this.element.addItem(new Icon(Material.INK_SAC));
+		this.element.select(1);
+		this.element.clear();
+		
+		Assert.assertEquals(0, this.element.size());
+		Assert.assertFalse(this.element.isSelected());
+	}
+
+	@Test
 	public void testPushFliper_NextOnce_TwoPages() {
 		Icon icon1 = new Icon(Material.APPLE);
 		Icon icon2 = new Icon(Material.STONE);
