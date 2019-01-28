@@ -15,9 +15,6 @@ import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementDisplayable;
 
-/*
- * TODO Check out real min and max count
- */
 public class CraftElementCounter extends CraftElementDisplayable implements ElementCounter {
 
 	private int count;
@@ -33,17 +30,19 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 	public CraftElementCounter(WindowEditor handle) {
 		super(handle);
 
-		this.minCount = ElementCounter.MINIMUM_COUNT;
-		this.maxCount = ElementCounter.MAXIMUM_COUNT;
-		
+		this.getComponent(Element.INSTRUCTIONS).setEnabled(true);
+
+		this.minCount = 0;
+		this.maxCount = Integer.MAX_VALUE;
+
 		this.incrementingElements = new HashSet<>();
 		this.decrementingElements = new HashSet<>();
-		
+
 		this.getComponent(Element.WIDTH).setEnabled(true);
 		this.getComponent(Element.HEIGHT).setEnabled(true);
 
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
-			this.setCount(this.fallback != null ? this.fallback.intValue() : (this.minCount + (this.maxCount - this.minCount) / 2));
+			this.setCount(this.getFallbackCalculated());
 		}).addAfter();
 	}
 
@@ -74,14 +73,6 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 
 	@Override
 	public void setMaxCount(int maxCount) {
-		if (maxCount > ElementCounter.MAXIMUM_COUNT) {
-			this.setMaxCount(ElementCounter.MAXIMUM_COUNT);
-		}
-
-		if (maxCount < ElementCounter.MINIMUM_COUNT) {
-			this.setMaxCount(ElementCounter.MINIMUM_COUNT);
-		}
-
 		if (maxCount < this.minCount) {
 			throw new RuntimeException("The maximal count is smaller than the current minimal count!");
 		}
@@ -92,14 +83,6 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 
 	@Override
 	public void setMinCount(int minCount) {
-		if (minCount > ElementCounter.MAXIMUM_COUNT) {
-			minCount = ElementCounter.MAXIMUM_COUNT;
-		}
-
-		if (minCount < ElementCounter.MINIMUM_COUNT) {
-			minCount = ElementCounter.MINIMUM_COUNT;
-		}
-
 		if (minCount > this.maxCount) {
 			throw new IllegalArgumentException("The minimal count is bigger than the current maximal count");
 		}
@@ -121,13 +104,13 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 		if (count != this.count) {
 			int previous = this.count;
 			this.count = count;
-			
+
 			if (fireEvent) {
 				this.getEventManager().callEvent(CountChangeEvent.class, new CountChangeEvent(this, previous));
 			}
-			
+
 			this.update();
-			this.updateFliper();
+			this.updateIncrementors();
 		}
 	}
 
@@ -158,9 +141,9 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 		}
 
 		this.incrementingElements.add(element);
-		
+
 		element.setComponentValue(Element.ENABLED, this.isEnabled() && this.count < this.maxCount);
-		element.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(value, shiftedValue));
+		element.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(value, shiftedValue)).addAfter();
 	}
 
 	@Override
@@ -180,9 +163,9 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 		}
 
 		this.decrementingElements.add(element);
-		
+
 		element.setComponentValue(Element.ENABLED, this.isEnabled() && this.count > this.minCount);
-		element.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(-value, -shiftedValue));
+		element.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(-value, -shiftedValue)).addAfter();
 	}
 
 	@Override
@@ -192,24 +175,40 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 		this.incrementingElements.remove(element);
 		this.decrementingElements.remove(element);
 	}
-	
+
 	@Override
 	public InterfaceListener<ElementInteractEvent> newIncrementListener(int value, int shiftedValue) {
 		return this.new ActionHandler(value, shiftedValue);
 	}
 
 	@Override
-	public Icon getIcon0(Point point) {
+	public void onElementAdded() {
+		this.setComponentValue(Element.INSTRUCTIONS, true);
+		this.setWorkInstructions(false);
+	}
+
+	@Override
+	protected Icon getIcon0(Point point) {
 		Icon icon = super.getIcon0(point);
 
-		if (this.isEnabled() && icon != null) {
-			return icon.count(this.count);
-		} else {
-			return icon;
+		if (this.isEnabled()) {
+			icon.getLore().setEnd(this.buildLoreEnd());
 		}
+
+		return icon;
 	}
-	
-	private void updateFliper() {
+
+	private int getFallbackCalculated() {
+		return this.fallback != null ? this.fallback.intValue() : (this.minCount + (this.maxCount - this.minCount) / 2);
+	}
+
+	private String buildLoreEnd() {
+		return "§7Aktueller Wert: §6" + this.count
+				+ (this.showInstructions() ? "\\n" + String.format(ElementCounter.INSTRUCTIONS_FALLBACK, this.getFallbackCalculated())
+						: "");
+	}
+
+	private void updateIncrementors() {
 		Iterator<Element> iterator = this.incrementingElements.iterator();
 
 		while (iterator.hasNext()) {
@@ -235,7 +234,8 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 
 		@Override
 		public void onAction(ElementInteractEvent event) {
-			CraftElementCounter.this.setCount(CraftElementCounter.this.getCount() + (event.isShiftClick() ? this.shiftedValue : this.value));
+			CraftElementCounter.this
+					.setCount(CraftElementCounter.this.getCount() + (event.isShiftClick() ? this.shiftedValue : this.value));
 		}
 
 	}

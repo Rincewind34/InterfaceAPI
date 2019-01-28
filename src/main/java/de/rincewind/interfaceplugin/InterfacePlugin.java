@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -33,6 +34,7 @@ public class InterfacePlugin extends JavaPlugin {
 		Displayable.put(EntityType.class, InterfaceUtils::convertEntityType);
 		Displayable.put(PotionEffectType.class, InterfaceUtils::convertPotionEffectType);
 		Displayable.put(PotionType.class, InterfaceUtils::convertPotionType);
+		Displayable.put(EquipmentSlot.class, InterfaceUtils::convertEquipmentSlot);
 		Displayable.put(Material.class, (material) -> {
 			return new Icon(material, "§7" + material.name());
 		});

@@ -77,6 +77,102 @@ public class CraftElementListTest {
 		Assert.assertSame(icon3, this.element.getIcon(Point.of(2, 0)));
 	}
 
+	@Test
+	public void testAddItem_BeforeSelected() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.STONE);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+		Icon icon7 = new Icon(Material.GREEN_BED);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+		this.element.select(3);
+		
+		this.element.addItem(1, icon7);
+
+		Assert.assertEquals(4, this.element.getSelectedIndex());
+		Assert.assertEquals(icon4, this.element.getSelectedItem());
+	}
+
+	@Test
+	public void testAddItem_DirectBeforeSelected() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.STONE);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+		Icon icon7 = new Icon(Material.GREEN_BED);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+		this.element.select(3);
+		
+		this.element.addItem(2, icon7);
+
+		Assert.assertEquals(4, this.element.getSelectedIndex());
+		Assert.assertEquals(icon4, this.element.getSelectedItem());
+	}
+
+	@Test
+	public void testAddItem_AtSelected() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.STONE);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+		Icon icon7 = new Icon(Material.GREEN_BED);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+		this.element.select(3);
+		
+		this.element.addItem(3, icon7);
+
+		Assert.assertEquals(4, this.element.getSelectedIndex());
+		Assert.assertEquals(icon4, this.element.getSelectedItem());
+	}
+
+	@Test
+	public void testAddItem_AfterSelected() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.STONE);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+		Icon icon7 = new Icon(Material.GREEN_BED);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+		this.element.select(3);
+		
+		this.element.addItem(5, icon7);
+
+		Assert.assertEquals(3, this.element.getSelectedIndex());
+		Assert.assertEquals(icon4, this.element.getSelectedItem());
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddItems_Null() {
 		this.element.addItems(null);

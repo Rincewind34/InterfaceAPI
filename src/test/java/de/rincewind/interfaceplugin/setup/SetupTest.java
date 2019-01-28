@@ -158,6 +158,8 @@ public class SetupTest {
 		setup.open(window1);
 		setup.open(window2);
 
+		Assert.assertTrue(setup.hasMaximizedWindow());
+		Assert.assertSame(window2, setup.getMaximizedWindow());
 		Assert.assertSame(window2.getReference(), player.getSynthInventory());
 		Assert.assertEquals(WindowState.BACKGROUND, window1.getState());
 		Assert.assertEquals(WindowState.MAXIMIZED, window2.getState());
@@ -165,12 +167,16 @@ public class SetupTest {
 		
 		setup.minimize();
 
+		Assert.assertTrue(setup.hasMaximizedWindow());
+		Assert.assertSame(window1, setup.getMaximizedWindow());
 		Assert.assertSame(window1.getReference(), player.getSynthInventory());
 		Assert.assertEquals(WindowState.MAXIMIZED, window1.getState());
 		Assert.assertEquals(WindowState.MINIMIZED, window2.getState());
 		
 		setup.open(window3);
 
+		Assert.assertTrue(setup.hasMaximizedWindow());
+		Assert.assertSame(window3, setup.getMaximizedWindow());
 		Assert.assertSame(window3.getReference(), player.getSynthInventory());
 		Assert.assertEquals(WindowState.BACKGROUND, window1.getState());
 		Assert.assertEquals(WindowState.MINIMIZED, window2.getState());
@@ -179,6 +185,8 @@ public class SetupTest {
 		
 		setup.close(window1);
 
+		Assert.assertTrue(setup.hasMaximizedWindow());
+		Assert.assertSame(window3, setup.getMaximizedWindow());
 		Assert.assertSame(window3.getReference(), player.getSynthInventory());
 		Assert.assertEquals(WindowState.CLOSED, window1.getState());
 		Assert.assertEquals(WindowState.MINIMIZED, window2.getState());
@@ -187,6 +195,8 @@ public class SetupTest {
 		
 		setup.open(window1);
 
+		Assert.assertTrue(setup.hasMaximizedWindow());
+		Assert.assertSame(window1, setup.getMaximizedWindow());
 		Assert.assertSame(window1.getReference(), player.getSynthInventory());
 		Assert.assertEquals(WindowState.MAXIMIZED, window1.getState());
 		Assert.assertEquals(WindowState.MINIMIZED, window2.getState());
@@ -194,14 +204,18 @@ public class SetupTest {
 		Assert.assertEquals(3, InterfaceAPI.getSetup(player).getOpenWindows().size());
 		
 		setup.maximize(window2);
-		
+
+		Assert.assertTrue(setup.hasMaximizedWindow());
+		Assert.assertSame(window2, setup.getMaximizedWindow());
 		Assert.assertSame(window2.getReference(), player.getSynthInventory());
 		Assert.assertEquals(WindowState.BACKGROUND, window1.getState());
 		Assert.assertEquals(WindowState.MAXIMIZED, window2.getState());
 		Assert.assertEquals(WindowState.BACKGROUND, window3.getState());
 		
 		setup.close(window2);
-		
+
+		Assert.assertTrue(setup.hasMaximizedWindow());
+		Assert.assertSame(window1, setup.getMaximizedWindow());
 		Assert.assertSame(window1.getReference(), player.getSynthInventory());
 		Assert.assertEquals(WindowState.MAXIMIZED, window1.getState());
 		Assert.assertEquals(WindowState.CLOSED, window2.getState());
@@ -209,7 +223,9 @@ public class SetupTest {
 		Assert.assertEquals(2, InterfaceAPI.getSetup(player).getOpenWindows().size());
 		
 		setup.close(window3);
-		
+
+		Assert.assertTrue(setup.hasMaximizedWindow());
+		Assert.assertSame(window1, setup.getMaximizedWindow());
 		Assert.assertSame(window1.getReference(), player.getSynthInventory());
 		Assert.assertEquals(WindowState.MAXIMIZED, window1.getState());
 		Assert.assertEquals(WindowState.CLOSED, window2.getState());
@@ -217,8 +233,10 @@ public class SetupTest {
 		Assert.assertEquals(1, InterfaceAPI.getSetup(player).getOpenWindows().size());
 		
 		setup.close(window1);
-		
-		Assert.assertSame(null, player.getSynthInventory());
+
+		Assert.assertFalse(setup.hasMaximizedWindow());
+		Assert.assertNull(setup.getMaximizedWindow());
+		Assert.assertNull(player.getSynthInventory());
 		Assert.assertEquals(WindowState.CLOSED, window1.getState());
 		Assert.assertEquals(WindowState.CLOSED, window2.getState());
 		Assert.assertEquals(WindowState.CLOSED, window3.getState());

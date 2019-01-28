@@ -114,6 +114,10 @@ public interface Displayable {
 	}
 
 	public static Displayable wrap(Supplier<? extends Displayable> supplier) {
+		if (supplier == null) {
+			throw new IllegalArgumentException();
+		}
+		
 		return () -> {
 			return supplier.get().getIcon();
 		};

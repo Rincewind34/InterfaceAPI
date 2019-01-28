@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -186,7 +187,11 @@ public class CraftSetup implements Setup { // TODO cache maximized window
 
 		for (Window background : reverse) {
 			if (background.getState() == WindowState.BACKGROUND) {
-				this.maximize(background);
+				// Delay, because the interact listener doesn't detect clicks without
+				Bukkit.getScheduler().runTask(InterfacePlugin.instance, () -> {
+					this.maximize(background);
+				});
+
 				break;
 			}
 		}
@@ -220,7 +225,8 @@ public class CraftSetup implements Setup { // TODO cache maximized window
 	}
 
 	@Override
-	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Collection<? extends T> elements, Consumer<? super T> action) {
+	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Collection<? extends T> elements,
+			Consumer<? super T> action) {
 		// Let WindowSelectorCreator#newWindow(...) validate the parameters
 		WindowSelector<T> window = InterfaceAPI.getWindowCreator(typeClass).newWindow(plugin, action, elements);
 
@@ -246,7 +252,8 @@ public class CraftSetup implements Setup { // TODO cache maximized window
 	}
 
 	@Override
-	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, T current, Collection<? extends T> elements, Consumer<? super T> action) {
+	public <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, T current, Collection<? extends T> elements,
+			Consumer<? super T> action) {
 		// Let WindowSelectorCreator#newWindow(...) validate the parameters
 		WindowSelector<T> window = InterfaceAPI.getWindowCreator(typeClass).newWindow(plugin, action, elements, current);
 

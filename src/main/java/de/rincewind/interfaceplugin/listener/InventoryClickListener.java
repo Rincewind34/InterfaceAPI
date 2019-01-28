@@ -20,11 +20,17 @@ public class InventoryClickListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
-
+		
+		System.out.println(InterfaceAPI.getSetup(player).getOpenWindows());
+		System.out.println(InterfaceAPI.getSetup(player).getMaximizedWindow());
+		System.out.println(InterfaceAPI.getSetup(player).hasMaximizedWindow());
 		if (InterfaceAPI.getSetup(player).hasMaximizedWindow()) {
+			System.out.println("CLICK1");
 			Window window = InterfaceAPI.getSetup(player).getMaximizedWindow();
 
 			if (window instanceof WindowContainer) {
+				System.out.println("CLICK2");
+				
 				WindowContainer containerWindow = (WindowContainer) window;
 				ClickAction action = ClickAction.getAction(event.getAction());
 
@@ -35,12 +41,14 @@ public class InventoryClickListener implements Listener {
 
 				containerWindow.getEventManager().callEvent(WindowClickEvent.class, windowEvent);
 
-				if (InterfaceUtils.normalize(event.getWhoClicked().getItemOnCursor()) != InterfaceUtils
-						.normalize(windowEvent.getCourserItem())) {
-					event.getWhoClicked().setItemOnCursor(windowEvent.getCourserItem());
-				}
+				// TODO
+				//				if (InterfaceUtils.normalize(event.getWhoClicked().getItemOnCursor()) != InterfaceUtils
+				//						.normalize(windowEvent.getCourserItem())) {
+				//					event.getWhoClicked().setItemOnCursor(windowEvent.getCourserItem());
+				//				}
 
 				if (windowEvent.isCancelled()) {
+					System.out.println("CLICK CANCELLED");
 					event.setCancelled(true);
 				}
 
