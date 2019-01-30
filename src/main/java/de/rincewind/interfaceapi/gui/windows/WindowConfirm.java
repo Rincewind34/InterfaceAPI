@@ -48,7 +48,7 @@ public class WindowConfirm extends CraftWindowSizeable {
 		ElementItem btnDeny = this.elementCreator().newItem();
 		btnDeny.setIcon(iconDeny);
 		btnDeny.setPoint(Point.of(width - 1, 0));
-		btnDeny.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(true)).addAfter();
+		btnDeny.getEventManager().registerListener(ElementInteractEvent.class, this.new ActionHandler(false)).addAfter();
 	}
 
 	public Consumer<Boolean> getAction() {
