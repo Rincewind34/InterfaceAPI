@@ -170,6 +170,27 @@ public class CraftSetup implements Setup { // TODO cache maximized window
 	}
 
 	@Override
+	public void maximizeAll() {
+		int start;
+		
+		if (!this.hasMaximizedWindow() && !this.windows.isEmpty()) {
+			this.maximize(this.windows.size() - 1);
+			start = this.windows.size() - 2;
+		} else {
+			start = this.windows.size() - 1;
+		}
+		
+		for (int index = start; index >= 0; index--) {
+			Window minimized = this.windows.get(index);
+
+			if (minimized.getState() == WindowState.MINIMIZED) {
+				minimized.getEventManager().callEvent(WindowChangeStateEvent.class,
+						new WindowChangeStateEvent(minimized, WindowState.BACKGROUND));
+			}
+		}
+	}
+
+	@Override
 	public void minimize() {
 		if (!this.hasMaximizedWindow()) {
 			return;
@@ -182,17 +203,39 @@ public class CraftSetup implements Setup { // TODO cache maximized window
 			this.sendClosePacket();
 		}
 
-		List<Window> reverse = new ArrayList<>(this.windows);
-		Collections.reverse(reverse);
+		for (int index = this.windows.size() - 1; index >= 0; index--) {
+			Window background = this.windows.get(index);
 
-		for (Window background : reverse) {
 			if (background.getState() == WindowState.BACKGROUND) {
 				// Delay, because the interact listener doesn't detect clicks without
 				Bukkit.getScheduler().runTask(InterfacePlugin.instance, () -> {
 					this.maximize(background);
 				});
 
-				break;
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void minimizeAll() {
+		if (!this.hasMaximizedWindow()) {
+			return;
+		}
+
+		Window window = this.getMaximizedWindow();
+		window.getEventManager().callEvent(WindowChangeStateEvent.class, new WindowChangeStateEvent(window, WindowState.MINIMIZED));
+
+		if (window instanceof WindowContainer || window instanceof WindowAnvil) {
+			this.sendClosePacket();
+		}
+
+		for (int index = this.windows.size() - 1; index >= 0; index--) {
+			Window background = this.windows.get(index);
+
+			if (background.getState() == WindowState.BACKGROUND) {
+				background.getEventManager().callEvent(WindowChangeStateEvent.class,
+						new WindowChangeStateEvent(window, WindowState.MINIMIZED));
 			}
 		}
 	}

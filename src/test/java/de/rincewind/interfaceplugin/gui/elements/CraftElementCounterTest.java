@@ -36,7 +36,6 @@ public class CraftElementCounterTest {
 		Assert.assertEquals(1, this.element.getCount());
 		Assert.assertNull(this.element.getFallback());
 		Assert.assertEquals(icon, this.element.getIcon(Point.NULL));
-		Assert.assertSame(1, this.element.getIcon(Point.NULL).getAmount());
 	}
 
 	@Test
@@ -48,7 +47,6 @@ public class CraftElementCounterTest {
 		Assert.assertEquals(0, this.element.getCount());
 		Assert.assertNull(this.element.getFallback());
 		Assert.assertEquals(icon, this.element.getIcon(Point.NULL));
-		Assert.assertSame(0, this.element.getIcon(Point.NULL).getAmount());
 	}
 
 	@Test
@@ -60,7 +58,6 @@ public class CraftElementCounterTest {
 		Assert.assertEquals(5, this.element.getCount());
 		Assert.assertNull(this.element.getFallback());
 		Assert.assertEquals(icon, this.element.getIcon(Point.NULL));
-		Assert.assertSame(5, this.element.getIcon(Point.NULL).getAmount());
 	}
 	
 }

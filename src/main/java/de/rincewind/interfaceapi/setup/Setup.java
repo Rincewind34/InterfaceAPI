@@ -187,6 +187,8 @@ public interface Setup {
 	 * @see Setup#maximize(Window)
 	 */
 	public abstract void maximize(int index);
+	
+	public abstract void maximizeAll();
 
 	/**
 	 * Minimizes the currently maximized window. If the player does not have a
@@ -203,6 +205,8 @@ public interface Setup {
 	 *             if the player is <b>null</b>
 	 */
 	public abstract void minimize();
+	
+	public abstract void minimizeAll();
 
 	public abstract <T> WindowSelector<T> openSelector(Class<T> typeClass, Plugin plugin, Consumer<? super T> action);
 

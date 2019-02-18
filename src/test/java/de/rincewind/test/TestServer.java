@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableMap;
 
 @SuppressWarnings("deprecation")
 public class TestServer implements InvocationHandler {
-	
+
 	private static interface MethodHandler {
 		Object handle(TestServer server, Object[] args);
 	}
@@ -81,19 +81,20 @@ public class TestServer implements InvocationHandler {
 					return new TestInventory((String) args[2], (int) args[1]);
 				}
 			});
-			methodMap.put(Server.class.getMethod("createInventory", InventoryHolder.class, InventoryType.class, String.class), new MethodHandler() {
-				@Override
-				public Object handle(TestServer server, Object[] args) {
-					return new TestInventory((String) args[2], ((InventoryType) args[1]).getDefaultSize());
-				}
-			});
+			methodMap.put(Server.class.getMethod("createInventory", InventoryHolder.class, InventoryType.class, String.class),
+					new MethodHandler() {
+						@Override
+						public Object handle(TestServer server, Object[] args) {
+							return new TestInventory((String) args[2], ((InventoryType) args[1]).getDefaultSize());
+						}
+					});
 			methodMap.put(Server.class.getMethod("getUnsafe"), new MethodHandler() {
 				@Override
 				public Object handle(TestServer server, Object[] args) {
 					return CraftMagicNumbers.INSTANCE;
 				}
 			});
-			
+
 			methods = methodMap.build();
 
 			TestServer server = new TestServer();
@@ -110,17 +111,21 @@ public class TestServer implements InvocationHandler {
 	private PluginManager pluginManager;
 
 	private TestServer() {
+
 	}
 
 	public static void setup() {
+
 	}
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) {
 		MethodHandler handler = TestServer.methods.get(method);
+
 		if (handler != null) {
 			return handler.handle(this, args);
 		}
+
 		throw new UnsupportedOperationException(String.valueOf(method));
 	}
 }

@@ -243,4 +243,101 @@ public class SetupTest {
 		Assert.assertEquals(0, InterfaceAPI.getSetup(player).getOpenWindows().size());
 	}
 
+	@Test
+	public void testMinimizeAll_AllInBackground() {
+		TestPlayer player = new TestPlayer("Player", SetupTest.closeListener);
+		TestWindowSizeable window1 = new TestWindowSizeable();
+		TestWindowSizeable window2 = new TestWindowSizeable();
+		TestWindowSizeable window3 = new TestWindowSizeable();
+
+		Setup setup = InterfaceAPI.getSetup(player);
+		setup.open(window1);
+		setup.open(window2);
+		setup.open(window3);
+		
+		setup.minimizeAll();
+		
+		Assert.assertFalse(setup.hasMaximizedWindow());
+		Assert.assertEquals(WindowState.MINIMIZED, window1.getState());
+		Assert.assertEquals(WindowState.MINIMIZED, window2.getState());
+		Assert.assertEquals(WindowState.MINIMIZED, window3.getState());
+		Assert.assertEquals(3, InterfaceAPI.getSetup(player).getOpenWindows().size());
+	}
+
+	@Test
+	public void testMinimizeAll_SomeMinimized() {
+		TestPlayer player = new TestPlayer("Player", SetupTest.closeListener);
+		TestWindowSizeable window1 = new TestWindowSizeable();
+		TestWindowSizeable window2 = new TestWindowSizeable();
+		TestWindowSizeable window3 = new TestWindowSizeable();
+
+		Setup setup = InterfaceAPI.getSetup(player);
+		setup.open(window1);
+		setup.open(window2);
+		setup.open(window3);
+		
+		setup.minimize();
+		setup.minimizeAll();
+		
+		Assert.assertFalse(setup.hasMaximizedWindow());
+		Assert.assertEquals(WindowState.MINIMIZED, window1.getState());
+		Assert.assertEquals(WindowState.MINIMIZED, window2.getState());
+		Assert.assertEquals(WindowState.MINIMIZED, window3.getState());
+		Assert.assertEquals(3, InterfaceAPI.getSetup(player).getOpenWindows().size());
+	}
+
+	@Test
+	public void testMinimizeAll_AllMinimized() {
+		TestPlayer player = new TestPlayer("Player", SetupTest.closeListener);
+		TestWindowSizeable window1 = new TestWindowSizeable();
+		TestWindowSizeable window2 = new TestWindowSizeable();
+		TestWindowSizeable window3 = new TestWindowSizeable();
+
+		Setup setup = InterfaceAPI.getSetup(player);
+		setup.open(window1);
+		setup.open(window2);
+		setup.open(window3);
+		
+		setup.minimize();
+		setup.minimize();
+		setup.minimize();
+		
+		setup.minimizeAll();
+		
+		Assert.assertFalse(setup.hasMaximizedWindow());
+		Assert.assertEquals(WindowState.MINIMIZED, window1.getState());
+		Assert.assertEquals(WindowState.MINIMIZED, window2.getState());
+		Assert.assertEquals(WindowState.MINIMIZED, window3.getState());
+		Assert.assertEquals(3, InterfaceAPI.getSetup(player).getOpenWindows().size());
+	}
+
+	@Test
+	public void testMinimizeAll_NoWindows() {
+		TestPlayer player = new TestPlayer("Player", SetupTest.closeListener);
+		Setup setup = InterfaceAPI.getSetup(player);
+		setup.minimizeAll();
+	}
+
+	@Test
+	public void testMaximizeAll_AllMinimized() {
+		TestPlayer player = new TestPlayer("Player", SetupTest.closeListener);
+		TestWindowSizeable window1 = new TestWindowSizeable();
+		TestWindowSizeable window2 = new TestWindowSizeable();
+		TestWindowSizeable window3 = new TestWindowSizeable();
+
+		Setup setup = InterfaceAPI.getSetup(player);
+		setup.open(window1);
+		setup.open(window2);
+		setup.open(window3);
+		setup.minimizeAll();
+		setup.maximizeAll();
+		
+		Assert.assertTrue(setup.hasMaximizedWindow());
+		Assert.assertSame(window3.getReference(), player.getSynthInventory());
+		Assert.assertEquals(WindowState.BACKGROUND, window1.getState());
+		Assert.assertEquals(WindowState.BACKGROUND, window2.getState());
+		Assert.assertEquals(WindowState.MAXIMIZED, window3.getState());
+		Assert.assertEquals(3, InterfaceAPI.getSetup(player).getOpenWindows().size());
+	}
+
 }
