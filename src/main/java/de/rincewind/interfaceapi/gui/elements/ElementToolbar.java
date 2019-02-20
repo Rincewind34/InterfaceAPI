@@ -7,6 +7,7 @@ import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
+import de.rincewind.interfaceapi.gui.util.Color;
 import de.rincewind.interfaceapi.gui.util.Direction;
 import de.rincewind.interfaceapi.gui.windows.util.Toolbar;
 import de.rincewind.interfaceplugin.Validate;
@@ -52,6 +53,8 @@ public interface ElementToolbar extends Element, DisplayableDisabled {
 	
 	public abstract void setDirection(Direction direction);
 	
+	public abstract void setColor(Color color);
+	
 	public abstract void setSelectModifyer(UnaryOperator<Icon> modifier);
 	
 	public abstract boolean canUnselect();
@@ -59,6 +62,8 @@ public interface ElementToolbar extends Element, DisplayableDisabled {
 	public abstract Direction getDirection();
 	
 	public abstract Toolbar getToolbar();
+	
+	public abstract Color getColor();
 	
 	public abstract UnaryOperator<Icon> getSelectModifier();
 	

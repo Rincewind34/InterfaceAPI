@@ -14,6 +14,7 @@ import de.rincewind.interfaceapi.gui.elements.ElementToolbar;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.SelectModifiers;
+import de.rincewind.interfaceapi.gui.util.Color;
 import de.rincewind.interfaceapi.gui.util.Direction;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
@@ -32,6 +33,7 @@ public class CraftElementToolbar extends CraftElement implements ElementToolbar 
 
 	private Direction direction;
 	private Displayable disabledIcon;
+	private Color color;
 
 	private final Toolbar toolbar;
 
@@ -44,6 +46,7 @@ public class CraftElementToolbar extends CraftElement implements ElementToolbar 
 		this.direction = Direction.HORIZONTAL;
 		this.disabledIcon = DisplayableDisabled.default_icon;
 		this.modifier = SelectModifiers.CYAN_GLASS;
+		this.color = Color.BLACK;
 
 		this.buttons = new ArrayList<>();
 		this.toolbar = new ToolbarWrapper();
@@ -105,6 +108,12 @@ public class CraftElementToolbar extends CraftElement implements ElementToolbar 
 	}
 
 	@Override
+	public void setColor(Color color) {
+		this.color = color;
+		this.updateEnabled();
+	}
+
+	@Override
 	public void setSelectModifyer(UnaryOperator<Icon> modifier) {
 		this.modifier = modifier;
 
@@ -126,6 +135,11 @@ public class CraftElementToolbar extends CraftElement implements ElementToolbar 
 	@Override
 	public Icon getDisabledIcon() {
 		return this.disabledIcon.getIcon();
+	}
+
+	@Override
+	public Color getColor() {
+		return this.color;
 	}
 
 	@Override
@@ -160,7 +174,7 @@ public class CraftElementToolbar extends CraftElement implements ElementToolbar 
 
 				return this.updateInstructions(icon, instructions);
 			} else {
-				return Icon.AIR; // TODO Error icon
+				return this.color.asIcon();
 			}
 		} else {
 			return this.getDisabledIcon();
