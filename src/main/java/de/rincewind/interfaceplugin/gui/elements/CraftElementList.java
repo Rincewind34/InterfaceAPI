@@ -292,7 +292,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public <T> T get(int index) {
-		if (index < 0 || this.items.size() >= index) {
+		if (index < 0 || this.items.size() <= index) {
 			throw new IllegalArgumentException("Invalid index");
 		}
 
