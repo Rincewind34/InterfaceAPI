@@ -12,12 +12,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.common.base.Predicates;
+
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.util.Color;
 import de.rincewind.interfaceapi.gui.util.Point;
+import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
+import de.rincewind.interfaceapi.handling.element.MapChangeSelectEvent;
 import de.rincewind.interfaceapi.util.InterfaceUtils;
 import de.rincewind.test.TestPlayer;
 import de.rincewind.test.TestServer;
@@ -29,7 +33,7 @@ public class CraftElementMapTest {
 
 	private CraftElementItem buttonNext;
 	private CraftElementItem buttonPrev;
-	
+
 	@BeforeClass
 	public static void initInterfaceAPI() {
 		TestServer.setup();
@@ -164,7 +168,7 @@ public class CraftElementMapTest {
 	@Test
 	public void testClear_Empty() {
 		this.element.clear();
-		
+
 		Assert.assertEquals(0, this.element.size());
 		Assert.assertFalse(this.element.isSelected());
 	}
@@ -174,7 +178,7 @@ public class CraftElementMapTest {
 		this.element.addItem(new Icon(Material.APPLE));
 		this.element.select(0);
 		this.element.clear();
-		
+
 		Assert.assertEquals(0, this.element.size());
 		Assert.assertFalse(this.element.isSelected());
 	}
@@ -186,7 +190,7 @@ public class CraftElementMapTest {
 		this.element.addItem(new Icon(Material.INK_SAC));
 		this.element.select(1);
 		this.element.clear();
-		
+
 		Assert.assertEquals(0, this.element.size());
 		Assert.assertFalse(this.element.isSelected());
 	}
@@ -215,7 +219,132 @@ public class CraftElementMapTest {
 
 		Assert.assertFalse(this.buttonNext.isEnabled());
 		Assert.assertTrue(this.buttonPrev.isEnabled());
+	}
 
+	@Test
+	public void testFilter_Basic() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.STONE);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.RED_WOOL);
+		Icon icon6 = new Icon(Material.GREEN_WOOL);
+		Icon icon7 = new Icon(Material.BLUE_WOOL);
+		Icon icon8 = new Icon(Material.YELLOW_WOOL);
+		Icon icon9 = new Icon(Material.LIME_WOOL);
+		Icon icon10 = new Icon(Material.PURPLE_WOOL);
+
+		this.element.addItems(Arrays.asList(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10));
+		this.element.setFilter(Predicates.equalTo((Displayable) icon3).or(Predicates.equalTo((Displayable) icon7)).negate());
+
+		Assert.assertSame(icon1, this.element.getIcon(Point.of(0, 0)));
+		Assert.assertSame(icon2, this.element.getIcon(Point.of(1, 0)));
+		Assert.assertSame(icon4, this.element.getIcon(Point.of(2, 0)));
+		Assert.assertSame(icon5, this.element.getIcon(Point.of(0, 1)));
+		Assert.assertSame(icon6, this.element.getIcon(Point.of(1, 1)));
+		Assert.assertSame(icon8, this.element.getIcon(Point.of(2, 1)));
+
+		this.element.nextPage();
+
+		Assert.assertSame(icon9, this.element.getIcon(Point.of(0, 0)));
+		Assert.assertSame(icon10, this.element.getIcon(Point.of(1, 0)));
+		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(2, 0)));
+		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(0, 1)));
+		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(1, 1)));
+		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(2, 1)));
+	}
+
+	@Test
+	public void testFilter_Interact_Before() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.STONE);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.RED_WOOL);
+		Icon icon6 = new Icon(Material.GREEN_WOOL);
+		Icon icon7 = new Icon(Material.BLUE_WOOL);
+		Icon icon8 = new Icon(Material.YELLOW_WOOL);
+		Icon icon9 = new Icon(Material.LIME_WOOL);
+		Icon icon10 = new Icon(Material.PURPLE_WOOL);
+
+		this.element.addItems(Arrays.asList(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10));
+		this.element.setFilter(Predicates.equalTo((Displayable) icon3).or(Predicates.equalTo((Displayable) icon7)).negate());
+
+		this.element.getEventManager().registerListener(MapChangeSelectEvent.class, (event) -> {
+			Assert.assertEquals(1, event.getNewIndex());
+		}).addAfter();
+		this.element.getEventManager().callEvent(ElementInteractEvent.class,
+				new ElementInteractEvent(this.element, new TestPlayer("test"), Point.of(1, 0), ClickType.LEFT, null));
+	}
+
+	@Test
+	public void testFilter_Interact_In() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.STONE);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.RED_WOOL);
+		Icon icon6 = new Icon(Material.GREEN_WOOL);
+		Icon icon7 = new Icon(Material.BLUE_WOOL);
+		Icon icon8 = new Icon(Material.YELLOW_WOOL);
+		Icon icon9 = new Icon(Material.LIME_WOOL);
+		Icon icon10 = new Icon(Material.PURPLE_WOOL);
+
+		this.element.addItems(Arrays.asList(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10));
+		this.element.setFilter(Predicates.equalTo((Displayable) icon3).or(Predicates.equalTo((Displayable) icon7)).negate());
+
+		this.element.getEventManager().registerListener(MapChangeSelectEvent.class, (event) -> {
+			Assert.assertEquals(3, event.getNewIndex());
+		}).addAfter();
+		this.element.getEventManager().callEvent(ElementInteractEvent.class,
+				new ElementInteractEvent(this.element, new TestPlayer("test"), Point.of(2, 0), ClickType.LEFT, null));
+	}
+
+	@Test
+	public void testFilter_Interact_After() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.STONE);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.RED_WOOL);
+		Icon icon6 = new Icon(Material.GREEN_WOOL);
+		Icon icon7 = new Icon(Material.BLUE_WOOL);
+		Icon icon8 = new Icon(Material.YELLOW_WOOL);
+		Icon icon9 = new Icon(Material.LIME_WOOL);
+		Icon icon10 = new Icon(Material.PURPLE_WOOL);
+
+		this.element.addItems(Arrays.asList(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10));
+		this.element.setFilter(Predicates.equalTo((Displayable) icon3).or(Predicates.equalTo((Displayable) icon7)).negate());
+
+		this.element.getEventManager().registerListener(MapChangeSelectEvent.class, (event) -> {
+			Assert.assertEquals(7, event.getNewIndex());
+		}).addAfter();
+		this.element.getEventManager().callEvent(ElementInteractEvent.class,
+				new ElementInteractEvent(this.element, new TestPlayer("test"), Point.of(2, 1), ClickType.LEFT, null));
+	}
+
+	@Test
+	public void testFilter_Interact_NextPage() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.STONE);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.RED_WOOL);
+		Icon icon6 = new Icon(Material.GREEN_WOOL);
+		Icon icon7 = new Icon(Material.BLUE_WOOL);
+		Icon icon8 = new Icon(Material.YELLOW_WOOL);
+		Icon icon9 = new Icon(Material.LIME_WOOL);
+		Icon icon10 = new Icon(Material.PURPLE_WOOL);
+
+		this.element.addItems(Arrays.asList(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10));
+		this.element.setFilter(Predicates.equalTo((Displayable) icon3).or(Predicates.equalTo((Displayable) icon7)).negate());
+		this.element.nextPage();
+		
+		this.element.getEventManager().registerListener(MapChangeSelectEvent.class, (event) -> {
+			Assert.assertEquals(9, event.getNewIndex());
+		}).addAfter();
+		this.element.getEventManager().callEvent(ElementInteractEvent.class,
+				new ElementInteractEvent(this.element, new TestPlayer("test"), Point.of(1, 0), ClickType.LEFT, null));
 	}
 
 }

@@ -26,7 +26,8 @@ public class SetupTest {
 		TestServer.setup();
 
 		InterfaceAPI.enable();
-
+		CraftSetup.delay_inventory_change = false;
+		
 		SetupTest.closeListener = new InventoryCloseListener();
 		SetupTest.quitListener = new PlayerQuitListener();
 	}

@@ -10,6 +10,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import com.google.common.base.Predicates;
+
 import de.rincewind.interfaceapi.exceptions.EventPipelineException;
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
@@ -28,9 +30,7 @@ import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
 public class CraftElementMap extends CraftElement implements ElementMap {
 
-	private static final Predicate<Displayable> defaultFilter = (item) -> {
-		return true;
-	};
+	private static final Predicate<Displayable> defaultFilter = Predicates.alwaysTrue();
 
 	private Color color;
 
@@ -63,9 +63,9 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			if (event.isLeftClick() && !event.isShiftClick()) {
-				int index = this.convert(event.getPoint());
+				int index = this.convertFiltered(event.getPoint());
 
-				if (index < this.items.size()) {
+				if (index != -1 && this.selected != index) {
 					this.select(index);
 				}
 			}
@@ -367,12 +367,7 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 
 	@Override
 	public <T> T get(Point point) {
-		return this.get(point, this.page);
-	}
-
-	@Override
-	public <T> T get(Point point, int page) {
-		return this.get(this.convert(point), this.page);
+		return this.get(this.convertFiltered(point));
 	}
 
 	@Override
@@ -386,12 +381,6 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public <T extends Displayable> T getItem(Point point, int page) {
-		return (T) this.items.get(this.convert(point) + this.getFirstIndex(page));
-	}
-
-	@Override
 	public List<Displayable> getItems() {
 		return Collections.unmodifiableList(this.items);
 	}
@@ -399,25 +388,10 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 	@Override
 	protected Icon getIcon0(Point point) {
 		if (this.isEnabled()) {
-			Displayable item = null;
-			int index = this.convert(point) + this.getCountPerPage() * (this.page - 1);
-
-			Iterator<Displayable> iterator = this.items.iterator();
-
-			while (index != -1 && iterator.hasNext()) {
-				item = iterator.next();
-
-				if (this.filter.test(item)) {
-					index = index - 1;
-				}
-			}
+			int index = this.convertFiltered(point);
 
 			if (index != -1) {
-				item = null;
-			}
-
-			if (item != null) {
-				return item.getIcon();
+				return this.items.get(index).getIcon();
 			} else {
 				return this.color.asIcon();
 			}
@@ -464,8 +438,27 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 		}
 	}
 
-	private int convert(Point point) {
-		return this.getWidth() * point.getY() + point.getX();
+	private int convertFiltered(Point point) {
+		int index = this.getBounds().indexOf(point) + this.getCountPerPage() * (this.page - 1);
+		int resultIndex = 0;
+		
+		while (resultIndex != this.size()) {
+			if (this.filter.test(this.items.get(resultIndex))) {
+				index = index - 1;
+				
+				if (index == -1) {
+					break;
+				}
+			}
+
+			resultIndex = resultIndex + 1;
+		}
+
+		if (index != -1 || resultIndex == this.size()) {
+			return -1;
+		}
+
+		return resultIndex;
 	}
 
 	private class FlipListener implements InterfaceListener<ElementInteractEvent> {
@@ -486,7 +479,6 @@ public class CraftElementMap extends CraftElement implements ElementMap {
 				newPage = CraftElementMap.this.getMaxPage();
 			}
 
-			System.out.println("SET PAGE: " + newPage);
 			CraftElementMap.this.setPage(newPage);
 		}
 

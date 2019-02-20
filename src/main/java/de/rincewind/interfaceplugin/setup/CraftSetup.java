@@ -26,6 +26,11 @@ import de.rincewind.interfaceplugin.listener.InventoryCloseListener;
 
 public class CraftSetup implements Setup { // TODO cache maximized window
 
+	/**
+	 * For testing; disables the usage of {@link Bukkit#getScheduler()}
+	 */
+	static boolean delay_inventory_change = true;
+
 	private List<Window> windows;
 
 	private Player owner;
@@ -172,14 +177,14 @@ public class CraftSetup implements Setup { // TODO cache maximized window
 	@Override
 	public void maximizeAll() {
 		int start;
-		
+
 		if (!this.hasMaximizedWindow() && !this.windows.isEmpty()) {
 			this.maximize(this.windows.size() - 1);
 			start = this.windows.size() - 2;
 		} else {
 			start = this.windows.size() - 1;
 		}
-		
+
 		for (int index = start; index >= 0; index--) {
 			Window minimized = this.windows.get(index);
 
@@ -207,10 +212,14 @@ public class CraftSetup implements Setup { // TODO cache maximized window
 			Window background = this.windows.get(index);
 
 			if (background.getState() == WindowState.BACKGROUND) {
-				// Delay, because the interact listener doesn't detect clicks without
-				Bukkit.getScheduler().runTask(InterfacePlugin.instance, () -> {
+				if (CraftSetup.delay_inventory_change) {
+					// Delay, because the interact listener doesn't detect clicks without
+					Bukkit.getScheduler().runTask(InterfacePlugin.instance, () -> {
+						this.maximize(background);
+					});
+				} else {
 					this.maximize(background);
-				});
+				}
 
 				return;
 			}
