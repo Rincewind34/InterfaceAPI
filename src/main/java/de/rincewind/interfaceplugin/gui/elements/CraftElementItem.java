@@ -11,20 +11,37 @@ import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementDisplayable;
 
 public class CraftElementItem extends CraftElementDisplayable implements ElementItem {
-	
+
+	private String instructions;
+
 	public CraftElementItem(WindowEditor handle) {
 		super(handle);
 
 		this.getComponent(Element.WIDTH).setEnabled(true);
 		this.getComponent(Element.HEIGHT).setEnabled(true);
+		this.getComponent(Element.INSTRUCTIONS).setEnabled(true);
 	}
-	
+
+	@Override
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
+	}
+
+	@Override
+	public String getInstructions() {
+		return this.instructions;
+	}
+
+	@Override
+	protected String currentInstructions() {
+		return this.instructions;
+	}
+
 	/**
 	 * Just for testing
 	 */
 	void pushAsButton(Player player, ClickType type) {
-		this.getEventManager().callEvent(ElementInteractEvent.class,
-				new ElementInteractEvent(this, player, Point.NULL, type, null));
+		this.getEventManager().callEvent(ElementInteractEvent.class, new ElementInteractEvent(this, player, Point.NULL, type, null));
 	}
 
 }

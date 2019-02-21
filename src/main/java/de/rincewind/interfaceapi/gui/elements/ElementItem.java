@@ -11,4 +11,8 @@ import de.rincewind.interfaceapi.gui.elements.abstracts.ElementDisplayable;
  */
 public interface ElementItem extends ElementDisplayable {
 	
+	public abstract void setInstructions(String instructions);
+	
+	public abstract String getInstructions();
+	
 }

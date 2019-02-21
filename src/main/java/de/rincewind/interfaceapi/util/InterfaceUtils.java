@@ -9,6 +9,7 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
@@ -19,6 +20,33 @@ import de.rincewind.interfaceplugin.Validate;
 import net.minecraft.server.v1_13_R2.NBTTagCompound;
 
 public class InterfaceUtils {
+
+	public static String instructions(ClickType type, String instructions) {
+		Validate.notNull(type, "The type is null");
+
+		switch (type) {
+		case LEFT:
+			return "§7§lLK: §7§o" + instructions;
+		case MIDDLE:
+			return "§7§lMK: §7§o" + instructions;
+		case RIGHT:
+			return "§7§lRK: §7§o" + instructions;
+		case SHIFT_LEFT:
+			return "§7§lLK+S: §7§o" + instructions;
+		case SHIFT_RIGHT:
+			return "§7§lRK+S: §7§o" + instructions;
+		default:
+			throw new IllegalArgumentException(type.name());
+		}
+	}
+
+	public static String instructionsShift(String instructions) {
+		return "§7§l+S: §7§o" + instructions;
+	}
+
+	public static String instructionsInfo(String info) {
+		return "§7§o" + info;
+	}
 
 	public static Icon convertBarColor(BarColor color) {
 		Validate.notNull(color, "The color cannot be null");

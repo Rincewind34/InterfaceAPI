@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
+import org.bukkit.event.inventory.ClickType;
+
 import de.rincewind.interfaceapi.InterfaceAPI;
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
@@ -20,14 +22,15 @@ import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.gui.windows.util.Toolbar;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
+import de.rincewind.interfaceapi.util.InterfaceUtils;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
 public class CraftElementToolbar extends CraftElement implements ElementToolbar {
 
-	public static String INSTRUCTIONS_SELECT = "§7§lLK: §7§oDiesen Tab auswählen";
-	public static String INSTRUCTIONS_SELECTED = "§7§oTab ist ausgewählt";
-	public static String INSTRUCTIONS_UNSELECT = "§7§lLK: §7§oDiesen Tab abwählen";
+	public static String INSTRUCTIONS_SELECT = InterfaceUtils.instructions(ClickType.LEFT, "Diesen Tab auswählen");
+	public static String INSTRUCTIONS_SELECTED = InterfaceUtils.instructionsInfo("Tab ist ausgewählt");
+	public static String INSTRUCTIONS_UNSELECT = InterfaceUtils.instructions(ClickType.LEFT, "Diesen Tab abwählen");
 
 	private boolean canUnselect;
 

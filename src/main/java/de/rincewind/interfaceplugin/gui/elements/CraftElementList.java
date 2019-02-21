@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
+import org.bukkit.event.inventory.ClickType;
+
+import de.rincewind.interfaceapi.gui.components.ActionItem;
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.ElementList;
@@ -16,12 +19,19 @@ import de.rincewind.interfaceapi.gui.util.Direction;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
+import de.rincewind.interfaceapi.handling.element.CustomActionPerformEvent;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
+import de.rincewind.interfaceapi.util.InterfaceUtils;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
 public class CraftElementList extends CraftElement implements ElementList {
+
+	public static String INSTRUCTIONS_SELECT = InterfaceUtils.instructions(ClickType.LEFT, "Dieses Element auswählen");
+	public static String INSTRUCTIONS_UNSELECT = InterfaceUtils.instructions(ClickType.LEFT, "Dieses Element abwählen");
+	public static String INSTRUCTIONS_MULTISELECT_SET = InterfaceUtils.instructions(ClickType.RIGHT, "Multi-Selection setzen");
+	public static String INSTRUCTIONS_MULTISELECT_UNSET = InterfaceUtils.instructions(ClickType.RIGHT, "Multi-Selection entfernen");
 
 	private Color color;
 
@@ -49,14 +59,30 @@ public class CraftElementList extends CraftElement implements ElementList {
 		this.getComponent(Element.ENABLED).setEnabled(true);
 		this.getComponent(Element.WIDTH).setEnabled(true);
 		this.getComponent(Element.HEIGHT).setEnabled(true);
+		this.getComponent(Element.INSTRUCTIONS).setEnabled(true);
 
 		this.getEventManager().registerListener(ElementInteractEvent.class, (event) -> {
 			int index = event.getPoint().getCoord(this.type) + this.startIndex;
 
-			if (index == this.getSelectedIndex()) {
-				this.deselect();
-			} else if (index < this.getSize()) {
-				this.select(index);
+			if (index >= this.getSize()) {
+				return;
+			}
+
+			if (event.getClickType() == ClickType.LEFT) {
+				if (index == this.getSelectedIndex()) {
+					this.deselect();
+				} else if (index < this.getSize()) {
+					this.select(index);
+				}
+			} else if (event.getClickType() == ClickType.SHIFT_LEFT) {
+				Displayable item = this.items.get(index);
+
+				if (item instanceof ActionItem) {
+					((ActionItem) item).performCustomAction(() -> {
+						this.update();
+						this.getEventManager().callEvent(CustomActionPerformEvent.class, new CustomActionPerformEvent(this, item));
+					});
+				}
 			}
 		}).addAfter();
 	}
@@ -230,7 +256,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 		if (this.selected == index) {
 			return;
 		}
-		
+
 		if (index < -1 || index >= this.items.size()) {
 			throw new IllegalArgumentException("Index out of range: " + index);
 		}
@@ -314,11 +340,26 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 		if (index >= this.getSize()) {
 			return this.color.asIcon();
-		} else if (index == this.selected) {
-			return this.modifier.apply(this.items.get(index).getIcon());
-		} else {
-			return this.items.get(index).getIcon();
 		}
+
+		Displayable item = this.items.get(index);
+		Icon icon = item.getIcon();
+		String instructions;
+
+		if (index == this.selected) {
+			instructions = CraftElementList.INSTRUCTIONS_UNSELECT;
+
+			if (item instanceof ActionItem) {
+				instructions = instructions + "\\n"
+						+ InterfaceUtils.instructions(ClickType.SHIFT_LEFT, ((ActionItem) item).getCustomActionInstructions());
+			}
+
+			icon = this.modifier.apply(icon);
+		} else {
+			instructions = CraftElementList.INSTRUCTIONS_SELECT;
+		}
+
+		return this.updateInstructions(icon, instructions);
 	}
 
 	private class ActionHandler implements InterfaceListener<ElementInteractEvent> {
@@ -331,7 +372,15 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 		@Override
 		public void onAction(ElementInteractEvent event) {
-			CraftElementList.this.setStartIndex(CraftElementList.this.getStartIndex() + (this.value * (event.isShiftClick() ? 2 : 1)));
+			if (event.getClickType().isLeftClick()) {
+				CraftElementList.this.setStartIndex(CraftElementList.this.getStartIndex() + (this.value * (event.isShiftClick() ? 2 : 1)));
+			} else if (event.getClickType() == ClickType.RIGHT) {
+				int selected = CraftElementList.this.selected;
+
+				if (selected != -1) {
+					CraftElementList.this.setStartIndex(Math.max(0, selected - (CraftElementList.this.getWidth() / 2)));
+				}
+			}
 		}
 
 	}
@@ -339,13 +388,13 @@ public class CraftElementList extends CraftElement implements ElementList {
 	@Override
 	public void setMultiSelectionAllowed() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setMultiSelectionBound(int index) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

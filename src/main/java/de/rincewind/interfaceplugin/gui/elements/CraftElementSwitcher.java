@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.event.inventory.ClickType;
+
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.ElementSwitcher;
@@ -13,12 +15,15 @@ import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.SwitchChangeEvent;
+import de.rincewind.interfaceapi.util.InterfaceUtils;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElement;
 
 public class CraftElementSwitcher extends CraftElement implements ElementSwitcher {
 
-	public static String DEFAULT_INSTRUCTIONS = "§7§lLK: §7§oNächster Wert \\n§7§lRK: §7§oVorheriger Wert\\n§7§l+S: §7§oEinen Wert überspringen";
+	public static String DEFAULT_INSTRUCTIONS = InterfaceUtils.instructions(ClickType.LEFT, "Nächster Wert") + "\\n"
+			+ InterfaceUtils.instructions(ClickType.RIGHT, "Vorheriger Wert") + "\\n"
+			+ InterfaceUtils.instructionsShift("Einen Wert überspringen");
 
 	private int switchIndex;
 
@@ -95,7 +100,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 				this.switchIndex = 0;
 			}
 		}
-		
+
 		if (fireEvent) {
 			this.getEventManager().callEvent(SwitchChangeEvent.class, new SwitchChangeEvent(this, previousIndex, this.switchIndex));
 		}

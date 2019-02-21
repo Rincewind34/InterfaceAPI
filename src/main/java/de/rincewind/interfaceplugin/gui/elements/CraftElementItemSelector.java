@@ -14,13 +14,14 @@ import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.handling.element.ItemSelectEvent;
+import de.rincewind.interfaceapi.util.InterfaceUtils;
 import de.rincewind.interfaceplugin.gui.elements.abstracts.CraftElementDisplayable;
 
 public class CraftElementItemSelector extends CraftElementDisplayable implements ElementItemSelector {
 
-	public static String INSTRUCTIONS_SELECT = "§7§lLK: §7§oItem auf Courser auswählen";
-	public static String INSTRUCTIONS_UNSELECT = "§7§lLK: §7§oAusgwähltes Item abwählen";
-	public static String INSTRUCTIONS_COLLECT = "§7§lMK: §7§oAusgewähltes Item aufsammeln";
+	public static String INSTRUCTIONS_SELECT = InterfaceUtils.instructions(ClickType.LEFT, "Item auf Courser auswählen");
+	public static String INSTRUCTIONS_UNSELECT = InterfaceUtils.instructions(ClickType.LEFT, "Ausgwähltes Item abwählen");
+	public static String INSTRUCTIONS_COLLECT = InterfaceUtils.instructions(ClickType.MIDDLE, "Ausgewähltes Item aufsammeln");
 
 	public static UnaryOperator<ItemStack> cloneFunction = (item) -> {
 		return item.clone();

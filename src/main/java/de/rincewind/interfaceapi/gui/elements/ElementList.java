@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
+import org.bukkit.event.inventory.ClickType;
+
 import de.rincewind.interfaceapi.exceptions.APIException;
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
@@ -18,6 +20,7 @@ import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.interfaceapi.handling.element.ListChangeSelectEvent;
 import de.rincewind.interfaceapi.util.HeadsDatabase;
+import de.rincewind.interfaceapi.util.InterfaceUtils;
 
 /**
  * With this element you can create a list of entries and you are able to scroll
@@ -25,11 +28,10 @@ import de.rincewind.interfaceapi.util.HeadsDatabase;
  * 
  * The list can be resized, and perhaps the entries will be resized too. You can
  * only scroll in one direction through the list. This depends on the type of
- * this list. If the type is {@link Direction#HORIZONTAL} the entries will
- * be rendered laying from the right to the left (Horizontal), so they will be
- * added to the list from the top to the bottom. With
- * {@link Direction#VERTICAL} the same but you scroll the right to the
- * left.
+ * this list. If the type is {@link Direction#HORIZONTAL} the entries will be
+ * rendered laying from the right to the left (Horizontal), so they will be
+ * added to the list from the top to the bottom. With {@link Direction#VERTICAL}
+ * the same but you scroll the right to the left.
  * 
  * This element contains its own color. This color will be displayed, when there
  * are not enough entries to fill the area of the list, or when you scroll to
@@ -84,7 +86,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void addItem(int index, Displayable item);
 
 	public abstract <T extends Enum<?>> void addItems(Class<T> cls);
-	
+
 	public abstract void removeSelected();
 
 	/**
@@ -100,7 +102,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void removeItem(Displayable item);
 
 	public abstract void clear();
-	
+
 	public abstract void setMultiSelectionAllowed();
 
 	/**
@@ -137,9 +139,9 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void select(int index);
 
 	public abstract void select(int index, boolean fireEvent);
-	
+
 	public abstract void select(Object item);
-	
+
 	public abstract void select(Object item, boolean fireEvent);
 
 	public abstract void deselect(boolean fireEvent);
@@ -172,9 +174,9 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 *             if the button is <code>null</code>
 	 */
 	public abstract void addScroler(Element btn, int value);
-	
+
 	public abstract void setMultiSelectionBound(int index);
-	
+
 	public abstract boolean isMultiSelectionAllowed();
 
 	/**
@@ -192,7 +194,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 * @return the currently selected index of this element
 	 */
 	public abstract int getSelectedIndex();
-	
+
 	public abstract int getMultiSelectionBound();
 
 	/**
@@ -206,19 +208,19 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract Displayable getSelectedItem();
 
 	public abstract Displayable getItem(int index);
-	
+
 	public abstract UnaryOperator<Icon> getSelectModifier();
-	
+
 	public abstract UnaryOperator<Icon> getMultiSelectModifier();
-	
+
 	public abstract <T> T getSelected();
 
 	public abstract <T> T get(int index);
-	
+
 	public abstract <T> List<T> getMultiSelected();
-	
+
 	public abstract List<Displayable> getItems();
-	
+
 	@Override
 	public default void select() {
 		if (this.getSize() != 0) {
@@ -236,12 +238,15 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public default int getSize() {
 		return this.getItems().size();
 	}
-	
+
 	public default ElementItem newScroller(ElementCreator creator, Point point, int value) {
 		ElementItem item = creator.newItem();
 		item.setPoint(point);
 		item.setIcon(value < 0 ? HeadsDatabase.arrowWoodLeft() : HeadsDatabase.arrowWoodRight());
-		
+		item.setInstructions(InterfaceUtils.instructions(ClickType.LEFT, "Durch die Liste scrollen") + "\\n"
+				+ InterfaceUtils.instructionsShift("Schneller scrollen") + "\\n"
+				+ InterfaceUtils.instructions(ClickType.RIGHT, "Zu ausgewähltem Element springen"));
+
 		this.addScroler(item, value);
 		return item;
 	}
@@ -253,7 +258,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public default <T> T get(Class<T> cls, int index) {
 		return this.get(index);
 	}
-	
+
 	public default <T extends Displayable> List<T> getItems(Class<T> cls) {
 		return this.getItems().stream().map(cls::cast).collect(Collectors.toList());
 	}
