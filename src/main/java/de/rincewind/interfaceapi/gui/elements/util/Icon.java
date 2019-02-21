@@ -53,14 +53,16 @@ public final class Icon implements Displayable, Cloneable {
 	}
 
 	public Icon(Material type, String name) {
-		this.item = ItemLibrary.refactor().renameItem(new ItemStack(Material.BEDROCK), "Blank icon");
+		if (type == Material.AIR) {
+			throw new IllegalArgumentException("Icon type cannot be Material#AIR");
+		}
+		
+		this.item = ItemLibrary.refactor().renameItem(new ItemStack(type), name);
 
 		this.amount = 1;
-		this.name = "§7";
-		this.showInfo = true;
+		this.name = name;
 		this.lore = Lore.create();
-		this.typecast(type);
-		this.rename(name);
+		this.type = type;
 	}
 
 	public Icon(ItemStack item) {
@@ -69,7 +71,7 @@ public final class Icon implements Displayable, Cloneable {
 		}
 
 		if (item.getType() == Material.AIR) {
-			throw new IllegalArgumentException("Itemtype cannot be Material#AIR");
+			throw new IllegalArgumentException("Icon type cannot be Material#AIR");
 		}
 
 		this.item = item.clone();
@@ -302,7 +304,10 @@ public final class Icon implements Displayable, Cloneable {
 
 		if (!this.dirty) {
 			if (this.lore != null && lore.isDirty()) {
-				return this.item = ItemLibrary.refactor().loreItem(this.item, lore.toList());
+				ItemMeta meta = this.item.getItemMeta();
+				meta.setLore(lore.toList());
+				this.item.setItemMeta(meta);
+				return this.item;
 			} else {
 				return this.item;
 			}
@@ -318,27 +323,27 @@ public final class Icon implements Displayable, Cloneable {
 			
 			if (meta instanceof Damageable) {
 				((Damageable) meta).setDamage(this.damage);
-				this.item.setItemMeta(meta);
 			} else if (this.damage != 0) {
 				// TODO handle exception
 			}
 
 			if (this.name != null) {
-				this.item = ItemLibrary.refactor().renameItem(this.item, this.name);
+				meta.setDisplayName(this.name);
 			}
 
 			if (this.lore != null) {
-				this.item = ItemLibrary.refactor().loreItem(this.item, lore.toList());
+				meta.setLore(lore.asList());
 			}
 
 			if (!this.showInfo) {
-				this.item = ItemLibrary.refactor().addAllFlags(this.item);
+				meta.addItemFlags(ItemFlag.values());
 			}
 
 			if (this.enchantet) {
-				this.item = ItemLibrary.refactor().enchantItem(this.item, Enchantment.WATER_WORKER, 1, false);
+				meta.addEnchant(Enchantment.WATER_WORKER, 1, false);
 			}
 
+			this.item.setItemMeta(meta);
 			this.dirty = false;
 			return this.item;
 		}

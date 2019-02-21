@@ -111,7 +111,7 @@ public class CraftElementListTest {
 		this.element.addItem(1, icon7);
 
 		Assert.assertEquals(4, this.element.getSelectedIndex());
-		Assert.assertEquals(icon4, this.element.getSelectedItem());
+		Assert.assertSame(icon4, this.element.getSelectedItem());
 	}
 
 	@Test
@@ -196,9 +196,12 @@ public class CraftElementListTest {
 		this.element.addItems(GameMode.class);
 
 		Assert.assertEquals(4, this.element.getSize());
-		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.CREATIVE), this.element.getIcon(Point.of(0, 0)));
-		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.SURVIVAL), this.element.getIcon(Point.of(1, 0)));
-		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.ADVENTURE), this.element.getIcon(Point.of(2, 0)));
+		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.CREATIVE),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.SURVIVAL),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.ADVENTURE),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
 	}
 
 	@Test
@@ -289,7 +292,8 @@ public class CraftElementListTest {
 		this.element.addItem(icon);
 		this.element.select(0);
 
-		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon), this.element.getIcon(Point.of(0, 0)));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(new Icon(Material.APPLE)),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
 		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(1, 0)));
 		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(2, 0)));
 	}
@@ -300,13 +304,14 @@ public class CraftElementListTest {
 		Icon icon2 = new Icon(Material.STONE);
 		Icon icon3 = new Icon(Material.INK_SAC);
 
-		this.element.addItem(icon1);
+		this.element.addItem(icon1.clone());
 		this.element.addItem(icon2);
 		this.element.addItem(icon3);
 		this.element.addItem(new Icon(Material.DIRT));
 		this.element.select(0);
 
-		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon1), this.element.getIcon(Point.of(0, 0)));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon1),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
 		Assert.assertSame(icon2, this.element.getIcon(Point.of(1, 0)));
 		Assert.assertSame(icon3, this.element.getIcon(Point.of(2, 0)));
 	}
@@ -317,9 +322,12 @@ public class CraftElementListTest {
 		this.element.select(0);
 		this.element.select(-1);
 
-		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.CREATIVE), this.element.getIcon(Point.of(0, 0)));
-		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.SURVIVAL), this.element.getIcon(Point.of(1, 0)));
-		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.ADVENTURE), this.element.getIcon(Point.of(2, 0)));
+		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.CREATIVE),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.SURVIVAL),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.ADVENTURE),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -340,9 +348,12 @@ public class CraftElementListTest {
 		this.element.select(0);
 		this.element.deselect();
 
-		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.CREATIVE), this.element.getIcon(Point.of(0, 0)));
-		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.SURVIVAL), this.element.getIcon(Point.of(1, 0)));
-		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.ADVENTURE), this.element.getIcon(Point.of(2, 0)));
+		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.CREATIVE),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.SURVIVAL),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(InterfaceUtils.convertGameMode(GameMode.ADVENTURE),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
 	}
 
 	@Test
@@ -351,52 +362,58 @@ public class CraftElementListTest {
 		Icon icon2 = new Icon(Material.STONE);
 		Icon icon3 = new Icon(Material.INK_SAC);
 
-		this.element.addItem(icon1);
-		this.element.addItem(icon2);
-		this.element.addItem(icon3);
+		this.element.addItem(icon1.clone());
+		this.element.addItem(icon2.clone());
+		this.element.addItem(icon3.clone());
 		this.element.addItem(new Icon(Material.DIRT));
 		this.element.select(0);
 		this.element.select(2);
 
-		Assert.assertSame(icon1, this.element.getIcon(Point.of(0, 0)));
-		Assert.assertSame(icon2, this.element.getIcon(Point.of(1, 0)));
-		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon3), this.element.getIcon(Point.of(2, 0)));
+		Assert.assertEquals(icon1, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(icon2, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon3),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
 
 		this.element.deselect();
 
-		Assert.assertSame(icon1, this.element.getIcon(Point.of(0, 0)));
-		Assert.assertSame(icon2, this.element.getIcon(Point.of(1, 0)));
-		Assert.assertSame(icon3, this.element.getIcon(Point.of(2, 0)));
+		Assert.assertEquals(icon1, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(icon2, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(icon3, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
 
 		this.element.select(1);
 
-		Assert.assertSame(icon1, this.element.getIcon(Point.of(0, 0)));
-		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon2), this.element.getIcon(Point.of(1, 0)));
-		Assert.assertSame(icon3, this.element.getIcon(Point.of(2, 0)));
+		Assert.assertEquals(icon1, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon2),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(icon3, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
 	}
 
 	@Test
 	public void testSetType_Vertical() {
 		Icon icon = new Icon(Material.APPLE);
 
-		this.element.addItem(icon);
+		this.element.addItem(icon.clone());
 		this.element.setType(Direction.VERTICAL);
 
-		Assert.assertSame(icon, this.element.getIcon(Point.of(0, 0)));
-		Assert.assertSame(icon, this.element.getIcon(Point.of(1, 0)));
-		Assert.assertSame(icon, this.element.getIcon(Point.of(2, 0)));
+		Assert.assertNotSame(icon, this.element.getIcon(Point.of(0, 0))); // Icon was cloned
+		Assert.assertEquals(icon, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(icon, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(icon, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
 
 		this.element.select(0);
 
-		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon), this.element.getIcon(Point.of(0, 0)));
-		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon), this.element.getIcon(Point.of(1, 0)));
-		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon), this.element.getIcon(Point.of(2, 0)));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(SelectModifiers.MAGENTA_GLASS.apply(icon),
+				InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
 
 		this.element.deselect();
 
-		Assert.assertSame(icon, this.element.getIcon(Point.of(0, 0)));
-		Assert.assertSame(icon, this.element.getIcon(Point.of(1, 0)));
-		Assert.assertSame(icon, this.element.getIcon(Point.of(2, 0)));
+		Assert.assertEquals(icon, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(icon, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(icon, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
 	}
 
 	@Test(expected = Success.class)
