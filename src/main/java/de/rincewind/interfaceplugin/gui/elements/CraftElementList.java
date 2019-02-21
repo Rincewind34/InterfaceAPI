@@ -348,15 +348,14 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 		if (index == this.selected) {
 			instructions = CraftElementList.INSTRUCTIONS_UNSELECT;
-
-			if (item instanceof ActionItem) {
-				instructions = instructions + "\\n"
-						+ InterfaceUtils.instructions(ClickType.SHIFT_LEFT, ((ActionItem) item).getCustomActionInstructions());
-			}
-
 			icon = this.modifier.apply(icon);
 		} else {
 			instructions = CraftElementList.INSTRUCTIONS_SELECT;
+		}
+
+		if (item instanceof ActionItem) {
+			instructions = instructions + "\\n"
+					+ InterfaceUtils.instructions(ClickType.SHIFT_LEFT, ((ActionItem) item).getCustomActionInstructions());
 		}
 
 		return this.updateInstructions(icon, instructions);
