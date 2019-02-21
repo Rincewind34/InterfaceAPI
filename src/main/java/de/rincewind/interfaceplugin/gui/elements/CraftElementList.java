@@ -78,7 +78,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 				Displayable item = this.items.get(index);
 
 				if (item instanceof ActionItem) {
-					((ActionItem) item).performCustomAction(() -> {
+					((ActionItem) item).performCustomAction(event.getPlayer(), () -> {
 						this.update();
 						this.getEventManager().callEvent(CustomActionPerformEvent.class, new CustomActionPerformEvent(this, item));
 					});
