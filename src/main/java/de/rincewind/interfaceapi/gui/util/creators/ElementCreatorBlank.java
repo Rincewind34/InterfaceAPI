@@ -69,7 +69,7 @@ public class ElementCreatorBlank implements ElementCreator {
 					Constructor<T> target = elementCls.getConstructor(constructor.getParameterTypes());
 					target.setAccessible(true);
 
-					T element = target.newInstance(target.getParameterTypes()[0].cast(this.handle));
+					T element = target.newInstance(target.getParameterTypes()[0].cast(this.handle), parameters);
 					this.handle.addElement(element);
 					return element;
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException exception) {

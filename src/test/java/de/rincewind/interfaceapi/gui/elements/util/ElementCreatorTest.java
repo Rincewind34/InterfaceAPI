@@ -66,6 +66,11 @@ public class ElementCreatorTest {
 		this.window.elementCreator().newElement(TestElement3.class);
 	}
 	
+	@Test
+	public void testValidConstructor_Payload() {
+		this.window.elementCreator().newElement(TestElement1.class, new Object());
+	}
+	
 	private static class TestElement1 extends CraftElement {
 
 		public TestElement1() {
