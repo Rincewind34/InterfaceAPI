@@ -242,7 +242,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public default ElementItem newScroller(ElementCreator creator, Point point, int value) {
 		ElementItem item = creator.newItem();
 		item.setPoint(point);
-		item.setIcon(value < 0 ? HeadsDatabase.arrowWoodLeft() : HeadsDatabase.arrowWoodRight());
+		item.setIcon((value < 0 ? HeadsDatabase.arrowWoodLeft() : HeadsDatabase.arrowWoodRight()).rename("§7Scrollen"));
 		item.setInstructions(InterfaceUtils.instructions(ClickType.LEFT, "Durch die Liste scrollen") + "\\n"
 				+ InterfaceUtils.instructionsShift("Schneller scrollen") + "\\n"
 				+ InterfaceUtils.instructions(ClickType.RIGHT, "Zu ausgewähltem Element springen"));
