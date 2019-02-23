@@ -68,6 +68,16 @@ public class ElementCreatorTest {
 	
 	@Test
 	public void testValidConstructor_Payload() {
+		this.window.elementCreator().newElement(TestElement5.class, new Object());
+	}
+	
+	@Test
+	public void testValidConstructor_Payload_SubClass() {
+		this.window.elementCreator().newElement(TestElement5.class, new String());
+	}
+	
+	@Test
+	public void testValidConstructor_Payload_Optional() {
 		this.window.elementCreator().newElement(TestElement1.class, new Object());
 	}
 	
@@ -128,6 +138,19 @@ public class ElementCreatorTest {
 			super(handle);
 			
 			throw new RuntimeException();
+		}
+
+		@Override
+		protected Icon getIcon0(Point point) {
+			return new Icon(Material.APPLE);
+		}
+		
+	}
+	
+	private static class TestElement5 extends CraftElement {
+
+		public TestElement5(WindowEditor handle, Object payload) {
+			super(handle);
 		}
 
 		@Override

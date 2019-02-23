@@ -51,29 +51,38 @@ public class ElementCreatorBlank implements ElementCreator {
 		}
 
 		for (Constructor<?> constructor : elementCls.getDeclaredConstructors()) {
-			if (constructor.getParameterTypes().length == (1 + parameters.length) && WindowEditor.class.isAssignableFrom(constructor.getParameterTypes()[0])) {
+			if (constructor.getParameterTypes().length == (1 + parameters.length)
+					&& WindowEditor.class.isAssignableFrom(constructor.getParameterTypes()[0])) {
 				boolean invalid = false;
-				
+
 				for (int i = 0; i < parameters.length; i++) {
-					if (!parameters[i].getClass().isAssignableFrom(constructor.getParameterTypes()[i + 1])) {
+					if (!constructor.getParameterTypes()[i + 1].isInstance(parameters[i])) {
 						invalid = true;
 						break;
 					}
 				}
-				
+
 				if (invalid) {
 					continue;
 				}
-				
+
 				try {
 					Constructor<T> target = elementCls.getConstructor(constructor.getParameterTypes());
 					target.setAccessible(true);
 
-					T element = target.newInstance(target.getParameterTypes()[0].cast(this.handle), parameters);
+					Object window = target.getParameterTypes()[0].cast(this.handle);
+					Object[] finalParameters = new Object[1 + parameters.length];
+					finalParameters[0] = window;
+
+					if (parameters.length > 0) {
+						System.arraycopy(parameters, 0, finalParameters, 1, parameters.length);
+					}
+
+					T element = target.newInstance(finalParameters);
 					this.handle.addElement(element);
 					return element;
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException exception) {
-					assert false : "Should be unreachable: " + exception.getMessage();
+					assert false : "Should be unreachable: (" + exception.getClass().getSimpleName() + ") " + exception.getMessage();
 					return null;
 				} catch (InstantiationException exception) {
 					assert false : "Abstract class should not have come here: " + exception.getMessage();
@@ -81,7 +90,8 @@ public class ElementCreatorBlank implements ElementCreator {
 				} catch (InvocationTargetException exception) {
 					throw new ElementCreationException(exception);
 				} catch (ClassCastException exception) {
-					throw new ElementCreationException("The element " + elementCls + " is not allowed for handler " + this.handle.getClass());
+					throw new ElementCreationException(
+							"The element " + elementCls + " is not allowed for handler " + this.handle.getClass());
 				}
 			}
 		}
@@ -158,14 +168,14 @@ public class ElementCreatorBlank implements ElementCreator {
 		this.handle.addElement(element);
 		return element;
 	}
-	
+
 	@Override
 	public ElementToolbar newToolbar() {
 		ElementToolbar element = new CraftElementToolbar(this.handle);
 		this.handle.addElement(element);
 		return element;
 	}
-	
+
 	@Override
 	public ElementPager newPager() {
 		ElementPager element = new CraftElementPager(this.handle);
