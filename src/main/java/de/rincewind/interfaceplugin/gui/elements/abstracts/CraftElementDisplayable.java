@@ -1,5 +1,7 @@
 package de.rincewind.interfaceplugin.gui.elements.abstracts;
 
+import java.util.function.UnaryOperator;
+
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
@@ -45,6 +47,11 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 		if (!this.isEnabled()) {
 			this.update();
 		}
+	}
+
+	@Override
+	public void setDisabledIconModified(UnaryOperator<Icon> modifier) {
+		this.setDisabledIcon(modifier.apply(this.getIcon()));
 	}
 
 	@Override
