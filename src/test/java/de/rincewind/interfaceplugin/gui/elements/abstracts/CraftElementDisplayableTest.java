@@ -3,6 +3,7 @@ package de.rincewind.interfaceplugin.gui.elements.abstracts;
 import org.bukkit.Material;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
@@ -11,11 +12,17 @@ import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
+import de.rincewind.test.TestServer;
 import de.rincewind.test.TestWindowSizeable;
 
 public class CraftElementDisplayableTest {
 
 	private TestElement element;
+
+	@BeforeClass
+	public static void initInterfaceAPI() {
+		TestServer.setup();
+	}
 
 	@Before
 	public void initElement() {
@@ -82,6 +89,32 @@ public class CraftElementDisplayableTest {
 		Assert.assertSame(disabledIcon, this.element.getDisabledIcon());
 		Assert.assertSame(disabledIcon, this.element.getIcon(Point.NULL));
 		Assert.assertEquals("EndDisabled", this.element.getIcon(Point.NULL).getLore().getEnd());
+
+		this.element.setComponentValue(Element.ENABLED, true);
+
+		Assert.assertSame(icon, this.element.getIcon());
+		Assert.assertSame(disabledIcon, this.element.getDisabledIcon());
+		Assert.assertSame(icon, this.element.getIcon(Point.NULL));
+		Assert.assertEquals("End", this.element.getIcon(Point.NULL).getLore().getEnd());
+	}
+
+	@Test
+	public void testDisabledIcon_Modifier() {
+		Icon icon = new Icon(Material.APPLE);
+
+		this.element.setIcon(icon);
+		this.element.setDisabledIconModified(DisplayableDisabled.default_modifier);
+		this.element.setComponentValue(Element.ENABLED, false);
+
+		Assert.assertSame(icon, this.element.getIcon());
+		Assert.assertNotSame(icon, this.element.getDisabledIcon());
+		Assert.assertNotSame(icon, this.element.getIcon(Point.NULL));
+		Assert.assertEquals(DisplayableDisabled.default_modifier.apply(icon.clone()), this.element.getIcon(Point.NULL));
+
+		this.element.setComponentValue(Element.ENABLED, true);
+
+		Assert.assertSame(icon, this.element.getIcon());
+		Assert.assertSame(icon, this.element.getIcon(Point.NULL));
 	}
 
 	@Test

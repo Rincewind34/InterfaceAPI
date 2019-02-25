@@ -51,7 +51,7 @@ public abstract class CraftElementDisplayable extends CraftElement implements El
 
 	@Override
 	public void setDisabledIconModified(UnaryOperator<Icon> modifier) {
-		this.setDisabledIcon(modifier.apply(this.getIcon()));
+		this.setDisabledIcon(modifier.apply(this.display.hasStaticIcon() ? this.display.getIcon().clone() : this.display.getIcon()));
 	}
 
 	@Override

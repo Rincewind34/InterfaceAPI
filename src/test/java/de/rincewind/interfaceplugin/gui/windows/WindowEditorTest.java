@@ -273,6 +273,22 @@ public class WindowEditorTest {
 		Assert.assertEquals(Sets.newHashSet(Point.of(4, 2), Point.of(5, 2), Point.of(7, 2)), this.window.getOccupiedPoints(item3));
 	}
 
+	@Test
+	public void testDisabledElement() {
+		ElementItem item = this.window.elementCreator().newItem();
+		item.setIcon(new Icon(Material.APPLE));
+		item.setDisabledIcon(new Icon(Material.STICK));
+		item.setComponentValue(Element.ENABLED, false);
+
+		Assert.assertEquals(new Icon(Material.STICK), this.window.getIcon(Point.of(0, 0)));
+		this.assertIcons(null, Point.of(0, 0));
+
+		item.setComponentValue(Element.ENABLED, true);
+		
+		Assert.assertEquals(new Icon(Material.APPLE), this.window.getIcon(Point.of(0, 0)));
+		this.assertIcons(null, Point.of(0, 0));
+	}
+
 	private void assertIcons(Icon icon, Point... occupiedSlots) {
 		List<Point> list = Arrays.asList(occupiedSlots);
 
