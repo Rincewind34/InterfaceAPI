@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.rincewind</groupId>
 	<artifactId>interfaceapi</artifactId>
-	<version>3.0.20</version>
+	<version>3.0.21-SNAPSHOT</version>
 	<name>InterfaceAPI</name>
 
 	<properties>
@@ -95,7 +95,7 @@
 	<scm>
 		<connection>scm:git:gitlab@dev.thejourneyofaerion.net:tjoa/apis/InterfaceAPI.git</connection>
 		<developerConnection>scm:git:gitlab@dev.thejourneyofaerion.net:tjoa/apis/InterfaceAPI.git</developerConnection>
-		<tag>v3.0.20</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<build>
