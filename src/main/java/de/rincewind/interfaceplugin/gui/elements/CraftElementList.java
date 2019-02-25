@@ -147,6 +147,19 @@ public class CraftElementList extends CraftElement implements ElementList {
 			this.items.add(Displayable.of(enumInstance));
 		}
 	}
+	
+	@Override
+	public void swampItems(int index1, int index2) {
+		Collections.swap(this.items, index1, index2);
+		
+		if (this.selected == index1) {
+			this.selected = index2;
+		} else if (this.selected == index2) {
+			this.selected = index1;
+		}
+		
+		this.update();
+	}
 
 	@Override
 	public void removeSelected() {
@@ -154,21 +167,36 @@ public class CraftElementList extends CraftElement implements ElementList {
 			throw new IllegalStateException("No item selected");
 		}
 
-		this.items.remove(this.selected);
-		this.deselect();
+		this.removeItem(this.selected);
+	}
+	
+	@Override
+	public void removeItem(int index) {
+		if (index < 0 || index >= this.items.size()) {
+			throw new IllegalArgumentException("Index out of bounds: " + index);
+		}
+		
+		if (this.selected != -1 && this.selected > index) {
+			this.selected--;
+		} else if (this.selected == index) {
+			this.deselect();
+		}
+		
+		this.items.remove(index);
 		this.update();
 	}
 
 	@Override
 	public void removeItem(Displayable item) {
-		Validate.notNull(item, "The item cannot be null");
-
-		if (this.getSelectedItem() == item) {
-			this.deselect();
+		Validate.notNull(item, "The item is null");
+		
+		int index = this.items.indexOf(item);
+		
+		if (index == -1) {
+			throw new IllegalArgumentException("The item is not in this list");
 		}
-
-		this.items.remove(item);
-		this.update();
+		
+		this.removeItem(index);
 	}
 
 	@Override

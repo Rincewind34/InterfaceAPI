@@ -86,6 +86,8 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void addItem(int index, Displayable item);
 
 	public abstract <T extends Enum<?>> void addItems(Class<T> cls);
+	
+	public abstract void swampItems(int index1, int index2);
 
 	public abstract void removeSelected();
 
@@ -100,6 +102,8 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 *             if the item is <code>null</code>
 	 */
 	public abstract void removeItem(Displayable item);
+	
+	public abstract void removeItem(int index);
 
 	public abstract void clear();
 

@@ -483,4 +483,137 @@ public class CraftElementListTest {
 				new ElementInteractEvent(element, new TestPlayer("test"), Point.of(0, 0), ClickType.SHIFT_LEFT, null));
 	}
 
+	@Test
+	public void testRemoveItem_One() {
+		Icon icon = new Icon(Material.APPLE);
+
+		this.element.addItem(icon);
+		this.element.removeItem(icon);
+
+		Assert.assertEquals(0, this.element.getSize());
+		Assert.assertEquals(-1, this.element.getSelectedIndex());
+		Assert.assertNull(this.element.getSelected());
+
+		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(0, 0)));
+		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(1, 0)));
+		Assert.assertEquals(Color.TRANSLUCENT.asIcon(), this.element.getIcon(Point.of(2, 0)));
+	}
+
+	@Test
+	public void testRemoveItem_Multiple() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.STONE);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		
+		this.element.removeItem(icon2);
+
+		Assert.assertEquals(3, this.element.getSize());
+		Assert.assertSame(icon1, this.element.getIcon(Point.of(0, 0)));
+		Assert.assertSame(icon3, this.element.getIcon(Point.of(1, 0)));
+		Assert.assertSame(icon4, this.element.getIcon(Point.of(2, 0)));
+	}
+
+	@Test
+	public void testRemoveItem_BeforeSelected() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+		Icon icon7 = new Icon(Material.GREEN_BED);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+		this.element.addItem(icon7);
+		this.element.select(3);
+
+		this.element.removeItem(icon2);
+
+		Assert.assertEquals(2, this.element.getSelectedIndex());
+		Assert.assertSame(icon4, this.element.getSelectedItem());
+	}
+
+	@Test
+	public void testRemoveItem_DirectBeforeSelected() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+		Icon icon7 = new Icon(Material.GREEN_BED);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+		this.element.addItem(icon7);
+		this.element.select(3);
+
+		this.element.removeItem(icon3);
+
+		Assert.assertEquals(2, this.element.getSelectedIndex());
+		Assert.assertEquals(icon4, this.element.getSelectedItem());
+	}
+
+	@Test
+	public void testRemoveItem_AtSelected() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+		Icon icon7 = new Icon(Material.GREEN_BED);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+		this.element.addItem(icon7);
+		this.element.select(4);
+
+		this.element.removeItem(icon5);
+		
+		Assert.assertFalse(this.element.isSelected());
+	}
+
+	@Test
+	public void testRemoveItem_AfterSelected() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+		this.element.select(3);
+
+		this.element.removeItem(icon5);
+
+		Assert.assertEquals(3, this.element.getSelectedIndex());
+		Assert.assertEquals(icon4, this.element.getSelectedItem());
+	}
+
 }
