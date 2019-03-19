@@ -81,6 +81,14 @@ public class CraftElementList extends CraftElement implements ElementList {
 				} else if (index < this.getSize()) {
 					this.select(index);
 				}
+			} else if (event.getClickType() == ClickType.RIGHT) {
+				if (this.isSelected() && index != this.getSelectedIndex()) {
+					if (index == this.multiSelected) {
+						this.setMultiSelectionBound(-1);
+					} else if (index < this.getSize()) {
+						this.setMultiSelectionBound(index);
+					}
+				}
 			} else if (event.getClickType() == ClickType.SHIFT_LEFT) {
 				Displayable item = this.items.get(index);
 
@@ -92,6 +100,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 				}
 			}
 		}).addAfter();
+
 	}
 
 	@Override
@@ -512,7 +521,7 @@ public class CraftElementList extends CraftElement implements ElementList {
 			if (this.isSelected(index)) {
 				icon = this.multiModifier.apply(icon);
 			}
-			
+
 			instructions = CraftElementList.INSTRUCTIONS_SELECT;
 
 			if (this.multiSelectionAllowed && this.isSelected()) {
