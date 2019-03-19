@@ -33,9 +33,12 @@ public class CraftElementList extends CraftElement implements ElementList {
 	public static String INSTRUCTIONS_MULTISELECT_SET = InterfaceUtils.instructions(ClickType.RIGHT, "Multi-Selection setzen");
 	public static String INSTRUCTIONS_MULTISELECT_UNSET = InterfaceUtils.instructions(ClickType.RIGHT, "Multi-Selection entfernen");
 
+	private boolean multiSelectionAllowed;
+
 	private Color color;
 
 	private int selected;
+	private int multiSelected;
 	private int startIndex;
 
 	private Displayable disabledIcon;
@@ -43,16 +46,20 @@ public class CraftElementList extends CraftElement implements ElementList {
 	private Direction type;
 
 	private List<Displayable> items;
+
 	private UnaryOperator<Icon> modifier;
+	private UnaryOperator<Icon> multiModifier;
 
 	public CraftElementList(WindowEditor handle) {
 		super(handle);
 
 		this.selected = -1;
+		this.multiSelected = -1;
 		this.startIndex = 0;
 		this.type = Direction.HORIZONTAL;
 		this.color = Color.TRANSLUCENT;
 		this.modifier = SelectModifiers.MAGENTA_GLASS;
+		this.multiModifier = SelectModifiers.PINK_GLASS;
 		this.disabledIcon = DisplayableDisabled.default_icon;
 		this.items = new ArrayList<>();
 
@@ -98,6 +105,8 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void setColor(Color color) {
+		Validate.notNull(color, "The color cannot be null!");
+
 		this.color = color;
 	}
 
@@ -106,16 +115,26 @@ public class CraftElementList extends CraftElement implements ElementList {
 		Validate.notNull(modifier, "The modifier cannot be null!");
 
 		this.modifier = modifier;
+
+		if (this.isSelected()) {
+			this.update();
+		}
 	}
 
 	@Override
-	public Color getColor() {
-		return this.color;
+	public void setMultiSelectModifyer(UnaryOperator<Icon> modifier) {
+		Validate.notNull(modifier, "The modifier is null");
+
+		this.modifier = modifier;
+
+		if (this.multiSelected != -1) {
+			this.update();
+		}
 	}
 
 	@Override
-	public Icon getDisabledIcon() {
-		return this.disabledIcon.getIcon();
+	public void setMultiSelectionAllowed(boolean value) {
+		this.multiSelectionAllowed = value;
 	}
 
 	@Override
@@ -147,17 +166,23 @@ public class CraftElementList extends CraftElement implements ElementList {
 			this.items.add(Displayable.of(enumInstance));
 		}
 	}
-	
+
 	@Override
 	public void swampItems(int index1, int index2) {
 		Collections.swap(this.items, index1, index2);
-		
+
 		if (this.selected == index1) {
 			this.selected = index2;
 		} else if (this.selected == index2) {
 			this.selected = index1;
 		}
-		
+
+		if (this.multiSelected == index1) {
+			this.multiSelected = index2;
+		} else if (this.multiSelected == index2) {
+			this.multiSelected = index1;
+		}
+
 		this.update();
 	}
 
@@ -169,19 +194,23 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 		this.removeItem(this.selected);
 	}
-	
+
 	@Override
 	public void removeItem(int index) {
 		if (index < 0 || index >= this.items.size()) {
 			throw new IllegalArgumentException("Index out of bounds: " + index);
 		}
-		
+
 		if (this.selected != -1 && this.selected > index) {
 			this.selected--;
 		} else if (this.selected == index) {
 			this.deselect();
 		}
-		
+
+		if (this.multiSelected != -1 && this.multiSelected >= index) {
+			this.multiSelected--;
+		}
+
 		this.items.remove(index);
 		this.update();
 	}
@@ -189,13 +218,13 @@ public class CraftElementList extends CraftElement implements ElementList {
 	@Override
 	public void removeItem(Displayable item) {
 		Validate.notNull(item, "The item is null");
-		
+
 		int index = this.items.indexOf(item);
-		
+
 		if (index == -1) {
 			throw new IllegalArgumentException("The item is not in this list");
 		}
-		
+
 		this.removeItem(index);
 	}
 
@@ -236,26 +265,6 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 
 	@Override
-	public boolean isSelected() {
-		return this.selected != -1;
-	}
-
-	@Override
-	public boolean canSelect() {
-		return this.getSize() > 0;
-	}
-
-	@Override
-	public int getStartIndex() {
-		return this.startIndex;
-	}
-
-	@Override
-	public int getSelectedIndex() {
-		return this.selected;
-	}
-
-	@Override
 	public void selectLast() {
 		this.select(this.items.size() - 1, true);
 	}
@@ -267,10 +276,14 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void select(Object item, boolean fireEvent) {
+		Validate.notNull(item, "The item is null");
+
 		int index = this.items.indexOf(item);
 
 		if (index != -1) {
 			this.select(this.items.indexOf(item), fireEvent);
+		} else {
+			throw new IllegalArgumentException("The item is not in this list");
 		}
 	}
 
@@ -289,6 +302,10 @@ public class CraftElementList extends CraftElement implements ElementList {
 			throw new IllegalArgumentException("Index out of range: " + index);
 		}
 
+		if (this.multiSelected == index) {
+			this.multiSelected = -1;
+		}
+
 		this.selected = index;
 
 		if (this.selected != -1) {
@@ -297,7 +314,41 @@ public class CraftElementList extends CraftElement implements ElementList {
 			} else if (this.selected >= this.startIndex + this.getBounds().getLength(this.type)) {
 				this.startIndex = this.selected - (this.getBounds().getLength(this.type) - 1);
 			}
+		} else {
+			this.multiSelected = -1;
 		}
+
+		if (fireEvent) {
+			this.getEventManager().callEvent(ListChangeSelectEvent.class, new ListChangeSelectEvent(this, index));
+		}
+
+		this.update();
+	}
+
+	@Override
+	public void setMultiSelectionBound(int index) {
+		this.setMultiSelectionBound(index, true);
+	}
+
+	@Override
+	public void setMultiSelectionBound(int index, boolean fireEvent) {
+		if (this.multiSelected == index) {
+			return;
+		}
+
+		if (index < -1 || index >= this.items.size()) {
+			throw new IllegalArgumentException("Index out of range: " + index);
+		}
+
+		if (!this.isSelected()) {
+			throw new IllegalStateException("The list does not have a selected item");
+		}
+
+		if (this.selected == index) {
+			throw new IllegalArgumentException("The index is already selected");
+		}
+
+		this.multiSelected = index;
 
 		if (fireEvent) {
 			this.getEventManager().callEvent(ListChangeSelectEvent.class, new ListChangeSelectEvent(this, index));
@@ -313,7 +364,68 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void deselect(boolean fireEvent) {
+		this.multiSelected = -1;
 		this.select(-1, fireEvent);
+	}
+
+	@Override
+	public boolean isMultiSelectionAllowed() {
+		return this.multiSelectionAllowed;
+	}
+
+	@Override
+	public boolean isSelected() {
+		return this.selected != -1;
+	}
+
+	@Override
+	public boolean isMultiSelected() {
+		return this.multiSelected != -1;
+	}
+
+	@Override
+	public boolean canSelect() {
+		return this.getSize() > 0;
+	}
+
+	@Override
+	public boolean isSelected(int index) {
+		assert this.multiSelected != this.selected || this.selected == -1 : "The selection indexes are the same";
+
+		if (!this.isSelected()) {
+			return false;
+		} else if (!this.isMultiSelected()) {
+			return this.selected == index;
+		} else {
+			int start = Math.min(this.selected, this.multiSelected);
+			int end = Math.max(this.selected, this.multiSelected);
+			return start <= index && index <= end;
+		}
+	}
+
+	@Override
+	public Color getColor() {
+		return this.color;
+	}
+
+	@Override
+	public int getStartIndex() {
+		return this.startIndex;
+	}
+
+	@Override
+	public int getSelectedIndex() {
+		return this.selected;
+	}
+
+	@Override
+	public int getMultiSelectionBound() {
+		return this.multiSelected;
+	}
+
+	@Override
+	public Icon getDisabledIcon() {
+		return this.disabledIcon.getIcon();
 	}
 
 	@Override
@@ -333,6 +445,11 @@ public class CraftElementList extends CraftElement implements ElementList {
 	@Override
 	public UnaryOperator<Icon> getSelectModifier() {
 		return this.modifier;
+	}
+
+	@Override
+	public UnaryOperator<Icon> getMultiSelectModifier() {
+		return this.multiModifier;
 	}
 
 	@Override
@@ -359,6 +476,20 @@ public class CraftElementList extends CraftElement implements ElementList {
 	}
 
 	@Override
+	public List<Displayable> getMultiSelectedItems() {
+		assert this.multiSelected != this.selected || this.selected == -1 : "The selection indexes are the same";
+
+		if (this.selected == -1 || this.multiSelected == -1) {
+			return null;
+		}
+
+		int start = Math.min(this.selected, this.multiSelected);
+		int end = Math.max(this.selected, this.multiSelected);
+
+		return Collections.unmodifiableList(this.items.subList(start, end + 1));
+	}
+
+	@Override
 	protected Icon getIcon0(Point point) {
 		if (!this.isEnabled()) {
 			return this.getDisabledIcon();
@@ -378,7 +509,19 @@ public class CraftElementList extends CraftElement implements ElementList {
 			instructions = CraftElementList.INSTRUCTIONS_UNSELECT;
 			icon = this.modifier.apply(icon);
 		} else {
+			if (this.isSelected(index)) {
+				icon = this.multiModifier.apply(icon);
+			}
+			
 			instructions = CraftElementList.INSTRUCTIONS_SELECT;
+
+			if (this.multiSelectionAllowed && this.isSelected()) {
+				if (index == this.multiSelected) {
+					instructions = instructions + "\\n" + CraftElementList.INSTRUCTIONS_MULTISELECT_UNSET;
+				} else {
+					instructions = instructions + "\\n" + CraftElementList.INSTRUCTIONS_MULTISELECT_SET;
+				}
+			}
 		}
 
 		if (item instanceof ActionItem) {
@@ -410,42 +553,6 @@ public class CraftElementList extends CraftElement implements ElementList {
 			}
 		}
 
-	}
-
-	@Override
-	public void setMultiSelectionAllowed() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setMultiSelectionBound(int index) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean isMultiSelectionAllowed() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int getMultiSelectionBound() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public UnaryOperator<Icon> getMultiSelectModifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <T> List<T> getMultiSelected() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

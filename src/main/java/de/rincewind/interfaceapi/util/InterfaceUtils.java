@@ -47,15 +47,14 @@ public class InterfaceUtils {
 	public static String instructionsInfo(String info) {
 		return "§7§o" + info;
 	}
-	
+
 	public static Icon stripInstructions(Icon icon) {
 		if (icon.getLore() != null) {
 			icon.getLore().setEnd(null);
 		}
-		
+
 		return icon;
 	}
-	
 
 	public static Icon convertBarColor(BarColor color) {
 		Validate.notNull(color, "The color cannot be null");
@@ -475,6 +474,8 @@ public class InterfaceUtils {
 	}
 
 	public static Icon convertPotionEffectType(PotionEffectType type) {
+		System.out.println("CONVERT POTIONTYPE " + type);
+
 		if (type == null) {
 			return null;
 		}

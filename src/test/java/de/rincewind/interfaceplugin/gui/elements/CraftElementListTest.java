@@ -1,5 +1,7 @@
 package de.rincewind.interfaceplugin.gui.elements;
 
+import java.util.Arrays;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
@@ -510,7 +512,7 @@ public class CraftElementListTest {
 		this.element.addItem(icon2);
 		this.element.addItem(icon3);
 		this.element.addItem(icon4);
-		
+
 		this.element.removeItem(icon2);
 
 		Assert.assertEquals(3, this.element.getSize());
@@ -589,7 +591,7 @@ public class CraftElementListTest {
 		this.element.select(4);
 
 		this.element.removeItem(icon5);
-		
+
 		Assert.assertFalse(this.element.isSelected());
 	}
 
@@ -614,6 +616,175 @@ public class CraftElementListTest {
 
 		Assert.assertEquals(3, this.element.getSelectedIndex());
 		Assert.assertEquals(icon4, this.element.getSelectedItem());
+	}
+
+	@Test
+	public void testSwap_FirstTwo() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+
+		this.element.swampItems(0, 1);
+
+		Assert.assertEquals(Arrays.asList(icon2, icon1, icon3, icon4, icon5, icon6), this.element.getItems());
+		Assert.assertEquals(icon2, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(icon1, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(icon3, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
+	}
+
+	@Test
+	public void testSwap_FirstTwo_Flipped() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+
+		this.element.swampItems(1, 0);
+
+		Assert.assertEquals(Arrays.asList(icon2, icon1, icon3, icon4, icon5, icon6), this.element.getItems());
+		Assert.assertEquals(icon2, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(icon1, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(icon3, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
+	}
+
+	@Test
+	public void testSwap_Middle() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+
+		this.element.swampItems(2, 3);
+
+		Assert.assertEquals(Arrays.asList(icon1, icon2, icon4, icon3, icon5, icon6), this.element.getItems());
+		Assert.assertEquals(icon1, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(icon2, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(icon4, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
+	}
+
+	@Test
+	public void testSwap_LastTwo() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+
+		this.element.swampItems(4, 5);
+
+		Assert.assertEquals(Arrays.asList(icon1, icon2, icon3, icon4, icon6, icon5), this.element.getItems());
+		Assert.assertEquals(icon1, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(0, 0))));
+		Assert.assertEquals(icon2, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(1, 0))));
+		Assert.assertEquals(icon3, InterfaceUtils.stripInstructions(this.element.getIcon(Point.of(2, 0))));
+	}
+
+	@Test
+	public void testSwap_Selected() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+
+		this.element.select(1);
+		this.element.swampItems(1, 2);
+
+		Assert.assertSame(2, this.element.getSelectedIndex());
+		Assert.assertEquals(Arrays.asList(icon1, icon3, icon2, icon4, icon5, icon6), this.element.getItems());
+	}
+
+	@Test
+	public void testSwap_SelectedBounds() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+
+		this.element.select(1);
+		this.element.setMultiSelectionBound(2);
+		this.element.swampItems(1, 2);
+
+		Assert.assertSame(2, this.element.getSelectedIndex());
+		Assert.assertSame(1, this.element.getMultiSelectionBound());
+		Assert.assertEquals(Arrays.asList(icon1, icon3, icon2, icon4, icon5, icon6), this.element.getItems());
+	}
+
+	@Test
+	public void testSwap_MultiSelectedIndex() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+
+		this.element.select(5);
+		this.element.setMultiSelectionBound(2);
+		this.element.swampItems(1, 2);
+
+		Assert.assertSame(5, this.element.getSelectedIndex());
+		Assert.assertSame(1, this.element.getMultiSelectionBound());
+		Assert.assertEquals(Arrays.asList(icon1, icon3, icon2, icon4, icon5, icon6), this.element.getItems());
 	}
 
 }

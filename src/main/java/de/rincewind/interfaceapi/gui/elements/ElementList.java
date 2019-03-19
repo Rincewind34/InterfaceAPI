@@ -1,5 +1,6 @@
 package de.rincewind.interfaceapi.gui.elements;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.UnaryOperator;
@@ -86,7 +87,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	public abstract void addItem(int index, Displayable item);
 
 	public abstract <T extends Enum<?>> void addItems(Class<T> cls);
-	
+
 	public abstract void swampItems(int index1, int index2);
 
 	public abstract void removeSelected();
@@ -102,12 +103,12 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 *             if the item is <code>null</code>
 	 */
 	public abstract void removeItem(Displayable item);
-	
+
 	public abstract void removeItem(int index);
 
 	public abstract void clear();
 
-	public abstract void setMultiSelectionAllowed();
+	public abstract void setMultiSelectionAllowed(boolean value);
 
 	/**
 	 * Changes the type of this list. By the default it is
@@ -161,6 +162,8 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	 */
 	public abstract void setSelectModifyer(UnaryOperator<Icon> modifier);
 
+	public abstract void setMultiSelectModifyer(UnaryOperator<Icon> modifier);
+
 	/**
 	 * Adds to an {@link Element} a listener to scroll through this element. The
 	 * value to scroll forwards by clicking the button can be specified. If the
@@ -181,7 +184,13 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 
 	public abstract void setMultiSelectionBound(int index);
 
+	public abstract void setMultiSelectionBound(int index, boolean fireEvent);
+
 	public abstract boolean isMultiSelectionAllowed();
+	
+	public abstract boolean isMultiSelected();
+	
+	public abstract boolean isSelected(int index);
 
 	/**
 	 * Returns the index of the first displayed entry (at the beginning of this
@@ -221,7 +230,7 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 
 	public abstract <T> T get(int index);
 
-	public abstract <T> List<T> getMultiSelected();
+	public abstract List<Displayable> getMultiSelectedItems();
 
 	public abstract List<Displayable> getItems();
 
@@ -264,7 +273,17 @@ public abstract interface ElementList extends Element, Selectable, DisplayableDi
 	}
 
 	public default <T extends Displayable> List<T> getItems(Class<T> cls) {
-		return this.getItems().stream().map(cls::cast).collect(Collectors.toList());
+		return Collections.unmodifiableList(this.getItems().stream().map(cls::cast).collect(Collectors.toList()));
+	}
+
+	public default <T extends Displayable> List<T> getMultiSelectedItems(Class<T> cls) {
+		List<Displayable> items = this.getMultiSelectedItems();
+		
+		if (items == null) {
+			return null;
+		}
+		
+		return Collections.unmodifiableList(items.stream().map(cls::cast).collect(Collectors.toList()));
 	}
 
 }

@@ -14,6 +14,10 @@ public class SelectModifiers {
 		return icon.typecast(Material.MAGENTA_STAINED_GLASS);
 	});
 	
+	public static final UnaryOperator<Icon> PINK_GLASS = SelectModifiers.newModifier((icon) -> {
+		return icon.typecast(Material.PINK_STAINED_GLASS);
+	});
+	
 	public static final UnaryOperator<Icon> CYAN_GLASS = SelectModifiers.newModifier((icon) -> {
 		return icon.typecast(Material.CYAN_STAINED_GLASS);
 	});
