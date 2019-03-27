@@ -20,5 +20,5 @@ public class TestWindowSizeable extends CraftWindowSizeable {
 	public Inventory getReference() {
 		return this.reference;
 	}
-
+	
 }

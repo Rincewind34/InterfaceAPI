@@ -8,9 +8,11 @@ import org.junit.Test;
 
 import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
+import de.rincewind.interfaceapi.gui.elements.ElementItem;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.util.Point;
+import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceapi.gui.windows.abstracts.WindowEditor;
 import de.rincewind.test.TestServer;
 import de.rincewind.test.TestWindowSizeable;
@@ -139,6 +141,23 @@ public class CraftElementDisplayableTest {
 		this.element.getComponent(Element.INSTRUCTIONS).setEnabled(true);
 
 		Assert.assertEquals("Instructions", this.element.getIcon(Point.NULL).getLore().getEnd());
+	}
+
+	@Test
+	public void testOverlappingInvisibleElements() {
+		TestWindowSizeable window = new TestWindowSizeable();
+		ElementCreator creator = window.elementCreator();
+		ElementItem element1 = creator.newItem();
+		
+		element1.setIcon(new Icon(Material.APPLE));
+		element1.setVisible(false);
+		
+		ElementItem element2 = creator.newItem();
+		element2.setIcon(new Icon(Material.STICK));
+		element2.setVisible(false);
+
+		Assert.assertNull(window.getVisibleElementAt(Point.NULL));
+		Assert.assertEquals(window.getColor().asIcon(), window.getIcon(Point.NULL));
 	}
 
 	private static class TestElement extends CraftElementDisplayable {
