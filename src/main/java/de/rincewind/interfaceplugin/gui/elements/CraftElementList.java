@@ -143,7 +143,12 @@ public class CraftElementList extends CraftElement implements ElementList {
 
 	@Override
 	public void setMultiSelectionAllowed(boolean value) {
+		if (this.multiSelectionAllowed == value) {
+			return;
+		}
+
 		this.multiSelectionAllowed = value;
+		this.update(); // Instructions changed
 	}
 
 	@Override

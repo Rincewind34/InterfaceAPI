@@ -98,7 +98,7 @@ public final class SimpleLore implements Iterable<String>, Cloneable, Lore {
 	@Override
 	public Lore insert(int index, String line) {
 		if (this.lore.addAll(index, Stream.of(line.split(Pattern.quote("\\n"))).map((lineElement) -> {
-			return this.prefix + line;
+			return this.prefix + lineElement;
 		}).collect(Collectors.toList()))) {
 			this.dirty = true;
 		}

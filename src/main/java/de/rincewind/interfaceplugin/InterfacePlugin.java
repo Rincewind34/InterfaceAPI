@@ -26,8 +26,8 @@ import de.rincewind.interfaceplugin.listener.PlayerQuitListener;
 public class InterfacePlugin extends JavaPlugin {
 
 	public static InterfacePlugin instance;
-
-	static {
+	
+	public static void registerConverter() {
 		Displayable.put(GameMode.class, InterfaceUtils::convertGameMode);
 		Displayable.put(Environment.class, InterfaceUtils::convertEnvironment);
 		Displayable.put(World.class, InterfaceUtils::convertWorld);
@@ -47,6 +47,7 @@ public class InterfacePlugin extends JavaPlugin {
 
 	@Override
 	public void onLoad() {
+		InterfacePlugin.registerConverter();
 		InterfaceAPI.enable();
 	}
 

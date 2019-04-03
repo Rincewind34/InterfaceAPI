@@ -19,6 +19,7 @@ import de.rincewind.interfaceapi.gui.util.Direction;
 import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
 import de.rincewind.interfaceapi.util.InterfaceUtils;
+import de.rincewind.interfaceplugin.InterfacePlugin;
 import de.rincewind.test.Success;
 import de.rincewind.test.TestActionDispalyable;
 import de.rincewind.test.TestPlayer;
@@ -28,15 +29,17 @@ import de.rincewind.test.TestWindowSizeable;
 public class CraftElementListTest {
 
 	private CraftElementList element;
+	private TestWindowSizeable window;
 
 	@BeforeClass
 	public static void initInterfaceAPI() {
+		InterfacePlugin.registerConverter();
 		TestServer.setup();
 	}
 
 	@Before
 	public void initElement() {
-		this.element = (CraftElementList) new TestWindowSizeable().elementCreator().newList();
+		this.element = (CraftElementList) (this.window = new TestWindowSizeable()).elementCreator().newList();
 		this.element.setComponentValue(Element.WIDTH, 3);
 	}
 
@@ -785,6 +788,41 @@ public class CraftElementListTest {
 		Assert.assertSame(5, this.element.getSelectedIndex());
 		Assert.assertSame(1, this.element.getMultiSelectionBound());
 		Assert.assertEquals(Arrays.asList(icon1, icon3, icon2, icon4, icon5, icon6), this.element.getItems());
+	}
+
+	@Test
+	public void testInstructions_MultiSelect() {
+		Icon icon1 = new Icon(Material.APPLE);
+		Icon icon2 = new Icon(Material.YELLOW_BED);
+		Icon icon3 = new Icon(Material.INK_SAC);
+		Icon icon4 = new Icon(Material.DIRT);
+		Icon icon5 = new Icon(Material.STONE);
+		Icon icon6 = new Icon(Material.RED_SAND);
+
+		this.element.addItem(icon1);
+		this.element.addItem(icon2);
+		this.element.addItem(icon3);
+		this.element.addItem(icon4);
+		this.element.addItem(icon5);
+		this.element.addItem(icon6);
+
+		this.element.setComponentValue(Element.WIDTH, 6);
+		this.element.select(2);
+		this.element.setMultiSelectionBound(4);
+		this.element.setMultiSelectionAllowed(true);
+
+		Assert.assertEquals(CraftElementList.INSTRUCTIONS_SELECT + "\\n" + CraftElementList.INSTRUCTIONS_MULTISELECT_SET,
+				this.window.getIcon(Point.of(0, 0)).getLore().getEnd());
+		Assert.assertEquals(CraftElementList.INSTRUCTIONS_SELECT + "\\n" + CraftElementList.INSTRUCTIONS_MULTISELECT_SET,
+				this.window.getIcon(Point.of(1, 0)).getLore().getEnd());
+		Assert.assertEquals(CraftElementList.INSTRUCTIONS_UNSELECT,
+				this.window.getIcon(Point.of(2, 0)).getLore().getEnd());
+		Assert.assertEquals(CraftElementList.INSTRUCTIONS_SELECT + "\\n" + CraftElementList.INSTRUCTIONS_MULTISELECT_SET,
+				this.window.getIcon(Point.of(3, 0)).getLore().getEnd());
+		Assert.assertEquals(CraftElementList.INSTRUCTIONS_SELECT + "\\n" + CraftElementList.INSTRUCTIONS_MULTISELECT_UNSET,
+				this.window.getIcon(Point.of(4, 0)).getLore().getEnd());
+		Assert.assertEquals(CraftElementList.INSTRUCTIONS_SELECT + "\\n" + CraftElementList.INSTRUCTIONS_MULTISELECT_SET,
+				this.window.getIcon(Point.of(5, 0)).getLore().getEnd());
 	}
 
 }
