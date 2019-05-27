@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
@@ -45,6 +46,7 @@ public interface Displayable {
 		Validate.notNull(cls, "The class cannot be null");
 		Validate.notNull(converter, "The converter cannot be null");
 
+		Bukkit.getConsoleSender().sendMessage("[InterfaceAPI] Registered new converter for " + cls);
 		Displayable.converters.put(cls, (Function<Object, Icon>) converter);
 	}
 
@@ -67,6 +69,8 @@ public interface Displayable {
 			assert icon != null : "The converted icon is null";
 			return Displayable.of(icon, payload);
 		} else {
+			Bukkit.getConsoleSender().sendMessage("[InterfaceAPI] WARNING: Couldn't render payload of type "
+					+ (payload != null ? payload.getClass() : Void.class) + " (" + payload + ")");
 			return Displayable.of(new Icon(Material.BEDROCK, payload != null ? payload.toString() : "null"), payload);
 		}
 	}
@@ -117,7 +121,7 @@ public interface Displayable {
 		if (supplier == null) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		return () -> {
 			return supplier.get().getIcon();
 		};

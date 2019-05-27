@@ -186,6 +186,11 @@ public class CraftElementCounter extends CraftElementDisplayable implements Elem
 		this.setComponentValue(Element.INSTRUCTIONS, true);
 		this.setWorkInstructions(false);
 	}
+	
+	@Override
+	protected void onEnabledChange() {
+		this.updateIncrementors();
+	}
 
 	@Override
 	protected Icon getIcon0(Point point) {
