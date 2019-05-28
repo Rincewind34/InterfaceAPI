@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_13_R2.potion.CraftPotionEffectType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -33,6 +34,7 @@ public class InterfacePlugin extends JavaPlugin {
 		Displayable.put(World.class, InterfaceUtils::convertWorld);
 		Displayable.put(EntityType.class, InterfaceUtils::convertEntityType);
 		Displayable.put(PotionEffectType.class, InterfaceUtils::convertPotionEffectType);
+		Displayable.put(CraftPotionEffectType.class, InterfaceUtils::convertPotionEffectType);
 		Displayable.put(PotionType.class, InterfaceUtils::convertPotionType);
 		Displayable.put(EquipmentSlot.class, InterfaceUtils::convertEquipmentSlot);
 		Displayable.put(Material.class, (material) -> {
