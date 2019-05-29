@@ -63,16 +63,24 @@ public interface Displayable {
 	public static Displayable of(Object payload) {
 		if (payload instanceof Displayable) {
 			return (Displayable) payload;
-		} else if (payload != null && Displayable.converters.containsKey(payload.getClass())) {
-			Icon icon = Displayable.converters.get(payload.getClass()).apply(payload);
+		} else if (payload != null) {
+			Class<?> cls = payload.getClass();
 
-			assert icon != null : "The converted icon is null";
-			return Displayable.of(icon, payload);
-		} else {
-			Bukkit.getConsoleSender().sendMessage("[InterfaceAPI] WARNING: Couldn't render payload of type "
-					+ (payload != null ? payload.getClass() : Void.class) + " (" + payload + ")");
-			return Displayable.of(new Icon(Material.BEDROCK, payload != null ? payload.toString() : "null"), payload);
+			while (!Displayable.converters.containsKey(payload.getClass()) && cls != cls.getSuperclass()) {
+				cls = cls.getSuperclass();
+			}
+
+			if (Displayable.converters.containsKey(cls)) {
+				Icon icon = Displayable.converters.get(cls).apply(payload);
+
+				assert icon != null : "The converted icon is null";
+				return Displayable.of(icon, payload);
+			}
 		}
+
+		Bukkit.getConsoleSender().sendMessage("[InterfaceAPI] WARNING: Couldn't render payload of type "
+				+ (payload != null ? payload.getClass() : Void.class) + " (" + payload + ")");
+		return Displayable.of(new Icon(Material.BEDROCK, payload != null ? payload.toString() : "null"), payload);
 	}
 
 	public static Displayable of(Object payload, String name) {
