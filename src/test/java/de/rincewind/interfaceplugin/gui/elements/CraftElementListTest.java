@@ -1,15 +1,18 @@
 package de.rincewind.interfaceplugin.gui.elements;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.potion.PotionEffectType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.rincewind.interfaceapi.gui.components.Displayable;
 import de.rincewind.interfaceapi.gui.components.DisplayableDisabled;
 import de.rincewind.interfaceapi.gui.elements.abstracts.Element;
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
@@ -33,6 +36,7 @@ public class CraftElementListTest {
 
 	@BeforeClass
 	public static void initInterfaceAPI() {
+		InterfacePlugin.debugOutput = false;
 		InterfacePlugin.registerConverter();
 		TestServer.setup();
 	}
@@ -345,6 +349,12 @@ public class CraftElementListTest {
 	public void testSelect_Nagative() {
 		this.element.addItems(GameMode.class);
 		this.element.select(-2);
+	}
+
+	@Test()
+	public void testSelect_Object() {
+		Stream.of(PotionEffectType.values()).map(Displayable::of).forEach(this.element::addItem);
+		this.element.select(PotionEffectType.SLOW);
 	}
 
 	@Test

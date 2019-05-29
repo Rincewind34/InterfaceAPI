@@ -13,6 +13,7 @@ import org.bukkit.Material;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.gui.elements.util.lore.Lore;
+import de.rincewind.interfaceplugin.InterfacePlugin;
 import de.rincewind.interfaceplugin.Validate;
 import net.md_5.bungee.api.ChatColor;
 
@@ -46,7 +47,10 @@ public interface Displayable {
 		Validate.notNull(cls, "The class cannot be null");
 		Validate.notNull(converter, "The converter cannot be null");
 
-		Bukkit.getConsoleSender().sendMessage("[InterfaceAPI] Registered new converter for " + cls);
+		if (InterfacePlugin.debugOutput) {
+			Bukkit.getConsoleSender().sendMessage("[InterfaceAPI] Registered new converter for " + cls);
+		}
+
 		Displayable.converters.put(cls, (Function<Object, Icon>) converter);
 	}
 
@@ -78,8 +82,11 @@ public interface Displayable {
 			}
 		}
 
-		Bukkit.getConsoleSender().sendMessage("[InterfaceAPI] WARNING: Couldn't render payload of type "
-				+ (payload != null ? payload.getClass() : Void.class) + " (" + payload + ")");
+		if (InterfacePlugin.debugOutput) {
+			Bukkit.getConsoleSender().sendMessage("[InterfaceAPI] WARNING: Couldn't render payload of type "
+					+ (payload != null ? payload.getClass() : Void.class) + " (" + payload + ")");
+		}
+		
 		return Displayable.of(new Icon(Material.BEDROCK, payload != null ? payload.toString() : "null"), payload);
 	}
 

@@ -25,6 +25,8 @@ import de.rincewind.interfaceplugin.listener.InventoryDragListener;
 import de.rincewind.interfaceplugin.listener.PlayerQuitListener;
 
 public class InterfacePlugin extends JavaPlugin {
+	
+	public static boolean debugOutput = true;
 
 	public static InterfacePlugin instance;
 	

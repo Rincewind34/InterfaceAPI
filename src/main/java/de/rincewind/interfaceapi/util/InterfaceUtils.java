@@ -474,8 +474,6 @@ public class InterfaceUtils {
 	}
 
 	public static Icon convertPotionEffectType(PotionEffectType type) {
-		System.out.println("CONVERT POTIONTYPE " + type);
-
 		if (type == null) {
 			return null;
 		}

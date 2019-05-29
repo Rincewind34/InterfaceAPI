@@ -292,10 +292,18 @@ public class CraftElementList extends CraftElement implements ElementList {
 	public void select(Object item, boolean fireEvent) {
 		Validate.notNull(item, "The item is null");
 
-		int index = this.items.indexOf(item);
+		int index = 0;
+		
+		for (; index < this.items.size(); index++) {
+			if (item.equals(Displayable.readPayload(this.items.get(index)))) {
+				break;
+			}
+		}
 
-		if (index != -1) {
-			this.select(this.items.indexOf(item), fireEvent);
+		if (index != -1)
+
+		{
+			this.select(index, fireEvent);
 		} else {
 			throw new IllegalArgumentException("The item is not in this list");
 		}
