@@ -70,7 +70,7 @@ public interface Displayable {
 		} else if (payload != null) {
 			Class<?> cls = payload.getClass();
 
-			while (!Displayable.converters.containsKey(payload.getClass()) && cls != cls.getSuperclass()) {
+			while (!Displayable.converters.containsKey(cls) && cls != cls.getSuperclass()) {
 				cls = cls.getSuperclass();
 			}
 
