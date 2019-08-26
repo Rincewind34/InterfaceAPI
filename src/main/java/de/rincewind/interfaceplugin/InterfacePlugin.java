@@ -4,6 +4,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.boss.BarColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_13_R2.potion.CraftPotionEffectType;
@@ -31,6 +32,7 @@ public class InterfacePlugin extends JavaPlugin {
 	public static InterfacePlugin instance;
 	
 	public static void registerConverter() {
+		Displayable.put(BarColor.class, InterfaceUtils::convertBarColor);
 		Displayable.put(GameMode.class, InterfaceUtils::convertGameMode);
 		Displayable.put(Environment.class, InterfaceUtils::convertEnvironment);
 		Displayable.put(World.class, InterfaceUtils::convertWorld);
