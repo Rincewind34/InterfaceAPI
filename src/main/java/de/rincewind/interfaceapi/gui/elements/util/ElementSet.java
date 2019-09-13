@@ -22,17 +22,19 @@ public class ElementSet implements Iterable<Element> {
 		return ElementSet.wrapCreation(creator, bounds, action, new HashSet<>());
 	}
 
-	public static ElementSet wrapCreation(ElementCreator creator, Bounds bounds, BiConsumer<ElementCreator, Bounds> action, Collection<Element> initial) {
+	public static ElementSet wrapCreation(ElementCreator creator, Bounds bounds, BiConsumer<ElementCreator, Bounds> action,
+			Collection<Element> initial) {
 		return ElementSet.wrapCreation(creator, bounds, action, initial, ElementSet::new);
 	}
 
-	public static <T extends ElementSet> T wrapCreation(ElementCreator creator, Bounds bounds, BiConsumer<ElementCreator, Bounds> action,
-			Function<? super Collection<Element>, T> setCreator) {
+	public static <T extends ElementSet> T wrapCreation(ElementCreator creator, Bounds bounds,
+			BiConsumer<ElementCreator, Bounds> action, Function<? super Collection<Element>, T> setCreator) {
 
 		return ElementSet.wrapCreation(creator, bounds, action, new HashSet<>(), setCreator);
 	}
 
-	public static <T extends ElementSet> T wrapCreation(ElementCreator creator, Bounds bounds, BiConsumer<ElementCreator, Bounds> action, Collection<Element> initial,
+	public static <T extends ElementSet> T wrapCreation(ElementCreator creator, Bounds bounds,
+			BiConsumer<ElementCreator, Bounds> action, Collection<Element> initial,
 			Function<? super Collection<Element>, T> setCreator) {
 
 		Validate.notNull(creator, "The creator cannot be null");
@@ -57,7 +59,7 @@ public class ElementSet implements Iterable<Element> {
 	public ElementSet() {
 		this(new HashSet<>());
 	}
-	
+
 	public ElementSet(Element... elements) {
 		this(Arrays.asList(elements));
 	}
@@ -77,7 +79,7 @@ public class ElementSet implements Iterable<Element> {
 		for (Element element : this) {
 			element.update();
 		}
-		
+
 		return this;
 	}
 
@@ -89,7 +91,7 @@ public class ElementSet implements Iterable<Element> {
 		for (Element element : this) {
 			element.setPoint(element.getPoint().add(offsetX, offsetY));
 		}
-		
+
 		return this;
 	}
 
@@ -99,7 +101,7 @@ public class ElementSet implements Iterable<Element> {
 				element.setComponentValue(Element.ENABLED, value);
 			}
 		}
-		
+
 		return this;
 	}
 
@@ -107,7 +109,7 @@ public class ElementSet implements Iterable<Element> {
 		for (Element element : this) {
 			element.setVisible(value);
 		}
-		
+
 		return this;
 	}
 

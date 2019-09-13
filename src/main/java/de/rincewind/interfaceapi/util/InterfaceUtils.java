@@ -505,9 +505,9 @@ public class InterfaceUtils {
 		} else if (type.equals(PotionEffectType.WATER_BREATHING)) {
 			return new Icon(Material.COD, "§9Unterwasseratem §7(Buff)");
 		} else if (type.equals(PotionEffectType.INVISIBILITY)) {
-			return new Icon(Material.GLASS, "§7Unsichtbarkeit (Buff)");
+			return InterfaceUtils.convertEntityType(EntityType.ILLUSIONER).rename("§7Unsichtbarkeit §7(Buff)");
 		} else if (type.equals(PotionEffectType.BLINDNESS)) {
-			return new Icon(Material.COAL_BLOCK, "§8Blindheit §7(Buff))");
+			return new Icon(Material.INK_SAC, "§8Blindheit §7(Debuff)");
 		} else if (type.equals(PotionEffectType.NIGHT_VISION)) {
 			return new Icon(Material.GOLDEN_CARROT, "§1Nachsicht §7(Buff)");
 		} else if (type.equals(PotionEffectType.HUNGER)) {
@@ -519,7 +519,7 @@ public class InterfaceUtils {
 		} else if (type.equals(PotionEffectType.WITHER)) {
 			return InterfaceUtils.convertEntityType(EntityType.WITHER_SKELETON).rename("§8Wither §7(Debuff)");
 		} else if (type.equals(PotionEffectType.HEALTH_BOOST)) {
-			return new Icon(Material.GOLDEN_APPLE, "§6Extraenergie §7(Buff)");
+			return new Icon(Material.ROSE_RED, "§6Extraenergie §7(Buff)");
 		} else if (type.equals(PotionEffectType.ABSORPTION)) {
 			return new Icon(Material.GOLDEN_APPLE, "§3Absorbtion §7(Buff)");
 		} else if (type.equals(PotionEffectType.SATURATION)) {
@@ -527,7 +527,7 @@ public class InterfaceUtils {
 		} else if (type.equals(PotionEffectType.GLOWING)) {
 			return new Icon(Material.SPECTRAL_ARROW, "§aLeuchten §7(Buff/Debuff)");
 		} else if (type.equals(PotionEffectType.LEVITATION)) {
-			return new Icon(Material.ELYTRA, "§bSchwebekraft §7(Buff/Debuff)");
+			return new Icon(Material.SHULKER_SHELL, "§bSchwebekraft §7(Buff/Debuff)");
 		} else if (type.equals(PotionEffectType.LUCK)) {
 			return new Icon(Material.EMERALD, "§2Glück §7(Buff)");
 		} else if (type.equals(PotionEffectType.UNLUCK)) {

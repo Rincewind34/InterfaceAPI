@@ -20,7 +20,7 @@ public class InventoryClickListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
-		
+
 		if (InterfaceAPI.getSetup(player).hasMaximizedWindow()) {
 			Window window = InterfaceAPI.getSetup(player).getMaximizedWindow();
 
@@ -30,8 +30,8 @@ public class InventoryClickListener implements Listener {
 
 				WindowClickEvent windowEvent = new WindowClickEvent(containerWindow, action,
 						event.getClickedInventory() == event.getView().getTopInventory(), event.getSlot(),
-						InterfaceUtils.normalize(event.getWhoClicked().getItemOnCursor()), InterfaceUtils.normalize(event.getCurrentItem()),
-						event.getClick());
+						InterfaceUtils.normalize(event.getWhoClicked().getItemOnCursor()),
+						InterfaceUtils.normalize(event.getCurrentItem()), event.getClick());
 
 				containerWindow.getEventManager().callEvent(WindowClickEvent.class, windowEvent);
 

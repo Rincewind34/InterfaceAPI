@@ -28,7 +28,7 @@ public class CraftElementInput extends CraftElementSlot implements ElementInput 
 
 		this.getEventManager().registerListener(ElementStackChangeEvent.class, (event) -> {
 			if (!this.checker.test(event.getCourserItem())) {
-				event.consume();
+				event.cancel();
 			}
 		}).addAfter();
 	}

@@ -28,17 +28,21 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 		this.getComponent(Element.ENABLED).setEnabled(true);
 
 		this.getEventManager().registerListener(ElementStackChangeEvent.class, (event) -> {
-			if (this.content == null && event.getSlotItem() == null || (this.content != null && this.content.isSimilar(event.getSlotItem()))) {
-				event.consume();
-				return;
-			}
+//			if (this.content == null && event.getSlotItem() == null
+//					|| (this.content != null && this.content.isSimilar(event.getSlotItem()))) {
+//				System.out.println("CONSUME SLOT");
+//				event.consume();
+//			}
+			
+			this.setContent(event.getSlotItem());
 		}).addAfter();
 
-		this.getEventManager().registerListener(ElementStackChangeEvent.class, (event) -> {
-			if (!event.isConsumed()) {
-				this.setContent(event.getSlotItem());
-			}
-		}).monitor();
+//		this.getEventManager().registerListener(ElementStackChangeEvent.class, (event) -> {
+//			System.out.println("SET CONTENT: " + event.isConsumed());
+//			if (!event.isConsumed()) {
+//				this.setContent(event.getSlotItem());
+//			}
+//		}).monitor();
 	}
 
 	@Override
@@ -75,8 +79,8 @@ public abstract class CraftElementSlot extends CraftElement implements ElementSl
 	}
 
 	public void setContent(ItemStack item) {
-		assert item.getAmount() <= this.getMaxStackSize() : "The amount is bigger than maxstacksize";
-		
+		assert item == null || item.getAmount() <= this.getMaxStackSize() : "The amount is bigger than maxstacksize";
+
 		ItemStack previous = this.content;
 
 		this.content = InterfaceUtils.normalize(item);

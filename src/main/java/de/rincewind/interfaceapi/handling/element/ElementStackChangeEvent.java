@@ -9,9 +9,9 @@ import de.rincewind.interfaceapi.gui.elements.util.ClickAction;
 import de.rincewind.interfaceapi.gui.util.Point;
 
 public class ElementStackChangeEvent extends PlayerElementEvent<Element> {
-	
+
 	private boolean cancelled;
-	
+
 	private ClickAction action;
 
 	private ItemStack slotItem;
@@ -19,7 +19,8 @@ public class ElementStackChangeEvent extends PlayerElementEvent<Element> {
 
 	private Point point;
 
-	public ElementStackChangeEvent(Element element, Player player, Point point, ClickAction action, ItemStack courserItem, ItemStack slotItem) {
+	public ElementStackChangeEvent(Element element, Player player, Point point, ClickAction action, ItemStack courserItem,
+			ItemStack slotItem) {
 		super(element, player);
 
 		this.action = action;
@@ -30,21 +31,21 @@ public class ElementStackChangeEvent extends PlayerElementEvent<Element> {
 		assert this.courserItem == null || this.courserItem.getType() != Material.AIR : "The courser item is AIR";
 		assert this.slotItem == null || this.slotItem.getType() != Material.AIR : "The slot item is AIR";
 	}
-	
+
 	public void cancel() {
 		this.cancelled = true;
 	}
-	
+
 	public void setSlotItem(ItemStack slotItem) {
 		this.validateMonitor();
 		this.slotItem = slotItem;
 	}
-	
+
 	public void setCourserItem(ItemStack courserItem) {
 		this.validateMonitor();
 		this.courserItem = courserItem;
 	}
-	
+
 	public boolean remainItemsOnCourser() {
 		return this.courserItem != null;
 	}
@@ -52,7 +53,7 @@ public class ElementStackChangeEvent extends PlayerElementEvent<Element> {
 	public boolean remainItemsInSlot() {
 		return this.slotItem != null;
 	}
-	
+
 	public boolean isCancelled() {
 		return this.cancelled;
 	}

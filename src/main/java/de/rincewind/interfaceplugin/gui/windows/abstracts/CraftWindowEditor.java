@@ -42,23 +42,23 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 				if (element != null) {
 					Point point = event.getInterfacePoint().subtract(element.getPoint());
 
-					ElementInteractEvent elementInteractEvent = new ElementInteractEvent(element, this.getUser(), point, event.getType(),
-							event.getCourserItem());
+					ElementInteractEvent elementInteractEvent = new ElementInteractEvent(element, this.getUser(), point,
+							event.getType(), event.getCourserItem());
 					element.getEventManager().callEvent(ElementInteractEvent.class, elementInteractEvent);
 					event.setCourserItem(elementInteractEvent.getCourserItem());
 
 					if (elementInteractEvent.isCancelled()) {
 						event.cancelInteraction();
 					} else {
-						ElementStackChangeEvent elementStackEvent = new ElementStackChangeEvent(element, this.getUser(), point, event.getAction(),
-								event.getCourserItem(), event.getClickedItem());
+						ElementStackChangeEvent elementStackEvent = new ElementStackChangeEvent(element, this.getUser(), point,
+								event.getAction(), event.getCourserItem(), event.getClickedItem());
 						element.getEventManager().callEvent(ElementStackChangeEvent.class, elementStackEvent);
 						event.setCourserItem(elementStackEvent.getCourserItem());
 
 						if (elementStackEvent.isCancelled()) {
 							event.cancelInteraction();
 						} else {
-							assert element.getIcon(point).toItem().equals(elementStackEvent.getSlotItem()) : "The event data does not match changed stack";
+							//						TODO	assert element.getIcon(point).toItem().equals(elementStackEvent.getSlotItem()) : "The event data does not match changed stack";
 						}
 					}
 				} else {
