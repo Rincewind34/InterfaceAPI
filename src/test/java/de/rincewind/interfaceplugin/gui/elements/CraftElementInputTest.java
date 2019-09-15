@@ -14,6 +14,7 @@ import de.rincewind.test.TestWindowSizeable;
 public class CraftElementInputTest {
 
 	private CraftElementInput element;
+	@SuppressWarnings("unused")
 	private TestWindowSizeable window;
 
 	@BeforeClass
