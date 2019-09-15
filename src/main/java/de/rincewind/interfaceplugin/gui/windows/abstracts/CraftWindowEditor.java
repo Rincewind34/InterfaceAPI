@@ -92,8 +92,8 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 	@Override
 	public void clearElements() {
-		for (Element element : this.elements) {
-			this.removeElement((CraftElement) element, false);
+		while (!this.elements.isEmpty()) {
+			this.removeElement((CraftElement) this.elements.get(0), false);
 		}
 
 		this.updateInventory();
