@@ -13,85 +13,89 @@ import de.rincewind.interfaceplugin.gui.elements.CraftElementItemSelector;
  * and consume it.
  */
 public interface ElementItemSelector extends ElementDisplayable {
-	
+
 	public static void setSelectInstructions(String instructions) {
 		Validate.notNull(instructions, "The instructions cannot be null");
-		
+
 		CraftElementItemSelector.INSTRUCTIONS_SELECT = instructions;
 	}
-	
+
 	public static void setUnselectInstructions(String instructions) {
 		Validate.notNull(instructions, "The instructions cannot be null");
-		
+
 		CraftElementItemSelector.INSTRUCTIONS_UNSELECT = instructions;
 	}
-	
+
 	public static void setCollectInstructions(String instructions) {
 		Validate.notNull(instructions, "The instructions cannot be null");
-		
+
 		CraftElementItemSelector.INSTRUCTIONS_COLLECT = instructions;
 	}
-	
+
 	public static void setCloneFunction(UnaryOperator<ItemStack> function) {
 		Validate.notNull(function, "The function cannot be null");
-		
+
 		CraftElementItemSelector.cloneFunction = function;
 	}
-	
+
 	public static String getSelectInstructions() {
 		return CraftElementItemSelector.INSTRUCTIONS_SELECT;
 	}
-	
+
 	public static String getUnselectInstructions() {
 		return CraftElementItemSelector.INSTRUCTIONS_UNSELECT;
 	}
-	
+
 	public static String getCollectInstructions() {
 		return CraftElementItemSelector.INSTRUCTIONS_COLLECT;
 	}
-	
+
 	/**
 	 * Item is unselectable after selection
 	 * 
 	 * @param value
+	 *            The value to be set
 	 */
 	public abstract void canUnselect(boolean value);
-	
+
 	/**
 	 * Copies the amount of the item to select
 	 * 
 	 * @param value
+	 *            The value to be set
 	 */
 	public abstract void copyAmount(boolean value);
-	
+
 	/**
 	 * Is the player allowed to grep the item using the middle mouse key
 	 * 
 	 * @param value
+	 *            The value to be set
 	 */
 	public abstract void canCollect(boolean value);
-	
+
 	/**
 	 * Display the selected item and not the instructions icon
 	 * 
 	 * @param value
+	 *            The value to be set
 	 */
 	public abstract void displaySelectedItem(boolean value);
-	
+
 	public abstract void setSelected(ItemStack item);
 
 	public abstract void setSelected(ItemStack item, boolean fireEvent);
 
 	public abstract boolean canUnselect();
-	
+
 	public abstract boolean copyAmount();
-	
+
 	public abstract boolean canCollect();
-	
+
 	public abstract boolean displaySelectedItem();
-	
+
 	public abstract boolean isItemSelected();
 
 	public abstract ItemStack getSelected();
-	
+
 }

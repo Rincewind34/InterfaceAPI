@@ -36,31 +36,29 @@ public interface WindowSizeable extends WindowColorable, Sized {
 	 * Returns <code>true</code> if the size is valid and <code>false</code> if
 	 * not.
 	 * 
-	 * @param width
-	 *            to check
-	 * @param height
+	 * @param bounds
 	 *            to check
 	 * 
 	 * @return <code>true</code> if the size is valid and <code>false</code> if
 	 *         not
 	 */
 	public abstract boolean checkSize(Bounds bounds);
-	
+
 	@Override
 	public default int getWidth() {
 		return this.getBounds().getWidth();
 	}
-	
+
 	@Override
 	public default int getHeight() {
 		return this.getBounds().getHeight();
 	}
-	
+
 	@Override
 	public default boolean isInside(Point point) {
 		return this.getBounds().includes(point);
 	}
-	
+
 	public default void setSize(int width, int height) {
 		this.setSize(Bounds.of(width, height));
 	}

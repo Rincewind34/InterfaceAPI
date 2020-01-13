@@ -6,6 +6,7 @@ import de.rincewind.interfaceapi.gui.util.Point;
 import de.rincewind.interfaceapi.gui.util.creators.ElementCreator;
 import de.rincewind.interfaceapi.handling.InterfaceListener;
 import de.rincewind.interfaceapi.handling.element.ElementInteractEvent;
+import de.rincewind.interfaceapi.handling.element.ElementValueChangeEvent;
 import de.rincewind.interfaceapi.util.HeadsDatabase;
 
 /**
@@ -67,6 +68,8 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	 * 
 	 * @param count
 	 *            change to
+	 * @param fireEvent
+	 *            whether {@link ElementValueChangeEvent} should be fired
 	 */
 	public abstract void setCount(int count, boolean fireEvent);
 
@@ -94,6 +97,8 @@ public abstract interface ElementCounter extends ElementDisplayable {
 	 *            add the listener to
 	 * @param value
 	 *            incremented by clicking
+	 * @param shiftedValue
+	 *            incremented by shift clicking
 	 * 
 	 * @throws NullPointerException
 	 *             if the button is <code>null</code>

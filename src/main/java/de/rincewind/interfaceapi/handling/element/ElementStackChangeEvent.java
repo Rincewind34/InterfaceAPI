@@ -69,7 +69,7 @@ public class ElementStackChangeEvent extends PlayerElementEvent<Element> {
 	/**
 	 * Cannot be AIR
 	 * 
-	 * @return
+	 * @return the courser item
 	 */
 	public ItemStack getCourserItem() {
 		return this.courserItem;
@@ -78,7 +78,7 @@ public class ElementStackChangeEvent extends PlayerElementEvent<Element> {
 	/**
 	 * Cannot be AIR
 	 * 
-	 * @return
+	 * @return the slot item
 	 */
 	public ItemStack getSlotItem() {
 		return this.slotItem;
