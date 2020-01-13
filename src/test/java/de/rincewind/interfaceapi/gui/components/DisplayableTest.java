@@ -8,12 +8,14 @@ import org.junit.Test;
 
 import de.rincewind.interfaceapi.gui.elements.util.Icon;
 import de.rincewind.interfaceapi.util.InterfaceUtils;
+import de.rincewind.interfaceplugin.InterfacePlugin;
 import de.rincewind.test.TestServer;
 
 public class DisplayableTest {
 	
 	@BeforeClass
 	public static void initRegistry() {
+		InterfacePlugin.debugOutput = false;
 		TestServer.setup();
 		Displayable.put(GameMode.class, InterfaceUtils::convertGameMode);
 	}

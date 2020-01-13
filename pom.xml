@@ -8,7 +8,7 @@
 	<properties>
 		<spigot.version>1.13.2</spigot.version>
 		<junit.version>4.12</junit.version>
-		<jacoco.version>0.8.2</jacoco.version>
+		<jacoco.version>0.8.5</jacoco.version>
 
 		<jdk.version>10</jdk.version>
 		<export.dir>${project.basedir}/target</export.dir>

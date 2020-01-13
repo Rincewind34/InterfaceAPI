@@ -5,9 +5,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.rincewind.interfaceapi.handling.element.ElementStackChangeEvent;
 import de.rincewind.interfaceplugin.InterfacePlugin;
-import de.rincewind.test.TestPlayer;
 import de.rincewind.test.TestServer;
 import de.rincewind.test.TestWindowSizeable;
 
@@ -31,13 +29,7 @@ public class CraftElementInputTest {
 
 	@Test
 	public void testVarient() {
-		Assert.assertFalse(this.element.isEmpty());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testElementEvent_ItemInput() {
-		this.element.getEventManager().callEvent(ElementStackChangeEvent.class,
-				new ElementStackChangeEvent(this.element, new TestPlayer("Test"), null, null, null, null));
+		Assert.assertTrue(this.element.isEmpty());
 	}
 
 }
