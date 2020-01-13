@@ -11,11 +11,10 @@
 		<jacoco.version>0.8.2</jacoco.version>
 
 		<jdk.version>10</jdk.version>
-		<outputTarget>${project.basedir}/target</outputTarget>
+		<export.dir>${project.basedir}/target</export.dir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>${jdk.version}</maven.compiler.source>
 		<maven.compiler.target>${jdk.version}</maven.compiler.target>
-		<maven.exec.skip>false</maven.exec.skip>
 	</properties>
 
 	<profiles>
@@ -25,41 +24,6 @@
 			<properties>
 				<maven.test.skip>true</maven.test.skip>
 			</properties>
-		</profile>
-		<profile>
-			<id>skipexec</id>
-
-			<activation>
-				<os>
-					<family>windows</family>
-				</os>
-			</activation>
-
-			<properties>
-				<maven.exec.skip>true</maven.exec.skip>
-			</properties>
-		</profile>
-		<profile>
-			<id>fix-exec-path</id>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>package-execution</id>
-								<configuration>
-									<workingDirectory>${project.basedir}/../../</workingDirectory>
-									<executable>${project.basedir}/../../etc/scripts/packaged</executable>
-									<skip>${maven.exec.skip}</skip>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 	</profiles>
 
@@ -93,13 +57,13 @@
 	</dependencies>
 
 	<scm>
-		<connection>scm:git:gitlab@dev.thejourneyofaerion.net:tjoa/apis/InterfaceAPI.git</connection>
-		<developerConnection>scm:git:gitlab@dev.thejourneyofaerion.net:tjoa/apis/InterfaceAPI.git</developerConnection>
+		<connection>scm:git:git@gitlab.com:journey_aerion/apis/InterfaceAPI.git</connection>
+		<developerConnection>scm:git:git@gitlab.com:journey_aerion/apis/InterfaceAPI.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
 	<build>
-		<defaultGoal>clean package</defaultGoal>
+		<defaultGoal>package</defaultGoal>
 
 		<plugins>
 			<plugin>
@@ -129,19 +93,26 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
-				<configuration>
-					<excludeDefaultDirectories>true</excludeDefaultDirectories>
-					<failOnError>false</failOnError>
-					<filesets>
-						<fileset>
-							<directory>${outputTarget}</directory>
-							<includes>
-								<include>${project.name}-*.jar</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
-				</configuration>
+				<executions>
+					<execution>
+						<id>clean-old-jar</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<excludeDefaultDirectories>true</excludeDefaultDirectories>
+							<filesets>
+								<fileset>
+									<directory>${export.dir}</directory>
+									<includes>
+										<include>${project.name}-*.jar</include>
+									</includes>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -151,9 +122,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.1.1</version>
 				<configuration>
 					<failOnError>false</failOnError>
+					<additionalOptions>-html5</additionalOptions>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -179,26 +151,7 @@
 				<configuration>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 					<scmCommentPrefix>[#] </scmCommentPrefix>
-					<releaseProfiles>fix-exec-path</releaseProfiles>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
-				<executions>
-					<execution>
-						<id>package-execution</id>
-						<phase>package</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>${project.basedir}/etc/scripts/packaged</executable>
-							<skip>${maven.exec.skip}</skip>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
