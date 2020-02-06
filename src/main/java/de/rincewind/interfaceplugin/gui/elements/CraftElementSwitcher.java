@@ -221,7 +221,7 @@ public class CraftElementSwitcher extends CraftElement implements ElementSwitche
 			if (this.switchIndex != -1) {
 				return this.updateInstructions(this.items.get(this.switchIndex).getIcon(), CraftElementSwitcher.DEFAULT_INSTRUCTIONS);
 			} else {
-				return Icon.AIR; /* TODO Error Icon */
+				return Icon.AIR; // TODO (#1030) Error Icon
 			}
 		} else {
 			return this.getDisabledIcon();

@@ -57,8 +57,6 @@ public abstract class CraftWindowEditor extends CraftWindowContainer implements 
 
 						if (elementStackEvent.isCancelled()) {
 							event.cancelInteraction();
-						} else {
-							//						TODO	assert element.getIcon(point).toItem().equals(elementStackEvent.getSlotItem()) : "The event data does not match changed stack";
 						}
 					}
 				} else {

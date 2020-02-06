@@ -24,7 +24,7 @@ import de.rincewind.interfaceplugin.InterfacePlugin;
 import de.rincewind.interfaceplugin.Validate;
 import de.rincewind.interfaceplugin.listener.InventoryCloseListener;
 
-public class CraftSetup implements Setup { // TODO cache maximized window
+public class CraftSetup implements Setup { // TODO (#1034) cache maximized window
 
 	/**
 	 * For testing; disables the usage of {@link Bukkit#getScheduler()}
@@ -92,7 +92,7 @@ public class CraftSetup implements Setup { // TODO cache maximized window
 	public void open(Window window) {
 		Validate.notNull(window, "The window cannot be null!");
 
-		// TODO maximize already opened window to avoid things like QuestSystem ChapterWindow
+		// TODO (#1035) maximize already opened window to avoid things like QuestSystem ChapterWindow
 
 		if (window.getUser() != null) {
 			throw new SetupException("The window is already opend!");

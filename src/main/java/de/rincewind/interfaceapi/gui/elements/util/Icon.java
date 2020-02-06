@@ -118,7 +118,7 @@ public final class Icon implements Displayable, Cloneable {
 
 		Icon other = (Icon) obj;
 
-		// TODO try to avoid using toItem
+		// TODO (#1027) try to avoid using toItem
 		return this.toItem().equals(other.toItem());
 	}
 
@@ -127,7 +127,7 @@ public final class Icon implements Displayable, Cloneable {
 		final int prime = 31;
 		int result = 1;
 
-		// TODO try to avoid using toItem
+		// TODO (#1027) try to avoid using toItem
 		result = prime * result + this.toItem().hashCode();
 		return result;
 	}
@@ -324,7 +324,7 @@ public final class Icon implements Displayable, Cloneable {
 			if (meta instanceof Damageable) {
 				((Damageable) meta).setDamage(this.damage);
 			} else if (this.damage != 0) {
-				// TODO handle exception
+				// TODO (#1026) handle exception
 			}
 
 			if (this.name != null) {

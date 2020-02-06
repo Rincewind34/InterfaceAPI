@@ -12,7 +12,7 @@ public class CraftElementContentSlot extends CraftElementSlot implements Element
 
 	@Override
 	public int getMaxStackSize() {
-		return 64; // TODO
+		return 64; // TODO (#1028)
 	}
 	
 }

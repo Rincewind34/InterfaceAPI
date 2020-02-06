@@ -19,7 +19,7 @@ public abstract class CraftWindow implements Window {
 	private EventManager eventManager;
 
 	public CraftWindow(Plugin plugin) {
-//		Validate.notNull(plugin, "The plugin cannot be null"); TODO removed for Testcases
+//		Validate.notNull(plugin, "The plugin cannot be null"); TODO (#1031) removed for Testcases
 		
 		this.plugin = plugin;
 		
