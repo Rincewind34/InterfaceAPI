@@ -20,7 +20,11 @@ public abstract interface WindowContainer extends WindowNameable {
 	
 	public abstract void setRenderClosed(boolean value);
 	
+	public abstract void setRenderBypass(boolean bypass);
+	
 	public abstract boolean isRenderClosed();
+	
+	public abstract boolean isRenderBypass();
 	
 	public abstract Set<Point> getPoints();
 	

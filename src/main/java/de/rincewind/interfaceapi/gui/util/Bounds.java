@@ -49,7 +49,7 @@ public final class Bounds extends Pair2D implements Comparable<Bounds> {
 	}
 
 	public boolean includes(Point point) {
-		return this.first >= point.getX() && this.second >= point.getY();
+		return this.first >= point.getX() && this.second >= point.getY() && point.getX() >= 0 && point.getY() >= 0;
 	}
 
 	public boolean includes(Bounds bounds) {

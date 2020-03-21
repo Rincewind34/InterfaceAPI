@@ -12,6 +12,7 @@ import de.rincewind.interfaceapi.handling.window.WindowChangeStateEvent;
 public abstract class CraftWindowContainer extends CraftWindowNameable implements WindowContainer {
 
 	private boolean renderClosed;
+	private boolean bypassRendering;
 
 	private Inventory inventory;
 
@@ -48,6 +49,16 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 			}
 		}
 	}
+	
+	@Override
+	public void setRenderBypass(boolean bypass) {
+		this.bypassRendering = bypass;
+	}
+	
+	@Override
+	public boolean isRenderBypass() {
+		return this.bypassRendering;
+	}
 
 	@Override
 	public boolean isRenderClosed() {
@@ -78,8 +89,10 @@ public abstract class CraftWindowContainer extends CraftWindowNameable implement
 	protected void renderPoint(Point point) {
 		assert this.renderClosed || this.getState() == WindowState.MAXIMIZED : "Closed rendering is disabled";
 
-		Icon icon = this.getIcon(point);
-		this.inventory.setItem(this.getSlot(point), icon != null ? icon.toItem() : null);
+		if (!this.bypassRendering) {
+			Icon icon = this.getIcon(point);
+			this.inventory.setItem(this.getSlot(point), icon != null ? icon.toItem() : null);
+		}
 	}
 
 	protected void renderPoints(Iterable<Point> points) {
