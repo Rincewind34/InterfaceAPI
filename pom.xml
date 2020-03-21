@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.rincewind</groupId>
 	<artifactId>interfaceapi</artifactId>
-	<version>3.0.23</version>
+	<version>3.0.24-SNAPSHOT</version>
 	<name>InterfaceAPI</name>
 
 	<properties>
@@ -59,7 +59,7 @@
 	<scm>
 		<connection>scm:git:git@gitlab.com:journey_aerion/apis/InterfaceAPI.git</connection>
 		<developerConnection>scm:git:git@gitlab.com:journey_aerion/apis/InterfaceAPI.git</developerConnection>
-		<tag>v3.0.23</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<build>
